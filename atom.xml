@@ -1,0 +1,1764 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>sam&#39;s notes</title>
+  <subtitle>life &amp;&amp; tech</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://sam2099.github.io/"/>
+  <updated>2017-02-21T07:18:44.691Z</updated>
+  <id>https://sam2099.github.io/</id>
+  
+  <author>
+    <name>sam chen</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>linux server 配置选项</title>
+    <link href="https://sam2099.github.io/2016/11/18/web%20server/serverInit/"/>
+    <id>https://sam2099.github.io/2016/11/18/web server/serverInit/</id>
+    <published>2016-11-18T11:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>环境准备</li>
+<li>用户管理</li>
+<li>sshd管理</li>
+<li>防暴力破解</li>
+</ul>
+<p>主要以Centos为主。</p>
+<p>……<a id="more"></a></p>
+<h2 id="安装Centos"><a href="#安装Centos" class="headerlink" title="安装Centos"></a>安装Centos</h2><h3 id="U盘安装。"><a href="#U盘安装。" class="headerlink" title="U盘安装。"></a>U盘安装。</h3><p><code>df -l</code> U盘挂载设备路径<br><code>umount sdb1</code><br><code>dd if=iso镜像文件 of=U盘挂载设备名称sdx (一定不要加上数字) bs=8M</code></p>
+<p>恢复<br><code>umount U盘挂载设备路径</code><br><code>mkfs.ntfs U盘挂载设备路径</code>  (mkfs.vfat)</p>
+<h3 id="hostname"><a href="#hostname" class="headerlink" title="hostname"></a>hostname</h3><p>为了方便管理，可以设置服务器的机器名称</p>
+<pre><code>hostnamectl set-hostname `your hostname`
+reboot
+</code></pre><p>修改 <code>/etc/hosts</code> 将 <code>your hostname</code> 写入到 ipv4 和 ipv6</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h3><p><a href="http://mirrors.aliyun.com/help/centos" target="_blank" rel="external">阿里CentOS 镜像</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo </div><div class="line"></div><div class="line">yum makecache #生成缓存</div></pre></td></tr></table></figure>
+<h3 id="科学上网"><a href="#科学上网" class="headerlink" title="科学上网"></a>科学上网</h3><p><a href="/2016/05/05/other/shadowsocks">SS</a></p>
+<h3 id="git-git-flow"><a href="#git-git-flow" class="headerlink" title="git (git-flow)"></a>git (git-flow)</h3><pre><code>yum -y install git
+</code></pre><p><a href="/2016/05/03/devEnv/git/git/">git的后悔药</a></p>
+<p><code>git-flow</code> 看情况安装。</p>
+<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">echo $SHELL  #查看系统当前的shell</div><div class="line"></div><div class="line">yum install zsh</div><div class="line"></div><div class="line">cat /etc/shells #查看本地所有的shell</div><div class="line"></div><div class="line">chsh -s /bin/zsh #切换到zsh</div></pre></td></tr></table></figure>
+<h3 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh</div><div class="line">cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc</div><div class="line">  </div><div class="line">#修改主题，非必须</div><div class="line">vim ~/.zshrc</div><div class="line">ZSH_THEME=&quot;bira&quot;</div><div class="line"></div><div class="line">#插件</div><div class="line">plugins=(git git-flow git-flow-completion )</div></pre></td></tr></table></figure>
+<h2 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h2><ul>
+<li>增加一root组用户</li>
+<li>禁止root登录</li>
+</ul>
+<h2 id="sshd管理"><a href="#sshd管理" class="headerlink" title="sshd管理"></a>sshd管理</h2><ul>
+<li>公钥登录</li>
+<li>修改服务端口</li>
+<li>禁止密码登录<br><a href="/2016/01/26/linux/service/2-1%20sshd/">ssh</a></li>
+</ul>
+<h2 id="防暴力破解"><a href="#防暴力破解" class="headerlink" title="防暴力破解"></a>防暴力破解</h2><p>使用 <code>fail2ban</code> 防止暴力破解， 将对方IP放入防火墙.</p>
+<h2 id="VNC"><a href="#VNC" class="headerlink" title="VNC"></a>VNC</h2><p><a href="/2016/10/10/linux/vnc/">VNC</a></p>
+<h2 id="Sonatype-nexus"><a href="#Sonatype-nexus" class="headerlink" title="Sonatype nexus"></a>Sonatype nexus</h2><p><a href="/">nexus</a></p>
+<h2 id="gitlab"><a href="#gitlab" class="headerlink" title="gitlab"></a>gitlab</h2><p><a href="/tags/gitlab/">gitlab</a></p>
+<h2 id="CI"><a href="#CI" class="headerlink" title="CI"></a>CI</h2><p><a href="/tags/jenkins/">jenkins</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;环境准备&lt;/li&gt;
+&lt;li&gt;用户管理&lt;/li&gt;
+&lt;li&gt;sshd管理&lt;/li&gt;
+&lt;li&gt;防暴力破解&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主要以Centos为主。&lt;/p&gt;
+&lt;p&gt;……
+    
+    </summary>
+    
+      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
+    
+    
+      <category term="linux server" scheme="https://sam2099.github.io/tags/linux-server/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux wine 32 &amp; 64</title>
+    <link href="https://sam2099.github.io/2016/10/29/linux/wine/"/>
+    <id>https://sam2099.github.io/2016/10/29/linux/wine/</id>
+    <published>2016-10-29T05:00:10.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>  wine在linux中很常用，目前是32位和64位的软件都有；在此讨论在64位centos 7中安装32位和64位的wine。<br>还有wine的中文环境下一些乱码问题。</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="删除已有版本"><a href="#删除已有版本" class="headerlink" title="删除已有版本"></a>删除已有版本</h3><pre><code>yum erase wine wine-*
+#zsh中yum erase wine &quot;wine-*&quot;
+</code></pre><h3 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h3><pre><code>yum install samba-winbind-clients -y
+yum groupinstall &apos;Development Tools&apos; -y
+yum install libjpeg-turbo-devel libtiff-devel freetype-devel -y
+yum install libgcc.i686 libX11-devel.i686 freetype-devel.i686 gnutls-devel.i686 libxml2-devel.i686 libjpeg-turbo-devel.i686 libpng-devel.i686 libXrender-devel.i686 glibc-devel.i686 glibc-devel ibstdc++-devel.i686  -y 
+</code></pre><p><a href="http://www.cyberciti.biz/tips/compile-32bit-application-using-gcc-64-bit-linux.html" target="_blank" rel="external">参考</a></p>
+<h3 id="下载wine源码"><a href="#下载wine源码" class="headerlink" title="下载wine源码"></a>下载wine源码</h3><pre><code>ver=1.9.21
+cd /usr/src
+wget http://dl.winehq.org/wine/source/1.9/wine-${ver}.tar.bz2 -O wine-${ver}.tar.bz2
+tar xjf wine-${ver}.tar.bz2
+cd wine-${ver}/
+mkdir -p wine32 wine64
+</code></pre><h3 id="wine-64-编译安装"><a href="#wine-64-编译安装" class="headerlink" title="wine 64 编译安装"></a>wine 64 编译安装</h3><pre><code>cd wine64
+../configure --enable-win64
+make -j 4
+make install
+</code></pre><h3 id="wine-32-编译安装"><a href="#wine-32-编译安装" class="headerlink" title="wine 32 编译安装"></a>wine 32 编译安装</h3><pre><code>cd ../wine32
+../configure --with-wine64=../wine64
+make -j 4
+make install
+</code></pre><h3 id="校验"><a href="#校验" class="headerlink" title="校验"></a>校验</h3><pre><code>$ file `which wine`
+/usr/local/bin/wine: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32, BuildID[sha1]=a83b9f0916e6c0d5427e2c38a172c93bd8023d98, not stripped
+$ file `which wine64`
+/usr/local/bin/wine64: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32, BuildID[sha1]=4d8e8468402bc63bd2a72c59c57fcad332235d41, not stripped
+</code></pre><h2 id="中文字体库"><a href="#中文字体库" class="headerlink" title="中文字体库"></a>中文字体库</h2><h3 id="安装字体管理工具"><a href="#安装字体管理工具" class="headerlink" title="安装字体管理工具"></a>安装字体管理工具</h3><pre><code>yum install fontconfig mkfontscale
+</code></pre><h3 id="字体库"><a href="#字体库" class="headerlink" title="字体库"></a>字体库</h3><pre><code>mkdir -pv /usr/share/fonts/chinese/TrueType
+</code></pre><p>从Windows字体目录C:\Windows\Fonts 拷贝需要的字体库到刚刚建立目录</p>
+<h3 id="建立字体缓存"><a href="#建立字体缓存" class="headerlink" title="建立字体缓存"></a>建立字体缓存</h3><pre><code>cd /usr/share/fonts/chinese/TrueType
+mkfontscale
+mkfontdir
+fc-cache -fv
+fc-list |grep SimSun
+</code></pre><h2 id="中文乱码"><a href="#中文乱码" class="headerlink" title="中文乱码"></a>中文乱码</h2><p><a href="www.oschina.net/question/12_2853">参考</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;  wine在linux中很常用，目前是32位和64位的软件都有；在此讨论在64位centos 7中安装32位和64位的wine。&lt;br&gt;还有wine的中文环境下一些乱码问题。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="wine" scheme="https://sam2099.github.io/tags/wine/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos vnc远程桌面</title>
+    <link href="https://sam2099.github.io/2016/10/10/linux/vnc/"/>
+    <id>https://sam2099.github.io/2016/10/10/linux/vnc/</id>
+    <published>2016-10-10T11:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容<br>大部分情况下Linux的系统管理员都是通过SSH完成管理任务，特殊情况下可能会需要图形会话。VNC服务器就是这样一个自由开源软件，他可以让用户远程访问服务器的桌面环境。<br>下面就是关于CentOS 7 上配置VNC服务的内容。</p>
+<a id="more"></a>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cat /etc/redhat-release #only redhat release</div><div class="line">CentOS Linux release 7.2.1511 (Core)</div></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install tigervnc-server tigervnc</div></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><ul>
+<li><p>创建一个新的配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cp /lib/systemd/system/vncserver@.service /lib/systemd/system/vncserver@:1.service</div></pre></td></tr></table></figure>
+</li>
+<li><p>编辑<code>vncserver@:1.service</code><br>根据远程桌面用户修改配置文件， 替换<code>&lt;USER&gt;</code>部分;<br>Type改成<code>simple</code>，默认的<code>forking</code>可能导致服务启动失败。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[Unit]</div><div class="line">Description=Remote desktop service (VNC)</div><div class="line">After=syslog.target network.target</div><div class="line"></div><div class="line">[Service]</div><div class="line">## Type=forking</div><div class="line">Type=simple</div><div class="line"></div><div class="line"># Clean any existing files in /tmp/.X11-unix environment</div><div class="line">ExecStartPre=/bin/sh -c &apos;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&apos;</div><div class="line">## ExecStart=/usr/sbin/runuser -l &lt;USER&gt; -c &quot;/usr/bin/vncserver %i&quot;</div><div class="line">## PIDFile=/home/&lt;USER&gt;/.vnc/%H%i.pid</div><div class="line">ExecStart=/usr/sbin/runuser -l root -c &quot;/usr/bin/vncserver %i&quot;</div><div class="line">PIDFile=/root/.vnc/%H%i.pid</div><div class="line">ExecStop=/bin/sh -c &apos;/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&amp;1 || :&apos;</div><div class="line"></div><div class="line">[Install]</div><div class="line">WantedBy=multi-user.target</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="更新systemctl"><a href="#更新systemctl" class="headerlink" title="更新systemctl"></a>更新systemctl</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl daemon-reload</div></pre></td></tr></table></figure>
+<h3 id="VNC密码"><a href="#VNC密码" class="headerlink" title="VNC密码"></a>VNC密码</h3><p>设置对应远程桌面用户的VNC密码， 此密码不同于用户登录密码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vncserver</div></pre></td></tr></table></figure></p>
+<p>如果需要更多用户连接，那么需要再创建配置文件和端口， 就是重复上面的步骤；如创建<code>vncserver@:2.service</code>， 并替换里面的用户名。</p>
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl start vncserver@:1.service</div></pre></td></tr></table></figure>
+<h3 id="开机自启动"><a href="#开机自启动" class="headerlink" title="开机自启动"></a>开机自启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl enable vncserver@:1.service</div></pre></td></tr></table></figure>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vncserver -list #显示</div><div class="line">vncserver :n #启动</div><div class="line">vncserver -kill n #关闭</div></pre></td></tr></table></figure>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p>VNC本身服务默认使用5900， 不同用户使用VNC会获得不同的端口（都是5900的子端口），配置文件名里的数字就指定改用户使用5900的具体子端口，如上面root用户就使用5901端口。</p>
+<p>客户端连接时需要采用<code>ip:端口</code>格式。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;br&gt;大部分情况下Linux的系统管理员都是通过SSH完成管理任务，特殊情况下可能会需要图形会话。VNC服务器就是这样一个自由开源软件，他可以让用户远程访问服务器的桌面环境。&lt;br&gt;下面就是关于CentOS 7 上配置VNC服务的内容。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="linux vnc" scheme="https://sam2099.github.io/tags/linux-vnc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Sonatype nexus</title>
+    <link href="https://sam2099.github.io/2016/06/20/devEnv/nexus/nexus/"/>
+    <id>https://sam2099.github.io/2016/06/20/devEnv/nexus/nexus/</id>
+    <published>2016-06-20T07:22:59.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<p>永久免费的 Sonatype Nexus Repository Manager OSS版本，<br>可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。<br>主要配合maven 和 gradle 工作。   </p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>前提要JRE7以上</p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a><a href="http://www.sonatype.com/download-oss-sonatype/" target="_blank" rel="external">下载</a></h3><p>配合maven使用， 下载 <code>Nexus Repository Manager OSS 2.xx</code></p>
+<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a><a href="http://books.sonatype.com/nexus-book/reference/installing.html" target="_blank" rel="external">安装</a></h3><p>主要步骤像这样滴</p>
+<ul>
+<li>文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ sudo cp nexus-2.13.0-02-bundle.tar.gz /usr/local</div><div class="line">$ cd /usr/local</div><div class="line">$ sudo tar xvzf nexus-2.13.0-02-bundle.tar.gz</div><div class="line">$ sudo ln -s nexus-2.13.0-02 nexus</div></pre></td></tr></table></figure>
+<p><code>/usr/local</code> 这个安装路径根据自己的实际情况调整。</p>
+<ul>
+<li>环境变量</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/profile</div><div class="line">NEXUS_HOME=/usr/local/nexus</div><div class="line">export NEXUS_HOME</div><div class="line"></div><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
+<ul>
+<li>sonatype-work</li>
+</ul>
+<p>安装同级目录有<code>sonatype-work</code>文件夹，用来保存 repository and configuration data；和安装文件分离，方便升级。</p>
+<ul>
+<li><a href="http://books.sonatype.com/nexus-book/reference/install-sect-service.html" target="_blank" rel="external">系统服务</a></li>
+</ul>
+<p>增加用户 nexus  : useradd nexus<br>修改nexus的权限 chown -R nexus.nexus nexus</p>
+<h2 id="配置和管理"><a href="#配置和管理" class="headerlink" title="配置和管理"></a>配置和管理</h2><ul>
+<li>配置文件<br><code>$NEXUS_HOME/conf/nexus.properties</code>， 大概像这样的</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">#</div><div class="line"># Sonatype Nexus (TM) Open Source Version</div><div class="line"># Copyright (c) 2007-2014 Sonatype, Inc.</div><div class="line"># All rights reserved. Includes the third-party code listed at http://links.sonatype.com/products/nexus/oss/attributions.</div><div class="line">#</div><div class="line"># This program and the accompanying materials are made available under the terms of the Eclipse Public License Version 1.0,</div><div class="line"># which accompanies this distribution and is available at http://www.eclipse.org/legal/epl-v10.html.</div><div class="line">#</div><div class="line"># Sonatype Nexus (TM) Professional Version is available from Sonatype, Inc. &quot;Sonatype&quot; and &quot;Sonatype Nexus&quot; are trademarks</div><div class="line"># of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the</div><div class="line"># Eclipse Foundation. All other trademarks are the property of their respective owners.</div><div class="line">#</div><div class="line"></div><div class="line"># Sonatype Nexus</div><div class="line"># ==============</div><div class="line"># This is the most basic configuration of Nexus.</div><div class="line"></div><div class="line"># Jetty section</div><div class="line">application-port=8081</div><div class="line">application-host=0.0.0.0</div><div class="line">nexus-webapp=$&#123;bundleBasedir&#125;/nexus</div><div class="line">nexus-webapp-context-path=/nexus</div><div class="line"></div><div class="line"># Nexus section</div><div class="line">nexus-work=$&#123;bundleBasedir&#125;/../sonatype-work/nexus</div><div class="line">runtime=$&#123;bundleBasedir&#125;/nexus/WEB-INF</div></pre></td></tr></table></figure>
+<ul>
+<li>启动</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">su nexus</div><div class="line">cd /data/iho/nexus/bin/</div><div class="line">./nexus start</div></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><a href="http://books.sonatype.com/nexus-book/reference/config.html" target="_blank" rel="external">官方文档</a></p>
+<h3 id="后台管理"><a href="#后台管理" class="headerlink" title="后台管理"></a>后台管理</h3><ul>
+<li><p>地址账户<br>地址    ：端口和context 参照 你自己配置的 <code>$NEXUS_HOME/conf/nexus.properties</code><br>初始账户 ：<code>admin</code><br>初始密码 ：<code>admin123</code></p>
+</li>
+<li><p>Repository<br><a href="/2015/10/15/devEnv/nexus/restlet/">参照</a></p>
+</li>
+</ul>
+<h3 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h3><p><a href="">参照Maven配置</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;永久免费的 Sonatype Nexus Repository Manager OSS版本，&lt;br&gt;可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。&lt;br&gt;主要配合maven 和 gradle 工作。   &lt;/p&gt;
+    
+    </summary>
+    
+      <category term="developEnv" scheme="https://sam2099.github.io/categories/developEnv/"/>
+    
+    
+      <category term="nexus" scheme="https://sam2099.github.io/tags/nexus/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gitlab</title>
+    <link href="https://sam2099.github.io/2016/06/20/devEnv/gitlab/gitlab/"/>
+    <id>https://sam2099.github.io/2016/06/20/devEnv/gitlab/gitlab/</id>
+    <published>2016-06-20T05:46:15.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<p>gitlab 一个开源的版本管理系统,实现一个自托管的Git项目仓库,可通过Web界面进行访问公开的或者私人项目。基本拥有GitHub类似的功能。</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://about.gitlab.com/downloads/" target="_blank" rel="external">免费开源的CE版本</a><br>请选择需要的版本， 这里有个 <a href="https://mirror.tuna.tsinghua.edu.cn/help/gitlab-ce/" target="_blank" rel="external">大中国专用的mirror</a></p>
+<p>然后按照提示执行就ok。</p>
+<p>初始账户： <code>root</code><br>password： <code>5iveL!fe</code></p>
+<h2 id="管理和配置"><a href="#管理和配置" class="headerlink" title="管理和配置"></a>管理和配置</h2><p><a href="https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md" target="_blank" rel="external">官方文档</a></p>
+<ul>
+<li>配置</li>
+</ul>
+<p>GitLab 7.6 以后， 默认的配置文件 <code>/etc/gitlab/gitlab.rb</code>， 修改后，使用 <code>sudo gitlab-ctl reconfigure</code> 使配置生效并启动gitlab。</p>
+<p>配置文件的内容有点像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"># Disable the built-in nginx</div><div class="line">#nginx[&apos;enable&apos;] = false</div><div class="line">#web_server[&apos;external_users&apos;] = [&apos;nginx&apos;]</div><div class="line"></div><div class="line"></div><div class="line">#</div><div class="line"># # Disable the built-in unicorn</div><div class="line">#unicorn[&apos;enable&apos;] = false</div><div class="line"></div><div class="line"></div><div class="line"># Check and change the external_url to the address your users will type in their browser</div><div class="line">external_url &apos;http://IP:70&apos;</div><div class="line"></div><div class="line">#port</div><div class="line">#redis[&apos;port&apos;] = 7001</div><div class="line">#postgresql[&apos;port&apos;] = 7002</div><div class="line">unicorn[&apos;port&apos;] = 7004</div><div class="line"></div><div class="line">#git data path</div><div class="line">git_data_dir &quot;/data/git-data&quot;</div><div class="line">gitlab_rails[&apos;backup_path&apos;] = &apos;/data/git-data-backups&apos;</div><div class="line"></div><div class="line"># limit backup lifetime to 7 days - 604800 seconds</div><div class="line">gitlab_rails[&apos;backup_keep_time&apos;] = 604800</div></pre></td></tr></table></figure></p>
+<p>重点关注 <code>external_url</code> <code>port</code> <code>git data path</code>。</p>
+<ul>
+<li><p>管理命令<br>启动所有gitlab组件：</p>
+<pre><code>gitlab-ctl start
+</code></pre><p>停止所有gitlab组件：</p>
+<pre><code>gitlab-ctl stop
+</code></pre><p>重启所有gitlab组件：</p>
+<pre><code>gitlab-ctl restart
+</code></pre></li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="管理员"><a href="#管理员" class="headerlink" title="管理员"></a>管理员</h3><p>如图可以进入admin特别区域。多用于管理 <code>group</code>， <code>project</code>， <code>user</code>， 更高级的话管理 <code>job</code> 和 <code>hook</code><br><img src="http://amadis.qiniudn.com/gitlab1.png" alt=""></p>
+<h3 id="普通用户"><a href="#普通用户" class="headerlink" title="普通用户"></a>普通用户</h3><ul>
+<li>SSH KEY<br>统一使用ssh协议类操作git repository， 所以登陆以后，请将自己的public key添加到gitlab账户。</li>
+</ul>
+<p><img src="http://amadis.qiniudn.com/gitlab2.png" alt=""><br><img src="http://amadis.qiniudn.com/gitlab3.png" alt=""><br><img src="http://amadis.qiniudn.com/gitlab4.png" alt=""></p>
+<p>ssh key 可由管理员方式发送到各位，<br>包括2个文件，一个是.pub结尾的，这个就是public key，另一个无后缀名的，这是各位的private key，请妥善保管，以后将凭这个文件来获得对git服务器的访问权。</p>
+<p>private key需要存放在办公电脑路径：<br>Linux ： <code>/home/你的用户/.ssh</code><br>Windows: <code>C:\Users\你的用户\.ssh</code></p>
+<p>如需自己生成：<code>ssh-keygen -t rsa -C &quot;your_email@your_email.com&quot;</code></p>
+<ul>
+<li>操作<br>每个人在自己的dashborad里可以看到自己加入的project<br>有权限的人，可以自己创建project</li>
+</ul>
+<p><img src="http://amadis.qiniudn.com/gitlab5.png" alt=""></p>
+<p>版本操作完全是git的内容。Linux的话直接命令行就很好了； Windows的话 推荐 <a href="https://www.sourcetreeapp.com/" target="_blank" rel="external">SourceTree</a> or <a href="http://www.syntevo.com/smartgithg/" target="_blank" rel="external">smartgit</a></p>
+<h2 id="备份迁移"><a href="#备份迁移" class="headerlink" title="备份迁移"></a>备份迁移</h2><p>下面都是yum方式安装gitlab的用法, 工作目录都是 <code>gitlab.rb</code> 设置的 <code>gitlab_rails[&#39;backup_path&#39;]</code>； 完整的参考<a href="https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/raketasks/backup_restore.md" target="_blank" rel="external">官方指南</a>.</p>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><pre><code>sudo gitlab-rake gitlab:backup:create
+</code></pre><h3 id="自动备份"><a href="#自动备份" class="headerlink" title="自动备份"></a>自动备份</h3><p>使用<code>crontab</code>每日自动备份</p>
+<ul>
+<li><p>schedule a cron job</p>
+<pre><code>sudo su -
+crontab -e
+</code></pre></li>
+<li><p>backup (每天凌晨2点)</p>
+<pre><code>0 2 * * * /usr/bin/gitlab-rake gitlab:backup:create CRON=1
+</code></pre></li>
+<li><p>备份有效时间<br><code>/etc/gitlab/gitlab.rb</code>内配置</p>
+<pre><code># limit backup lifetime to 7 days - 604800 seconds
+gitlab_rails[&apos;backup_keep_time&apos;] = 604800
+</code></pre></li>
+</ul>
+<h3 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># 1 copy 备份文件</div><div class="line">sudo cp 1393513186_gitlab_backup.tar /var/opt/gitlab/backups/</div><div class="line">  </div><div class="line"># 2 Stop the processes that are connected to the database. Leave the rest of GitLab running</div><div class="line">sudo gitlab-ctl stop unicorn</div><div class="line">sudo gitlab-ctl stop sidekiq</div><div class="line"># Verify</div><div class="line">sudo gitlab-ctl status</div><div class="line">  </div><div class="line"># 3 restore</div><div class="line">#will overwrite the contents of your GitLab database!!!!!</div><div class="line">sudo gitlab-rake gitlab:backup:restore BACKUP=1393513186</div><div class="line">  </div><div class="line"># 4 Restart and check GitLab</div><div class="line">sudo gitlab-ctl start</div><div class="line">sudo gitlab-rake gitlab:check SANITIZE=true</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;gitlab 一个开源的版本管理系统,实现一个自托管的Git项目仓库,可通过Web界面进行访问公开的或者私人项目。基本拥有GitHub类似的功能。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="developEnv" scheme="https://sam2099.github.io/categories/developEnv/"/>
+    
+    
+      <category term="gitlab" scheme="https://sam2099.github.io/tags/gitlab/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>十年回头望</title>
+    <link href="https://sam2099.github.io/2016/06/14/devEnv/10years/"/>
+    <id>https://sam2099.github.io/2016/06/14/devEnv/10years/</id>
+    <published>2016-06-14T13:28:38.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<p>十年之前，刚刚毕业；十年之后，回头看看；低头思考，抬头前行。</p>
+<a id="more"></a>
+<p>以下是个人对开发框架整体的思考和一些优秀实践，简单整理，陆续补充，详细的看是否有时间完善。</p>
+<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>中小型系统架构网络拓扑<br><a class="fancybox" title="" href="http://amadis.qiniudn.com/structure.jpg" rel="external" target="_blank"><br><img width="700px" alt="" src="http://amadis.qiniudn.com/structure.jpg"><br></a></p>
+<h3 id="基础框架"><a href="#基础框架" class="headerlink" title="基础框架"></a>基础框架</h3><p>以Spring的一系列框架为基础（如 Spring MVC， SpringData），配合自己开发的开发脚手架。<br>表现层：Css3， JavaScript6，JQuery ， Jsp2<br>控制层：spring mvc<br>服务层：spring core<br>持久层：spring data JPA<br>安全层：shiro<br>批处理：quartz<br>单元测试： Junit + H2数据库<br>数据库：Mysql + Redis</p>
+<h2 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h2><p><br><a class="fancybox" title="开发流程" href="http://amadis.qiniudn.com/process.png" rel="external" target="_blank"><br><img alt="开发流程" width="400px" height="600px" src="http://amadis.qiniudn.com/process.png"><br></a><br><span class="caption">开发流程</span><br></p>
+
+
+<h2 id="第三方管理系统"><a href="#第三方管理系统" class="headerlink" title="第三方管理系统"></a>第三方管理系统</h2><h3 id="git-gitlab-源码管理"><a href="#git-gitlab-源码管理" class="headerlink" title="git gitlab 源码管理"></a>git gitlab 源码管理</h3><ul>
+<li>git<br>分布式源码管理，gitFlow是其一大特色。<br>相关链接<ul>
+<li><a href="/tags/git/">git</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>gitlab<br>一个开源的版本管理系统,实现一个自托管的Git项目仓库,可通过Web界面进行访问公开的或者私人项目。基本拥有GitHub类似的功能。<br>建议采用ssh协议</p>
+<ul>
+<li>方便 ： 不用每次输入密码</li>
+<li>安全</li>
+<li>减少传送数据，节约流量<br><a href="/tags/gitlab/">gitlab</a></li>
+</ul>
+</li>
+<li><p>gitFlow<br>gitFlow模型：一个组织软件开发活动的版本迭代模型，定义围绕项目发布的严格分支模型，提供了一个健壮的用于管理大型项目的框架。<br>5大分支<br><a href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html" target="_blank" rel="external">git-flow 备忘清单</a></p>
+</li>
+<li><p>jgitflow-maven-plugin</p>
+<p><a href="http://jgitflow.bitbucket.org/" target="_blank" rel="external">jgitflow</a></p>
+</li>
+</ul>
+<h3 id="maven-项目管理"><a href="#maven-项目管理" class="headerlink" title="maven 项目管理"></a>maven 项目管理</h3><ul>
+<li><p>管理系统依赖<br>统一依赖的来源和版本，保持开发环境一致，避免莫名错误</p>
+</li>
+<li><p>管理项目生命周期<br>构建，编译，测试，发布，更新版本。。。。</p>
+</li>
+</ul>
+<p><a href="/tags/maven/">maven</a></p>
+<h3 id="nexus-本地资源库"><a href="#nexus-本地资源库" class="headerlink" title="nexus 本地资源库"></a>nexus 本地资源库</h3><p>使用 Sonatype Nexus Repository Manager OSS版本；<br>nexus可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。<br>主要配合maven 和 gradle 工作。</p>
+<ul>
+<li><a href="/tags/nexus/">相关链接</a></li>
+</ul>
+<h3 id="jira-任务与缺陷管理"><a href="#jira-任务与缺陷管理" class="headerlink" title="jira 任务与缺陷管理"></a>jira 任务与缺陷管理</h3><p>多人协助也好， 一个人玩也行；<br>自己给自己安排任务，自己安排时间，完了自己查看统计数据，挺好。</p>
+<h3 id="code-review"><a href="#code-review" class="headerlink" title="code review"></a>code review</h3><p>crucible系统<br>窃以为： code review是成本最低且有效提高代码质量的手段，特别是几个技术高深的人员一起review</p>
+<h3 id="jenkins-持续集成"><a href="#jenkins-持续集成" class="headerlink" title="jenkins 持续集成"></a>jenkins 持续集成</h3><ul>
+<li><p>测试<br>测试人员随时或的最新版本，构建测试版本，且不打扰开发人员；</p>
+</li>
+<li><p>发布<br>配合<code>maven</code>的多环境参数配置，图形化一键发布，方便高效</p>
+</li>
+<li><p>相关链接<br><a href="/tags/jenkins/">jenkins</a></p>
+</li>
+</ul>
+<h2 id="开发辅助系统"><a href="#开发辅助系统" class="headerlink" title="开发辅助系统"></a>开发辅助系统</h2><p>自己开发，开发测试人员内部使用， 持续改进ing</p>
+<h3 id="开发沙箱"><a href="#开发沙箱" class="headerlink" title="开发沙箱"></a>开发沙箱</h3><ul>
+<li>接口文档在线化</li>
+<li>开发环境/测试环境/生产环境的切换</li>
+<li>保留接口请求和服务器返回内容的现场数据</li>
+<li>模拟接口仿真服务，方便客户端开发和测试</li>
+<li>接口版本化管理（待改进）</li>
+</ul>
+<h3 id="2维码管理系统"><a href="#2维码管理系统" class="headerlink" title="2维码管理系统"></a>2维码管理系统</h3><p>个性化定制2维码，并跟踪该2维码后续行为数据。比如给某推广人员定制一个专属2维码，并收集和分析该2维码的后续行为数据。</p>
+<h3 id="数据收集分析系统"><a href="#数据收集分析系统" class="headerlink" title="数据收集分析系统"></a>数据收集分析系统</h3><p>收集用户行为数据，根据运营需求分析；<br>友盟等提供的功能直接用友盟；<br>这里可以做一些对友盟等第三方数据平台的补充。</p>
+<h3 id="安装包管理系统"><a href="#安装包管理系统" class="headerlink" title="安装包管理系统"></a>安装包管理系统</h3><p>统一管理APP安装包， 提供图像界面给测试人员和运营人员操作，记录保存每个版本。<br>配合CI使用。<br>iOS 生产环境未实现。。。。。</p>
+<h3 id="源码规范检查工具"><a href="#源码规范检查工具" class="headerlink" title="源码规范检查工具"></a>源码规范检查工具</h3><ul>
+<li>检查多余图片资源、语言包</li>
+<li>检查项目中命名、编码规范</li>
+</ul>
+<h3 id="意见反馈管理系统"><a href="#意见反馈管理系统" class="headerlink" title="意见反馈管理系统"></a>意见反馈管理系统</h3><p>联合运营人员或者客服人员，聆听用户反馈，改进产品。</p>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>生产最近使用较多的是 mysql及其分支；junit中多用H2</p>
+<h3 id="Multi-Source-Replication"><a href="#Multi-Source-Replication" class="headerlink" title="Multi-Source Replication"></a>Multi-Source Replication</h3><h3 id="热备"><a href="#热备" class="headerlink" title="热备"></a>热备</h3><h3 id="冷备"><a href="#冷备" class="headerlink" title="冷备"></a>冷备</h3><h2 id="开发脚手架"><a href="#开发脚手架" class="headerlink" title="开发脚手架"></a>开发脚手架</h2><p>注重代码积累，将常用代码模块化，需要时可插拔，提高开发效率和代码质量。<br>从技术层面来说，产品化需要做到可配置、可定制、可灵活组装、可快速开发.</p>
+<ul>
+<li>认证授权模块</li>
+<li>消息短信模块</li>
+<li>用户基础模块</li>
+<li>第三方支付模块</li>
+<li>静态资源模块</li>
+<li>加解密模块</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;十年之前，刚刚毕业；十年之后，回头看看；低头思考，抬头前行。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+    
+    
+      <category term="十年回头望" scheme="https://sam2099.github.io/tags/%E5%8D%81%E5%B9%B4%E5%9B%9E%E5%A4%B4%E6%9C%9B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android broadcast</title>
+    <link href="https://sam2099.github.io/2016/05/17/android/broadcast/"/>
+    <id>https://sam2099.github.io/2016/05/17/android/broadcast/</id>
+    <published>2016-05-17T14:28:38.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<p>#广播</p>
+<ul>
+<li>广播的概念<ul>
+<li>现实：电台通过发送广播发布消息，买个收音机，就能收听</li>
+<li>Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。<br>Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<hr>
+<p>#IP拨号器</p>
+<blockquote>
+<p>原理：接收拨打电话的广播，修改广播内携带的电话号码</p>
+<ul>
+<li>定义广播接收者接收打电话广播</li>
+</ul>
+</blockquote>
+<pre><code>public class CallReceiver extends BroadcastReceiver {
+
+    //当广播接收者接收到广播时，此方法会调用
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        //拿到用户拨打的号码
+        String number = getResultData();
+        //修改广播内的号码
+        setResultData(&quot;17951&quot; + number);
+    }
+}
+</code></pre><ul>
+<li><p>在清单文件中定义该广播接收者接收的广播类型</p>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.ipdialer.CallReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.NEW_OUTGOING_CALL&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>接收打电话广播需要权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.PROCESS_OUTGOING_CALLS&quot;/&gt;
+</code></pre></li>
+<li>即使广播接收者的进程没有启动，当系统发送的广播可以被该接收者接收时，系统会自动启动该接收者所在的进程</li>
+<li>桌面隐藏<br>删除 <code>AndroidManifest.xml</code> 中</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;</div><div class="line">&lt;/intent-filter&gt;</div></pre></td></tr></table></figure>
+<p>利用上一特点，进程自动启动</p>
+<hr>
+<p>#短信拦截器</p>
+<blockquote>
+<p>系统收到短信时会产生一条广播，广播中包含了短信的号码和内容</p>
+</blockquote>
+<ul>
+<li><p>定义广播接收者接收短信广播</p>
+<pre><code>public void onReceive(Context context, Intent intent) {
+//拿到广播里携带的短信内容
+Bundle bundle = intent.getExtras();
+Object[] objects = (Object[]) bundle.get(&quot;pdus&quot;);
+for(Object ob : objects ){
+    //通过object对象创建一个短信对象
+    SmsMessage sms = SmsMessage.createFromPdu((byte[])ob);
+    System.out.println(sms.getMessageBody());
+    System.out.println(sms.getOriginatingAddress());
+
+    //阻止其他接收者接收这条广播
+    abortBroadCast();
+}
+</code></pre><p>  }</p>
+</li>
+<li>系统创建广播时，把短信存放到一个数组，然后把数据以pdus为key存入bundle，再把bundle存入intent</li>
+<li><p>清单文件中配置广播接收者接收的广播类型，注意要设置优先级属性，要保证优先级高于短信应用，才可以实现拦截</p>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.smslistener.SmsReceiver&quot;&gt;
+    &lt;intent-filter android:priority=&quot;1000&quot;&gt;
+        &lt;action android:name=&quot;android.provider.Telephony.SMS_RECEIVED&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>添加权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_SMS&quot;/&gt;
+</code></pre></li>
+</ul>
+<ul>
+<li>4.0以后广播接收者安装以后必须手动启动一次，否则不生效</li>
+<li>4.0以后广播接收者如果被手动关闭，就不会再启动了</li>
+</ul>
+<hr>
+<p>#监听SD卡状态</p>
+<ul>
+<li><p>清单文件中定义广播接收者接收的类型，监听SD卡常见的三种状态，所以广播接收者需要接收三种广播</p>
+<pre><code> &lt;receiver android:name=&quot;com.itheima.sdcradlistener.SDCardReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.MEDIA_MOUNTED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.MEDIA_UNMOUNTED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.MEDIA_REMOVED&quot;/&gt;
+        &lt;data android:scheme=&quot;file&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>广播接收者的定义</p>
+<pre><code>public class SDCardReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // 区分接收到的是哪个广播
+        String action = intent.getAction();
+
+        if(action.equals(&quot;android.intent.action.MEDIA_MOUNTED&quot;)){
+            System.out.println(&quot;sd卡就绪&quot;);
+        }
+        else if(action.equals(&quot;android.intent.action.MEDIA_UNMOUNTED&quot;)){
+            System.out.println(&quot;sd卡被移除&quot;);
+        }
+        else if(action.equals(&quot;android.intent.action.MEDIA_REMOVED&quot;)){
+            System.out.println(&quot;sd卡被拔出&quot;);
+        }
+    }
+}
+</code></pre></li>
+</ul>
+<hr>
+<p>#勒索软件</p>
+<ul>
+<li>接收开机广播，在广播接收者中启动勒索的Activity</li>
+<li><p>清单文件中配置接收<code>开机成功</code>广播</p>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.lesuo.BootReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;/&gt;
+</code></pre></li>
+<li><p>定义广播接收者</p>
+<pre><code>@Override
+public void onReceive(Context context, Intent intent) {
+    //开机的时候就启动勒索软件
+    Intent it = new Intent(context, MainActivity.class);        
+    context.startActivity(it);
+}
+</code></pre></li>
+<li>以上代码还不能启动MainActivity，因为广播接收者的启动，并不会创建任务栈，那么没有任务栈，就无法启动activity</li>
+<li><p>手动设置创建新任务栈的flag</p>
+<pre><code>it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+</code></pre></li>
+</ul>
+<hr>
+<p>#监听应用的安装、卸载、更新</p>
+<blockquote>
+<p>原理：应用在安装卸载更新时，系统会发送广播，广播里会携带应用的包名</p>
+<ul>
+<li>清单文件定义广播接收者接收的类型，因为要监听应用的三个动作，所以需要接收三种广播</li>
+</ul>
+</blockquote>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.app.AppReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.PACKAGE_ADDED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.PACKAGE_REPLACED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.PACKAGE_REMOVED&quot;/&gt;
+        &lt;data android:scheme=&quot;package&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre><ul>
+<li><p>广播接收者的定义</p>
+<pre><code>public void onReceive(Context context, Intent intent) {
+    //区分接收到的是哪种广播
+    String action = intent.getAction();
+    //获取广播中包含的应用包名
+    Uri uri = intent.getData();
+    if(action.equals(&quot;android.intent.action.PACKAGE_ADDED&quot;)){
+        System.out.println(uri + &quot;被安装了&quot;);
+    }
+    else if(action.equals(&quot;android.intent.action.PACKAGE_REPLACED&quot;)){
+        System.out.println(uri + &quot;被更新了&quot;);
+    }
+    else if(action.equals(&quot;android.intent.action.PACKAGE_REMOVED&quot;)){
+        System.out.println(uri + &quot;被卸载了&quot;);
+    }
+}
+</code></pre></li>
+</ul>
+<hr>
+<p>#广播的两种类型</p>
+<ul>
+<li>无序广播：所有跟广播的intent匹配的广播接收者都可以收到该广播，并且是没有先后顺序（同时收到）</li>
+<li>有序广播：所有跟广播的intent匹配的广播接收者都可以收到该广播，但是会按照广播接收者的优先级来决定接收的先后顺序<ul>
+<li>优先级的定义：-1000~1000</li>
+<li>最终接收者：所有广播接收者都接收到广播之后，它才接收，并且一定会接收</li>
+<li>abortBroadCast：阻止其他接收者接收这条广播，类似拦截，只有有序广播可以被拦截</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序广播"><a href="#有序广播" class="headerlink" title="有序广播"></a>有序广播</h2><p>broadordercast()</p>
+<hr>
+<p>#Service</p>
+<ul>
+<li>就是默默运行在后台的组件，可以理解为是没有前台的activity，适合用来运行不需要前台界面的代码</li>
+<li>服务可以被手动关闭，不会重启，但是如果被自动关闭，内存充足就会重启</li>
+<li>startService启动服务的生命周期<ul>
+<li>onCreate-onStartCommand-onDestroy</li>
+</ul>
+</li>
+<li>重复的调用startService会导致onStartCommand被重复调用</li>
+</ul>
+<hr>
+<h1 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h1><ol>
+<li>前台进程：拥有前台activity（onResume方法被调用）</li>
+<li>可见进程：拥有可见activity（onPause方法被调用）</li>
+<li>服务进程：不到万不得已不会被回收，而且即便被回收，内存充足时也会被重启</li>
+<li>后台进程：拥有后台activity（activity的onStop方法被调用了），很容易被回收</li>
+<li>空进程：没有运行任何activity，很容易被回收</li>
+</ol>
+<hr>
+<p>#电话窃听器</p>
+<ul>
+<li>电话状态：空闲、响铃、接听</li>
+<li><p>获取电话管理器，设置侦听</p>
+<pre><code>TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
+</code></pre></li>
+<li><p>侦听对象的实现</p>
+<pre><code>class MyPhoneStateListener extends PhoneStateListener{
+
+    //当电话状态改变时，此方法调用
+    @Override
+    public void onCallStateChanged(int state, String incomingNumber) {
+        // TODO Auto-generated method stub
+        super.onCallStateChanged(state, incomingNumber);
+        switch (state) {
+        case TelephonyManager.CALL_STATE_IDLE://空闲
+            if(recorder != null){
+                recorder.stop();
+                recorder.release();
+            }
+            break;
+        case TelephonyManager.CALL_STATE_OFFHOOK://摘机
+            if(recorder != null){
+                recorder.start();
+            }
+            break;
+        case TelephonyManager.CALL_STATE_RINGING://响铃
+            recorder = new MediaRecorder();
+            //设置声音来源
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            //设置音频文件格式
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            recorder.setOutputFile(&quot;sdcard/haha.3gp&quot;);
+            //设置音频文件编码
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            try {
+                recorder.prepare();
+            } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            break;
+        }
+    }
+}
+</code></pre></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;#广播&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;广播的概念&lt;ul&gt;
+&lt;li&gt;现实：电台通过发送广播发布消息，买个收音机，就能收听&lt;/li&gt;
+&lt;li&gt;Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。&lt;br&gt;Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
+    
+    
+      <category term="Android broadcast" scheme="https://sam2099.github.io/tags/Android-broadcast/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android入门 总纲</title>
+    <link href="https://sam2099.github.io/2016/05/13/android/android0_index/"/>
+    <id>https://sam2099.github.io/2016/05/13/android/android0_index/</id>
+    <published>2016-05-13T11:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><h2 id="logcat"><a href="#logcat" class="headerlink" title="logcat"></a>logcat</h2><h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><h2 id="线性布局"><a href="#线性布局" class="headerlink" title="线性布局"></a>线性布局</h2><h2 id="相对布局"><a href="#相对布局" class="headerlink" title="相对布局"></a>相对布局</h2><h2 id="帧布局"><a href="#帧布局" class="headerlink" title="帧布局"></a>帧布局</h2><h2 id="表格布局"><a href="#表格布局" class="headerlink" title="表格布局"></a>表格布局</h2><h2 id="绝对布局"><a href="#绝对布局" class="headerlink" title="绝对布局"></a>绝对布局</h2><h1 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h1><h2 id="内部存储"><a href="#内部存储" class="headerlink" title="内部存储"></a>内部存储</h2><h2 id="SD卡"><a href="#SD卡" class="headerlink" title="SD卡"></a>SD卡</h2><h2 id="SharedPreference"><a href="#SharedPreference" class="headerlink" title="SharedPreference"></a>SharedPreference</h2><h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h1 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h1><h2 id="建库"><a href="#建库" class="headerlink" title="建库"></a>建库</h2><h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><h2 id="原生-CRUD"><a href="#原生-CRUD" class="headerlink" title="原生 CRUD"></a>原生 CRUD</h2><h2 id="API-CRUD"><a href="#API-CRUD" class="headerlink" title="API CRUD"></a>API CRUD</h2><h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h1 id="控件"><a href="#控件" class="headerlink" title="控件"></a>控件</h1><h2 id="Toast"><a href="#Toast" class="headerlink" title="Toast"></a>Toast</h2><h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><p>导入局部布局<br>条目点击监听 ： <code>setOnItemClickListener</code></p>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ul>
+<li>convertView</li>
+<li>ViewHolder</li>
+</ul>
+<h2 id="Dialog-对话框"><a href="#Dialog-对话框" class="headerlink" title="Dialog 对话框"></a>Dialog 对话框</h2><h3 id="确定取消Dialog"><a href="#确定取消Dialog" class="headerlink" title="确定取消Dialog"></a>确定取消Dialog</h3><h3 id="单选Dialog"><a href="#单选Dialog" class="headerlink" title="单选Dialog"></a>单选Dialog</h3><h3 id="多选Dialog"><a href="#多选Dialog" class="headerlink" title="多选Dialog"></a>多选Dialog</h3><h1 id="网络访问"><a href="#网络访问" class="headerlink" title="网络访问"></a>网络访问</h1><h2 id="堵塞"><a href="#堵塞" class="headerlink" title="堵塞"></a>堵塞</h2><h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><h1 id="四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器"><a href="#四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器" class="headerlink" title="四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器"></a>四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器</h1><h1 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h1><h2 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h2><p>显式效率高</p>
+<h3 id="显式跳转"><a href="#显式跳转" class="headerlink" title="显式跳转"></a>显式跳转</h3><h3 id="隐式跳转"><a href="#隐式跳转" class="headerlink" title="隐式跳转"></a>隐式跳转</h3><h2 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h2><h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><h3 id="返回"><a href="#返回" class="headerlink" title="返回"></a>返回</h3><ul>
+<li><p>子Activity</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent data = new Intent();</div><div class="line">data.putExtra(&quot;key&quot;, value);</div><div class="line">setRestult(resultCode, data) //set result vaule</div><div class="line">finish(); //销毁当前Activity, 返回父Activity</div></pre></td></tr></table></figure>
+</li>
+<li><p>父Activity<br>启动 ： <code>StartActivityForResult(Intent, requestCode)</code><br>接收 ： <code>OnActivityResult(int requestCode, int resultCode, Intent data)</code> 打开多个的情况可以采用requestCode和resultCode来区别每个子Activity及其返回数据的目的</p>
+</li>
+</ul>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><h2 id="启动模式"><a href="#启动模式" class="headerlink" title="启动模式"></a>启动模式</h2><h3 id="launchMode"><a href="#launchMode" class="headerlink" title="launchMode"></a>launchMode</h3><ul>
+<li>standard</li>
+<li>singleTop : 栈顶已经有一个相同类型的Activity实例，Intent不会再创建一个Activity，而是通过onNewIntent()被发送到现有的Activity</li>
+<li>singleTask : singleTask模式的Activity只允许在一个APP栈中有一个实例。如果系统中已经有了一个实例，持有这个实例的任务将移动到顶部，（将其上方的所有Activity销毁）同时intent将被通过onNewIntent()发送。如果没有，则会创建一个新的Activity并置放在合适的任务中。</li>
+<li>singleInstance : 非常接近于singleTask，系统中只允许一个Activity的实例存在。每个singleInstance会有自己独立的栈。实际开发中只有平台型应用（qq，微信，微博），提供给其他应用使用的情况，才采用。</li>
+</ul>
+<h2 id="横竖切换"><a href="#横竖切换" class="headerlink" title="横竖切换"></a>横竖切换</h2><ul>
+<li><p>默认切换会调用生命周期方法；<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:configChanges=&quot;orientation|keyboardHidden&quot;</code> 时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法</p>
+</li>
+<li><p>锁定<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:orientation</code><br>或者 在 <code>OnCreate</code>方法中 增加 <code>setRequestOrientation(Activity.)</code></p>
+</li>
+</ul>
+<h1 id="BroadcastReceiver广播接收器"><a href="#BroadcastReceiver广播接收器" class="headerlink" title="BroadcastReceiver广播接收器"></a>BroadcastReceiver广播接收器</h1><h1 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h1>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;开发环境&quot;&gt;&lt;a href=&quot;#开发环境&quot; class=&quot;headerlink&quot; title=&quot;开发环境&quot;&gt;&lt;/a&gt;开发环境&lt;/h1&gt;&lt;h2 id=&quot;logcat&quot;&gt;&lt;a href=&quot;#logcat&quot; class=&quot;headerlink&quot; title=&quot;logca
+    
+    </summary>
+    
+      <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="https://sam2099.github.io/tags/Android/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Android入门 一 ： unit test</title>
+    <link href="https://sam2099.github.io/2016/05/10/android/android1_UnitTest/"/>
+    <id>https://sam2099.github.io/2016/05/10/android/android1_UnitTest/</id>
+    <published>2016-05-10T11:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>Local Unit Test</li>
+<li>Instrumented Unit Test</li>
+</ul>
+<p>本文主要以idea 说明如何进行 Android Unit Test。<br>分为与Android环境相关的<code>Instrumented Unit Test</code> ， 与Android环境无关的<code>Local Unit Test</code></p>
+<a id="more"></a>
+<h2 id="Local-Unit-Test"><a href="#Local-Unit-Test" class="headerlink" title="Local Unit Test"></a>Local Unit Test</h2><p><code>Local Unit Test</code> 用来做跟android环境无关的Unit Test。</p>
+<h3 id="配置依赖"><a href="#配置依赖" class="headerlink" title="配置依赖"></a>配置依赖</h3><p><code>build.gradle</code> 中增加必要的依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    ...</div><div class="line">    testCompile &apos;junit:junit:4.12&apos;</div><div class="line">    androidTestCompile &apos;junit:junit:4.12&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Test-java-class"><a href="#Test-java-class" class="headerlink" title="Test java class"></a>Test java class</h3><p>以 <code>JUnit 4</code> 为基础的话， 仅需要 用 <code>@Test</code> 注解测试method。<br>android官方例子像这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">import org.junit.Test;</div><div class="line">import java.util.regex.Pattern;</div><div class="line">import static org.junit.Assert.assertFalse;</div><div class="line">import static org.junit.Assert.assertTrue;</div><div class="line"></div><div class="line">public class EmailValidatorTest &#123;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public void emailValidator_CorrectEmailSimple_ReturnsTrue() &#123;</div><div class="line">        assertThat(EmailValidator.isValidEmail(&quot;name@email.com&quot;), is(true));</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>别忘记将 <code>/src/test/java</code> 设置成 <code>Test Source Root</code></p>
+<ul>
+<li><p>同步<br><code>project</code> 视图下， 右键工程， <code>synchronize ${your project name}</code></p>
+</li>
+<li><p>配置BuildVariants<br><code>Test Artifact</code> 选择 <code>Unit Tests</code></p>
+</li>
+<li><p>运行<br>右键测试class， run ！</p>
+</li>
+</ul>
+<p><img src="http://amadis.qiniudn.com/androidJunit1a1.png" alt=""></p>
+<h2 id="Instrumented-Unit-Test"><a href="#Instrumented-Unit-Test" class="headerlink" title="Instrumented Unit Test"></a>Instrumented Unit Test</h2><p>如果你的测试需要访问 <code>instrumentation information</code> (例如 app’s Context) 或者需要 <code>Android framework component</code> (例如 Parcelable  SharedPreferences)，那么你可以使用 <code>Instrumented Unit Test</code>。<br>目前有2中方式实现： <code>AndroidJUnit4</code> 以及 <code>TestCase</code></p>
+<h3 id="AndroidJUnit4"><a href="#AndroidJUnit4" class="headerlink" title="AndroidJUnit4"></a>AndroidJUnit4</h3><p>这是Android官方的例子， 需要注意的是如需要取 <code>context</code> 必须使用 <code>getTargetContext()</code></p>
+<blockquote>
+<p>InstrumentationRegistry is an exposed registry instance that holds a reference to the instrumentation running in the process and it’s arguments and allows injection of the following instances:</p>
+<ul>
+<li>InstrumentationRegistry.getInstrumentation(), returns the Instrumentation currently running.</li>
+<li>InstrumentationRegistry.getContext(), returns the Context of this Instrumentation’s package.</li>
+<li>InstrumentationRegistry.getTargetContext(), returns the application Context of the target application.</li>
+<li>InstrumentationRegistry.getArguments(), returns a copy of arguments Bundle that was passed to this Instrumentation. This is useful when you want to access the command line arguments passed to Instrumentation for your test.</li>
+</ul>
+</blockquote>
+<h4 id="配置依赖-1"><a href="#配置依赖-1" class="headerlink" title="配置依赖"></a>配置依赖</h4><ul>
+<li>在顶层<code>build.gradle</code> 中增加必要的依赖</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    androidTestCompile &apos;com.android.support:support-annotations:23.0.1&apos;</div><div class="line">    androidTestCompile &apos;com.android.support.test:runner:0.4.1&apos;</div><div class="line">    androidTestCompile &apos;com.android.support.test:rules:0.4.1&apos;</div><div class="line">    // Optional -- Hamcrest library</div><div class="line">    androidTestCompile &apos;org.hamcrest:hamcrest-library:1.3&apos;</div><div class="line">    // Optional -- UI testing with Espresso</div><div class="line">    androidTestCompile &apos;com.android.support.test.espresso:espresso-core:2.2.1&apos;</div><div class="line">    // Optional -- UI testing with UI Automator</div><div class="line">    androidTestCompile &apos;com.android.support.test.uiautomator:uiautomator-v18:2.1.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>在模块<code>build.gradle</code> 中配置 <code>instrumentation runner</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    defaultConfig &#123;</div><div class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Test-java-class-1"><a href="#Test-java-class-1" class="headerlink" title="Test java class"></a>Test java class</h4><p><code>instrumentation Test</code> 应该使用 Junit4 的方式编写， 代码默认路径为 <code>src/androidTest/java</code>。<br>Android 的官方例子如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">import android.os.Parcel;</div><div class="line">import android.support.test.runner.AndroidJUnit4;</div><div class="line">import android.util.Pair;</div><div class="line">import org.junit.Test;</div><div class="line">import org.junit.runner.RunWith;</div><div class="line">import java.util.List;</div><div class="line">import static org.hamcrest.Matchers.is;</div><div class="line">import static org.junit.Assert.assertThat;</div><div class="line"></div><div class="line">@RunWith(AndroidJUnit4.class)</div><div class="line">@SmallTest</div><div class="line">public class LogHistoryAndroidUnitTest &#123;</div><div class="line"></div><div class="line">    public static final String TEST_STRING = &quot;This is a string&quot;;</div><div class="line">    public static final long TEST_LONG = 12345678L;</div><div class="line">    private LogHistory mLogHistory;</div><div class="line"></div><div class="line">    //前处理</div><div class="line">    @Before</div><div class="line">    public void createLogHistory() &#123;</div><div class="line">        mLogHistory = new LogHistory();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public void logHistory_ParcelableWriteRead() &#123;</div><div class="line">        // Set up the Parcelable object to send and receive.</div><div class="line">        mLogHistory.addEntry(TEST_STRING, TEST_LONG);</div><div class="line"></div><div class="line">        // Write the data.</div><div class="line">        Parcel parcel = Parcel.obtain();</div><div class="line">        mLogHistory.writeToParcel(parcel, mLogHistory.describeContents());</div><div class="line"></div><div class="line">        // After you&apos;re done with writing, you need to reset the parcel for reading.</div><div class="line">        parcel.setDataPosition(0);</div><div class="line"></div><div class="line">        // Read the data.</div><div class="line">        LogHistory createdFromParcel = LogHistory.CREATOR.createFromParcel(parcel);</div><div class="line">        List&lt;Pair&lt;String, Long&gt;&gt; createdFromParcelData = createdFromParcel.getData();</div><div class="line"></div><div class="line">        // Verify that the received data is correct.</div><div class="line">        assertThat(createdFromParcelData.size(), is(1));</div><div class="line">        assertThat(createdFromParcelData.get(0).first, is(TEST_STRING));</div><div class="line">        assertThat(createdFromParcelData.get(0).second, is(TEST_LONG));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    //后处理</div><div class="line">    @After</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="TestCase"><a href="#TestCase" class="headerlink" title="TestCase"></a>TestCase</h3><p>继承 <code>android.test</code> 包下面一系列 <code>xxxxTestCase</code>。<br>IDEA 自动生存的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">package com.example.sam.myapplication;</div><div class="line"></div><div class="line">import android.app.Application;</div><div class="line">import android.test.ApplicationTestCase;</div><div class="line">import org.junit.Test;</div><div class="line"></div><div class="line">/**</div><div class="line"> * &lt;a href=&quot;http://d.android.com/tools/testing/testing_android.html&quot;&gt;Testing Fundamentals&lt;/a&gt;</div><div class="line"> */</div><div class="line">public class ApplicationTest extends ApplicationTestCase&lt;Application&gt; &#123;</div><div class="line">    public ApplicationTest() &#123;</div><div class="line">        super(Application.class);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //前处理</div><div class="line">    @Override</div><div class="line">    protected void setUp() throws Exception &#123;</div><div class="line">        super.setUp();</div><div class="line">        </div><div class="line">        // 增加你自己的前处理</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Test</div><div class="line">    public void test()&#123;</div><div class="line">        System.out.println(&quot;ok              ok&quot;);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    //后处理</div><div class="line">        @Override</div><div class="line">    protected void tearDown() throws Exception &#123;</div><div class="line">        super.tearDown();</div><div class="line">        </div><div class="line">        //增加你自己的后处理</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    </div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="运行-1"><a href="#运行-1" class="headerlink" title="运行"></a>运行</h3><p>别忘记将 <code>src/androidTest/java</code> 设置成 <code>Test Source Root</code></p>
+<ul>
+<li><p>同步<br><code>project</code> 视图下， 右键工程， <code>synchronize ${your project name}</code></p>
+</li>
+<li><p>配置BuildVariants<br><code>Test Artifact</code> 选择 <code>Android instrumentation Tests</code></p>
+</li>
+<li><p>运行<br>右键测试class，  <code>Android Test</code> 方式运行！ 在 <code>Local Unit Test</code> 的 下一格，带Android机器人图标的。<br>run ！</p>
+</li>
+</ul>
+<p><img src="http://amadis.qiniudn.com/androidJunit1a2.png" alt=""></p>
+<h2 id="官方链接"><a href="#官方链接" class="headerlink" title="官方链接"></a>官方链接</h2><p><a href="http://developer.android.com/training/testing/index.html" target="_blank" rel="external">Best Practices for Testing</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Local Unit Test&lt;/li&gt;
+&lt;li&gt;Instrumented Unit Test&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;本文主要以idea 说明如何进行 Android Unit Test。&lt;br&gt;分为与Android环境相关的&lt;code&gt;Instrumented Unit Test&lt;/code&gt; ， 与Android环境无关的&lt;code&gt;Local Unit Test&lt;/code&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
+    
+    
+      <category term="Android junit" scheme="https://sam2099.github.io/tags/Android-junit/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shadowsocks</title>
+    <link href="https://sam2099.github.io/2016/05/05/other/shadowsocks/"/>
+    <id>https://sam2099.github.io/2016/05/05/other/shadowsocks/</id>
+    <published>2016-05-05T03:44:58.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>关键词不说了， 知道ss的人就好，哈哈</p>
+<a id="more"></a>
+<h2 id="shadowsocks-安装"><a href="#shadowsocks-安装" class="headerlink" title="shadowsocks 安装"></a>shadowsocks 安装</h2><p>python版本安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install shadowsocks</div></pre></td></tr></table></figure>
+<h2 id="server-配置"><a href="#server-配置" class="headerlink" title="server 配置"></a>server 配置</h2><p>找到你自己的供应商，将server的信息 配置成 文件， 比如<code>gui-config.json</code></p>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>写了几个脚本，内容有点像这样的</p>
+<ul>
+<li><p>shadowsocks.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">cmd=$1</div><div class="line"></div><div class="line"># start</div><div class="line">if [ $cmd == &quot;start&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/shadowsocks/gui-config.json -d start </div><div class="line">  #xxxxxx/shadowsocks 是 gui-config.json 的存放位置， gui-config.json 是上步的server配置信息</div><div class="line">  #password 是你自己系统管理员密码，记得修改哦</div><div class="line">  </div><div class="line">#stop</div><div class="line">elif [ $cmd == &quot;stop&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/soft/shadowsocks/gui-config.json -d stop</div><div class="line"></div><div class="line"># error</div><div class="line">else</div><div class="line">  echo &quot;cmd only &apos;start&apos; or &apos;stop&apos;&quot;</div><div class="line">fi</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动命令<br><code>./shadowsocks.sh start</code></p>
+</li>
+</ul>
+<h2 id="http-全局代理"><a href="#http-全局代理" class="headerlink" title="http 全局代理"></a>http 全局代理</h2><p>shadowsocks是socks5服务，在浏览器里使用一些插件可以满足浏览器使用了。一些其他场合，Privoxy实现Socks5转换为Http 服务。</p>
+<h3 id="Privoxy"><a href="#Privoxy" class="headerlink" title="Privoxy"></a>Privoxy</h3><p>官方网站：<a href="http://www.privoxy.org/" target="_blank" rel="external">http://www.privoxy.org/</a> </p>
+<ul>
+<li><p>下载 privoxy<br>比如目前最新的  privoxy-3.0.24-stable-src.tar.gz</p>
+</li>
+<li><p>解压</p>
+<p>  tar xf privoxy-3.0.24-stable-src.tar.gz</p>
+</li>
+<li><p>编译安装</p>
+</li>
+</ul>
+<pre><code>cd privoxy-3.0.24-stable
+
+useradd privoxy
+
+autoheader &amp;&amp; autoconf
+./configure --prefix=你自己喜欢的安装路径， 装完后上面的源码文件夹可以删除
+
+make &amp;&amp; make install
+</code></pre><ul>
+<li><p>配置<br>在 <code>--prefix=</code> 指定的路径中配置 <code>config</code> 文件；如果没指定， <code>config</code> 文件大概在 <code>/usr/local/etc/privoxy/</code></p>
+<p>privoxy监听端口 </p>
+<pre><code>listen-address 127.0.0.1:8118  
+</code></pre><p>查找<code>listen-address</code>， 端口可以修改</p>
+<p>shadowsocks 端口，（查找 关键字 forward-socks5t） 默认是这样的</p>
+<pre><code># forward-socks5t / 127.0.0.1:9050 .
+
+修改成 ==&gt; 
+
+forward-socks5t / 127.0.0.1:1080 .
+</code></pre></li>
+<li><p>启动<br>编辑完成， copy 一份<code>config</code> 到 sbin目录下, 切换到sbin目录， 启动</p>
+<pre><code>./privoxy
+</code></pre></li>
+</ul>
+<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">vim /etc/profile</div><div class="line"></div><div class="line">##文件末尾加入：</div><div class="line"> # add follows to the end (set proxy settings to the environment variables)</div><div class="line">MY_PROXY_URL=&quot;http://127.0.0.1:8118/&quot;</div><div class="line">HTTP_PROXY=$MY_PROXY_URL</div><div class="line">HTTPS_PROXY=$MY_PROXY_URL</div><div class="line">FTP_PROXY=$MY_PROXY_URL</div><div class="line">http_proxy=$MY_PROXY_URL</div><div class="line">https_proxy=$MY_PROXY_URL</div><div class="line">ftp_proxy=$MY_PROXY_URL</div><div class="line">export HTTP_PROXY HTTPS_PROXY FTP_PROXY http_proxy https_proxy ftp_proxy</div></pre></td></tr></table></figure>
+<p>然后 <code>source</code> 下。</p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>访问下 gg，哈哈</p>
+<pre><code>curl google.com
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;关键词不说了， 知道ss的人就好，哈哈&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+    
+    
+      <category term="shadowsocks" scheme="https://sam2099.github.io/tags/shadowsocks/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>git</title>
+    <link href="https://sam2099.github.io/2016/05/03/devEnv/git/git/"/>
+    <id>https://sam2099.github.io/2016/05/03/devEnv/git/git/</id>
+    <published>2016-05-03T03:44:58.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="git-的后悔药"><a href="#git-的后悔药" class="headerlink" title="git 的后悔药"></a>git 的后悔药</h2><ul>
+<li>场景1：直接丢弃工作区的修改（还没有add）</li>
+</ul>
+<p><code>git checkout -- file</code></p>
+<ul>
+<li><p>场景2： 丢弃暂存区（已经add，未commit）<br>分两步，第一步用命令 <code>git reset HEAD file</code> ，就回到了场景1，第二步按场景1操作。</p>
+</li>
+<li><p>场景3：已经提交了不合适的修改到版本库（已经commit， 未push）<br><code>git reset --hard HEAD^ #还原到上个</code><br><code>git reset --hard commitId</code></p>
+</li>
+<li><p>场景4：已经推送到远程（已经push）<br><code>revert commitId</code></p>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;git-的后悔药&quot;&gt;&lt;a href=&quot;#git-的后悔药&quot; class=&quot;headerlink&quot; title=&quot;git 的后悔药&quot;&gt;&lt;/a&gt;git 的后悔药&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;场景1：直接丢弃工作区的修改（还没有add）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;co
+    
+    </summary>
+    
+      <category term="developEnv" scheme="https://sam2099.github.io/categories/developEnv/"/>
+    
+    
+      <category term="git" scheme="https://sam2099.github.io/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>搜索引擎技巧 搜索引擎指令 提高搜索效率</title>
+    <link href="https://sam2099.github.io/2016/03/02/other/searchEngine/"/>
+    <id>https://sam2099.github.io/2016/03/02/other/searchEngine/</id>
+    <published>2016-03-02T08:35:05.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>  索引擎能使用一些特殊的搜索引擎高级指令，对于提高搜索效率，了解网站seo优化效果、研究竞争对手以及找寻网站外链优化资源是非常有用的。</p>
+<p>主要有如下技巧/指令：</p>
+<p><a href="http://giveme5.top/2016/03/02/other/searchEngine/#%E5%8F%8C%E5%BC%95%E5%8F%B7" target="_blank" rel="external">双引号</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#%E7%A9%BA%E6%A0%BC_%E5%8A%A0%E5%8F%B7_%E5%87%8F%E5%8F%B7" target="_blank" rel="external">空格 加号 减号</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#%E6%98%9F%E5%8F%B7" target="_blank" rel="external">星号</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#inurl:" target="_blank" rel="external">inurl:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#inanchor:" target="_blank" rel="external">inanchor:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#intitle:" target="_blank" rel="external">intitle:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#site:" target="_blank" rel="external">site:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#link:" target="_blank" rel="external">link:</a></p>
+<a id="more"></a>
+<h2 id="双引号"><a href="#双引号" class="headerlink" title="双引号"></a>双引号</h2><p>把搜索词放在双引号中，表示精确匹配搜索，也就是说搜索结果返回的页面包含双引号中出现的所有的词，连顺序也必须完全匹配。<br>百度和谷歌都支持这个指令。</p>
+<pre><code>&quot;搜索词&quot;
+</code></pre><p>使用双引号扫完可以更准确地找到特定关键词的竟争对手。</p>
+<h2 id="空格-加号-减号"><a href="#空格-加号-减号" class="headerlink" title="空格 加号 减号"></a>空格 加号 减号</h2><ul>
+<li><p>空格 加号 表示and， 搜索结果的并集</p>
+<pre><code>搜索词1 搜索词2
+搜索词1 +搜索词2
+</code></pre></li>
+</ul>
+<ul>
+<li><p>减号（-）表示搜索结果不包含减号后面的词。谷歌和百度都支持。</p>
+<pre><code>搜索词 -不要的词  #减号前面必须是空格，减号后面没有空格
+</code></pre></li>
+</ul>
+<h2 id="星号"><a href="#星号" class="headerlink" title="星号"></a>星号</h2><p>星号常用作通配符，百度不支持 <code>*</code> 号搜索指令，谷歌支持</p>
+<pre><code>搜索词*搜索词
+</code></pre><h2 id="inurl"><a href="#inurl" class="headerlink" title="inurl:"></a>inurl:</h2><p><code>inurl:</code> 指令用于搜索搜索词出现在URL中的结果。</p>
+<pre><code>inurl:搜索词
+</code></pre><p>关键词出现在 URL中对排名有一定影响，因此使用inurl:搜索可以更准确地找到竟争对手。</p>
+<h2 id="inanchor"><a href="#inanchor" class="headerlink" title="inanchor:"></a>inanchor:</h2><p><code>inanchor:</code> 指令搜索链接锚文字中包含搜索词的结果。（百度不支持）</p>
+<pre><code>inanchor:搜索词
+</code></pre><h2 id="intitle"><a href="#intitle" class="headerlink" title="intitle:"></a>intitle:</h2><p><code>intitle:</code> 指令搜索title中包含搜索词的页面。Google和百度都支持。</p>
+<pre><code>intitle:搜索词
+</code></pre><p>title是目前页面优化的最重要因素。</p>
+<h2 id="site"><a href="#site" class="headerlink" title="site:"></a>site:</h2><p><code>site:</code> 搜索某个域名下的所有结果</p>
+<pre><code>site:domainName
+</code></pre><p>查询网站收录页面数最直接方法。</p>
+<h2 id="link"><a href="#link" class="headerlink" title="link:"></a>link:</h2><p><code>link:</code> 用来搜索某个url的反向链接，既包含内部链接，也包含外部链接。</p>
+<pre><code>link:domainName #返回domain的反向链接
+</code></pre><h2 id="allintitle-allinurl"><a href="#allintitle-allinurl" class="headerlink" title="allintitle:   allinurl:"></a>allintitle:   allinurl:</h2><p><code>allintitle:</code> 搜索title中包含多组搜索词的结果。（百度不支持）</p>
+<pre><code>allintitle:搜索1 搜索2  #相当于 title:搜索1 title:搜索2
+</code></pre><p><code>allinurl:</code> 就是 多组<code>inurl</code>的集合，跟 <code>allintitle:</code> 类似 （百度不支持）</p>
+<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><ul>
+<li><p>inurl:gov 淘宝<br>返回的就是URL中包含“gov”，页面中有“淘宝”这个词的页面。很多SEO人员认为政府和学校网站有比较高的权重，找到相关的政府和学校网站，就找到了最好的链接资源。</p>
+</li>
+<li><p>inurl:.edu.cn 交换链接<br>返回的是来自.edu.cn，也就是学校域名上的包含 “交换链接” 这个词的页面。从中SEO人员可以找到愿意交换链接的学校网站。<br>或者使用一个更精确的搜索：inurl:.edu.cn intitle:交换链接     </p>
+</li>
+</ul>
+<ul>
+<li><p>淘宝 inurl:links<br>很多站长把交换链接的页面命名为　links.html等，所以这个指令返回的就是与淘宝主题相关的交换链接页面。      </p>
+</li>
+<li><p>allinurl:gov.cn+links<br>返回的是url中包含“gov.cn” 以及“links” 的页面，也就是政府域名上的交换链接页面。      </p>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;  索引擎能使用一些特殊的搜索引擎高级指令，对于提高搜索效率，了解网站seo优化效果、研究竞争对手以及找寻网站外链优化资源是非常有用的。&lt;/p&gt;
+&lt;p&gt;主要有如下技巧/指令：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#%E5%8F%8C%E5%BC%95%E5%8F%B7&quot;&gt;双引号&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#%E7%A9%BA%E6%A0%BC_%E5%8A%A0%E5%8F%B7_%E5%87%8F%E5%8F%B7&quot;&gt;空格 加号 减号&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#%E6%98%9F%E5%8F%B7&quot;&gt;星号&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#inurl:&quot;&gt;inurl:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#inanchor:&quot;&gt;inanchor:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#intitle:&quot;&gt;intitle:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#site:&quot;&gt;site:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#link:&quot;&gt;link:&lt;/a&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ClientAbortException</title>
+    <link href="https://sam2099.github.io/2016/02/15/exception/ClientAbortException/"/>
+    <id>https://sam2099.github.io/2016/02/15/exception/ClientAbortException/</id>
+    <published>2016-02-15T08:10:08.000Z</published>
+    <updated>2017-02-21T07:18:44.687Z</updated>
+    
+    <content type="html"><![CDATA[<p>Spring MVC 4.2.1.RELEASE ， 容器 tomcat 8.21， nginx ： 客户端在服务端响应前就关闭（socket），比如下载文件一半关闭浏览器，<br>服务端会有如下异常， 该异常服务器从业务上不需要处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.connector.ClientAbortException: java.io.IOException: 断开的管道</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:393) ~[catalina.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.buf.ByteChunk.flushBuffer(ByteChunk.java:426) ~[tomcat-util.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:342) ~[catalina.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:317) ~[catalina.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:110) ~[catalina.jar:8.0.18]</div><div class="line"> ......</div><div class="line"> at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:516) [catalina.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1086) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:659) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.Http11NioProtocol$Http11ConnectionHandler.process(Http11NioProtocol.java:223) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1558) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1515) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_31]</div><div class="line"> at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_31]</div><div class="line"> at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-util.jar:8.0.18]</div><div class="line"> at java.lang.Thread.run(Thread.java:745) [na:1.8.0_31]</div><div class="line">Caused by: java.io.IOException: 断开的管道</div><div class="line"> at sun.nio.ch.FileDispatcherImpl.write0(Native Method) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.IOUtil.write(IOUtil.java:65) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:470) ~[na:1.8.0_31]</div><div class="line"> at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:127) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioBlockingSelector.write(NioBlockingSelector.java:101) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioSelectorPool.write(NioSelectorPool.java:173) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer.writeToSocket(InternalNioOutputBuffer.java:139) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer.addToBB(InternalNioOutputBuffer.java:197) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer.access$000(InternalNioOutputBuffer.java:41) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer$SocketOutputBuffer.doWrite(InternalNioOutputBuffer.java:320) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.filters.IdentityOutputFilter.doWrite(IdentityOutputFilter.java:93) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.AbstractOutputBuffer.doWrite(AbstractOutputBuffer.java:256) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.Response.doWrite(Response.java:503) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:388) ~[catalina.jar:8.0.18]</div><div class="line"> ... 76 common frames omitted</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Spring MVC 4.2.1.RELEASE ， 容器 tomcat 8.21， nginx ： 客户端在服务端响应前就关闭（socket），比如下载文件一半关闭浏览器，&lt;br&gt;服务端会有如下异常， 该异常服务器从业务上不需要处理。&lt;br&gt;&lt;figure class=&quot;
+    
+    </summary>
+    
+      <category term="exception" scheme="https://sam2099.github.io/categories/exception/"/>
+    
+    
+      <category term="tomcat" scheme="https://sam2099.github.io/tags/tomcat/"/>
+    
+      <category term="Spring MVC" scheme="https://sam2099.github.io/tags/Spring-MVC/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>字符编码</title>
+    <link href="https://sam2099.github.io/2016/01/26/other/encoding/"/>
+    <id>https://sam2099.github.io/2016/01/26/other/encoding/</id>
+    <published>2016-01-26T09:09:32.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>历史来源</li>
+<li>通用规则</li>
+</ul>
+<p>下面开始瞎掰 <a id="more"></a></p>
+<h2 id="历史来源"><a href="#历史来源" class="headerlink" title="历史来源"></a>历史来源</h2><p><code>ASCII</code> <code>Unicode</code> <code>UTF-8</code> …… 字符编码真是一个让人头疼的事情。</p>
+<p><strong>最早</strong> 的计算机在设计时采用8个比特（bit）作为一个字节（byte），所以，一个字节能表示的最大的整数就是255（2的8次方-1），如果要表示更大的整数，就必须用更多的字节。<br>比如两个字节可以表示的最大整数是65535，4个字节可以表示的最大整数是4294967295。由于电脑是米国发明的，因此，最早只有127个字母被编码到计算机里，也就是大小写英文字母、数字和一些符号，</p>
+<p><strong>然后</strong> 这个编码表被称为 <code>ASCII</code> 编码，比如大写字母A的编码是65，小写字母z的编码是122。</p>
+<p>处理中文显然一个字节不够，至少需要2个字节，还不能和 <code>ASCII</code> 冲突，<br><strong>然后</strong> 中国就有了 <code>GBK</code> <code>GB2312</code>；岛国有了 <code>Shift_JIS</code>；斯密达有了 <code>Euc-kr</code>；全球还有那么多国家……； 多个语言混合，就是乱码！ </p>
+<p>然后电脑受不了了！！！！！！！！<br><strong>然后</strong> 所有语言都统一到一套编码里，就是 <code>Unicode</code> 。 <code>Unicode</code> 标准也在不断发展，但最常用的是用两个字节表示一个字符（如果要用到非常偏僻的字符，就需要4个字节）。</p>
+<p>这里有个例子：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>ASCII</th>
+<th>Unicode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>01000001</td>
+<td>00000000 01000001</td>
+</tr>
+<tr>
+<td>中</td>
+<td>x</td>
+<td>01001110 00101101</td>
+</tr>
+</tbody>
+</table>
+<p>smart的大家都看出来： ASCII编码的A用Unicode编码，只需要在前面补0就可以。统一成Unicode编码，乱码问题从此消失了。</p>
+<p>然后网络和硬盘来抗议了，看看如果全英文的话，用Unicode编码比ASCII编码需要多一倍的存储空间！而且电脑语言基本都是英文。<br><strong>然后</strong>  <code>UTF-8</code> （8-bit Unicode Transformation Format） 就诞生了，其实就是Unicode编码转化为“可变长编码”的编码。UTF-8编码把一个Unicode字符根据不同的数字大小编码成1-6个字节，常用的英文字母被编码成1个字节，汉字通常是3个字节，只有很生僻的字符才会被编码成4-6个字节。如果要传输的文本包含大量英文字符，用UTF-8编码就能节省空间</p>
+<p>这里还是有个例子：</p>
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>ASCII</th>
+<th>Unicode</th>
+<th>UTF-8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>01000001</td>
+<td>00000000 01000001</td>
+<td>01000001</td>
+</tr>
+<tr>
+<td>中</td>
+<td>x</td>
+<td>01001110 00101101</td>
+<td>11100100 10111000 10101101</td>
+</tr>
+</tbody>
+</table>
+<p>smart的大家都看出来：ASCII编码实际上可以被看成是UTF-8编码的一部分，所以，大量只支持ASCII编码的历史遗留软件可以在UTF-8编码下继续工作。</p>
+<h2 id="通用规则"><a href="#通用规则" class="headerlink" title="通用规则"></a>通用规则</h2><ul>
+<li>内存中，统一使用Unicode编码，</li>
+<li>保存到硬盘或者传输的时候，就转换为UTF-8编码。</li>
+</ul>
+<p>这里依然是个例子：<br>用记事本编辑的时候，从文件读取的UTF-8字符被转换为Unicode字符到内存里，编辑完成后，保存的时候再把Unicode转换为UTF-8保存到文件</p>
+<p><img src="http://7xklqw.com1.z0.glb.clouddn.com/encoding.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;历史来源&lt;/li&gt;
+&lt;li&gt;通用规则&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;下面开始瞎掰
+    
+    </summary>
+    
+      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+    
+    
+      <category term="字符编码" scheme="https://sam2099.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux service</title>
+    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/"/>
+    <id>https://sam2099.github.io/2016/01/26/linux/service/2-0 service/</id>
+    <published>2016-01-26T08:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+    
+      <category term="service" scheme="https://sam2099.github.io/tags/service/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2-1 sshd</title>
+    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-1%20sshd/"/>
+    <id>https://sam2099.github.io/2016/01/26/linux/service/2-1 sshd/</id>
+    <published>2016-01-26T08:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>安装</li>
+<li>配置</li>
+<li>公钥登录</li>
+</ul>
+<a id="more"></a>
+<h2 id="公钥登录"><a href="#公钥登录" class="headerlink" title="公钥登录"></a>公钥登录</h2><h3 id="客户端生成公钥密钥对"><a href="#客户端生成公钥密钥对" class="headerlink" title="客户端生成公钥密钥对"></a>客户端生成公钥密钥对</h3><p><code>ssh-keygen -t rsa -C &quot;your_email@your_email.com&quot;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@server ~]# ssh-keygen -b 1024 -t rsa</div><div class="line">Generating public/private rsa key pair.     #提示正在生成rsa密钥对</div><div class="line">Enter file in which to save the key (~/.ssh/id_dsa):     #询问公钥和私钥存放的位置，回车用默认位置即可</div><div class="line">Enter passphrase (empty for no passphrase):     #询问输入私钥密语，输入密语</div><div class="line">Enter same passphrase again:     #再次提示输入密语确认</div><div class="line">Your identification has been saved in ~/.ssh/id_dsa.     #提示公钥和私钥已经存放在/root/.ssh/目录下</div><div class="line">Your public key has been saved in ~/.ssh/id_dsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">x6:68:xx:93:98:8x:87:95:7x:2x:4x:x9:81:xx:56:94 root@server     #提示key的指纹</div></pre></td></tr></table></figure>
+<p>注意保护好 <code>私钥密语</code></p>
+<h3 id="上传公钥"><a href="#上传公钥" class="headerlink" title="上传公钥"></a>上传公钥</h3><p>公钥放到用户目录的 .ssh 这个目录下（如果目录不存在，需要创建~/.ssh目录，并把目录权限设置为700）。</p>
+<pre><code>$ mkdir ~/.ssh     #如果当前用户目录下没有 .ssh 目录，请先创建目录
+$ chmod 700 ~/.ssh
+$ 
+$ #客户端上传公钥
+$ 
+$ cat ~/.ssh/id_rsa.pub &gt; ~/.ssh/authorized_keys
+$ rm -f ~/.ssh/id_rsa.pub
+$ chmod 600 ~/.ssh/*
+</code></pre><h3 id="关闭密码认证"><a href="#关闭密码认证" class="headerlink" title="关闭密码认证"></a>关闭密码认证</h3><p><code>vim /etc/ssh/sshd_config</code></p>
+<p><code>PasswordAuthentication yes</code><br>–&gt;<br><code>PasswordAuthentication no</code></p>
+<p><code>systemctl restart sshd</code></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;/li&gt;
+&lt;li&gt;配置&lt;/li&gt;
+&lt;li&gt;公钥登录&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+    
+      <category term="sshd" scheme="https://sam2099.github.io/tags/sshd/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shell （九） 色彩</title>
+    <link href="https://sam2099.github.io/2016/01/22/linux/shell/shell-10/"/>
+    <id>https://sam2099.github.io/2016/01/22/linux/shell/shell-10/</id>
+    <published>2016-01-22T11:59:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>色彩</li>
+</ul>
+<h2 id="色彩"><a href="#色彩" class="headerlink" title="色彩"></a>色彩</h2><p>shell脚本中echo显示内容带颜色显示,echo显示带颜色，需要使用参数-e开启转义</p>
+<ul>
+<li><p>格式</p>
+<pre><code>echo -e &quot;\033[字背景颜色;文字颜色m字符串\033[0m&quot;
+</code></pre><p><code>\033[</code> 是固定语法; <code>0m</code> 是清除所有格式</p>
+<p>例：<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/shellColor1.png" alt=""><br>其中42的位置代表底色，31的位置代表的是字的颜色</p>
+<p>注：<br>  1、字背景颜色和文字颜色之间是英文的”;”<br>  2、文字颜色后面有个m<br>  3、字符串前后可以没有空格，如果有的话，输出也是同样有空格</p>
+</li>
+</ul>
+<ul>
+<li><p>颜色定义</p>
+<p>可以自己来尝试找出不同颜色搭配<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/shellColor2.png" alt=""><br><img src="http://7xklqw.com1.z0.glb.clouddn.com/shellColor3.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><p>最后面控制选项说明</p>
+<pre><code>\33[0m 关闭所有属性
+\33[1m 设置高亮度
+\33[4m 下划线
+\33[5m 闪烁
+\33[7m 反显
+\33[8m 消隐
+\33[30m — \33[37m 设置前景色
+\33[40m — \33[47m 设置背景色
+\33[nA 光标上移n行
+\33[nB 光标下移n行
+\33[nC 光标右移n行
+\33[nD 光标左移n行
+\33[y;xH设置光标位置
+\33[2J 清屏
+\33[K 清除从光标到行尾的内容
+\33[s 保存光标位置
+\33[u 恢复光标位置
+\33[?25l 隐藏光标 
+\33[?25h 显示光标
+</code></pre></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;色彩&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;色彩&quot;&gt;&lt;a href=&quot;#色彩&quot; class=&quot;headerlink&quot; title=&quot;色彩&quot;&gt;&lt;/a&gt;色彩&lt;/h2&gt;&lt;p&gt;shell脚本中echo显示内容带颜色显示,echo显示带颜色，需要使
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="shell" scheme="https://sam2099.github.io/tags/shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nginx</title>
+    <link href="https://sam2099.github.io/2016/01/22/web%20server/nginx/nginx/"/>
+    <id>https://sam2099.github.io/2016/01/22/web server/nginx/nginx/</id>
+    <published>2016-01-22T02:48:42.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>nginx</p>
+<h2 id="异常页面配置"><a href="#异常页面配置" class="headerlink" title="异常页面配置"></a>异常页面配置</h2><ul>
+<li><p>异常页面存放<br>默认存放在 <code>/usr/share/nginx/html</code> 目录下。</p>
+</li>
+<li><p>nginx配置文件</p>
+</li>
+</ul>
+<p>配置完类似下面的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">        listen 80 default_server;</div><div class="line">        listen [::]:80 default_server ipv6only=on;</div><div class="line"></div><div class="line">        . . .</div><div class="line"></div><div class="line">        error_page 404 /40x.html;</div><div class="line">        location = /40x.html &#123;</div><div class="line">                root /usr/share/nginx/html;</div><div class="line">                internal;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>注意</code> ： 如果配置多个 server， 需要在对应的server中配置 error_page 。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;nginx&lt;/p&gt;
+&lt;h2 id=&quot;异常页面配置&quot;&gt;&lt;a href=&quot;#异常页面配置&quot; class=&quot;headerlink&quot; title=&quot;异常页面配置&quot;&gt;&lt;/a&gt;异常页面配置&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;异常页面存放&lt;br&gt;默认存放在 &lt;cod
+    
+    </summary>
+    
+      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
+    
+    
+      <category term="server nginx" scheme="https://sam2099.github.io/tags/server-nginx/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>1-29 Linux 正则表达式 sed awk cut</title>
+    <link href="https://sam2099.github.io/2016/01/06/linux/shell/shell9/"/>
+    <id>https://sam2099.github.io/2016/01/06/linux/shell/shell9/</id>
+    <published>2016-01-06T11:59:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>正则表达式 </li>
+<li>sed </li>
+<li>awk </li>
+<li>cut</li>
+</ul>
+<a id="more"></a>
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式，又称正规表示法、常规表示法（英语：Regular Expression，在代码中常简写为regex、regexp或RE），计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。<br>正则表达式是一种符号表示法，被用来识别文本模式。</p>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><p>grep : “global regular expression print”，所以我们能看出 grep 程序和正则表达式有关联。 本质上，grep 程序会在文本文件中查找一个指定的正则表达式，并把匹配行输出到标准输出。<br>参数：</p>
+<pre><code>-i 忽略大小写
+-v 反转
+-n  显示行号
+</code></pre><h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><pre><code>^ $ . [ ] { } - ? * + ( ) | \
+</code></pre><p>其他都被认为是原义字符； 元字符可以通过 <code>\</code> 来转义为原义字符。</p>
+<h3 id="锚点"><a href="#锚点" class="headerlink" title="锚点 ^ $"></a>锚点 ^ $</h3><ul>
+<li><code>^</code> 行首</li>
+<li><code>$</code> 行尾</li>
+<li><code>\&lt;</code> 表示词首  </li>
+<li><code>\&gt;</code> 表示词尾</li>
+</ul>
+<p>^word：待搜寻的字符串(word)在行首</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &quot;^sync&quot; /etc/passwd</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div></pre></td></tr></table></figure>
+<p>word$：待搜寻的字符串(word)在行尾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &quot;shutdown$&quot; passwd</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div></pre></td></tr></table></figure>
+<p>显示空白行及行号</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &quot;^$&quot; passwd  -n</div><div class="line">50:</div></pre></td></tr></table></figure>
+<p>精确匹配 ： <code>&#39;\&lt;匹配内容\&gt;&#39;</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# ifconfig |grep &apos;\&lt;inet\&gt;&apos;</div><div class="line">        inet 192.168.1.68  netmask 255.255.255.0  broadcast 192.168.1.255</div><div class="line">        inet 127.0.0.1  netmask 255.0.0.0</div></pre></td></tr></table></figure>
+<h3 id="转义"><a href="#转义" class="headerlink" title="转义 \"></a>转义 \</h3><p>搜寻包括单引号 ‘的行，并把行号也打印出来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep \&apos; passwd</div><div class="line">halt:x:7:0:&apos;halt&apos;:/sbin:/sbin/halt</div><div class="line">&apos;mail&apos;:x:8:12:mail:/var/spool/mail:/sbin/nologin</div></pre></td></tr></table></figure></p>
+<p>过滤文件的反斜杠‘’\“<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &apos;\\&apos; passwd</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div><div class="line">[root@localhost ~]# grep -F &apos;\&apos;  passwd</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div><div class="line">[root@localhost ~]# fgrep &apos;\&apos; passwd</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div></pre></td></tr></table></figure></p>
+<h3 id="字符集合"><a href="#字符集合" class="headerlink" title="字符集合 [ ]"></a>字符集合 [ ]</h3><ul>
+<li><code>[list]</code> ：字符集合，里面列出想要选择的字符</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep g[ao] passwd</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div></pre></td></tr></table></figure>
+<ul>
+<li>[n1-n2]：字符集合的，里面列出想要包括的字符范围！</li>
+</ul>
+<p>搜寻含有数字的3到5的行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep [3-5] passwd</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div></pre></td></tr></table></figure></p>
+<p>开始为大写字母的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ^[A-Z]  passwd</div><div class="line">Rm2:x:502:500::/home/rm:/bin/bash</div><div class="line">Rm3:x:503:500::/home/rm:/bin/bash</div></pre></td></tr></table></figure></p>
+<h3 id="否定"><a href="#否定" class="headerlink" title="否定 [^ ]"></a>否定 [^ ]</h3><p><code>[^list]</code> : 否定字符集合，里面列出想要排除的字符, <code>^</code> 必须是 <code>[]</code> 内的第一个符合才能启动否定。</p>
+<p>不想要开头是英文字母：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ^[^a-zA-Z] passwd</div><div class="line">&apos;mail&apos;:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">&quot;uucp&quot;:x:10:14:uucp:/var/spool/uucp:/sbin/nologin</div><div class="line">#rmt:x:500:500::/home/rm:/bin/bash</div></pre></td></tr></table></figure></p>
+<h3 id="POSIX-字符集"><a href="#POSIX-字符集" class="headerlink" title="POSIX 字符集"></a>POSIX 字符集</h3><table>
+<thead>
+<tr>
+<th>字符集</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[:alnum:]</td>
+<td>字母数字字符。在 ASCII 中，等价于：[A-Za-z0-9]</td>
+</tr>
+<tr>
+<td>[:word:]</td>
+<td>与[:alnum:]相同, 但增加了下划线字符。</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>字母字符。在 ASCII 中，等价于：[A-Za-z]</td>
+</tr>
+<tr>
+<td>[:blank:]</td>
+<td>包含空格和 tab 字符。</td>
+</tr>
+<tr>
+<td>[:cntrl:]</td>
+<td>ASCII 的控制码。包含了0到31，和127的 ASCII 字符。</td>
+</tr>
+<tr>
+<td>[:digit:]</td>
+<td>数字0到9</td>
+</tr>
+<tr>
+<td>[:graph:]</td>
+<td>可视字符。在 ASCII 中，它包含33到126的字符。</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>小写字母。</td>
+</tr>
+<tr>
+<td>[:punct:]</td>
+<td>标点符号字符。在 ASCII 中，等价于：</td>
+</tr>
+<tr>
+<td>[:print:]</td>
+<td>可打印的字符。在[:graph:]中的所有字符，再加上空格字符。</td>
+</tr>
+<tr>
+<td>[:space:]</td>
+<td>空白字符，包括空格，tab，回车，换行，vertical tab, 和 form feed.在 ASCII 中， 等价于：[ \t\r\n\v\f]</td>
+</tr>
+<tr>
+<td>[:upper:]</td>
+<td>大写字母。</td>
+</tr>
+<tr>
+<td>[:xdigit:]</td>
+<td>用来表示十六进制数字的字符。在 ASCII 中，等价于：[0-9A-Fa-f]</td>
+</tr>
+</tbody>
+</table>
+<h3 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h3><p><code>.</code>  代表绝对有一个任意字符的意思；<br><code>*</code>  代表重复前一个字符到无穷次的意思;<br><code>.*</code> 任长度的字符。</p>
+<p>寻找包括有r开头和t结束且长度为四个字符行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep r..t passwd</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">operator:x:11:0:&quot;operator&quot;:/root:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div></pre></td></tr></table></figure></p>
+<p>寻找oo, ooo, oooo 等等的数据,也就是说,至少要有两个o 以上：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ooo* passwd</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div></pre></td></tr></table></figure></p>
+<p>寻找包括g开头和g结束的字符串,中间可有可无<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ^g.*g  passwd</div></pre></td></tr></table></figure></p>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p><code>\?</code> 用于修饰前导字符，表示前导字符出现0或1次, 例： grep “test\?”<br><code>\+</code> 用于修饰前导字符，表示前导字符出现1或多次   例：a+ 匹配1或多个a<br><code>\{n,m\}</code>  用于修饰前导字符，表示前导字符出现n至m次 （n和m都是整数，且n&lt;m）<br>例：a{3,5} 匹配3至5个连续的a</p>
+<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><ul>
+<li><p>概念<br><code>sed</code> : strem editor  流编辑器<br>sed编辑器是一行一行的处理文件内容的。正在处理的内容存放在模式空间(缓冲区)内，处理完成后按照选项的规定进行输出或文件的修改。它一次处理一行内容。处理时，把当前处理的行存储在临时缓冲区中，称为“模式空间”（pattern space），接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。接着处理下一行，这样不断重复，直到文件末尾。文件内容并没有 改变，除非你使用重定向存储输出。Sed主要用来自动编辑一个或多个文件；简化对文件的反复操作；</p>
+</li>
+<li><p>用法</p>
+<pre><code>sed  [options]  ‘[command]’  [filename]
+</code></pre><p>options:<br><code>-n</code>    抑制自动(默认的) 输出   读取下一个输入行  <strong><em>常用</em></strong><br>-e    执行多个sed指令<br>-f    运行脚本<br><code>-i</code>    编辑文件内容 <strong><em>常用</em></strong><br>-i.bak    编辑的同时创造.bak的备份<br>-r    使用扩展的正则表达式 </p>
+<p>command:<br><code>a</code>    在匹配后追加  <strong><em>常用</em></strong><br><code>i</code>    在匹配前插入  <strong><em>常用</em></strong><br><code>p</code>    打印  <strong><em>常用</em></strong><br><code>d</code>    删除  <strong><em>常用</em></strong><br>r/R    读取文件/一行<br>w    另存<br>s    查找<br>c    替换<br>y    替换<br><code>h/H</code>    复制拷贝/追加模式空间(缓冲区)到存放空间  <strong><em>常用</em></strong><br><code>g/G</code>    粘贴 从存放空间取回/追加到模式空间       <strong><em>常用</em></strong><br>x    两个空间内容的交换<br>n/N    拷贝/追加下一行内容到当前<br>D    删除\n之前的内容<br>P    打印\n之前的内容<br>b    无条件跳转<br>t    满足匹配后的跳转<br>T    不满足匹配时跳转</p>
+</li>
+</ul>
+<h3 id="s-替换"><a href="#s-替换" class="headerlink" title="s 替换"></a>s 替换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;s/root/ROOT/&apos; /etc/passwd &gt; newfilename</div></pre></td></tr></table></figure>
+<ul>
+<li><p>s/regexp/replacement/</p>
+</li>
+<li><p>/../../    分隔符<br>分割符 “/“ 可以用别的符号代替 , 比如 “,”   “|”   “_“等</p>
+</li>
+<li><p>用 &amp; 表示匹配的字符串<br>对文件中的root内容两边加上（）</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;s/root/(&amp;)/&apos;  passwd</div></pre></td></tr></table></figure>
+<p>对文件中的所有以小写字母开头的行进行注释<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;s/^[a-z]/#&amp;/&apos; passwd</div></pre></td></tr></table></figure></p>
+<p>sed 默认只替换搜索字符串的第一次出现 , 利用 /g 可以替换搜索字符串所有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -e &apos;3,5s/nologin/bash/&apos; -e &apos;9,11s/sbin/bin/&apos; passwd</div></pre></td></tr></table></figure></p>
+<h3 id="p-打印"><a href="#p-打印" class="headerlink" title="p 打印"></a>p 打印</h3><ul>
+<li>显示文件第三行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;3p&apos; passwd</div><div class="line">roott</div></pre></td></tr></table></figure>
+<ul>
+<li><p>显示文件前三行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;1,3p&apos; passwd</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">roott</div></pre></td></tr></table></figure>
+</li>
+<li><p>显示文件除前三行之外的全部内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;1,3!p&apos; passwd</div></pre></td></tr></table></figure>
+</li>
+<li><p>显示文件第三行和之后的三行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;3,+3p&apos; passwd</div><div class="line">roott</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="i-匹配前插入"><a href="#i-匹配前插入" class="headerlink" title="i 匹配前插入"></a>i 匹配前插入</h3><ul>
+<li>在文件头插入“###”<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;1i###&apos; passwd  &gt; a.txt</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="a-在匹配后追加"><a href="#a-在匹配后追加" class="headerlink" title="a 在匹配后追加"></a>a 在匹配后追加</h3><ul>
+<li><p>在文件尾插入”@@@”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;$a@@@&apos; passwd</div></pre></td></tr></table></figure>
+</li>
+<li><p>在文件的第二行后插入两行内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;2a hello \</div><div class="line">how are you?  \</div><div class="line">what is your name?&apos; passwd</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="c-替换"><a href="#c-替换" class="headerlink" title="c 替换"></a>c 替换</h3><ul>
+<li>把文件第三行替换成“$$$”<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;3c$$$&apos; passwd</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="复制粘贴"><a href="#复制粘贴" class="headerlink" title="复制粘贴"></a>复制粘贴</h3><p><code>h/H</code>    复制拷贝/追加模式空间(缓冲区)到存放空间<br><code>g/G</code>    粘贴 从存放空间取回/追加到模式空间</p>
+<ul>
+<li>把文件的第二行到第四行复制到文件的末尾<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;2,4H;$G&apos; passwd  &gt; b.txt</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="d-删除"><a href="#d-删除" class="headerlink" title="d 删除"></a>d 删除</h3><ul>
+<li>删除空行<br>[root@localhost ~]# sed ‘/^$/d’ passwd<br>把fstab中包含xfs的记录（行）写入新的文件中<br>[root@localhost ~]# sed ‘/xfs/w newfstab2’ /etc/fstab</li>
+</ul>
+<h3 id="直接修改文件"><a href="#直接修改文件" class="headerlink" title="直接修改文件"></a>直接修改文件</h3><p>sed 的-i选项可以直接修改文件中的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -i &apos;s/root/rm/&apos; passwd</div></pre></td></tr></table></figure></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://coolshell.cn/articles/9104.html" target="_blank" rel="external">sed 简明教程</a></p>
+<h2 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h2><p><code>AWK</code> 是一种优良的文本处理工具，Linux及Unix环境中现有的功能最强大的数据处理引擎之一。这种编程及数据操作语言的最大功能取决于一个人所拥有的知识。awk命名:Alfred Aho Peter Weinberger和brian kernighan三个人的姓的缩写。<br>最简单地说， AWK 是一种用于处理文本的编程语言工具。<br>任何awk语句都是由模式和动作组成，一个awk脚本可以有多个语句。模式决定动作语句的触发条件和触发时间。</p>
+<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><pre><code>netstat | awk &apos;{print $1, $7}&apos;
+</code></pre><h4 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h4><p>单引号中的被大括号括着的就是awk的语句，注意，其只能被单引号包含。<br>其中的$1..$n表示第几例。注：$0表示整个行。</p>
+<h4 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h4><p><code>BEGIN</code> ：在任何动作之前进行。<br><code>END</code> ： 在完成动作之后执行。</p>
+<h4 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h4><p>print</p>
+<h4 id="过滤记录"><a href="#过滤记录" class="headerlink" title="过滤记录"></a>过滤记录</h4><ul>
+<li><p>比较运算符<br>==，!=, &gt;, &lt;, &gt;=, &lt;=</p>
+</li>
+<li><p>逻辑运算符<br>&amp;&amp; ， ||</p>
+</li>
+</ul>
+<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><table>
+<thead>
+<tr>
+<th>$0</th>
+<th>当前记录（这个变量中存放着整个行的内容）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$1~$n</td>
+<td>当前记录的第n个字段，字段间由FS分隔</td>
+</tr>
+<tr>
+<td>FS</td>
+<td>输入字段分隔符 默认是空格或Tab</td>
+</tr>
+<tr>
+<td>NF</td>
+<td>当前记录中的字段个数，就是有多少列</td>
+</tr>
+<tr>
+<td>NR</td>
+<td>已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。</td>
+</tr>
+<tr>
+<td>FNR</td>
+<td>当前记录数，与NR不同的是，这个值会是各个文件自己的行号</td>
+</tr>
+<tr>
+<td>RS</td>
+<td>输入的记录分隔符， 默认为换行符</td>
+</tr>
+<tr>
+<td>OFS</td>
+<td>输出字段分隔符， 默认也是空格</td>
+</tr>
+<tr>
+<td>ORS</td>
+<td>输出的记录分隔符，默认为换行符</td>
+</tr>
+<tr>
+<td>FILENAME</td>
+<td>当前输入文件的名字</td>
+</tr>
+</tbody>
+</table>
+<h4 id="指定分隔符"><a href="#指定分隔符" class="headerlink" title="指定分隔符"></a>指定分隔符</h4><p>默认分隔符是空格或Tab</p>
+<p>指定冒号分割</p>
+<pre><code>awk  -F: &apos;{print $1,$3,$6}&apos; /etc/passwd
+或
+awk  &apos;BEGIN{FS=&quot;:&quot;} {print $1,$3,$6}&apos; /etc/passwd
+</code></pre><p>指定多个分隔符</p>
+<pre><code>awk -F &apos;[;:]&apos;
+</code></pre><h4 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h4><p>匹配FIN状态，其实 ~ 表示模式开始。/ /中是模式。这就是一个正则表达式的匹配。 <code>|| NR==1</code> 其实是不处理第一行。</p>
+<pre><code>awk &apos;$6 ~ /FIN/ || NR==1 {print NR,$4,$5,$6}&apos; OFS=&quot;\t&quot; netstat.txt
+</code></pre><p>模式取反</p>
+<pre><code>awk &apos;$6 !~ /WAIT/ || NR==1 {print NR,$4,$5,$6}&apos; OFS=&quot;\t&quot; netstat.txt
+或
+awk &apos;!/WAIT/&apos; netstat.txt
+</code></pre><h4 id="折分文件"><a href="#折分文件" class="headerlink" title="折分文件"></a>折分文件</h4><p>awk拆分文件很简单，就使用重定向。如按第6例分隔文件，相当的简单（其中的NR!=1表示不处理表头）。</p>
+<pre><code>awk &apos;NR!=1{print &gt; $6}&apos; netstat.txt
+</code></pre><p>你也可以把指定的列输出到文件</p>
+<pre><code>awk &apos;NR!=1{print $4,$5 &gt; $6}&apos; netstat.txt
+</code></pre><h4 id="awk脚本"><a href="#awk脚本" class="headerlink" title="awk脚本"></a>awk脚本</h4><p>语法如下：</p>
+<pre><code>BEGIN{ 这里面放的是执行前的语句 }
+END {这里面放的是处理完所有的行后要执行的语句 }
+{这里面放的是处理每一行时要执行的语句}
+</code></pre><p>有这么一个文件（学生成绩表）： score.txt</p>
+<pre><code>Marry   2143 78 84 77
+Jack    2321 66 78 45
+Tom     2122 48 77 71
+Mike    2537 87 97 95
+Bob     2415 40 57 62
+</code></pre><p>awk脚本如下</p>
+<pre><code>#!/bin/awk -f
+#运行前
+BEGIN {
+math = 0
+english = 0
+computer = 0
+
+printf &quot;NAME    NO.   MATH  ENGLISH  COMPUTER   TOTAL\n&quot;
+printf &quot;---------------------------------------------\n&quot;
+}
+#运行中
+{
+math+=$3
+english+=$4
+computer+=$5
+printf &quot;%-6s %-6s %4d %8d %8d %8d\n&quot;, $1, $2, $3,$4,$5, $3+$4+$5
+}
+#运行后
+END {
+printf &quot;---------------------------------------------\n&quot;
+printf &quot;  TOTAL:%10d %8d %8d \n&quot;, math, english, computer
+printf &quot;AVERAGE:%10.2f %8.2f %8.2f\n&quot;, math/NR, english/NR, computer/NR
+}
+</code></pre><p>执行</p>
+<pre><code>awk -f cal.awk score.txt
+或
+./cal.awk score.txt
+</code></pre><h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><ul>
+<li><p>获取当前主机网卡的ip地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ipaddress=$(ifconfig | grep broadcast | awk &apos;&#123;print $2&#125;&apos;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>打印出passwd中用户UID大于1000的用户名和登录shell</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cat /etc/passwd | awk -F: &apos;$3&gt;1000 &#123;print $1 &quot;\t&quot; $7&#125;&apos;</div><div class="line">nfsnobody       /sbin/nologin</div><div class="line">rm1     /bin/bash</div><div class="line">rm2     /bin/bash</div><div class="line">rm3     /bin/bash</div></pre></td></tr></table></figure>
+</li>
+<li><p>多条件进行过滤<br>能登录的普通用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cat /etc/passwd | awk -F: &apos;BEGIN &#123;print &quot;name \t shell&quot;&#125; $3&gt;1000 &amp;&amp; $7==&quot;/bin/bash&quot; &#123;print $1 &quot;\t&quot; $7&#125; END &#123;print &quot;Thank you!!!&quot;&#125;&apos;</div><div class="line">name     shell</div><div class="line">rm1     /bin/bash</div><div class="line">rm2     /bin/bash</div><div class="line">rm3     /bin/bash</div><div class="line">Thank you!!!</div></pre></td></tr></table></figure>
+</li>
+<li><p>awk在脚本中的使用<br>找到系统中所有的能登录的普通用户，并进行删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">user=$(cat /etc/passwd | awk -F: &apos;$3&gt;=1000 &amp;&amp; $7==&quot;/bin/bash&quot; &#123;print $1&#125;&apos;)</div><div class="line">for i in $user</div><div class="line">do</div><div class="line"> userdel -r $i</div><div class="line">done</div></pre></td></tr></table></figure>
+</li>
+<li><p>RHEL7中查看系统当前内存使用百分比</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">echo &quot;此脚本可以用来查看当前内存使用百分比&quot;</div><div class="line">use=$(free -m | grep &quot;Mem:&quot; | awk &apos;&#123;print $3&#125;&apos;)</div><div class="line">total=$(free -m | grep &quot;Mem:&quot; | awk &apos;&#123;print $2&#125;&apos;)</div><div class="line">useper=$(expr $use \* 100 / $total)</div><div class="line">echo &quot;系统当前内存使用百分比为:&quot;</div><div class="line">echo $&#123;useper&#125;%</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h2><p>cut是一个选取命令，就是将一段数据经过分析，取出我们想要的。一般来说，选取信息通常是针对“行”来进行分析的，并不是整篇信息分析的。<br>主要参数<br>-b ：以字节为单位进行分割。这些字节位置将忽略多字节字符边界，除非也指定了 -n 标志。<br>-c ：以字符为单位进行分割。<br>-d ：自定义分隔符，默认为制表符。<br>-f ：与-d一起使用，指定显示哪个区域。</p>
+<ul>
+<li><p>以字节进行分割</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# tail -3 /etc/passwd | cut -b 1-4,11,12</div><div class="line">post89</div><div class="line">sshd74</div><div class="line">tcpd72</div></pre></td></tr></table></figure>
+</li>
+<li><p>以字符进行分割</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cat newyear.txt | cut -c 1-4</div></pre></td></tr></table></figure>
+</li>
+<li><p>以空格作为分隔符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n l c.txt</div><div class="line">aaaa\tbbbb    cccc$</div><div class="line">aaaa    bbbb\tcccc$</div><div class="line">[root@localhost ~]# cat c.txt  | cut -d &apos; &apos; -f 1</div><div class="line">aaaa    bbbb</div><div class="line">aaaa</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>总结：<br>cut有哪些缺陷和不足？<br>如果文件里面的某些域是由若干个空格来间隔的，那么用cut就有点麻烦了，因为cut只擅长处理“以一个字符间隔”的文本内容</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;正则表达式 &lt;/li&gt;
+&lt;li&gt;sed &lt;/li&gt;
+&lt;li&gt;awk &lt;/li&gt;
+&lt;li&gt;cut&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="GOD linux" scheme="https://sam2099.github.io/tags/GOD-linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>shell （八） 函数, 文件包含, 转码工具</title>
+    <link href="https://sam2099.github.io/2015/12/28/linux/shell/shell-8/"/>
+    <id>https://sam2099.github.io/2015/12/28/linux/shell/shell-8/</id>
+    <published>2015-12-28T14:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>函数</li>
+<li>文件包含</li>
+<li>转码工具<a id="more"></a>
+</li>
+</ul>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>函数可以将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。函数必须先定义后使用。</p>
+<h3 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h3><p>定义格式如下：<br>    function function_name () {<br>    list of commands<br>    [ return value ]<br>    }</p>
+<p>或</p>
+<pre><code>function_name () {
+list of commands
+[ return value ]
+}
+</code></pre><p><code>function</code> 可以省略，清晰起见，还是建议加上。</p>
+<h3 id="函数返回值"><a href="#函数返回值" class="headerlink" title="函数返回值"></a>函数返回值</h3><ul>
+<li>函数可以显式增加return语句；如果不加，会将最后一条命令运行结果作为返回值。</li>
+<li>Shell 函数返回值只能是整数，一般用来表示函数执行成功与否，0表示成功，其他值表示失败。如果 return 其他数据，比如一个字符串，往往会得到错误提示：“numeric argument required”。</li>
+<li>如果一定要让函数返回字符串，那么可以先定义一个变量，用来接收函数的计算结果，脚本在需要的时候访问这个变量来获得函数返回值。</li>
+</ul>
+<p>例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">funWithReturn()&#123;</div><div class="line">    echo &quot;The function is to get the sum of two numbers...&quot;</div><div class="line">    echo -n &quot;Input first number: &quot;</div><div class="line">    read aNum</div><div class="line">    echo -n &quot;Input another number: &quot;</div><div class="line">    read anotherNum</div><div class="line">    echo &quot;The two numbers are $aNum and $anotherNum !&quot;</div><div class="line">    return $(($aNum+$anotherNum))</div><div class="line">&#125;</div><div class="line">funWithReturn</div><div class="line"># Capture value returnd by last command</div><div class="line">ret=$?</div><div class="line">echo &quot;The sum of two numbers is $ret !&quot;</div></pre></td></tr></table></figure></p>
+<h3 id="函数删除"><a href="#函数删除" class="headerlink" title="函数删除"></a>函数删除</h3><p>删除函数也可以使用 unset 命令，不过要加上 .f 选项，如下所示：</p>
+<pre><code>$unset .f function_name
+</code></pre><h3 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h3><p>调用只需要给出函数名，不需要加括号。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Define your function here</div><div class="line">Hello () &#123;</div><div class="line">   echo &quot;Url is http://giveme5.top&quot;</div><div class="line">&#125;</div><div class="line"># Invoke your function</div><div class="line">Hello</div></pre></td></tr></table></figure></p>
+<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>调用函数时可以向其传递参数。在函数体内部，通过 $n 的形式来获取参数的值，例如，$1表示第一个参数，$2表示第二个参数…<br>注意，当n&gt;=10时，需要使用 <code>${n}</code> 来获取参数。 获取第十个参数需要 <code>${10}</code> ， $10 不能获取第十个参数。</p>
+<p>例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="function"><span class="title">funWithParam</span></span>()&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the first parameter is <span class="variable">$1</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the second parameter is <span class="variable">$2</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the tenth parameter is <span class="variable">$10</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the tenth parameter is <span class="variable">$&#123;10&#125;</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the eleventh parameter is <span class="variable">$&#123;11&#125;</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The amount of the parameters is <span class="variable">$#</span> !"</span>  <span class="comment"># 参数个数</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The string of the parameters is $* !"</span>  <span class="comment"># 传递给函数的所有参数</span></div><div class="line">&#125;</div><div class="line">funWithParam 1 2 3 4 5 6 7 8 9 34 73</div></pre></td></tr></table></figure></p>
+<p>输出：</p>
+<pre><code>he value of the first parameter is 1 !
+The value of the second parameter is 2 !
+The value of the tenth parameter is 10 !
+The value of the tenth parameter is 34 !
+The value of the eleventh parameter is 73 !
+The amount of the parameters is 12 !
+The string of the parameters is 1 2 3 4 5 6 7 8 9 34 73 !&quot;
+</code></pre><p>另外：<br>几个特殊变量用来处理参数（<a href="/2015/12/25/linux/xuegodLinux/godLinux1-24-28-shell/godLinux1-24/#特殊变量">更多特殊变量</a>）：</p>
+<table>
+<thead>
+<tr>
+<th>特殊变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$#</td>
+<td>传递给函数的参数个数。</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>显示所有传递给函数的参数。</td>
+</tr>
+<tr>
+<td>$@</td>
+<td>与$*相同，但是略有区别，请查看<a href="/2015/12/25/linux/xuegodLinux/godLinux1-24-28-shell/godLinux1-24/#特殊变量">更多特殊变量</a>。</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>函数的返回值。</td>
+</tr>
+</tbody>
+</table>
+<p><br><br></p>
+<h4 id="shift"><a href="#shift" class="headerlink" title="shift"></a>shift</h4><p>shift: 参数左移指令, 每执行一次，参数序列顺次左移一个位置，$#的值减1，用于分别处理每个参数，移出去的参数，不再可用。<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/sh_shift.png" alt=""></p>
+<p>例：<br>加法计算器，通过 <code>shift</code> 指令使参数左移，求出所有参数的和</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -le 0 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"err!:Not enough parameters"</span></div><div class="line"><span class="built_in">exit</span>  124</div><div class="line"><span class="keyword">fi</span></div><div class="line">sum=0</div><div class="line"><span class="keyword">while</span> [ <span class="variable">$#</span> <span class="_">-gt</span> 0 ]</div><div class="line"><span class="keyword">do</span></div><div class="line">sum=`expr <span class="variable">$sum</span> + <span class="variable">$1</span>`</div><div class="line">  </div><div class="line"><span class="built_in">shift</span> <span class="comment">#参数左移</span></div><div class="line">  </div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$sum</span></div></pre></td></tr></table></figure>
+<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>文件包含即将外部脚本的内容合并到当前脚本。</p>
+<p>可以使用：</p>
+<pre><code>. filename
+</code></pre><p>或</p>
+<pre><code>source filename
+</code></pre><p>两种方式的效果相同，简单起见，一般使用点号(.)，但是注意点号(.)和文件名中间有一空格。</p>
+<p>例如：<br>创建两个脚本，一个是被调用脚本 subscript.sh，内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">url=&quot;http://see.xidian.edu.cn/cpp/view/2738.html&quot;</div></pre></td></tr></table></figure></p>
+<p>一个是主文件 main.sh，内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">. ./subscript.sh</div><div class="line">echo $url</div></pre></td></tr></table></figure></p>
+<p>注意：被包含脚本不需要有执行权限。 </p>
+<h2 id="dos2unix"><a href="#dos2unix" class="headerlink" title="dos2unix"></a>dos2unix</h2><p>由于编码问题，在windows中开发的脚本导入到Linux系统后执行报错，主要是因为在windows开发保存时没注意编码（UTF8）和换行符（LF）。<br>在Linux中可以用工具dos2unix解决。</p>
+<ul>
+<li><p>安装</p>
+<pre><code>[root@localhost test]#rpm -ivh /mnt/Packages/dos2unix-6.0.3-4.el7.x86_64.rpm
+</code></pre></li>
+<li><p>使用</p>
+<pre><code>[root@localhost ]# dos2unix test.sh
+dos2unix: converting file test.sh to Unix format ...
+</code></pre></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;函数&lt;/li&gt;
+&lt;li&gt;文件包含&lt;/li&gt;
+&lt;li&gt;转码工具
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="shell" scheme="https://sam2099.github.io/tags/shell/"/>
+    
+  </entry>
+  
+</feed>

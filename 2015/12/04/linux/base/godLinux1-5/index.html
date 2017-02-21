@@ -1,0 +1,833 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="GOD linux," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="sam's notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="写在一起之前： 命令行输入 vimtutor 你会有惊喜， 全部做完，恭喜你，入门了！！！！！！！！！
+主要内容：vim主要模式介绍vim命令模式vim插（输）入模式vim命令（末）行模式设置vim开发环境
+主要模式vim 主要有 命令模式 插（输）入模式 命令（末）行模式 三种模式， 意义和转换如下图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-5 vim编辑器">
+<meta property="og:url" content="https://sam2099.github.io/2015/12/04/linux/base/godLinux1-5/index.html">
+<meta property="og:site_name" content="sam's notes">
+<meta property="og:description" content="写在一起之前： 命令行输入 vimtutor 你会有惊喜， 全部做完，恭喜你，入门了！！！！！！！！！
+主要内容：vim主要模式介绍vim命令模式vim插（输）入模式vim命令（末）行模式设置vim开发环境
+主要模式vim 主要有 命令模式 插（输）入模式 命令（末）行模式 三种模式， 意义和转换如下图：">
+<meta property="og:image" content="http://7xklqw.com1.z0.glb.clouddn.com/vimmodels.png">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1-5 vim编辑器">
+<meta name="twitter:description" content="写在一起之前： 命令行输入 vimtutor 你会有惊喜， 全部做完，恭喜你，入门了！！！！！！！！！
+主要内容：vim主要模式介绍vim命令模式vim插（输）入模式vim命令（末）行模式设置vim开发环境
+主要模式vim 主要有 命令模式 插（输）入模式 命令（末）行模式 三种模式， 意义和转换如下图：">
+<meta name="twitter:image" content="http://7xklqw.com1.z0.glb.clouddn.com/vimmodels.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sam2099.github.io/2015/12/04/linux/base/godLinux1-5/"/>
+
+
+
+
+
+  <title> 1-5 vim编辑器 | sam's notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sam's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">life && tech</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://sam2099.github.io/2015/12/04/linux/base/godLinux1-5/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="sam's notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                1-5 vim编辑器
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-04T16:29:44+08:00">
+                2015-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/04/linux/base/godLinux1-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/04/linux/base/godLinux1-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>写在一起之前： 命令行输入 <code>vimtutor</code> 你会有惊喜， 全部做完，恭喜你，入门了！！！！！！！！！</p>
+<p>主要内容：<br>vim主要模式介绍<br>vim命令模式<br>vim插（输）入模式<br>vim命令（末）行模式<br>设置vim开发环境</p>
+<h2 id="主要模式"><a href="#主要模式" class="headerlink" title="主要模式"></a>主要模式</h2><p>vim 主要有 <code>命令模式</code> <code>插（输）入模式</code> <code>命令（末）行模式</code> 三种模式， 意义和转换如下图：<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/vimmodels.png" alt=""><br><a id="more"></a></p>
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><p>此状态下敲击键盘动作会被Vim识别为命令，而非输入字符。</p>
+<h3 id="字符操作"><a href="#字符操作" class="headerlink" title="字符操作"></a>字符操作</h3><ul>
+<li><code>i</code> 当前字符之前插入</li>
+<li><code>I</code> 行首插入</li>
+<li><code>a</code> 当前字符之后插入</li>
+<li><code>A</code> 行尾插入</li>
+<li><code>esc</code> 退出当前模式</li>
+<li><code>o</code> 下一行插入</li>
+<li><code>O</code> 上一行插入</li>
+<li><code>x</code> 向后删除一个字符del</li>
+<li><code>X</code> 向前删除一个字符</li>
+<li><code>u</code> 撤销一步 </li>
+</ul>
+<h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><ul>
+<li><code>gg</code> 定位到行首</li>
+<li><code>G</code> 定位到最后一行，行首</li>
+<li><code>nG</code> 定位到某一行</li>
+<li><code>:n</code> 定位到某一行</li>
+<li><code>ngg</code> 定位到某一行<br>n 代表行号</li>
+</ul>
+<h3 id="行操作"><a href="#行操作" class="headerlink" title="行操作"></a>行操作</h3><ul>
+<li><code>home键或^</code> 行首 </li>
+<li><code>end或$</code> 行尾</li>
+<li><code>dd</code> 删除一行<br><code>ndd</code> 删除以当前行开始的n行<br><code>ddp</code> 上下两行的内容互换<br><code>dG</code> 删除从当前行至文件未尾的所有行。</li>
+<li><code>yy</code> 复制一行<br><code>Nyy</code> 复制N行</li>
+<li><code>p</code> 将复制行粘贴 P上粘</li>
+<li>扩展：剪切=先删除，再粘贴</li>
+<li><code>d + HOME 或^</code> 删除到行首  </li>
+<li><code>d + END 或$</code> 删除到行尾 </li>
+</ul>
+<h3 id="词操作"><a href="#词操作" class="headerlink" title="词操作"></a>词操作</h3><ul>
+<li><code>dw</code> 删除一个词，删除时要将光标移动到这个词的行首。 另外，如果光标不在行首，则删除光标之后的字母。</li>
+<li><code>yw</code> 复制一个词</li>
+<li><code>w</code> 切换单词</li>
+</ul>
+<h3 id="块操作"><a href="#块操作" class="headerlink" title="块操作"></a>块操作</h3><ul>
+<li><code>大D 或d+$</code> 删至行尾<br><code>d+^</code> 删至行首</li>
+<li><code>y+$</code> 复制至尾<br><code>y+^</code> 复制至首<br><code>&quot;+y</code>  复制选中内容到＋寄存器，也就是系统的剪贴板，供其他程序用 +需要显式输入。 ：reg 可查看支付支持＋寄存器</li>
+</ul>
+<h3 id="v-模式"><a href="#v-模式" class="headerlink" title="v 模式"></a>v 模式</h3><p>进入v模式 移动光标选择区域、<br>编程的时候需要进行多行注释：<br>1、注释：ctrl+v 进入列编辑模式<br>2向下或向上移动光标<br>3把需要注释的行的开头标记起来<br>4然后按大写的I<br>5再插入注释符,比如”#”。<br>6再按Esc,就会全部注释了。</p>
+<p>  删除多行注释：<br>  删除：再按ctrl+v 进入列编辑模式；向下或向上移动光标 ；选中注释部分,然后按d, 就会删除注释符号。</p>
+<h2 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h2><p>字符就是字符本身，用来编辑内容</p>
+<h2 id="命令（末）行模式"><a href="#命令（末）行模式" class="headerlink" title="命令（末）行模式"></a>命令（末）行模式</h2><ul>
+<li><p>保存退出<br><code>:w</code> 保存 save<br><code>:q</code> 没有进行任何修改，退出 quit<br><code>:q!</code> 修改了，不保存，强制退出<br><code>:wq</code> 保存并退出<br><code>:wq!</code> 强制保存并退出。</p>
+</li>
+<li><p>替换<br><code>:%s /this/that</code> #每一行的第一个this被替换成that<br><code>:s /emacs/vim</code> #在当前行中把第一个emacs替换成vim。<br><code>:%s /this/that/g</code> #将文本中所有的this替换成that<br><code>:2,5s /this/that/g</code> #替换第二行到第五行中sbin<br>注意： <code>替换内容中本身有/符号， 外面的/可以用#替换。 比如 :%s #this#that#g</code></p>
+</li>
+<li><p><code>:set nu/nonu</code>  #显示行号</p>
+</li>
+<li><p>查找<br><code>/</code> 正向查找 ：/target<br><code>n</code> 往下查找，<br><code>N</code> 往上查找<br>去消高亮显示： noh 或 随便查找一组没有的字符</p>
+</li>
+<li><p><code>:! command</code> 运行shell命令</p>
+</li>
+<li><p><code>:r /etc/ssh/sshd_config.bak</code>  读取其他文件</p>
+</li>
+</ul>
+<h2 id="设置vim开发环境"><a href="#设置vim开发环境" class="headerlink" title="设置vim开发环境"></a>设置vim开发环境</h2><p>在命令模式下用set命令设置的东西是不能保存的，下次打开vim时又要重新设置。所以vim提供了一个配置文件叫vimrc，可以保存你的配置信息。<br>  ~/.vimrc<br>输入：<br><code>set nu</code> #显示行数<br><code>set history=10</code> #<br><code>set autoindent</code> #自动缩排，如当前行是从第3个字符的位置开始编辑的,按回车后光标会自动定位在下一行第三3个字符的位置。<br><code>set paste</code> #置粘贴模式，这样粘贴过来的程序代码就不会错位了。<br>等等</p>
+<h2 id="vim同时打开多个文件"><a href="#vim同时打开多个文件" class="headerlink" title="vim同时打开多个文件"></a>vim同时打开多个文件</h2><p>用法： vim -[o/O] filename<br>大写 <code>O</code> 左右分屏，小写的 <code>o</code> 上下分屏， <code>ctrl+WW</code> 在文件之间进行切换</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://linux.vbird.org/linux_basic/0310vi.php" target="_blank" rel="external">鸟哥linux</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/03/linux/base/godLinux1-4/" rel="next" title="1-4 rhel7文件管理和xfs文件系统备份">
+                <i class="fa fa-chevron-left"></i> 1-4 rhel7文件管理和xfs文件系统备份
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/04/linux/base/godLinux1-6/" rel="prev" title="1-6 用户管理">
+                1-6 用户管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/04/linux/base/godLinux1-5/"
+           data-title="1-5 vim编辑器" data-url="https://sam2099.github.io/2015/12/04/linux/base/godLinux1-5/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">梦想还是要有的，万一实现了呢</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要模式"><span class="nav-number">1.</span> <span class="nav-text">主要模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令模式"><span class="nav-number">2.</span> <span class="nav-text">命令模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符操作"><span class="nav-number">2.1.</span> <span class="nav-text">字符操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位"><span class="nav-number">2.2.</span> <span class="nav-text">定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行操作"><span class="nav-number">2.3.</span> <span class="nav-text">行操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#词操作"><span class="nav-number">2.4.</span> <span class="nav-text">词操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块操作"><span class="nav-number">2.5.</span> <span class="nav-text">块操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#v-模式"><span class="nav-number">2.6.</span> <span class="nav-text">v 模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入模式"><span class="nav-number">3.</span> <span class="nav-text">输入模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令（末）行模式"><span class="nav-number">4.</span> <span class="nav-text">命令（末）行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置vim开发环境"><span class="nav-number">5.</span> <span class="nav-text">设置vim开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vim同时打开多个文件"><span class="nav-number">6.</span> <span class="nav-text">vim同时打开多个文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"amadis"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>

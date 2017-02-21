@@ -1,0 +1,808 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="jenkins," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="sam's notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="安装官方指南
+前提JDK1.7以上 安装
+RedHat系 YUM安装centOS 7 安装稳定版本如下：
+123sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.reposudo rpm --import https://jenkins-ci.org/redhat/j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jenkins集合">
+<meta property="og:url" content="https://sam2099.github.io/2015/07/29/devEnv/ci/o-jenkins/index.html">
+<meta property="og:site_name" content="sam's notes">
+<meta property="og:description" content="安装官方指南
+前提JDK1.7以上 安装
+RedHat系 YUM安装centOS 7 安装稳定版本如下：
+123sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.reposudo rpm --import https://jenkins-ci.org/redhat/j">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jenkins集合">
+<meta name="twitter:description" content="安装官方指南
+前提JDK1.7以上 安装
+RedHat系 YUM安装centOS 7 安装稳定版本如下：
+123sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.reposudo rpm --import https://jenkins-ci.org/redhat/j">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sam2099.github.io/2015/07/29/devEnv/ci/o-jenkins/"/>
+
+
+
+
+
+  <title> jenkins集合 | sam's notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sam's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">life && tech</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://sam2099.github.io/2015/07/29/devEnv/ci/o-jenkins/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="sam's notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                jenkins集合
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-29T10:14:56+08:00">
+                2015-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/developEnv/" itemprop="url" rel="index">
+                    <span itemprop="name">developEnv</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/07/29/devEnv/ci/o-jenkins/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/29/devEnv/ci/o-jenkins/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions" target="_blank" rel="external">官方指南</a></p>
+<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>JDK1.7以上 安装</p>
+<h3 id="RedHat系-YUM安装"><a href="#RedHat系-YUM安装" class="headerlink" title="RedHat系 YUM安装"></a>RedHat系 YUM安装</h3><p>centOS 7 安装稳定版本如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo</div><div class="line">sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</div><div class="line">sudo yum install jenkins</div></pre></td></tr></table></figure>
+<h3 id="安装结果"><a href="#安装结果" class="headerlink" title="安装结果"></a>安装结果</h3><ul>
+<li>daemon ： /etc/init.d/jenkins </li>
+<li>user ： jenkins （查看passwd，获得工作路径）</li>
+<li>Log file ： /var/log/jenkins/jenkins.log</li>
+<li>configuration ： /etc/sysconfig/jenkins  (建议修改JENKINS_HOME到空间较大的路径)</li>
+<li>初始密码 ：查看 /var/log/jenkins/jenkins.log</li>
+</ul>
+<h3 id="启动-停止"><a href="#启动-停止" class="headerlink" title="启动/停止"></a>启动/停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">systemctl start/stop/restart jenkins</div><div class="line">systemctl enable jenkins ##开机自动启动</div></pre></td></tr></table></figure>
+<p>ps: 别忘了关闭防火墙或者设置防火墙</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h3><p>一般yum安装的 JAVA_HOME 为 <code>/usr/lib/jvm/java</code></p>
+<h3 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h3><p>安装maven<br>yum安装的 M2_HOME 为 <code>/usr/share/maven</code></p>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>这些必须安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Git plugin</div><div class="line">Git client plugin</div><div class="line">GitLab Plugin</div><div class="line">maven plugin</div></pre></td></tr></table></figure>
+<h3 id="Manage-Jenkins-–-gt-Configure-Global-Security"><a href="#Manage-Jenkins-–-gt-Configure-Global-Security" class="headerlink" title="Manage Jenkins –&gt; Configure Global Security"></a>Manage Jenkins –&gt; Configure Global Security</h3><h3 id="Manage-Jenkins-–-gt-Configure-System"><a href="#Manage-Jenkins-–-gt-Configure-System" class="headerlink" title="Manage Jenkins –&gt; Configure System"></a>Manage Jenkins –&gt; Configure System</h3><p>配置 JDK， Jenkins Location， Git plugin， Gitlab</p>
+<h3 id="ssh-key"><a href="#ssh-key" class="headerlink" title="ssh-key"></a>ssh-key</h3><p>如果连接 Source Code Management 采用 ssh 连接， 需要先生成 ssh-key</p>
+<pre><code>ssh-keygen -t rsa -C &quot;jenkins@jenkinsServer&quot;
+</code></pre><p>注意生成目录， jenkins ssh-key的默认目录为： <code>/var/lib/jenkins/.ssh/</code></p>
+<h2 id="New-Item"><a href="#New-Item" class="headerlink" title="New Item"></a>New Item</h2><p>mavne project</p>
+<h3 id="root-project"><a href="#root-project" class="headerlink" title="root project"></a>root project</h3><p>Maven project name<br>Description</p>
+<p>Discard Old Builds<br>Source Code Management</p>
+<p>Build<br>    Root POM：pom.xml<br>    Goals and options： clean deploy -N</p>
+<h3 id="sub-project"><a href="#sub-project" class="headerlink" title="sub project"></a>sub project</h3><p>其他 参照上方，<br>Post Steps –&gt; Excute shell (启动tomcat等Web server)<br>shell可能长的像下面这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash -ex</div><div class="line">JAVA_OPTS=&quot;-Xms768m -Xmx1000m -XX:PermSize=512m -XX:MaxPermSize=1024m&quot;</div><div class="line">cd /data/apache-tomcat/</div><div class="line">bin/catalina.sh stop 35 -force</div><div class="line">rm -rf /data/apache-tomcat/webapps/xxxxxxxx.war /data/apache-tomcat/webapps/xxxxxxxx</div><div class="line">cp $WORKSPACE/target/xxxxxxxx.war /data/apache-tomcat/webapps</div><div class="line">## required, or tomcat will be killed by jenkins. The value can be set to anything.</div><div class="line">BUILD_ID=please_do_not_kill_me </div><div class="line">sleep 20s</div><div class="line">bin/catalina.sh start</div></pre></td></tr></table></figure></p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="第一次ssh连接-gitServer"><a href="#第一次ssh连接-gitServer" class="headerlink" title="第一次ssh连接 gitServer"></a>第一次ssh连接 gitServer</h3><p>Source Code Management 中 git 第一次ssh连接， 会有 <code>host error</code><br>解决方法： </p>
+<ul>
+<li>jenkins 用户登录， <code>/etc/passwd</code> 中 jenkins用户的默认shell 需要修改成 <code>bin/bash</code></li>
+<li>执行命令 <code>ssh git@gitServerIP</code>, 接受yes</li>
+<li>还原 jenkins用户的默认shell为 <code>bin/false</code></li>
+</ul>
+<h3 id="网络导致日志疯狂增长"><a href="#网络导致日志疯狂增长" class="headerlink" title="网络导致日志疯狂增长"></a>网络导致日志疯狂增长</h3><p>一旦jenkins所在的服务器的网络出现问题， jenkins的日志文件（/var/log/jenkins/jenkins.log）大小会疯狂快速增长，直到撑爆硬盘<br>日志内容大概为</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.constants.DNSRecordClass classForIndex</div><div class="line">WARNING: Could not find record class <span class="keyword">for</span> index: -1</div><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.DNSIncoming<span class="variable">$MessageInputStream</span> <span class="built_in">read</span>Name</div><div class="line">SEVERE: bad domain name: possible circular name detected. Bad offset: 0xffffffff at 0xb6</div><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.constants.DNSRecordType <span class="built_in">type</span>ForIndex</div><div class="line">SEVERE: Could not find record <span class="built_in">type</span> <span class="keyword">for</span> index: -1</div><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.DNSIncoming <span class="built_in">read</span>Question</div><div class="line">SEVERE: Could not find record <span class="built_in">type</span>: dns[query,108.61.99.169:53227, length=184, id=0x5c78, flags=0x3030, questions=6</div><div class="line">questions:</div><div class="line">        [DNSQuestion@84075318 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: 0\x00\x01\x00\x00\x00\x00\x00\x00\x09\x5F\x73\x6.\x72\x76\x69\x63\x65\x73\x07\x5F\x64\x6E\x73\x2D\x73\.4\x04\x5F\x75\x64\x70\x05\x6C\x6F\x63\x61\x6C\x00\x00\.C\x00\x01ϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿ.]</div><div class="line">        [DNSQuestion@9629900 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@788455775 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@1602108435 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@1486500959 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@1944352362 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]]</div><div class="line">        question:      [DNSQuestion@84075318 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: 0\x00\x01\x00\x00\x00\x00\x00\x00\x09\x5F\x73\x6.\x72\x76\x69\x63\x65\x73\x07\x5F\x64\x6E\x73\x2D\x73\.4\x04\x5F\x75\x64\x70\x05\x6C\x6F\x63\x61\x6C\x00\x00\.C\x00\x01ϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿ.]</div><div class="line">        question:      [DNSQuestion@9629900 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@788455775 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@1602108435 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@1486500959 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@1944352362 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">   0: 5c7830305c783030 5c7830305c783030 5c7830305c783031 5c7830305c783030     \x00\x00 \x00\x00 \x00\x01 \x00\x00</div><div class="line">  20: 5c7830305c783030 5c7830305c783030 5c7830395c783546 5c7837335c783635     \x00\x00 \x00\x00 \x09\x5F \x73\x65</div><div class="line">  40: 5c7837325c783736 5c7836395c783633 5c7836355c783733 5c7830375c783546     \x72\x76 \x69\x63 \x65\x73 \x07\x5F</div><div class="line">  60: 5c7836345c783645 5c7837335c783244 5c7837335c783634 5c7830345c783546     \x64\x6E \x73\x2D \x73\x64 \x04\x5F</div><div class="line">  80: 5c7837355c783634 5c7837305c783035 5c7836435c783646 5c7836335c783631     \x75\x64 \x70\x05 \x6C\x6F \x63\x61</div><div class="line">  a0: 5c7836435c783030 5c7830305c783043 5c7830305c783031                      \x6C\x00 \x00\x0C \x00\x01</div></pre></td></tr></table></figure>
+<p>jenkins官方的issue，目前尚未fixed<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://issues.jenkins-ci.org/browse/JENKINS-10160</div></pre></td></tr></table></figure></p>
+<p>临时解决方案：<br>修改jenkins的java启动参数，编辑 /etc/sysconfig/jenkins， 看看效果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">JENKINS_JAVA_OPTIONS=<span class="string">"-Djava.awt.headless=true -Dhudson.DNSMultiCast.disabled=true -Dhudson.udp=-1"</span></div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jenkins/" rel="tag"># jenkins</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/21/linux/L-nagios/" rel="next" title="Nagios">
+                <i class="fa fa-chevron-left"></i> Nagios
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/06/spring/s-springmvc 1/" rel="prev" title="Spring MVC（一） 常用点">
+                Spring MVC（一） 常用点 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/07/29/devEnv/ci/o-jenkins/"
+           data-title="jenkins集合" data-url="https://sam2099.github.io/2015/07/29/devEnv/ci/o-jenkins/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">梦想还是要有的，万一实现了呢</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前提"><span class="nav-number">1.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedHat系-YUM安装"><span class="nav-number">1.2.</span> <span class="nav-text">RedHat系 YUM安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装结果"><span class="nav-number">1.3.</span> <span class="nav-text">安装结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动-停止"><span class="nav-number">1.4.</span> <span class="nav-text">启动/停止</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK"><span class="nav-number">2.1.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven"><span class="nav-number">2.2.</span> <span class="nav-text">maven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">2.3.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manage-Jenkins-–-gt-Configure-Global-Security"><span class="nav-number">2.4.</span> <span class="nav-text">Manage Jenkins –> Configure Global Security</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manage-Jenkins-–-gt-Configure-System"><span class="nav-number">2.5.</span> <span class="nav-text">Manage Jenkins –> Configure System</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-key"><span class="nav-number">2.6.</span> <span class="nav-text">ssh-key</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#New-Item"><span class="nav-number">3.</span> <span class="nav-text">New Item</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#root-project"><span class="nav-number">3.1.</span> <span class="nav-text">root project</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sub-project"><span class="nav-number">3.2.</span> <span class="nav-text">sub project</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">4.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次ssh连接-gitServer"><span class="nav-number">4.1.</span> <span class="nav-text">第一次ssh连接 gitServer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络导致日志疯狂增长"><span class="nav-number">4.2.</span> <span class="nav-text">网络导致日志疯狂增长</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"amadis"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>

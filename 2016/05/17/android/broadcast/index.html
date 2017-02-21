@@ -1,0 +1,1035 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Android broadcast," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="sam's notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="#广播
+
+广播的概念
+现实：电台通过发送广播发布消息，买个收音机，就能收听
+Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android broadcast">
+<meta property="og:url" content="https://sam2099.github.io/2016/05/17/android/broadcast/index.html">
+<meta property="og:site_name" content="sam's notes">
+<meta property="og:description" content="#广播
+
+广播的概念
+现实：电台通过发送广播发布消息，买个收音机，就能收听
+Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.687Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android broadcast">
+<meta name="twitter:description" content="#广播
+
+广播的概念
+现实：电台通过发送广播发布消息，买个收音机，就能收听
+Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sam2099.github.io/2016/05/17/android/broadcast/"/>
+
+
+
+
+
+  <title> Android broadcast | sam's notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sam's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">life && tech</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://sam2099.github.io/2016/05/17/android/broadcast/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="sam's notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android broadcast
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-17T22:28:38+08:00">
+                2016-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/05/17/android/broadcast/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/17/android/broadcast/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#广播</p>
+<ul>
+<li>广播的概念<ul>
+<li>现实：电台通过发送广播发布消息，买个收音机，就能收听</li>
+<li>Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。<br>Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<hr>
+<p>#IP拨号器</p>
+<blockquote>
+<p>原理：接收拨打电话的广播，修改广播内携带的电话号码</p>
+<ul>
+<li>定义广播接收者接收打电话广播</li>
+</ul>
+</blockquote>
+<pre><code>public class CallReceiver extends BroadcastReceiver {
+
+    //当广播接收者接收到广播时，此方法会调用
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        //拿到用户拨打的号码
+        String number = getResultData();
+        //修改广播内的号码
+        setResultData(&quot;17951&quot; + number);
+    }
+}
+</code></pre><ul>
+<li><p>在清单文件中定义该广播接收者接收的广播类型</p>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.ipdialer.CallReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.NEW_OUTGOING_CALL&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>接收打电话广播需要权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.PROCESS_OUTGOING_CALLS&quot;/&gt;
+</code></pre></li>
+<li>即使广播接收者的进程没有启动，当系统发送的广播可以被该接收者接收时，系统会自动启动该接收者所在的进程</li>
+<li>桌面隐藏<br>删除 <code>AndroidManifest.xml</code> 中</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;</div><div class="line">&lt;/intent-filter&gt;</div></pre></td></tr></table></figure>
+<p>利用上一特点，进程自动启动</p>
+<hr>
+<p>#短信拦截器</p>
+<blockquote>
+<p>系统收到短信时会产生一条广播，广播中包含了短信的号码和内容</p>
+</blockquote>
+<ul>
+<li><p>定义广播接收者接收短信广播</p>
+<pre><code>public void onReceive(Context context, Intent intent) {
+//拿到广播里携带的短信内容
+Bundle bundle = intent.getExtras();
+Object[] objects = (Object[]) bundle.get(&quot;pdus&quot;);
+for(Object ob : objects ){
+    //通过object对象创建一个短信对象
+    SmsMessage sms = SmsMessage.createFromPdu((byte[])ob);
+    System.out.println(sms.getMessageBody());
+    System.out.println(sms.getOriginatingAddress());
+
+    //阻止其他接收者接收这条广播
+    abortBroadCast();
+}
+</code></pre><p>  }</p>
+</li>
+<li>系统创建广播时，把短信存放到一个数组，然后把数据以pdus为key存入bundle，再把bundle存入intent</li>
+<li><p>清单文件中配置广播接收者接收的广播类型，注意要设置优先级属性，要保证优先级高于短信应用，才可以实现拦截</p>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.smslistener.SmsReceiver&quot;&gt;
+    &lt;intent-filter android:priority=&quot;1000&quot;&gt;
+        &lt;action android:name=&quot;android.provider.Telephony.SMS_RECEIVED&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>添加权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_SMS&quot;/&gt;
+</code></pre></li>
+</ul>
+<ul>
+<li>4.0以后广播接收者安装以后必须手动启动一次，否则不生效</li>
+<li>4.0以后广播接收者如果被手动关闭，就不会再启动了</li>
+</ul>
+<hr>
+<p>#监听SD卡状态</p>
+<ul>
+<li><p>清单文件中定义广播接收者接收的类型，监听SD卡常见的三种状态，所以广播接收者需要接收三种广播</p>
+<pre><code> &lt;receiver android:name=&quot;com.itheima.sdcradlistener.SDCardReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.MEDIA_MOUNTED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.MEDIA_UNMOUNTED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.MEDIA_REMOVED&quot;/&gt;
+        &lt;data android:scheme=&quot;file&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>广播接收者的定义</p>
+<pre><code>public class SDCardReceiver extends BroadcastReceiver {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        // 区分接收到的是哪个广播
+        String action = intent.getAction();
+
+        if(action.equals(&quot;android.intent.action.MEDIA_MOUNTED&quot;)){
+            System.out.println(&quot;sd卡就绪&quot;);
+        }
+        else if(action.equals(&quot;android.intent.action.MEDIA_UNMOUNTED&quot;)){
+            System.out.println(&quot;sd卡被移除&quot;);
+        }
+        else if(action.equals(&quot;android.intent.action.MEDIA_REMOVED&quot;)){
+            System.out.println(&quot;sd卡被拔出&quot;);
+        }
+    }
+}
+</code></pre></li>
+</ul>
+<hr>
+<p>#勒索软件</p>
+<ul>
+<li>接收开机广播，在广播接收者中启动勒索的Activity</li>
+<li><p>清单文件中配置接收<code>开机成功</code>广播</p>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.lesuo.BootReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre></li>
+<li><p>权限</p>
+<pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;/&gt;
+</code></pre></li>
+<li><p>定义广播接收者</p>
+<pre><code>@Override
+public void onReceive(Context context, Intent intent) {
+    //开机的时候就启动勒索软件
+    Intent it = new Intent(context, MainActivity.class);        
+    context.startActivity(it);
+}
+</code></pre></li>
+<li>以上代码还不能启动MainActivity，因为广播接收者的启动，并不会创建任务栈，那么没有任务栈，就无法启动activity</li>
+<li><p>手动设置创建新任务栈的flag</p>
+<pre><code>it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+</code></pre></li>
+</ul>
+<hr>
+<p>#监听应用的安装、卸载、更新</p>
+<blockquote>
+<p>原理：应用在安装卸载更新时，系统会发送广播，广播里会携带应用的包名</p>
+<ul>
+<li>清单文件定义广播接收者接收的类型，因为要监听应用的三个动作，所以需要接收三种广播</li>
+</ul>
+</blockquote>
+<pre><code>&lt;receiver android:name=&quot;com.itheima.app.AppReceiver&quot;&gt;
+    &lt;intent-filter &gt;
+        &lt;action android:name=&quot;android.intent.action.PACKAGE_ADDED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.PACKAGE_REPLACED&quot;/&gt;
+        &lt;action android:name=&quot;android.intent.action.PACKAGE_REMOVED&quot;/&gt;
+        &lt;data android:scheme=&quot;package&quot;/&gt;
+    &lt;/intent-filter&gt;
+&lt;/receiver&gt;
+</code></pre><ul>
+<li><p>广播接收者的定义</p>
+<pre><code>public void onReceive(Context context, Intent intent) {
+    //区分接收到的是哪种广播
+    String action = intent.getAction();
+    //获取广播中包含的应用包名
+    Uri uri = intent.getData();
+    if(action.equals(&quot;android.intent.action.PACKAGE_ADDED&quot;)){
+        System.out.println(uri + &quot;被安装了&quot;);
+    }
+    else if(action.equals(&quot;android.intent.action.PACKAGE_REPLACED&quot;)){
+        System.out.println(uri + &quot;被更新了&quot;);
+    }
+    else if(action.equals(&quot;android.intent.action.PACKAGE_REMOVED&quot;)){
+        System.out.println(uri + &quot;被卸载了&quot;);
+    }
+}
+</code></pre></li>
+</ul>
+<hr>
+<p>#广播的两种类型</p>
+<ul>
+<li>无序广播：所有跟广播的intent匹配的广播接收者都可以收到该广播，并且是没有先后顺序（同时收到）</li>
+<li>有序广播：所有跟广播的intent匹配的广播接收者都可以收到该广播，但是会按照广播接收者的优先级来决定接收的先后顺序<ul>
+<li>优先级的定义：-1000~1000</li>
+<li>最终接收者：所有广播接收者都接收到广播之后，它才接收，并且一定会接收</li>
+<li>abortBroadCast：阻止其他接收者接收这条广播，类似拦截，只有有序广播可以被拦截</li>
+</ul>
+</li>
+</ul>
+<h2 id="有序广播"><a href="#有序广播" class="headerlink" title="有序广播"></a>有序广播</h2><p>broadordercast()</p>
+<hr>
+<p>#Service</p>
+<ul>
+<li>就是默默运行在后台的组件，可以理解为是没有前台的activity，适合用来运行不需要前台界面的代码</li>
+<li>服务可以被手动关闭，不会重启，但是如果被自动关闭，内存充足就会重启</li>
+<li>startService启动服务的生命周期<ul>
+<li>onCreate-onStartCommand-onDestroy</li>
+</ul>
+</li>
+<li>重复的调用startService会导致onStartCommand被重复调用</li>
+</ul>
+<hr>
+<h1 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h1><ol>
+<li>前台进程：拥有前台activity（onResume方法被调用）</li>
+<li>可见进程：拥有可见activity（onPause方法被调用）</li>
+<li>服务进程：不到万不得已不会被回收，而且即便被回收，内存充足时也会被重启</li>
+<li>后台进程：拥有后台activity（activity的onStop方法被调用了），很容易被回收</li>
+<li>空进程：没有运行任何activity，很容易被回收</li>
+</ol>
+<hr>
+<p>#电话窃听器</p>
+<ul>
+<li>电话状态：空闲、响铃、接听</li>
+<li><p>获取电话管理器，设置侦听</p>
+<pre><code>TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
+</code></pre></li>
+<li><p>侦听对象的实现</p>
+<pre><code>class MyPhoneStateListener extends PhoneStateListener{
+
+    //当电话状态改变时，此方法调用
+    @Override
+    public void onCallStateChanged(int state, String incomingNumber) {
+        // TODO Auto-generated method stub
+        super.onCallStateChanged(state, incomingNumber);
+        switch (state) {
+        case TelephonyManager.CALL_STATE_IDLE://空闲
+            if(recorder != null){
+                recorder.stop();
+                recorder.release();
+            }
+            break;
+        case TelephonyManager.CALL_STATE_OFFHOOK://摘机
+            if(recorder != null){
+                recorder.start();
+            }
+            break;
+        case TelephonyManager.CALL_STATE_RINGING://响铃
+            recorder = new MediaRecorder();
+            //设置声音来源
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            //设置音频文件格式
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            recorder.setOutputFile(&quot;sdcard/haha.3gp&quot;);
+            //设置音频文件编码
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            try {
+                recorder.prepare();
+            } catch (IllegalStateException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            break;
+        }
+    }
+}
+</code></pre></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-broadcast/" rel="tag"># Android broadcast</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/13/android/android0_index/" rel="next" title="Android入门 总纲">
+                <i class="fa fa-chevron-left"></i> Android入门 总纲
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/14/devEnv/10years/" rel="prev" title="十年回头望">
+                十年回头望 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/17/android/broadcast/"
+           data-title="Android broadcast" data-url="https://sam2099.github.io/2016/05/17/android/broadcast/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">梦想还是要有的，万一实现了呢</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#有序广播"><span class="nav-number">1.</span> <span class="nav-text">有序广播</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程优先级"><span class="nav-number"></span> <span class="nav-text">进程优先级</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"amadis"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>

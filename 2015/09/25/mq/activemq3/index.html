@@ -1,0 +1,798 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="activemq," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="sam's notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="上篇介绍了 集成Spring-远程调用, 本次介绍集成 Spring， 常规JMS，消息驱动。主角是 activeMq， JmsTemplate， @JmsListener。
+
+activeMq 是消息总线，JMS provider； 
+JmsTemplate 是由 Spring提供的消息模板，简化消息生产者和消费者端的代码开发量。就是封装了 连接JMS provider（如ActiveMQ），建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="activemq(三) Spring集成 - 消息驱动">
+<meta property="og:url" content="https://sam2099.github.io/2015/09/25/mq/activemq3/index.html">
+<meta property="og:site_name" content="sam's notes">
+<meta property="og:description" content="上篇介绍了 集成Spring-远程调用, 本次介绍集成 Spring， 常规JMS，消息驱动。主角是 activeMq， JmsTemplate， @JmsListener。
+
+activeMq 是消息总线，JMS provider； 
+JmsTemplate 是由 Spring提供的消息模板，简化消息生产者和消费者端的代码开发量。就是封装了 连接JMS provider（如ActiveMQ），建">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="activemq(三) Spring集成 - 消息驱动">
+<meta name="twitter:description" content="上篇介绍了 集成Spring-远程调用, 本次介绍集成 Spring， 常规JMS，消息驱动。主角是 activeMq， JmsTemplate， @JmsListener。
+
+activeMq 是消息总线，JMS provider； 
+JmsTemplate 是由 Spring提供的消息模板，简化消息生产者和消费者端的代码开发量。就是封装了 连接JMS provider（如ActiveMQ），建">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sam2099.github.io/2015/09/25/mq/activemq3/"/>
+
+
+
+
+
+  <title> activemq(三) Spring集成 - 消息驱动 | sam's notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sam's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">life && tech</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://sam2099.github.io/2015/09/25/mq/activemq3/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="sam's notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                activemq(三) Spring集成 - 消息驱动
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-25T21:22:22+08:00">
+                2015-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mq/" itemprop="url" rel="index">
+                    <span itemprop="name">mq</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/25/mq/activemq3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/25/mq/activemq3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上篇介绍了 <a href="">集成Spring-远程调用</a>, 本次介绍集成 Spring， 常规JMS，消息驱动。主角是 activeMq， JmsTemplate， @JmsListener。</p>
+<ul>
+<li>activeMq 是消息总线，JMS provider； </li>
+<li>JmsTemplate 是由 Spring提供的消息模板，简化消息生产者和消费者端的代码开发量。就是封装了 连接JMS provider（如ActiveMQ），建立JMS Session（如QueueSession），建立消息生产者，建立消费者，发送消息，接收消息；</li>
+<li>@JmsListener 由 Spring 提供的最简单的消息接收端操作方式。</li>
+</ul>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="必须的jar"><a href="#必须的jar" class="headerlink" title="必须的jar"></a>必须的jar</h3><p>maven管理的方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.apache.activemq&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;activemq-all&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;5.12.0&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
+<p>activemq 的 PooledConnectionFactory 会调用 commons-pool2。</p>
+<h3 id="PropertySourcesPlaceholderConfigurer"><a href="#PropertySourcesPlaceholderConfigurer" class="headerlink" title="PropertySourcesPlaceholderConfigurer"></a>PropertySourcesPlaceholderConfigurer</h3><p>配置<code>PropertySourcesPlaceholderConfigurer</code>， 下面用得着，比较优雅。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class ApplicationConfiguration</div><div class="line">&#123;</div><div class="line">    //To resolve $&#123;&#125; in @Value (in *.properties files by @PropertySource included)</div><div class="line">    @Bean</div><div class="line">    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() &#123;</div><div class="line">      return new PropertySourcesPlaceholderConfigurer();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>消息生产者和消费者都需要。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line">import org.apache.activemq.ActiveMQConnectionFactory;</div><div class="line">    import org.apache.activemq.command.ActiveMQQueue;</div><div class="line">import org.apache.activemq.pool.PooledConnectionFactory;</div><div class="line">import org.springframework.beans.factory.annotation.Autowired;</div><div class="line">import org.springframework.context.annotation.Bean;</div><div class="line">import org.springframework.context.annotation.Configuration;</div><div class="line">import org.springframework.context.annotation.PropertySource;</div><div class="line">import org.springframework.core.env.Environment;</div><div class="line">import org.springframework.jms.annotation.EnableJms;</div><div class="line">import org.springframework.jms.config.DefaultJmsListenerContainerFactory;</div><div class="line">import org.springframework.jms.connection.CachingConnectionFactory;</div><div class="line">import org.springframework.jms.core.JmsTemplate;</div><div class="line"></div><div class="line">@Configuration</div><div class="line">@EnableJms //开启jsm 注解</div><div class="line">@PropertySource(&#123; &quot;classpath:conf/jms.properties&quot;&#125;) // 加载配置资源文件</div><div class="line">public class JmsConfiguration</div><div class="line">&#123;</div><div class="line"></div><div class="line">    @Autowired</div><div class="line">    private Environment env;</div><div class="line"></div><div class="line">    //ConnectionFactory</div><div class="line">    @Bean</div><div class="line">    public ActiveMQConnectionFactory jmsConnectionFactory()</div><div class="line">    &#123;</div><div class="line">        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();</div><div class="line">        connectionFactory.setBrokerURL(&quot;tcp://localhost:61616&quot;);</div><div class="line">        return connectionFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //activeMq PooledConnectionFactory</div><div class="line">    @Bean</div><div class="line">    public PooledConnectionFactory activeMqPooledConnectionFactory()</div><div class="line">    &#123;</div><div class="line">        PooledConnectionFactory jmsFactory = new PooledConnectionFactory();</div><div class="line">        jmsFactory.setConnectionFactory(jmsConnectionFactory());</div><div class="line">        return jmsFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //spring CachingConnectionFactory</div><div class="line">    @Bean</div><div class="line">    public CachingConnectionFactory springCachingConnectionFactory()</div><div class="line">    &#123;</div><div class="line">        CachingConnectionFactory jmsFactory = new CachingConnectionFactory();</div><div class="line">        jmsFactory.setTargetConnectionFactory(jmsConnectionFactory());</div><div class="line">        return jmsFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // Queue</div><div class="line">    @Bean</div><div class="line">    public ActiveMQQueue jmsQueue()</div><div class="line">    &#123;</div><div class="line">        ActiveMQQueue queue = new ActiveMQQueue(env.getProperty(&quot;testQueue&quot;));</div><div class="line">        return queue;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // ListenerContainerFactory， @EnableJms 需要这个默认 bean</div><div class="line">    @Bean</div><div class="line">    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() &#123;</div><div class="line">        DefaultJmsListenerContainerFactory factory =</div><div class="line">                new DefaultJmsListenerContainerFactory();</div><div class="line">        factory.setConnectionFactory(activeMqPooledConnectionFactory());</div><div class="line">        factory.setConcurrency(&quot;3-10&quot;);</div><div class="line">        return factory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // Spring jmsTemplate</div><div class="line">    @Bean</div><div class="line">    public JmsTemplate myJmsTemplate()</div><div class="line">    &#123;</div><div class="line">        JmsTemplate jmsTp = new JmsTemplate();</div><div class="line">        jmsTp.setDefaultDestination(jmsQueue());</div><div class="line">        jmsTp.setConnectionFactory(activeMqPooledConnectionFactory());</div><div class="line">        return jmsTp;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>补充说明：</p>
+<ul>
+<li>@EnableJms：开启 JMS 注解， 这样 @JmsListener 等注解才会生效；默认需要jmsListenerContainerFactory 这个 Bean。</li>
+<li>activeMq PooledConnectionFactory 和 springCachingConnectionFactory 同等作用，可以替换。</li>
+<li>testQueue 具体value 在 jms.properties 里配置，类似常量。</li>
+</ul>
+<h2 id="消息发送和接收"><a href="#消息发送和接收" class="headerlink" title="消息发送和接收"></a>消息发送和接收</h2><p>首先看代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">@Service(&quot;GmGameAchvServiceImpl&quot;)</div><div class="line">@PropertySource(&#123; &quot;classpath:conf/jms.properties&quot;&#125;)</div><div class="line">public class GmGameAchvServiceImpl</div><div class="line">&#123;</div><div class="line">    @Resource(name = &quot;myJmsTemplate&quot;)</div><div class="line">    private JmsTemplate jmsTemplate;</div><div class="line"></div><div class="line"></div><div class="line">    // 消息接收</div><div class="line">    @JmsListener(destination = &quot;$&#123;testQueue&#125;&quot;)</div><div class="line">    public void JmsReceiveTest(String data)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;jms ----------------------------- &quot; + data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    //消息发送</div><div class="line">    public void jmsSendTest()</div><div class="line">    &#123;</div><div class="line">        int numberOfMessages = 10;</div><div class="line">        StringBuilder payload = null;</div><div class="line">        for (int i = 0; i &lt; numberOfMessages; ++i)</div><div class="line">        &#123;</div><div class="line">            payload = new StringBuilder();</div><div class="line">            payload.append(&quot;Message [&quot;).append(i).append(&quot;] sent at: &quot;).append(new Date());</div><div class="line">            final int finalI = i;</div><div class="line">            final StringBuilder finalPayload = payload;</div><div class="line">            jmsTemplate.send((Session session) -&gt; &#123;</div><div class="line">                TextMessage message = session.createTextMessage(finalPayload.toString());</div><div class="line">                message.setIntProperty(&quot;messageCount&quot;, finalI);</div><div class="line">                return message;</div><div class="line">            &#125;);</div><div class="line"></div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>消息发送<br>方法 <code>jmsSendTest</code>， 利用 jmsTemplate 很方便</li>
+<li>消息接收<br><code>JmsReceiveTest</code>， 使用了 <code>@JmsListener</code>，这是最简单的方式，比 jmsTemplate 更简单。<br><code>@JmsListener</code> 需要制定 <code>destination</code>， 这里 <code>${testQueue}</code> 的值由 <code>conf/jms.properties</code> 里具体制定， 由上文提到的 <code>PropertySourcesPlaceholderConfigurer</code> 负责转化。 如此在一个配置文件里配置，多个地方使用，如需改动，仅需修改配置文件，不用修改源代码。</li>
+</ul>
+<h2 id="消息数据转换-Message-Converters"><a href="#消息数据转换-Message-Converters" class="headerlink" title="消息数据转换 Message Converters"></a>消息数据转换 Message Converters</h2><p>Spring 会自动进行消息转换， 比如上面 <code>jmsSendTest</code> 发送的是 <code>TextMessage</code>， <code>JmsReceiveTest</code> 用 String 类型参数接收就好。POJO 对象一样可以如此操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">@JmsListener(destination = &quot;$&#123;testQueue&#125;&quot;)</div><div class="line">public void JmsReceiveTest(GmGameAchvEntity data)</div><div class="line">&#123;</div><div class="line">    System.out.println(&quot;jms ----------------------------- &quot; + data.getId());</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void jmsSendTest()</div><div class="line">&#123;</div><div class="line">    int numberOfMessages = 10;</div><div class="line">    StringBuilder payload = null;</div><div class="line">    for (int i = 0; i &lt; numberOfMessages; ++i)</div><div class="line">    &#123;</div><div class="line">        final int finalI = i;</div><div class="line">        GmGameAchvEntity achv = new GmGameAchvEntity();</div><div class="line">        achv.setId((long) i);</div><div class="line">        jmsTemplate.send((Session session) -&gt; &#123;</div><div class="line">            ObjectMessage message = session.createObjectMessage(achv);</div><div class="line">            message.setIntProperty(&quot;messageCount&quot;, finalI);</div><div class="line">            return message;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如此这般就好了，是不是 很简单方便。</p>
+<h2 id="响应管理"><a href="#响应管理" class="headerlink" title="响应管理"></a>响应管理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@JmsListener(destination = &quot;myQueue&quot;)</div><div class="line">@SendTo(&quot;queueOut&quot;)</div><div class="line">public OrderStatus processOrder(Order order) &#123;</div><div class="line">    // order processing</div><div class="line">    return status;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>@SendTo</code> 就可以返回值 到 <code>queueOut</code> 这个destination</p>
+<p>～～～～～～～ 嗯嗯， 很不错的样子 ：）</p>
+<h2 id="activemq集合贴"><a href="#activemq集合贴" class="headerlink" title="activemq集合贴"></a><a href="http://giveme5.top/2015/09/11/mq/mq/#ActiveMQ" target="_blank" rel="external">activemq集合贴</a></h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/activemq/" rel="tag"># activemq</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/18/mq/activemq2/" rel="next" title="activemq （二）  集成Spring-远程调用">
+                <i class="fa fa-chevron-left"></i> activemq （二）  集成Spring-远程调用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/10/15/devEnv/nexus/restlet/" rel="prev" title="nexus 不能自动下载 restlet jars 的解决方案">
+                nexus 不能自动下载 restlet jars 的解决方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/09/25/mq/activemq3/"
+           data-title="activemq(三) Spring集成 - 消息驱动" data-url="https://sam2099.github.io/2015/09/25/mq/activemq3/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">梦想还是要有的，万一实现了呢</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#必须的jar"><span class="nav-number">1.1.</span> <span class="nav-text">必须的jar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PropertySourcesPlaceholderConfigurer"><span class="nav-number">1.2.</span> <span class="nav-text">PropertySourcesPlaceholderConfigurer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息发送和接收"><span class="nav-number">3.</span> <span class="nav-text">消息发送和接收</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息数据转换-Message-Converters"><span class="nav-number">4.</span> <span class="nav-text">消息数据转换 Message Converters</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应管理"><span class="nav-number">5.</span> <span class="nav-text">响应管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#activemq集合贴"><span class="nav-number">6.</span> <span class="nav-text">activemq集合贴</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"amadis"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>

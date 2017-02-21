@@ -1,0 +1,833 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Spring MVC," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="sam's notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="springmvc一
+@RequestMapping URIURI Template Patternsspring doc
+如何匹配这个url &amp;quot;/spring-web/spring-web-3.0.5.jar&amp;quot; ？
+@RequestMapping 支持正则表达式， 语法就是 {varName:regex}。
+比如上面那个url就可以这样12345@RequestMapping">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC（一） 常用点">
+<meta property="og:url" content="https://sam2099.github.io/2015/08/06/spring/s-springmvc 1/index.html">
+<meta property="og:site_name" content="sam's notes">
+<meta property="og:description" content="springmvc一
+@RequestMapping URIURI Template Patternsspring doc
+如何匹配这个url &amp;quot;/spring-web/spring-web-3.0.5.jar&amp;quot; ？
+@RequestMapping 支持正则表达式， 语法就是 {varName:regex}。
+比如上面那个url就可以这样12345@RequestMapping">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC（一） 常用点">
+<meta name="twitter:description" content="springmvc一
+@RequestMapping URIURI Template Patternsspring doc
+如何匹配这个url &amp;quot;/spring-web/spring-web-3.0.5.jar&amp;quot; ？
+@RequestMapping 支持正则表达式， 语法就是 {varName:regex}。
+比如上面那个url就可以这样12345@RequestMapping">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sam2099.github.io/2015/08/06/spring/s-springmvc 1/"/>
+
+
+
+
+
+  <title> Spring MVC（一） 常用点 | sam's notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sam's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">life && tech</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://sam2099.github.io/2015/08/06/spring/s-springmvc 1/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="sam's notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring MVC（一） 常用点
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-06T17:37:37+08:00">
+                2015-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/08/06/spring/s-springmvc 1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/06/spring/s-springmvc 1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>springmvc一</p>
+<h2 id="RequestMapping-URI"><a href="#RequestMapping-URI" class="headerlink" title="@RequestMapping URI"></a>@RequestMapping URI</h2><h3 id="URI-Template-Patterns"><a href="#URI-Template-Patterns" class="headerlink" title="URI Template Patterns"></a>URI Template Patterns</h3><p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-ann-requestmapping-uri-templates" target="_blank" rel="external">spring doc</a></p>
+<p>如何匹配这个url <code>&quot;/spring-web/spring-web-3.0.5.jar&quot;</code> ？</p>
+<p><code>@RequestMapping</code> 支持正则表达式， 语法就是 <code>{varName:regex}</code>。</p>
+<p>比如上面那个url就可以这样<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/spring-web/&#123;symbolicName:[a-z-]+&#125;-&#123;version:\\d\\.\\d\\.\\d&#125;&#123;extension:\\.[a-z]+&#125;"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(@PathVariable String version, @PathVariable String extension)</span> </span>&#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="Path-Pattern-Comparison"><a href="#Path-Pattern-Comparison" class="headerlink" title="Path Pattern Comparison"></a>Path Pattern Comparison</h4><p>多重匹配优先规则：</p>
+<ul>
+<li>越少数量URI variables 和 wild cards 的表达式越优先；例如<code>/hotels/{hotel}/*</code> 比 <code>/hotels/{hotel}/**</code> 优先</li>
+<li>数量一致，越长的表达式越优先；例如<code>/foo/bar*</code> 比 <code>/foo/*</code> 优先</li>
+<li>数量和长度一致， 越少wild cards的表达式越优先；例如<code>/hotels/{hotel}</code> 比 <code>/hotels/*</code> 优先</li>
+<li>例外的 <code>/api/{a}/{b}/{c</code> 比 <code>/**</code> 优先</li>
+</ul>
+<h3 id="Path-Pattern-Matching-By-Suffix"><a href="#Path-Pattern-Matching-By-Suffix" class="headerlink" title="Path Pattern Matching By Suffix"></a>Path Pattern Matching By Suffix</h3><p>默认Spring MVC会自动增加后缀 <code>&quot;.*&quot;</code> 来匹配URI。比如 <code>/person</code> 会自动映射成 <code>/person.*</code> ， 可以自动匹配文件类型，如<code>/person.pdf</code>, <code>/person.xml</code>，不能匹配 <code>/person.com</code><br><code>.com</code> 不是文件类型。</p>
+<h3 id="Matrix-Variables"><a href="#Matrix-Variables" class="headerlink" title="Matrix Variables"></a>Matrix Variables</h3><p>需要修改下默认<a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-ann-matrix-variables" target="_blank" rel="external">配置</a> ，，，，就可以使用<a href="http://www.w3.org/DesignIssues/MatrixURIs.html" target="_blank" rel="external"> “Matrix URIs”</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// GET /pets/42;q=11;r=22</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(@PathVariable String petId, @MatrixVariable int q) &#123;</div><div class="line"></div><div class="line">    // petId == 42</div><div class="line">    // q == 11</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// GET /owners/42;q=11/pets/21;q=22</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/owners/&#123;ownerId&#125;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(</div><div class="line">        @MatrixVariable(name=&quot;q&quot;, pathVar=&quot;ownerId&quot;) int q1,</div><div class="line">        @MatrixVariable(name=&quot;q&quot;, pathVar=&quot;petId&quot;) int q2) &#123;</div><div class="line"></div><div class="line">    // q1 == 11</div><div class="line">    // q2 == 22</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// GET /pets/42</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(@MatrixVariable(required=false, defaultValue=&quot;1&quot;) int q) &#123;</div><div class="line"></div><div class="line">    // q == 1</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// GET /owners/42;q=11;r=12/pets/21;q=22;s=23</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/owners/&#123;ownerId&#125;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(</div><div class="line">        @MatrixVariable Map&lt;String, String&gt; matrixVars,</div><div class="line">        @MatrixVariable(pathVar=&quot;petId&quot;&quot;) Map&lt;String, String&gt; petMatrixVars) &#123;</div><div class="line"></div><div class="line">    // matrixVars: [&quot;q&quot; : [11,22], &quot;r&quot; : 12, &quot;s&quot; : 23]</div><div class="line">    // petMatrixVars: [&quot;q&quot; : 11, &quot;s&quot; : 23]</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="BindingResult-and-ModelAttribute"><a href="#BindingResult-and-ModelAttribute" class="headerlink" title="BindingResult and @ModelAttribute"></a>BindingResult and @ModelAttribute</h3><p>BindingResult必须直接跟在@ModelAttribute后面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@RequestMapping(method = RequestMethod.POST)</div><div class="line">public String processSubmit(@ModelAttribute(&quot;pet&quot;) Pet pet, BindingResult result, Model model) &#123; ... &#125;</div></pre></td></tr></table></figure></p>
+<h3 id="各种参数绑定"><a href="#各种参数绑定" class="headerlink" title="各种参数绑定"></a>各种参数绑定</h3><h4 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h4><ul>
+<li>绑定URI的参数，若方法参数名称和需要绑定的uri template中变量名称不一致，需要在@PathVariable(“name”)指定uri template中的名称。</li>
+</ul>
+<h4 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="@RequestHeader"></a>@RequestHeader</h4><ul>
+<li>可以把Request请求header部分的值绑定到方法的参数<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@RequestMapping(&quot;/displayHeaderInfo.do&quot;)  </div><div class="line">public void displayHeaderInfo(@RequestHeader(&quot;Accept-Encoding&quot;) String encoding,  </div><div class="line">                              @RequestHeader(&quot;Keep-Alive&quot;) long keepAlive)  &#123;  </div><div class="line">  </div><div class="line">  //...  </div><div class="line">  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="CookieValue"><a href="#CookieValue" class="headerlink" title="@CookieValue"></a>@CookieValue</h4><ul>
+<li>把Request header中关于cookie的值绑定到方法的参数  </li>
+</ul>
+<h4 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h4><ul>
+<li>常用来处理简单类型的绑定，通过Request.getParameter() 获取的String可直接转换为简单类型的情况（ String–&gt; 简单类型的转换操作由ConversionService配置的转换器来完成）；因为使用request.getParameter()方式获取参数，所以可以处理get 方式中queryString的值，也可以处理post方式中 body data的值；</li>
+<li>用来处理Content-Type: 为 application/x-www-form-urlencoded编码的内容，提交方式GET、POST；</li>
+<li>该注解有两个属性： value、required； value用来指定要传入值的id名称，required用来指示参数是否必须绑定  </li>
+</ul>
+<h4 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h4><ul>
+<li>该注解常用来处理Content-Type: 不是application/x-www-form-urlencoded编码的内容，例如application/json, application/xml等；</li>
+<li>它是通过使用HandlerAdapter 配置的HttpMessageConverters来解析post data body，然后绑定到相应的bean上的。</li>
+<li>因为配置有FormHttpMessageConverter，所以也可以用来处理 application/x-www-form-urlencoded的内容，处理完的结果放在一个MultiValueMap<string, string="">里，这种情况在某些特殊需求下使用，详情查看FormHttpMessageConverter api;  </string,></li>
+</ul>
+<h4 id="SessionAttributes"><a href="#SessionAttributes" class="headerlink" title="@SessionAttributes"></a>@SessionAttributes</h4><ul>
+<li>绑定HttpSession中的attribute对象的值</li>
+</ul>
+<h4 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="@ModelAttribute"></a>@ModelAttribute</h4><p>该注解有两个用法，一个是用于方法上，一个是用于参数上；<br>用于方法上时：  通常用来在处理@RequestMapping之前，为请求绑定需要从后台查询的model；<br>用于参数上时： 用来通过名称对应，把相应名称的值绑定到注解的参数bean上；要绑定的值来源于：</p>
+<ul>
+<li>@SessionAttributes 启用的attribute 对象上；</li>
+<li>@ModelAttribute 用于方法上时指定的model对象；</li>
+<li>上述两种情况都没有时，new一个需要绑定的bean对象，然后把request中按名称对应的方式把值绑定到bean中。</li>
+</ul>
+<h3 id="HttpPutFormContentFilter"><a href="#HttpPutFormContentFilter" class="headerlink" title="HttpPutFormContentFilter"></a>HttpPutFormContentFilter</h3><p>支持PUT方法</p>
+<h3 id="InitBinder"><a href="#InitBinder" class="headerlink" title="@InitBinder"></a>@InitBinder</h3><p>在controller里面配置web数据绑定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@Controller</div><div class="line">public class MyFormController &#123;</div><div class="line"></div><div class="line">    @InitBinder</div><div class="line">    public void initBinder(WebDataBinder binder) &#123;</div><div class="line">        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</div><div class="line">        dateFormat.setLenient(false);</div><div class="line">        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>最新的Spring 4.2 里面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@Controller</div><div class="line">public class MyFormController &#123;</div><div class="line"></div><div class="line">    @InitBinder</div><div class="line">    public void initBinder(WebDataBinder binder) &#123;</div><div class="line">        binder.addCustomFormatter(new DateFormatter(&quot;yyyy-MM-dd&quot;));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="ControllerAdvice"><a href="#ControllerAdvice" class="headerlink" title="@ControllerAdvice"></a>@ControllerAdvice</h3><p>被注解的类可以搭配<code>@ExceptionHandler</code>, <code>@InitBinder</code>, and <code>@ModelAttribute</code>，全局处理</p>
+<h2 id="Resolving-views"><a href="#Resolving-views" class="headerlink" title="Resolving views"></a>Resolving views</h2><p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-viewresolver-resolver" target="_blank" rel="external">Spring Doc : Resolving views</a></p>
+<h2 id="Spring’s-multipart-file-upload-support"><a href="#Spring’s-multipart-file-upload-support" class="headerlink" title="Spring’s multipart (file upload) support"></a><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-multipart" target="_blank" rel="external">Spring’s multipart (file upload) support</a></h2><h2 id="Handling-exceptions"><a href="#Handling-exceptions" class="headerlink" title="Handling exceptions"></a>Handling exceptions</h2><ul>
+<li>HandlerExceptionResolver</li>
+<li>@ExceptionHandler</li>
+</ul>
+<p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-ann-rest-spring-mvc-exceptions" target="_blank" rel="external">Standard Spring MVC Exceptions</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-MVC/" rel="tag"># Spring MVC</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/29/devEnv/ci/o-jenkins/" rel="next" title="jenkins集合">
+                <i class="fa fa-chevron-left"></i> jenkins集合
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/07/spring/s-springmvc2/" rel="prev" title="Spring MVC（二） 配置">
+                Spring MVC（二） 配置 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/08/06/spring/s-springmvc 1/"
+           data-title="Spring MVC（一） 常用点" data-url="https://sam2099.github.io/2015/08/06/spring/s-springmvc 1/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">梦想还是要有的，万一实现了呢</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RequestMapping-URI"><span class="nav-number">1.</span> <span class="nav-text">@RequestMapping URI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#URI-Template-Patterns"><span class="nav-number">1.1.</span> <span class="nav-text">URI Template Patterns</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Path-Pattern-Comparison"><span class="nav-number">1.1.1.</span> <span class="nav-text">Path Pattern Comparison</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Path-Pattern-Matching-By-Suffix"><span class="nav-number">1.2.</span> <span class="nav-text">Path Pattern Matching By Suffix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Matrix-Variables"><span class="nav-number">1.3.</span> <span class="nav-text">Matrix Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BindingResult-and-ModelAttribute"><span class="nav-number">1.4.</span> <span class="nav-text">BindingResult and @ModelAttribute</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各种参数绑定"><span class="nav-number">1.5.</span> <span class="nav-text">各种参数绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PathVariable"><span class="nav-number">1.5.1.</span> <span class="nav-text">@PathVariable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestHeader"><span class="nav-number">1.5.2.</span> <span class="nav-text">@RequestHeader</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CookieValue"><span class="nav-number">1.5.3.</span> <span class="nav-text">@CookieValue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestParam"><span class="nav-number">1.5.4.</span> <span class="nav-text">@RequestParam</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RequestBody"><span class="nav-number">1.5.5.</span> <span class="nav-text">@RequestBody</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SessionAttributes"><span class="nav-number">1.5.6.</span> <span class="nav-text">@SessionAttributes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ModelAttribute"><span class="nav-number">1.5.7.</span> <span class="nav-text">@ModelAttribute</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpPutFormContentFilter"><span class="nav-number">1.6.</span> <span class="nav-text">HttpPutFormContentFilter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InitBinder"><span class="nav-number">1.7.</span> <span class="nav-text">@InitBinder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ControllerAdvice"><span class="nav-number">1.8.</span> <span class="nav-text">@ControllerAdvice</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resolving-views"><span class="nav-number">2.</span> <span class="nav-text">Resolving views</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring’s-multipart-file-upload-support"><span class="nav-number">3.</span> <span class="nav-text">Spring’s multipart (file upload) support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handling-exceptions"><span class="nav-number">4.</span> <span class="nav-text">Handling exceptions</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"amadis"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>

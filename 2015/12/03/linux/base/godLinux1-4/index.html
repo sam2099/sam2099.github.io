@@ -1,0 +1,945 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="GOD linux," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="sam's notes" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="目录
+Linux系统目录结构
+相对/绝对路径
+创建/复制/删除文件
+查看文件内容
+xfs文件系统的备份和恢复
+
+目录结构详细的可以参考 鸟哥
+
+
+
+目录
+应放置文件内容
+
+
+
+
+/
+通常称为根分区。所有的文件和目录皆由此开始。只有root用户对此目录拥有写权限。
+
+
+/boot
+存放Linux系统启动时需要加载的文件。 (一般在单独的一个磁盘分区里面保存) Kernel、grub等文件都存放在此。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-4 rhel7文件管理和xfs文件系统备份">
+<meta property="og:url" content="https://sam2099.github.io/2015/12/03/linux/base/godLinux1-4/index.html">
+<meta property="og:site_name" content="sam's notes">
+<meta property="og:description" content="目录
+Linux系统目录结构
+相对/绝对路径
+创建/复制/删除文件
+查看文件内容
+xfs文件系统的备份和恢复
+
+目录结构详细的可以参考 鸟哥
+
+
+
+目录
+应放置文件内容
+
+
+
+
+/
+通常称为根分区。所有的文件和目录皆由此开始。只有root用户对此目录拥有写权限。
+
+
+/boot
+存放Linux系统启动时需要加载的文件。 (一般在单独的一个磁盘分区里面保存) Kernel、grub等文件都存放在此。">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1-4 rhel7文件管理和xfs文件系统备份">
+<meta name="twitter:description" content="目录
+Linux系统目录结构
+相对/绝对路径
+创建/复制/删除文件
+查看文件内容
+xfs文件系统的备份和恢复
+
+目录结构详细的可以参考 鸟哥
+
+
+
+目录
+应放置文件内容
+
+
+
+
+/
+通常称为根分区。所有的文件和目录皆由此开始。只有root用户对此目录拥有写权限。
+
+
+/boot
+存放Linux系统启动时需要加载的文件。 (一般在单独的一个磁盘分区里面保存) Kernel、grub等文件都存放在此。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://sam2099.github.io/2015/12/03/linux/base/godLinux1-4/"/>
+
+
+
+
+
+  <title> 1-4 rhel7文件管理和xfs文件系统备份 | sam's notes </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">sam's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">life && tech</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="https://sam2099.github.io/2015/12/03/linux/base/godLinux1-4/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="sam's notes">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                1-4 rhel7文件管理和xfs文件系统备份
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-03T15:29:44+08:00">
+                2015-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/03/linux/base/godLinux1-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/03/linux/base/godLinux1-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>Linux系统目录结构</li>
+<li>相对/绝对路径</li>
+<li>创建/复制/删除文件</li>
+<li>查看文件内容</li>
+<li>xfs文件系统的备份和恢复</li>
+</ul>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>详细的可以参考 <a href="http://vbird.dic.ksu.edu.tw/linux_basic/0210filepermission_3.php" target="_blank" rel="external">鸟哥</a></p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>应放置文件内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/</td>
+<td>通常称为根分区。所有的文件和目录皆由此开始。只有root用户对此目录拥有写权限。</td>
+</tr>
+<tr>
+<td>/boot</td>
+<td>存放Linux系统启动时需要加载的文件。 (一般在单独的一个磁盘分区里面保存) Kernel、grub等文件都存放在此。</td>
+</tr>
+<tr>
+<td>/etc</td>
+<td>RHEL6中主要存放服务的配置文件，RHEL7中，以/usr/lib/systemd/system进行代替</td>
+</tr>
+<tr>
+<td>/var</td>
+<td>是一个可增长的目录，包含很经常变的文件。例如，/var/log（系统日志）、/var/lib （包文件）</td>
+</tr>
+<tr>
+<td>/root</td>
+<td>管理员所有数据。  root用户的家目录</td>
+</tr>
+<tr>
+<td>/tmp</td>
+<td>临时文件存储位置</td>
+</tr>
+<tr>
+<td>/usr</td>
+<td>unix software source， 放置是所有系统默认的软件(distribution发布者提供的软件)，有点类似Windows 系统的『C:\Windows\ + C:\Program files\』这两个目录的综合体，鸟哥的链接有次级目录的说明</td>
+</tr>
+<tr>
+<td>/opt</td>
+<td>给第三方协力软件放置的目录，自行安装额外的软件(非原本的distribution提供的)</td>
+</tr>
+<tr>
+<td>/bin</td>
+<td>此目录包含二进制可执行文件，在单人维护模式下还能够被操作</td>
+</tr>
+<tr>
+<td>/sbin</td>
+<td>系统命令 ，此目录中的命令主要供系统管理员使用，为开机过程中所需要的，里面包括了开机、修复、还原系统所需要的指令，常见的指令包括：fdisk, fsck, ifconfig, init, mkfs等等。</td>
+</tr>
+<tr>
+<td>/mnt</td>
+<td>暂时挂载某些额外的装置</td>
+</tr>
+<tr>
+<td>/media</td>
+<td>放置的就是可移除的装置啦！ 包括软盘、光盘、DVD等等装置都暂时挂载于此。</td>
+</tr>
+<tr>
+<td>/dev</td>
+<td>包含设备文件。在Linux中，一切都被看做文件。终端设备、USB、磁盘等等都被看做文件</td>
+</tr>
+<tr>
+<td>/home</td>
+<td>普通用户所有数据存放在这个目录下</td>
+</tr>
+<tr>
+<td>/proc</td>
+<td>本身是一个『虚拟文件系统(virtual filesystem)』放置的数据都是在内存当中， 例如系统核心、行程信息(process)、周边装置的状态及网络状态等等。因为这个目录下的数据都是在内存当中， 所以本身不占任何硬盘空间啊！比较重要的文件例如：/proc/cpuinfo, /proc/dma, /proc/interrupts, /proc/ioports, /proc/net/* 等等。</td>
+</tr>
+<tr>
+<td>/lib</td>
+<td>系统最基本的动态链接共享库，尤其重要的是/lib/modules/这个目录， 因为该目录会放置核心相关的模块(驱动程序)</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h2 id="绝对路径-相对路径"><a href="#绝对路径-相对路径" class="headerlink" title="绝对路径/相对路径"></a>绝对路径/相对路径</h2><p>命令 cd<br><code>.</code>      表当前目录<br><code>..</code>    代表的是上一级目录<br><code> </code> 表示当前目录</p>
+<p><a href="http://7xklqw.com1.z0.glb.clouddn.com/图片1.png" target="_blank" rel="external"></a></p>
+<h2 id="创建-复制-删除文件"><a href="#创建-复制-删除文件" class="headerlink" title="创建/复制/删除文件"></a>创建/复制/删除文件</h2><h3 id="touch"><a href="#touch" class="headerlink" title="touch　"></a>touch　</h3><p>作用：常用来创建空文件<br>语法： touch 文件名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# touch sam</div></pre></td></tr></table></figure></p>
+<h3 id="mkdir"><a href="#mkdir" class="headerlink" title="mkdir"></a>mkdir</h3><p>作用：创建目录<br>语法：mkdir 目录名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# mkdir sam</div><div class="line">[root@localhost ~]# mkdir -p sam/sam2/sam3</div></pre></td></tr></table></figure></p>
+<p>  <code>-p</code> 连同父目录一起创建</p>
+<h3 id="Linux系统中一切皆文件"><a href="#Linux系统中一切皆文件" class="headerlink" title="Linux系统中一切皆文件"></a>Linux系统中一切皆文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# touch a</div><div class="line">[root@localhost ~]# mkdir a</div><div class="line">mkdir: cannot create directory ‘a’: File exists</div></pre></td></tr></table></figure>
+<h3 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h3><p>作用：复制文件<br>语法：cp [-ra] 源文件  目标文件<br>-r :递归，包含子目录和文件<br>-a :复制属性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cp /etc/passwd  /root/</div><div class="line">[root@localhost ~]# cp -r /boot/grub2/  sam/</div></pre></td></tr></table></figure></p>
+<h3 id="rm"><a href="#rm" class="headerlink" title="rm"></a>rm</h3><p>作用：删除文件或目录<br>语法： rm [-rf]  文件或目录名<br>-r  递归删除（可以删除目录和目录里面的东西）<br>-f  强行删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@xuegod163 ~]# rm -rf passwd</div></pre></td></tr></table></figure></p>
+<h3 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h3><p>作用: 重命名<br>语法：mv 源：文件或目录名    目标：文件或目录名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@xuegod163 ~]# mv passwd  xiaochuan</div></pre></td></tr></table></figure></p>
+<h3 id="经验：工作中，善用mv，慎用rm"><a href="#经验：工作中，善用mv，慎用rm" class="headerlink" title="经验：工作中，善用mv，慎用rm"></a>经验：工作中，善用mv，慎用rm</h3><h2 id="查看文件内容"><a href="#查看文件内容" class="headerlink" title="查看文件内容"></a>查看文件内容</h2><h3 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h3><p>语法：cat 文件名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# echo &quot;I&apos;m sam&quot;  &gt; sam </div><div class="line">[root@localhost ~]# cat sam </div><div class="line">I&apos;m sam</div></pre></td></tr></table></figure></p>
+<h3 id="more"><a href="#more" class="headerlink" title="more　"></a>more　</h3><p>语法： more　　查看文件名字<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# more  /etc/passwd</div></pre></td></tr></table></figure></p>
+<p>按下回车刷新一行，按下空格刷新一屏<br><code>q</code>　退出</p>
+<h3 id="less"><a href="#less" class="headerlink" title="less"></a>less</h3><p>语法： less　　查看文件名字<br><code>q</code>　退出<br>使用光标键可以向上翻页</p>
+<h3 id="linux中more与less的区别"><a href="#linux中more与less的区别" class="headerlink" title="linux中more与less的区别"></a>linux中more与less的区别</h3><p>more:不支持后退，但几乎不需要加参数，空格键是向下翻页，Enter键是向下翻一行，在不需要后退的情况下比较方便。<br>less：支持前后翻滚，既可以向上翻页（pageup按键），也可以向下翻页（pagedown按键）。空格键是向下翻页，Enter键是向下翻一行</p>
+<h3 id="head"><a href="#head" class="headerlink" title="head"></a>head</h3><p>用法：head  -行号   文件名 (从第一行开始，查看文件，默认显示前10行)<br>或：  head   -n　数字（显示多少行） 文件名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# head  -3 /etc/passwd </div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div></pre></td></tr></table></figure></p>
+<h3 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h3><p>从第后一行开始，查看文件，默认显示最后10行<br>用法：tail -n 数字 -f 文件名 或 tail -nf 文件名<br>-n  数字，显示多少行<br>-f  动态显示数据（不关闭）　　常用来查看日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# tail -12f  /var/log/alternatives.log</div></pre></td></tr></table></figure></p>
+<h3 id="显示文件的第n行"><a href="#显示文件的第n行" class="headerlink" title="显示文件的第n行"></a>显示文件的第n行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# head -n /etc/passwd | tail -1</div><div class="line">[root@localhost ~]# tail -n /etc/passwd | head -1</div></pre></td></tr></table></figure>
+<h2 id="xfs文件系统的备份和恢复"><a href="#xfs文件系统的备份和恢复" class="headerlink" title="xfs文件系统的备份和恢复"></a>xfs文件系统的备份和恢复</h2><p>XFS提供了 xfsdump 和 xfsrestore 工具协助备份XFS文件系统中的数据。xfsdump 按inode顺序备份一个XFS文件系统。与传统的UNIX文件系统不同，XFS不需要在dump前被卸载；对使用中的XFS文件系统做dump就可以保证镜像的一致性。这与XFS对快照的实现不同，XFS的dump和restore的过程是可以被中断然后继续的，无须冻结文件系统。xfsdump 甚至提供了高性能的多线程备份操作——它把一次dump拆分成多个数据流，每个数据流可以被发往不同的目的地。</p>
+<h3 id="测试准备"><a href="#测试准备" class="headerlink" title="测试准备"></a>测试准备</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# fdisk /dev/sda </div><div class="line">[root@localhost ~]# ls /dev/sda*</div><div class="line">/dev/sda  /dev/sda1  /dev/sda2</div><div class="line">[root@localhost ~]# partprobe /dev/sda #重新获取分区表</div><div class="line">[root@localhost ~]# mkfs.xfs /dev/sda3 #格式化分区</div><div class="line">[root@localhost ~]# mkdir /sda3 #创建挂载点</div><div class="line">[root@localhost ~]# mount /dev/sda3  /sda3/ #挂载</div></pre></td></tr></table></figure>
+<h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><ul>
+<li><p>对整个分区进行备份</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# xfsdump -f /backup/dump_sda3  /sda3</div><div class="line">......</div><div class="line">please enter label for this dump session (timeout in 300 sec)</div><div class="line"> -&gt; dump_sda3   #指定备份标签</div><div class="line">please enter label for media in drive 0 (timeout in 300 sec)</div><div class="line"> -&gt; media0   </div><div class="line">#指定设备标签</div></pre></td></tr></table></figure>
+<p>注意：<code>备份的设备这里不能写成/sda3/</code></p>
+<p>非交互式进行备份</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# xfsdump -f /backup/dump_sda3  /sda3   -L dump_sda3  -M media0</div></pre></td></tr></table></figure>
+<p>-L      指定备份标签<br>-M       指定设备标签</p>
+</li>
+<li><p>针对指定文件或目录进行备份</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# xfsdump -f /backup/dump_sda3_test -s test /sda3  -L dump_sda3_test -M media1</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>注意：<code>test sda3中间有空格，前后都不能加“/”</code></p>
+<h3 id="查看备份信息"><a href="#查看备份信息" class="headerlink" title="查看备份信息"></a>查看备份信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# xfsdump -I</div></pre></td></tr></table></figure>
+<h3 id="文件系统恢复"><a href="#文件系统恢复" class="headerlink" title="文件系统恢复"></a>文件系统恢复</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# xfsrestore -f /backup/dump_sda3  /sda3/ #恢复整个分区</div><div class="line">[root@localhost ~]# xfsrestore -f /backup/dump_sda3_test -s test /sda3 #只恢复单个的目录或文件</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/11/27/linux/base/godLinux1-3/" rel="next" title="1-3 rhel7基本命令和操作">
+                <i class="fa fa-chevron-left"></i> 1-3 rhel7基本命令和操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/04/linux/base/godLinux1-5/" rel="prev" title="1-5 vim编辑器">
+                1-5 vim编辑器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/12/03/linux/base/godLinux1-4/"
+           data-title="1-4 rhel7文件管理和xfs文件系统备份" data-url="https://sam2099.github.io/2015/12/03/linux/base/godLinux1-4/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">梦想还是要有的，万一实现了呢</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目录结构"><span class="nav-number">2.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绝对路径-相对路径"><span class="nav-number">3.</span> <span class="nav-text">绝对路径/相对路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-复制-删除文件"><span class="nav-number">4.</span> <span class="nav-text">创建/复制/删除文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#touch"><span class="nav-number">4.1.</span> <span class="nav-text">touch　</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mkdir"><span class="nav-number">4.2.</span> <span class="nav-text">mkdir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux系统中一切皆文件"><span class="nav-number">4.3.</span> <span class="nav-text">Linux系统中一切皆文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cp"><span class="nav-number">4.4.</span> <span class="nav-text">cp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rm"><span class="nav-number">4.5.</span> <span class="nav-text">rm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mv"><span class="nav-number">4.6.</span> <span class="nav-text">mv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经验：工作中，善用mv，慎用rm"><span class="nav-number">4.7.</span> <span class="nav-text">经验：工作中，善用mv，慎用rm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看文件内容"><span class="nav-number">5.</span> <span class="nav-text">查看文件内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cat"><span class="nav-number">5.1.</span> <span class="nav-text">cat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#more"><span class="nav-number">5.2.</span> <span class="nav-text">more　</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less"><span class="nav-number">5.3.</span> <span class="nav-text">less</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux中more与less的区别"><span class="nav-number">5.4.</span> <span class="nav-text">linux中more与less的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#head"><span class="nav-number">5.5.</span> <span class="nav-text">head</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tail"><span class="nav-number">5.6.</span> <span class="nav-text">tail</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示文件的第n行"><span class="nav-number">5.7.</span> <span class="nav-text">显示文件的第n行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xfs文件系统的备份和恢复"><span class="nav-number">6.</span> <span class="nav-text">xfs文件系统的备份和恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#测试准备"><span class="nav-number">6.1.</span> <span class="nav-text">测试准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备份"><span class="nav-number">6.2.</span> <span class="nav-text">备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看备份信息"><span class="nav-number">6.3.</span> <span class="nav-text">查看备份信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统恢复"><span class="nav-number">6.4.</span> <span class="nav-text">文件系统恢复</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"amadis"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>
