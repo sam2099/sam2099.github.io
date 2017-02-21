@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sam2099.github.io/"/>
-  <updated>2017-02-21T07:18:44.691Z</updated>
+  <updated>2017-02-21T09:14:07.790Z</updated>
   <id>https://sam2099.github.io/</id>
   
   <author>
@@ -14,6 +14,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>tomcat  日志分割</title>
+    <link href="https://sam2099.github.io/2017/02/21/web%20server/tomcat/tomcatLog/"/>
+    <id>https://sam2099.github.io/2017/02/21/web server/tomcat/tomcatLog/</id>
+    <published>2017-02-21T09:07:07.000Z</published>
+    <updated>2017-02-21T09:14:07.790Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容<br>tomcat的catalina.out会不断增长，很麻烦，看了多张解决方案，包括官方的，决定采用cronolog的方案。</p>
+<a id="more"></a>
+<h2 id="cronolog-安装"><a href="#cronolog-安装" class="headerlink" title="cronolog 安装"></a>cronolog 安装</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /etc/redhat-release</div><div class="line">CentOS release 5.4 (Final)</div></pre></td></tr></table></figure>
+<h3 id="安装yum源"><a href="#安装yum源" class="headerlink" title="安装yum源"></a>安装yum源</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup </div><div class="line"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</div><div class="line"># yum install -y cronolog</div></pre></td></tr></table></figure>
+<p>查看cronolog安装后所在目录（验证安装是否成功）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># which cronolog</div><div class="line">正常情况下显示：</div><div class="line">/usr/sbin/cronolog</div></pre></td></tr></table></figure>
+<h2 id="Tomcat7以后的版本配置"><a href="#Tomcat7以后的版本配置" class="headerlink" title="Tomcat7以后的版本配置"></a>Tomcat7以后的版本配置</h2><p><code>bin/catalina.sh</code></p>
+<h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>大概213行<br>将</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">if [ -z &quot;$CATALINA_OUT&quot; ] ; then</div><div class="line"></div><div class="line">CATALINA_OUT=&quot;$CATALINA_BASE&quot;/logs/catalina.out</div><div class="line"></div><div class="line">fi</div></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">if [ -z &quot;$CATALINA_OUT&quot; ] ; then</div><div class="line"></div><div class="line">CATALINA_OUT=&quot;$CATALINA_BASE&quot;/logs/catalina.%Y-%m-%d.out</div><div class="line"></div><div class="line">fi</div></pre></td></tr></table></figure>
+<h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3><p>大概414行左右<br>将</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch &quot;$CATALINA_OUT&quot;</div></pre></td></tr></table></figure>
+<p>改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#touch &quot;$CATALINA_OUT&quot;</div></pre></td></tr></table></figure></p>
+<h3 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h3><p>大概 436～437<br>将</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.startup.Bootstrap &quot;$@&quot; start \</div><div class="line">&gt;&gt; &quot;$CATALINA_OUT&quot;  2&gt;&amp;1 &quot;&amp;&quot;</div></pre></td></tr></table></figure>
+<p>修改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.startup.Bootstrap &quot;$@&quot; start 2&gt;&amp;1 \</div><div class="line">| /usr/sbin/cronolog &quot;$CATALINA_OUT&quot; &gt;&gt; /dev/null &amp;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;br&gt;tomcat的catalina.out会不断增长，很麻烦，看了多张解决方案，包括官方的，决定采用cronolog的方案。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
+    
+    
+      <category term="tomcat log" scheme="https://sam2099.github.io/tags/tomcat-log/"/>
+    
+  </entry>
   
   <entry>
     <title>linux server 配置选项</title>
@@ -1648,116 +1688,6 @@ printf &quot;AVERAGE:%10.2f %8.2f %8.2f\n&quot;, math/NR, english/NR, computer/N
     
     
       <category term="GOD linux" scheme="https://sam2099.github.io/tags/GOD-linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shell （八） 函数, 文件包含, 转码工具</title>
-    <link href="https://sam2099.github.io/2015/12/28/linux/shell/shell-8/"/>
-    <id>https://sam2099.github.io/2015/12/28/linux/shell/shell-8/</id>
-    <published>2015-12-28T14:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>函数</li>
-<li>文件包含</li>
-<li>转码工具<a id="more"></a>
-</li>
-</ul>
-<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>函数可以将一个复杂功能划分成若干模块，让程序结构更加清晰，代码重复利用率更高。函数必须先定义后使用。</p>
-<h3 id="函数定义"><a href="#函数定义" class="headerlink" title="函数定义"></a>函数定义</h3><p>定义格式如下：<br>    function function_name () {<br>    list of commands<br>    [ return value ]<br>    }</p>
-<p>或</p>
-<pre><code>function_name () {
-list of commands
-[ return value ]
-}
-</code></pre><p><code>function</code> 可以省略，清晰起见，还是建议加上。</p>
-<h3 id="函数返回值"><a href="#函数返回值" class="headerlink" title="函数返回值"></a>函数返回值</h3><ul>
-<li>函数可以显式增加return语句；如果不加，会将最后一条命令运行结果作为返回值。</li>
-<li>Shell 函数返回值只能是整数，一般用来表示函数执行成功与否，0表示成功，其他值表示失败。如果 return 其他数据，比如一个字符串，往往会得到错误提示：“numeric argument required”。</li>
-<li>如果一定要让函数返回字符串，那么可以先定义一个变量，用来接收函数的计算结果，脚本在需要的时候访问这个变量来获得函数返回值。</li>
-</ul>
-<p>例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">funWithReturn()&#123;</div><div class="line">    echo &quot;The function is to get the sum of two numbers...&quot;</div><div class="line">    echo -n &quot;Input first number: &quot;</div><div class="line">    read aNum</div><div class="line">    echo -n &quot;Input another number: &quot;</div><div class="line">    read anotherNum</div><div class="line">    echo &quot;The two numbers are $aNum and $anotherNum !&quot;</div><div class="line">    return $(($aNum+$anotherNum))</div><div class="line">&#125;</div><div class="line">funWithReturn</div><div class="line"># Capture value returnd by last command</div><div class="line">ret=$?</div><div class="line">echo &quot;The sum of two numbers is $ret !&quot;</div></pre></td></tr></table></figure></p>
-<h3 id="函数删除"><a href="#函数删除" class="headerlink" title="函数删除"></a>函数删除</h3><p>删除函数也可以使用 unset 命令，不过要加上 .f 选项，如下所示：</p>
-<pre><code>$unset .f function_name
-</code></pre><h3 id="函数调用"><a href="#函数调用" class="headerlink" title="函数调用"></a>函数调用</h3><p>调用只需要给出函数名，不需要加括号。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># Define your function here</div><div class="line">Hello () &#123;</div><div class="line">   echo &quot;Url is http://giveme5.top&quot;</div><div class="line">&#125;</div><div class="line"># Invoke your function</div><div class="line">Hello</div></pre></td></tr></table></figure></p>
-<h3 id="函数参数"><a href="#函数参数" class="headerlink" title="函数参数"></a>函数参数</h3><p>调用函数时可以向其传递参数。在函数体内部，通过 $n 的形式来获取参数的值，例如，$1表示第一个参数，$2表示第二个参数…<br>注意，当n&gt;=10时，需要使用 <code>${n}</code> 来获取参数。 获取第十个参数需要 <code>${10}</code> ， $10 不能获取第十个参数。</p>
-<p>例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="function"><span class="title">funWithParam</span></span>()&#123;</div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the first parameter is <span class="variable">$1</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the second parameter is <span class="variable">$2</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the tenth parameter is <span class="variable">$10</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the tenth parameter is <span class="variable">$&#123;10&#125;</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The value of the eleventh parameter is <span class="variable">$&#123;11&#125;</span> !"</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The amount of the parameters is <span class="variable">$#</span> !"</span>  <span class="comment"># 参数个数</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">"The string of the parameters is $* !"</span>  <span class="comment"># 传递给函数的所有参数</span></div><div class="line">&#125;</div><div class="line">funWithParam 1 2 3 4 5 6 7 8 9 34 73</div></pre></td></tr></table></figure></p>
-<p>输出：</p>
-<pre><code>he value of the first parameter is 1 !
-The value of the second parameter is 2 !
-The value of the tenth parameter is 10 !
-The value of the tenth parameter is 34 !
-The value of the eleventh parameter is 73 !
-The amount of the parameters is 12 !
-The string of the parameters is 1 2 3 4 5 6 7 8 9 34 73 !&quot;
-</code></pre><p>另外：<br>几个特殊变量用来处理参数（<a href="/2015/12/25/linux/xuegodLinux/godLinux1-24-28-shell/godLinux1-24/#特殊变量">更多特殊变量</a>）：</p>
-<table>
-<thead>
-<tr>
-<th>特殊变量</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$#</td>
-<td>传递给函数的参数个数。</td>
-</tr>
-<tr>
-<td>$*</td>
-<td>显示所有传递给函数的参数。</td>
-</tr>
-<tr>
-<td>$@</td>
-<td>与$*相同，但是略有区别，请查看<a href="/2015/12/25/linux/xuegodLinux/godLinux1-24-28-shell/godLinux1-24/#特殊变量">更多特殊变量</a>。</td>
-</tr>
-<tr>
-<td>$?</td>
-<td>函数的返回值。</td>
-</tr>
-</tbody>
-</table>
-<p><br><br></p>
-<h4 id="shift"><a href="#shift" class="headerlink" title="shift"></a>shift</h4><p>shift: 参数左移指令, 每执行一次，参数序列顺次左移一个位置，$#的值减1，用于分别处理每个参数，移出去的参数，不再可用。<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/sh_shift.png" alt=""></p>
-<p>例：<br>加法计算器，通过 <code>shift</code> 指令使参数左移，求出所有参数的和</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> -le 0 ]</div><div class="line"><span class="keyword">then</span></div><div class="line">	<span class="built_in">echo</span> <span class="string">"err!:Not enough parameters"</span></div><div class="line"><span class="built_in">exit</span>  124</div><div class="line"><span class="keyword">fi</span></div><div class="line">sum=0</div><div class="line"><span class="keyword">while</span> [ <span class="variable">$#</span> <span class="_">-gt</span> 0 ]</div><div class="line"><span class="keyword">do</span></div><div class="line">sum=`expr <span class="variable">$sum</span> + <span class="variable">$1</span>`</div><div class="line">  </div><div class="line"><span class="built_in">shift</span> <span class="comment">#参数左移</span></div><div class="line">  </div><div class="line"><span class="keyword">done</span></div><div class="line"><span class="built_in">echo</span> <span class="variable">$sum</span></div></pre></td></tr></table></figure>
-<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><p>文件包含即将外部脚本的内容合并到当前脚本。</p>
-<p>可以使用：</p>
-<pre><code>. filename
-</code></pre><p>或</p>
-<pre><code>source filename
-</code></pre><p>两种方式的效果相同，简单起见，一般使用点号(.)，但是注意点号(.)和文件名中间有一空格。</p>
-<p>例如：<br>创建两个脚本，一个是被调用脚本 subscript.sh，内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">url=&quot;http://see.xidian.edu.cn/cpp/view/2738.html&quot;</div></pre></td></tr></table></figure></p>
-<p>一个是主文件 main.sh，内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">. ./subscript.sh</div><div class="line">echo $url</div></pre></td></tr></table></figure></p>
-<p>注意：被包含脚本不需要有执行权限。 </p>
-<h2 id="dos2unix"><a href="#dos2unix" class="headerlink" title="dos2unix"></a>dos2unix</h2><p>由于编码问题，在windows中开发的脚本导入到Linux系统后执行报错，主要是因为在windows开发保存时没注意编码（UTF8）和换行符（LF）。<br>在Linux中可以用工具dos2unix解决。</p>
-<ul>
-<li><p>安装</p>
-<pre><code>[root@localhost test]#rpm -ivh /mnt/Packages/dos2unix-6.0.3-4.el7.x86_64.rpm
-</code></pre></li>
-<li><p>使用</p>
-<pre><code>[root@localhost ]# dos2unix test.sh
-dos2unix: converting file test.sh to Unix format ...
-</code></pre></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;函数&lt;/li&gt;
-&lt;li&gt;文件包含&lt;/li&gt;
-&lt;li&gt;转码工具
-    
-    </summary>
-    
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
-    
-    
-      <category term="shell" scheme="https://sam2099.github.io/tags/shell/"/>
     
   </entry>
   
