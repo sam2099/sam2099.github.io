@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sam2099.github.io/"/>
-  <updated>2017-02-21T09:21:08.704Z</updated>
+  <updated>2017-02-22T06:18:05.471Z</updated>
   <id>https://sam2099.github.io/</id>
   
   <author>
@@ -16,11 +16,65 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Nginx + Tomcat + HTTPS</title>
+    <link href="https://sam2099.github.io/2017/02/22/web%20server/nginxTomcatSSL/"/>
+    <id>https://sam2099.github.io/2017/02/22/web server/nginxTomcatSSL/</id>
+    <published>2017-02-22T03:12:14.000Z</published>
+    <updated>2017-02-22T06:18:05.471Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>环境</li>
+<li>证书</li>
+<li>nginx</li>
+<li>tomcat</li>
+</ul>
+<p>……</p>
+<p>本文基本参照 <a href="https://www.oschina.net/question/12_213459" target="_blank" rel="external"> oschina 红薯 大大的文章 </a> 。<br>基本思路是 Nginx 上启用了 HTTPS，而 Nginx 和 Tomcat 之间走的却是普通的 HTTP 连接。</p>
+<p><img src="http://amadis.qiniudn.com/nginx_tomcat_ssl.png" alt=""></p>
+<a id="more"></a>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>主要以Centos为例。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /etc/redhat-release</div><div class="line">CentOS release 5.4 (Final)</div></pre></td></tr></table></figure></p>
+<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>阿里云提供免费的<code>Symantec DV 证书</code>， 生成好后下载nginx的证书，包含 <code>xxxxxxx.pem</code> 和 <code>xxxxxxxxx.key</code></p>
+<h2 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a>nginx配置</h2><h3 id="证书上传"><a href="#证书上传" class="headerlink" title="证书上传"></a>证书上传</h3><p>将 <code>xxxxxxx.pem</code> 和 <code>xxxxxxxxx.key</code> 上传到 ngixn 的配置根目录 <code>/etc/nginx</code>。</p>
+<h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">        listen       443 ssl;</div><div class="line">        listen       80 ;</div><div class="line">        server_name  ssl.test.com  ;                                                                                                                                                                    </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        proxy_intercept_errors on;                                                                                                                                                                                </div><div class="line">        charset utf-8;                                                                                                                                                                                            </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        # ssl                                                                                                                                                                                                     </div><div class="line">        ssl_certificate   xxxxxxxxx.pem;                                                                                                                                                                    </div><div class="line">        ssl_certificate_key  xxxxxxxxx.key;                                                                                                                                                                 </div><div class="line">        ssl_session_timeout 5m;                                                                                                                                                                                   </div><div class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">        ssl_ciphers AESGCM:ALL:!DH:!EXPORT:!RC4:+HIGH:!MEDIUM:!LOW:!aNULL:!eNULL;</div><div class="line">        ssl_prefer_server_ciphers on;</div><div class="line"></div><div class="line">        location /</div><div class="line">        &#123;</div><div class="line">                proxy_pass http://localhost:8080;</div><div class="line">                proxy_redirect off;</div><div class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</div><div class="line">                proxy_set_header X-Real-IP $remote_addr;</div><div class="line">                proxy_set_header Host $http_host;</div><div class="line">                proxy_set_header X-Forwarded-Proto https;</div><div class="line">        </div><div class="line">        &#125;</div><div class="line"></div><div class="line">        location /status</div><div class="line">        &#123;</div><div class="line">                stub_status on;</div><div class="line">                access_log   off;</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        #  让http请求重定向到https请求   </div><div class="line">        error_page 497  https://$host$uri?$args;  </div><div class="line"></div><div class="line">        error_page  404              /404.html;</div><div class="line">        location = /404.html &#123;</div><div class="line">          root /usr/share/nginx/html;</div><div class="line">          internal;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>497</code> 是nginx 内置 http 状态。<br>可参考<a href="http://blog.csdn.net/vfush/article/details/51086274" target="_blank" rel="external">nginx强制使用https访问</a></p>
+<h2 id="tomcat配置"><a href="#tomcat配置" class="headerlink" title="tomcat配置"></a>tomcat配置</h2><p>主要配置 <code>server.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&apos;1.0&apos; encoding=&apos;utf-8&apos;?&gt;</div><div class="line">&lt;Server port=&quot;8005&quot; shutdown=&quot;SHUTDOWN&quot;&gt;</div><div class="line">  &lt;Service name=&quot;Catalina&quot;&gt;</div><div class="line">    &lt;Connector port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;</div><div class="line">               connectionTimeout=&quot;20000&quot;</div><div class="line">               redirectPort=&quot;443&quot;</div><div class="line">               proxyPort=&quot;443&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;</div><div class="line"></div><div class="line">      &lt;Host name=&quot;localhost&quot;  appBase=&quot;webapps&quot;</div><div class="line">            unpackWARs=&quot;true&quot; autoDeploy=&quot;true&quot;&gt;</div><div class="line">            &lt;Valve className=&quot;org.apache.catalina.valves.RemoteIpValve&quot;</div><div class="line">                  remoteIpHeader=&quot;x-forwarded-for&quot;</div><div class="line">                  remoteIpProxiesHeader=&quot;x-forwarded-by&quot;</div><div class="line">                  protocolHeader=&quot;x-forwarded-proto&quot;</div><div class="line">            /&gt;</div><div class="line">            &lt;Context path=&quot;&quot; docBase=&quot;&quot; reloadable=&quot;false&quot;/&gt;</div><div class="line">      &lt;/Host&gt;</div><div class="line">    &lt;/Engine&gt;</div><div class="line">  &lt;/Service&gt;</div><div class="line">&lt;/Server&gt;</div></pre></td></tr></table></figure>
+<p>特别特别注意的是必须有 <span style="color:red"> proxyPort=”443”  redirectPort=”443” </span>。<br>同时 <code>&lt;Value&gt;</code> 节点的配置也非常重要，否则你在 Tomcat 中的应用在读取 getScheme() 方法以及在 web.xml 中配置的一些安全策略会不起作用。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;环境&lt;/li&gt;
+&lt;li&gt;证书&lt;/li&gt;
+&lt;li&gt;nginx&lt;/li&gt;
+&lt;li&gt;tomcat&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;……&lt;/p&gt;
+&lt;p&gt;本文基本参照 &lt;a href=&quot;https://www.oschina.net/question/12_213459&quot;&gt; oschina 红薯 大大的文章 &lt;/a&gt; 。&lt;br&gt;基本思路是 Nginx 上启用了 HTTPS，而 Nginx 和 Tomcat 之间走的却是普通的 HTTP 连接。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://amadis.qiniudn.com/nginx_tomcat_ssl.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
+    
+    
+      <category term="tomcat" scheme="https://sam2099.github.io/tags/tomcat/"/>
+    
+      <category term="nginx" scheme="https://sam2099.github.io/tags/nginx/"/>
+    
+      <category term="https" scheme="https://sam2099.github.io/tags/https/"/>
+    
+  </entry>
+  
+  <entry>
     <title>tomcat  日志分割</title>
     <link href="https://sam2099.github.io/2017/02/21/web%20server/tomcat/tomcatLog/"/>
     <id>https://sam2099.github.io/2017/02/21/web server/tomcat/tomcatLog/</id>
     <published>2017-02-21T09:07:07.000Z</published>
-    <updated>2017-02-21T09:21:08.704Z</updated>
+    <updated>2017-02-22T06:19:06.371Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容<br>tomcat的catalina.out会不断增长，很麻烦，看了多张解决方案，包括官方的，决定采用cronolog的方案。</p>
 <a id="more"></a>
@@ -52,7 +106,9 @@
       <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
     
     
-      <category term="tomcat log" scheme="https://sam2099.github.io/tags/tomcat-log/"/>
+      <category term="tomcat" scheme="https://sam2099.github.io/tags/tomcat/"/>
+    
+      <category term="cronolog" scheme="https://sam2099.github.io/tags/cronolog/"/>
     
   </entry>
   
@@ -458,7 +514,7 @@ gitlab_rails[&apos;backup_keep_time&apos;] = 604800
     <link href="https://sam2099.github.io/2016/05/17/android/broadcast/"/>
     <id>https://sam2099.github.io/2016/05/17/android/broadcast/</id>
     <published>2016-05-17T14:28:38.000Z</published>
-    <updated>2017-02-21T07:18:44.687Z</updated>
+    <updated>2017-02-22T06:22:31.767Z</updated>
     
     <content type="html"><![CDATA[<p>#广播</p>
 <ul>
@@ -738,7 +794,9 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
       <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
     
     
-      <category term="Android broadcast" scheme="https://sam2099.github.io/tags/Android-broadcast/"/>
+      <category term="android" scheme="https://sam2099.github.io/tags/android/"/>
+    
+      <category term="broadcast" scheme="https://sam2099.github.io/tags/broadcast/"/>
     
   </entry>
   
@@ -747,7 +805,7 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
     <link href="https://sam2099.github.io/2016/05/13/android/android0_index/"/>
     <id>https://sam2099.github.io/2016/05/13/android/android0_index/</id>
     <published>2016-05-13T11:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.687Z</updated>
+    <updated>2017-02-22T06:21:35.583Z</updated>
     
     <content type="html"><![CDATA[<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><h2 id="logcat"><a href="#logcat" class="headerlink" title="logcat"></a>logcat</h2><h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><h2 id="线性布局"><a href="#线性布局" class="headerlink" title="线性布局"></a>线性布局</h2><h2 id="相对布局"><a href="#相对布局" class="headerlink" title="相对布局"></a>相对布局</h2><h2 id="帧布局"><a href="#帧布局" class="headerlink" title="帧布局"></a>帧布局</h2><h2 id="表格布局"><a href="#表格布局" class="headerlink" title="表格布局"></a>表格布局</h2><h2 id="绝对布局"><a href="#绝对布局" class="headerlink" title="绝对布局"></a>绝对布局</h2><h1 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h1><h2 id="内部存储"><a href="#内部存储" class="headerlink" title="内部存储"></a>内部存储</h2><h2 id="SD卡"><a href="#SD卡" class="headerlink" title="SD卡"></a>SD卡</h2><h2 id="SharedPreference"><a href="#SharedPreference" class="headerlink" title="SharedPreference"></a>SharedPreference</h2><h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h1 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h1><h2 id="建库"><a href="#建库" class="headerlink" title="建库"></a>建库</h2><h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><h2 id="原生-CRUD"><a href="#原生-CRUD" class="headerlink" title="原生 CRUD"></a>原生 CRUD</h2><h2 id="API-CRUD"><a href="#API-CRUD" class="headerlink" title="API CRUD"></a>API CRUD</h2><h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h1 id="控件"><a href="#控件" class="headerlink" title="控件"></a>控件</h1><h2 id="Toast"><a href="#Toast" class="headerlink" title="Toast"></a>Toast</h2><h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><p>导入局部布局<br>条目点击监听 ： <code>setOnItemClickListener</code></p>
 <h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ul>
@@ -785,7 +843,7 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
       <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
     
     
-      <category term="Android" scheme="https://sam2099.github.io/tags/Android/"/>
+      <category term="android" scheme="https://sam2099.github.io/tags/android/"/>
     
   </entry>
   
@@ -794,7 +852,7 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
     <link href="https://sam2099.github.io/2016/05/10/android/android1_UnitTest/"/>
     <id>https://sam2099.github.io/2016/05/10/android/android1_UnitTest/</id>
     <published>2016-05-10T11:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.687Z</updated>
+    <updated>2017-02-22T06:21:53.947Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <ul>
@@ -867,7 +925,9 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
       <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
     
     
-      <category term="Android junit" scheme="https://sam2099.github.io/tags/Android-junit/"/>
+      <category term="android" scheme="https://sam2099.github.io/tags/android/"/>
+    
+      <category term="junit" scheme="https://sam2099.github.io/tags/junit/"/>
     
   </entry>
   
@@ -1172,6 +1232,32 @@ forward-socks5t / 127.0.0.1:1080 .
   </entry>
   
   <entry>
+    <title>linux service</title>
+    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/"/>
+    <id>https://sam2099.github.io/2016/01/26/linux/service/2-0 service/</id>
+    <published>2016-01-26T08:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+    
+      <category term="service" scheme="https://sam2099.github.io/tags/service/"/>
+    
+  </entry>
+  
+  <entry>
     <title>2-1 sshd</title>
     <link href="https://sam2099.github.io/2016/01/26/linux/service/2-1%20sshd/"/>
     <id>https://sam2099.github.io/2016/01/26/linux/service/2-1 sshd/</id>
@@ -1219,32 +1305,6 @@ $ chmod 600 ~/.ssh/*
       <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
     
       <category term="sshd" scheme="https://sam2099.github.io/tags/sshd/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux service</title>
-    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/"/>
-    <id>https://sam2099.github.io/2016/01/26/linux/service/2-0 service/</id>
-    <published>2016-01-26T08:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-
-    
-    </summary>
-    
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
-    
-      <category term="service" scheme="https://sam2099.github.io/tags/service/"/>
     
   </entry>
   
@@ -1320,7 +1380,7 @@ $ chmod 600 ~/.ssh/*
     <link href="https://sam2099.github.io/2016/01/22/web%20server/nginx/nginx/"/>
     <id>https://sam2099.github.io/2016/01/22/web server/nginx/nginx/</id>
     <published>2016-01-22T02:48:42.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
+    <updated>2017-02-22T06:20:07.151Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <p>nginx</p>
@@ -1347,348 +1407,7 @@ $ chmod 600 ~/.ssh/*
       <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
     
     
-      <category term="server nginx" scheme="https://sam2099.github.io/tags/server-nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>1-29 Linux 正则表达式 sed awk cut</title>
-    <link href="https://sam2099.github.io/2016/01/06/linux/shell/shell9/"/>
-    <id>https://sam2099.github.io/2016/01/06/linux/shell/shell9/</id>
-    <published>2016-01-06T11:59:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>正则表达式 </li>
-<li>sed </li>
-<li>awk </li>
-<li>cut</li>
-</ul>
-<a id="more"></a>
-<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式，又称正规表示法、常规表示法（英语：Regular Expression，在代码中常简写为regex、regexp或RE），计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。<br>正则表达式是一种符号表示法，被用来识别文本模式。</p>
-<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><p>grep : “global regular expression print”，所以我们能看出 grep 程序和正则表达式有关联。 本质上，grep 程序会在文本文件中查找一个指定的正则表达式，并把匹配行输出到标准输出。<br>参数：</p>
-<pre><code>-i 忽略大小写
--v 反转
--n  显示行号
-</code></pre><h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><pre><code>^ $ . [ ] { } - ? * + ( ) | \
-</code></pre><p>其他都被认为是原义字符； 元字符可以通过 <code>\</code> 来转义为原义字符。</p>
-<h3 id="锚点"><a href="#锚点" class="headerlink" title="锚点 ^ $"></a>锚点 ^ $</h3><ul>
-<li><code>^</code> 行首</li>
-<li><code>$</code> 行尾</li>
-<li><code>\&lt;</code> 表示词首  </li>
-<li><code>\&gt;</code> 表示词尾</li>
-</ul>
-<p>^word：待搜寻的字符串(word)在行首</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &quot;^sync&quot; /etc/passwd</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div></pre></td></tr></table></figure>
-<p>word$：待搜寻的字符串(word)在行尾</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &quot;shutdown$&quot; passwd</div><div class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</div></pre></td></tr></table></figure>
-<p>显示空白行及行号</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &quot;^$&quot; passwd  -n</div><div class="line">50:</div></pre></td></tr></table></figure>
-<p>精确匹配 ： <code>&#39;\&lt;匹配内容\&gt;&#39;</code> </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# ifconfig |grep &apos;\&lt;inet\&gt;&apos;</div><div class="line">        inet 192.168.1.68  netmask 255.255.255.0  broadcast 192.168.1.255</div><div class="line">        inet 127.0.0.1  netmask 255.0.0.0</div></pre></td></tr></table></figure>
-<h3 id="转义"><a href="#转义" class="headerlink" title="转义 \"></a>转义 \</h3><p>搜寻包括单引号 ‘的行，并把行号也打印出来<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep \&apos; passwd</div><div class="line">halt:x:7:0:&apos;halt&apos;:/sbin:/sbin/halt</div><div class="line">&apos;mail&apos;:x:8:12:mail:/var/spool/mail:/sbin/nologin</div></pre></td></tr></table></figure></p>
-<p>过滤文件的反斜杠‘’\“<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep &apos;\\&apos; passwd</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div><div class="line">[root@localhost ~]# grep -F &apos;\&apos;  passwd</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div><div class="line">[root@localhost ~]# fgrep &apos;\&apos; passwd</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div></pre></td></tr></table></figure></p>
-<h3 id="字符集合"><a href="#字符集合" class="headerlink" title="字符集合 [ ]"></a>字符集合 [ ]</h3><ul>
-<li><code>[list]</code> ：字符集合，里面列出想要选择的字符</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep g[ao] passwd</div><div class="line">games:x:12:100:games:/usr/games:/sbin/nologin</div><div class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</div></pre></td></tr></table></figure>
-<ul>
-<li>[n1-n2]：字符集合的，里面列出想要包括的字符范围！</li>
-</ul>
-<p>搜寻含有数字的3到5的行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep [3-5] passwd</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div><div class="line">sync:x:5:0:sync:/sbin:/bin/sync</div></pre></td></tr></table></figure></p>
-<p>开始为大写字母的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ^[A-Z]  passwd</div><div class="line">Rm2:x:502:500::/home/rm:/bin/bash</div><div class="line">Rm3:x:503:500::/home/rm:/bin/bash</div></pre></td></tr></table></figure></p>
-<h3 id="否定"><a href="#否定" class="headerlink" title="否定 [^ ]"></a>否定 [^ ]</h3><p><code>[^list]</code> : 否定字符集合，里面列出想要排除的字符, <code>^</code> 必须是 <code>[]</code> 内的第一个符合才能启动否定。</p>
-<p>不想要开头是英文字母：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ^[^a-zA-Z] passwd</div><div class="line">&apos;mail&apos;:x:8:12:mail:/var/spool/mail:/sbin/nologin</div><div class="line">&quot;uucp&quot;:x:10:14:uucp:/var/spool/uucp:/sbin/nologin</div><div class="line">#rmt:x:500:500::/home/rm:/bin/bash</div></pre></td></tr></table></figure></p>
-<h3 id="POSIX-字符集"><a href="#POSIX-字符集" class="headerlink" title="POSIX 字符集"></a>POSIX 字符集</h3><table>
-<thead>
-<tr>
-<th>字符集</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>[:alnum:]</td>
-<td>字母数字字符。在 ASCII 中，等价于：[A-Za-z0-9]</td>
-</tr>
-<tr>
-<td>[:word:]</td>
-<td>与[:alnum:]相同, 但增加了下划线字符。</td>
-</tr>
-<tr>
-<td>[:alpha:]</td>
-<td>字母字符。在 ASCII 中，等价于：[A-Za-z]</td>
-</tr>
-<tr>
-<td>[:blank:]</td>
-<td>包含空格和 tab 字符。</td>
-</tr>
-<tr>
-<td>[:cntrl:]</td>
-<td>ASCII 的控制码。包含了0到31，和127的 ASCII 字符。</td>
-</tr>
-<tr>
-<td>[:digit:]</td>
-<td>数字0到9</td>
-</tr>
-<tr>
-<td>[:graph:]</td>
-<td>可视字符。在 ASCII 中，它包含33到126的字符。</td>
-</tr>
-<tr>
-<td>[:lower:]</td>
-<td>小写字母。</td>
-</tr>
-<tr>
-<td>[:punct:]</td>
-<td>标点符号字符。在 ASCII 中，等价于：</td>
-</tr>
-<tr>
-<td>[:print:]</td>
-<td>可打印的字符。在[:graph:]中的所有字符，再加上空格字符。</td>
-</tr>
-<tr>
-<td>[:space:]</td>
-<td>空白字符，包括空格，tab，回车，换行，vertical tab, 和 form feed.在 ASCII 中， 等价于：[ \t\r\n\v\f]</td>
-</tr>
-<tr>
-<td>[:upper:]</td>
-<td>大写字母。</td>
-</tr>
-<tr>
-<td>[:xdigit:]</td>
-<td>用来表示十六进制数字的字符。在 ASCII 中，等价于：[0-9A-Fa-f]</td>
-</tr>
-</tbody>
-</table>
-<h3 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h3><p><code>.</code>  代表绝对有一个任意字符的意思；<br><code>*</code>  代表重复前一个字符到无穷次的意思;<br><code>.*</code> 任长度的字符。</p>
-<p>寻找包括有r开头和t结束且长度为四个字符行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep r..t passwd</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">operator:x:11:0:&quot;operator&quot;:/root:/sbin/nologin</div><div class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</div></pre></td></tr></table></figure></p>
-<p>寻找oo, ooo, oooo 等等的数据,也就是说,至少要有两个o 以上：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ooo* passwd</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div></pre></td></tr></table></figure></p>
-<p>寻找包括g开头和g结束的字符串,中间可有可无<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# grep ^g.*g  passwd</div></pre></td></tr></table></figure></p>
-<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p><code>\?</code> 用于修饰前导字符，表示前导字符出现0或1次, 例： grep “test\?”<br><code>\+</code> 用于修饰前导字符，表示前导字符出现1或多次   例：a+ 匹配1或多个a<br><code>\{n,m\}</code>  用于修饰前导字符，表示前导字符出现n至m次 （n和m都是整数，且n&lt;m）<br>例：a{3,5} 匹配3至5个连续的a</p>
-<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><ul>
-<li><p>概念<br><code>sed</code> : strem editor  流编辑器<br>sed编辑器是一行一行的处理文件内容的。正在处理的内容存放在模式空间(缓冲区)内，处理完成后按照选项的规定进行输出或文件的修改。它一次处理一行内容。处理时，把当前处理的行存储在临时缓冲区中，称为“模式空间”（pattern space），接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。接着处理下一行，这样不断重复，直到文件末尾。文件内容并没有 改变，除非你使用重定向存储输出。Sed主要用来自动编辑一个或多个文件；简化对文件的反复操作；</p>
-</li>
-<li><p>用法</p>
-<pre><code>sed  [options]  ‘[command]’  [filename]
-</code></pre><p>options:<br><code>-n</code>    抑制自动(默认的) 输出   读取下一个输入行  <strong><em>常用</em></strong><br>-e    执行多个sed指令<br>-f    运行脚本<br><code>-i</code>    编辑文件内容 <strong><em>常用</em></strong><br>-i.bak    编辑的同时创造.bak的备份<br>-r    使用扩展的正则表达式 </p>
-<p>command:<br><code>a</code>    在匹配后追加  <strong><em>常用</em></strong><br><code>i</code>    在匹配前插入  <strong><em>常用</em></strong><br><code>p</code>    打印  <strong><em>常用</em></strong><br><code>d</code>    删除  <strong><em>常用</em></strong><br>r/R    读取文件/一行<br>w    另存<br>s    查找<br>c    替换<br>y    替换<br><code>h/H</code>    复制拷贝/追加模式空间(缓冲区)到存放空间  <strong><em>常用</em></strong><br><code>g/G</code>    粘贴 从存放空间取回/追加到模式空间       <strong><em>常用</em></strong><br>x    两个空间内容的交换<br>n/N    拷贝/追加下一行内容到当前<br>D    删除\n之前的内容<br>P    打印\n之前的内容<br>b    无条件跳转<br>t    满足匹配后的跳转<br>T    不满足匹配时跳转</p>
-</li>
-</ul>
-<h3 id="s-替换"><a href="#s-替换" class="headerlink" title="s 替换"></a>s 替换</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;s/root/ROOT/&apos; /etc/passwd &gt; newfilename</div></pre></td></tr></table></figure>
-<ul>
-<li><p>s/regexp/replacement/</p>
-</li>
-<li><p>/../../    分隔符<br>分割符 “/“ 可以用别的符号代替 , 比如 “,”   “|”   “_“等</p>
-</li>
-<li><p>用 &amp; 表示匹配的字符串<br>对文件中的root内容两边加上（）</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;s/root/(&amp;)/&apos;  passwd</div></pre></td></tr></table></figure>
-<p>对文件中的所有以小写字母开头的行进行注释<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;s/^[a-z]/#&amp;/&apos; passwd</div></pre></td></tr></table></figure></p>
-<p>sed 默认只替换搜索字符串的第一次出现 , 利用 /g 可以替换搜索字符串所有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -e &apos;3,5s/nologin/bash/&apos; -e &apos;9,11s/sbin/bin/&apos; passwd</div></pre></td></tr></table></figure></p>
-<h3 id="p-打印"><a href="#p-打印" class="headerlink" title="p 打印"></a>p 打印</h3><ul>
-<li>显示文件第三行</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;3p&apos; passwd</div><div class="line">roott</div></pre></td></tr></table></figure>
-<ul>
-<li><p>显示文件前三行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;1,3p&apos; passwd</div><div class="line">root:x:0:0:root:/root:/bin/bash</div><div class="line">bin:x:1:1:bin:/bin:/sbin/nologin</div><div class="line">roott</div></pre></td></tr></table></figure>
-</li>
-<li><p>显示文件除前三行之外的全部内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;1,3!p&apos; passwd</div></pre></td></tr></table></figure>
-</li>
-<li><p>显示文件第三行和之后的三行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n &apos;3,+3p&apos; passwd</div><div class="line">roott</div><div class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</div><div class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</div><div class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="i-匹配前插入"><a href="#i-匹配前插入" class="headerlink" title="i 匹配前插入"></a>i 匹配前插入</h3><ul>
-<li>在文件头插入“###”<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;1i###&apos; passwd  &gt; a.txt</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="a-在匹配后追加"><a href="#a-在匹配后追加" class="headerlink" title="a 在匹配后追加"></a>a 在匹配后追加</h3><ul>
-<li><p>在文件尾插入”@@@”</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;$a@@@&apos; passwd</div></pre></td></tr></table></figure>
-</li>
-<li><p>在文件的第二行后插入两行内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;2a hello \</div><div class="line">how are you?  \</div><div class="line">what is your name?&apos; passwd</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="c-替换"><a href="#c-替换" class="headerlink" title="c 替换"></a>c 替换</h3><ul>
-<li>把文件第三行替换成“$$$”<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;3c$$$&apos; passwd</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="复制粘贴"><a href="#复制粘贴" class="headerlink" title="复制粘贴"></a>复制粘贴</h3><p><code>h/H</code>    复制拷贝/追加模式空间(缓冲区)到存放空间<br><code>g/G</code>    粘贴 从存放空间取回/追加到模式空间</p>
-<ul>
-<li>把文件的第二行到第四行复制到文件的末尾<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed &apos;2,4H;$G&apos; passwd  &gt; b.txt</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="d-删除"><a href="#d-删除" class="headerlink" title="d 删除"></a>d 删除</h3><ul>
-<li>删除空行<br>[root@localhost ~]# sed ‘/^$/d’ passwd<br>把fstab中包含xfs的记录（行）写入新的文件中<br>[root@localhost ~]# sed ‘/xfs/w newfstab2’ /etc/fstab</li>
-</ul>
-<h3 id="直接修改文件"><a href="#直接修改文件" class="headerlink" title="直接修改文件"></a>直接修改文件</h3><p>sed 的-i选项可以直接修改文件中的内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -i &apos;s/root/rm/&apos; passwd</div></pre></td></tr></table></figure></p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://coolshell.cn/articles/9104.html" target="_blank" rel="external">sed 简明教程</a></p>
-<h2 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h2><p><code>AWK</code> 是一种优良的文本处理工具，Linux及Unix环境中现有的功能最强大的数据处理引擎之一。这种编程及数据操作语言的最大功能取决于一个人所拥有的知识。awk命名:Alfred Aho Peter Weinberger和brian kernighan三个人的姓的缩写。<br>最简单地说， AWK 是一种用于处理文本的编程语言工具。<br>任何awk语句都是由模式和动作组成，一个awk脚本可以有多个语句。模式决定动作语句的触发条件和触发时间。</p>
-<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><pre><code>netstat | awk &apos;{print $1, $7}&apos;
-</code></pre><h4 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h4><p>单引号中的被大括号括着的就是awk的语句，注意，其只能被单引号包含。<br>其中的$1..$n表示第几例。注：$0表示整个行。</p>
-<h4 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h4><p><code>BEGIN</code> ：在任何动作之前进行。<br><code>END</code> ： 在完成动作之后执行。</p>
-<h4 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h4><p>print</p>
-<h4 id="过滤记录"><a href="#过滤记录" class="headerlink" title="过滤记录"></a>过滤记录</h4><ul>
-<li><p>比较运算符<br>==，!=, &gt;, &lt;, &gt;=, &lt;=</p>
-</li>
-<li><p>逻辑运算符<br>&amp;&amp; ， ||</p>
-</li>
-</ul>
-<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><table>
-<thead>
-<tr>
-<th>$0</th>
-<th>当前记录（这个变量中存放着整个行的内容）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$1~$n</td>
-<td>当前记录的第n个字段，字段间由FS分隔</td>
-</tr>
-<tr>
-<td>FS</td>
-<td>输入字段分隔符 默认是空格或Tab</td>
-</tr>
-<tr>
-<td>NF</td>
-<td>当前记录中的字段个数，就是有多少列</td>
-</tr>
-<tr>
-<td>NR</td>
-<td>已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。</td>
-</tr>
-<tr>
-<td>FNR</td>
-<td>当前记录数，与NR不同的是，这个值会是各个文件自己的行号</td>
-</tr>
-<tr>
-<td>RS</td>
-<td>输入的记录分隔符， 默认为换行符</td>
-</tr>
-<tr>
-<td>OFS</td>
-<td>输出字段分隔符， 默认也是空格</td>
-</tr>
-<tr>
-<td>ORS</td>
-<td>输出的记录分隔符，默认为换行符</td>
-</tr>
-<tr>
-<td>FILENAME</td>
-<td>当前输入文件的名字</td>
-</tr>
-</tbody>
-</table>
-<h4 id="指定分隔符"><a href="#指定分隔符" class="headerlink" title="指定分隔符"></a>指定分隔符</h4><p>默认分隔符是空格或Tab</p>
-<p>指定冒号分割</p>
-<pre><code>awk  -F: &apos;{print $1,$3,$6}&apos; /etc/passwd
-或
-awk  &apos;BEGIN{FS=&quot;:&quot;} {print $1,$3,$6}&apos; /etc/passwd
-</code></pre><p>指定多个分隔符</p>
-<pre><code>awk -F &apos;[;:]&apos;
-</code></pre><h4 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h4><p>匹配FIN状态，其实 ~ 表示模式开始。/ /中是模式。这就是一个正则表达式的匹配。 <code>|| NR==1</code> 其实是不处理第一行。</p>
-<pre><code>awk &apos;$6 ~ /FIN/ || NR==1 {print NR,$4,$5,$6}&apos; OFS=&quot;\t&quot; netstat.txt
-</code></pre><p>模式取反</p>
-<pre><code>awk &apos;$6 !~ /WAIT/ || NR==1 {print NR,$4,$5,$6}&apos; OFS=&quot;\t&quot; netstat.txt
-或
-awk &apos;!/WAIT/&apos; netstat.txt
-</code></pre><h4 id="折分文件"><a href="#折分文件" class="headerlink" title="折分文件"></a>折分文件</h4><p>awk拆分文件很简单，就使用重定向。如按第6例分隔文件，相当的简单（其中的NR!=1表示不处理表头）。</p>
-<pre><code>awk &apos;NR!=1{print &gt; $6}&apos; netstat.txt
-</code></pre><p>你也可以把指定的列输出到文件</p>
-<pre><code>awk &apos;NR!=1{print $4,$5 &gt; $6}&apos; netstat.txt
-</code></pre><h4 id="awk脚本"><a href="#awk脚本" class="headerlink" title="awk脚本"></a>awk脚本</h4><p>语法如下：</p>
-<pre><code>BEGIN{ 这里面放的是执行前的语句 }
-END {这里面放的是处理完所有的行后要执行的语句 }
-{这里面放的是处理每一行时要执行的语句}
-</code></pre><p>有这么一个文件（学生成绩表）： score.txt</p>
-<pre><code>Marry   2143 78 84 77
-Jack    2321 66 78 45
-Tom     2122 48 77 71
-Mike    2537 87 97 95
-Bob     2415 40 57 62
-</code></pre><p>awk脚本如下</p>
-<pre><code>#!/bin/awk -f
-#运行前
-BEGIN {
-math = 0
-english = 0
-computer = 0
-
-printf &quot;NAME    NO.   MATH  ENGLISH  COMPUTER   TOTAL\n&quot;
-printf &quot;---------------------------------------------\n&quot;
-}
-#运行中
-{
-math+=$3
-english+=$4
-computer+=$5
-printf &quot;%-6s %-6s %4d %8d %8d %8d\n&quot;, $1, $2, $3,$4,$5, $3+$4+$5
-}
-#运行后
-END {
-printf &quot;---------------------------------------------\n&quot;
-printf &quot;  TOTAL:%10d %8d %8d \n&quot;, math, english, computer
-printf &quot;AVERAGE:%10.2f %8.2f %8.2f\n&quot;, math/NR, english/NR, computer/NR
-}
-</code></pre><p>执行</p>
-<pre><code>awk -f cal.awk score.txt
-或
-./cal.awk score.txt
-</code></pre><h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><ul>
-<li><p>获取当前主机网卡的ip地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ipaddress=$(ifconfig | grep broadcast | awk &apos;&#123;print $2&#125;&apos;)</div></pre></td></tr></table></figure>
-</li>
-<li><p>打印出passwd中用户UID大于1000的用户名和登录shell</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cat /etc/passwd | awk -F: &apos;$3&gt;1000 &#123;print $1 &quot;\t&quot; $7&#125;&apos;</div><div class="line">nfsnobody       /sbin/nologin</div><div class="line">rm1     /bin/bash</div><div class="line">rm2     /bin/bash</div><div class="line">rm3     /bin/bash</div></pre></td></tr></table></figure>
-</li>
-<li><p>多条件进行过滤<br>能登录的普通用户</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cat /etc/passwd | awk -F: &apos;BEGIN &#123;print &quot;name \t shell&quot;&#125; $3&gt;1000 &amp;&amp; $7==&quot;/bin/bash&quot; &#123;print $1 &quot;\t&quot; $7&#125; END &#123;print &quot;Thank you!!!&quot;&#125;&apos;</div><div class="line">name     shell</div><div class="line">rm1     /bin/bash</div><div class="line">rm2     /bin/bash</div><div class="line">rm3     /bin/bash</div><div class="line">Thank you!!!</div></pre></td></tr></table></figure>
-</li>
-<li><p>awk在脚本中的使用<br>找到系统中所有的能登录的普通用户，并进行删除</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">user=$(cat /etc/passwd | awk -F: &apos;$3&gt;=1000 &amp;&amp; $7==&quot;/bin/bash&quot; &#123;print $1&#125;&apos;)</div><div class="line">for i in $user</div><div class="line">do</div><div class="line"> userdel -r $i</div><div class="line">done</div></pre></td></tr></table></figure>
-</li>
-<li><p>RHEL7中查看系统当前内存使用百分比</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">echo &quot;此脚本可以用来查看当前内存使用百分比&quot;</div><div class="line">use=$(free -m | grep &quot;Mem:&quot; | awk &apos;&#123;print $3&#125;&apos;)</div><div class="line">total=$(free -m | grep &quot;Mem:&quot; | awk &apos;&#123;print $2&#125;&apos;)</div><div class="line">useper=$(expr $use \* 100 / $total)</div><div class="line">echo &quot;系统当前内存使用百分比为:&quot;</div><div class="line">echo $&#123;useper&#125;%</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h2><p>cut是一个选取命令，就是将一段数据经过分析，取出我们想要的。一般来说，选取信息通常是针对“行”来进行分析的，并不是整篇信息分析的。<br>主要参数<br>-b ：以字节为单位进行分割。这些字节位置将忽略多字节字符边界，除非也指定了 -n 标志。<br>-c ：以字符为单位进行分割。<br>-d ：自定义分隔符，默认为制表符。<br>-f ：与-d一起使用，指定显示哪个区域。</p>
-<ul>
-<li><p>以字节进行分割</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# tail -3 /etc/passwd | cut -b 1-4,11,12</div><div class="line">post89</div><div class="line">sshd74</div><div class="line">tcpd72</div></pre></td></tr></table></figure>
-</li>
-<li><p>以字符进行分割</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# cat newyear.txt | cut -c 1-4</div></pre></td></tr></table></figure>
-</li>
-<li><p>以空格作为分隔符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# sed -n l c.txt</div><div class="line">aaaa\tbbbb    cccc$</div><div class="line">aaaa    bbbb\tcccc$</div><div class="line">[root@localhost ~]# cat c.txt  | cut -d &apos; &apos; -f 1</div><div class="line">aaaa    bbbb</div><div class="line">aaaa</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>总结：<br>cut有哪些缺陷和不足？<br>如果文件里面的某些域是由若干个空格来间隔的，那么用cut就有点麻烦了，因为cut只擅长处理“以一个字符间隔”的文本内容</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;正则表达式 &lt;/li&gt;
-&lt;li&gt;sed &lt;/li&gt;
-&lt;li&gt;awk &lt;/li&gt;
-&lt;li&gt;cut&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
-    
-    
-      <category term="GOD linux" scheme="https://sam2099.github.io/tags/GOD-linux/"/>
+      <category term="nginx" scheme="https://sam2099.github.io/tags/nginx/"/>
     
   </entry>
   

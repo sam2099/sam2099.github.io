@@ -4,14 +4,124 @@
 
     
   <url>
+    <loc>https://sam2099.github.io/2016/05/17/android/broadcast/</loc>
+    <lastmod>2017-02-22T06:22:31.767Z</lastmod>
+    <data>
+        <display>
+        <title>Android broadcast</title>
+        <pubTime>2016-05-17T14:28:38.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>broadcast</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="https://sam2099.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2016/05/10/android/android1_UnitTest/</loc>
+    <lastmod>2017-02-22T06:21:53.947Z</lastmod>
+    <data>
+        <display>
+        <title>Android入门 一 ： unit test</title>
+        <pubTime>2016-05-10T11:29:44.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+        <tag>junit</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="https://sam2099.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2016/05/13/android/android0_index/</loc>
+    <lastmod>2017-02-22T06:21:35.583Z</lastmod>
+    <data>
+        <display>
+        <title>Android入门 总纲</title>
+        <pubTime>2016-05-13T11:29:44.000Z</pubTime>
+        
+        <tag>android</tag>
+         
+         
+           
+             
+              <breadCrumb title="Android" url="https://sam2099.github.io/categories/Android/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2016/01/22/web%20server/nginx/nginx/</loc>
+    <lastmod>2017-02-22T06:20:07.151Z</lastmod>
+    <data>
+        <display>
+        <title>nginx</title>
+        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
+        
+        <tag>nginx</tag>
+         
+         
+           
+             
+              <breadCrumb title="server" url="https://sam2099.github.io/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://sam2099.github.io/2017/02/21/web%20server/tomcat/tomcatLog/</loc>
-    <lastmod>2017-02-21T09:21:08.704Z</lastmod>
+    <lastmod>2017-02-22T06:19:06.371Z</lastmod>
     <data>
         <display>
         <title>tomcat  日志分割</title>
         <pubTime>2017-02-21T09:07:07.000Z</pubTime>
         
-        <tag>tomcat log</tag>
+        <tag>tomcat</tag>
+         
+        <tag>cronolog</tag>
+         
+         
+           
+             
+              <breadCrumb title="server" url="https://sam2099.github.io/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2017/02/22/web%20server/nginxTomcatSSL/</loc>
+    <lastmod>2017-02-22T06:18:05.471Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx + Tomcat + HTTPS</title>
+        <pubTime>2017-02-22T03:12:14.000Z</pubTime>
+        
+        <tag>tomcat</tag>
+         
+        <tag>nginx</tag>
+         
+        <tag>https</tag>
          
          
            
@@ -62,34 +172,13 @@
     </url>
 
     
-    
   <url>
-    <loc>https://sam2099.github.io/2016/01/22/web%20server/nginx/nginx/</loc>
+    <loc>https://sam2099.github.io/2015/12/06/linux/base/godLinux1-8/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>nginx</title>
-        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
-        
-        <tag>server nginx</tag>
-         
-         
-           
-             
-              <breadCrumb title="server" url="https://sam2099.github.io/categories/server/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2016/01/06/linux/shell/shell9/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-29 Linux 正则表达式 sed awk cut</title>
-        <pubTime>2016-01-06T11:59:44.000Z</pubTime>
+        <title>1-8-RHEL7软件包管理</title>
+        <pubTime>2015-12-06T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -104,74 +193,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-8/</loc>
+    <loc>https://sam2099.github.io/2015/12/05/linux/base/godLinux1-7/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （八） 函数, 文件包含, 转码工具</title>
-        <pubTime>2015-12-28T14:29:44.000Z</pubTime>
+        <title>1-7 文件权限管理</title>
+        <pubTime>2015-12-05T10:29:44.000Z</pubTime>
         
-        <tag>shell</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-7/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>shell （七） 循环</title>
-        <pubTime>2015-12-28T13:49:44.000Z</pubTime>
-        
-        <tag>shell</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-6/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>shell （六） 条件</title>
-        <pubTime>2015-12-28T13:29:44.000Z</pubTime>
-        
-        <tag>shell</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-3/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>shell （三） 运算符</title>
-        <pubTime>2015-12-28T11:29:44.000Z</pubTime>
-        
-        <tag>shell</tag>
+        <tag>GOD linux</tag>
          
          
            
@@ -204,26 +233,6 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/11/17/linux/lamp/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>lamp</title>
-        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
-        
-        <tag>lamp</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://sam2099.github.io/2015/07/20/linux/cmd/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -244,17 +253,20 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/08/19/methodology/methodology/</loc>
+    <loc>https://sam2099.github.io/2015/11/17/linux/lamp/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>二十一条军规</title>
-        <pubTime>2015-08-19T08:35:47.000Z</pubTime>
+        <title>lamp</title>
+        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
         
-        <tag>methodology</tag>
+        <tag>lamp</tag>
          
          
            
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
         </display>
     </data>
     </url>
@@ -301,20 +313,17 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/09/18/mq/activemq2/</loc>
+    <loc>https://sam2099.github.io/2015/08/19/methodology/methodology/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>activemq （二）  集成Spring-远程调用</title>
-        <pubTime>2015-09-18T12:34:05.000Z</pubTime>
+        <title>二十一条军规</title>
+        <pubTime>2015-08-19T08:35:47.000Z</pubTime>
         
-        <tag>activemq</tag>
+        <tag>methodology</tag>
          
          
            
-             
-              <breadCrumb title="mq" url="https://sam2099.github.io/categories/mq/"/>
-          
         </display>
     </data>
     </url>
@@ -341,19 +350,19 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/09/17/mysql/mysql/</loc>
+    <loc>https://sam2099.github.io/2015/09/18/mq/activemq2/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>mysql</title>
-        <pubTime>2015-09-17T05:53:57.000Z</pubTime>
+        <title>activemq （二）  集成Spring-远程调用</title>
+        <pubTime>2015-09-18T12:34:05.000Z</pubTime>
         
-        <tag>mysql</tag>
+        <tag>activemq</tag>
          
          
            
              
-              <breadCrumb title="mysql" url="https://sam2099.github.io/categories/mysql/"/>
+              <breadCrumb title="mq" url="https://sam2099.github.io/categories/mq/"/>
           
         </display>
     </data>
@@ -394,6 +403,26 @@
            
              
               <breadCrumb title="mq" url="https://sam2099.github.io/categories/mq/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/09/17/mysql/mysql/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>mysql</title>
+        <pubTime>2015-09-17T05:53:57.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="https://sam2099.github.io/categories/mysql/"/>
           
         </display>
     </data>
@@ -462,26 +491,6 @@
     
     
   <url>
-    <loc>https://sam2099.github.io/2016/05/05/other/shadowsocks/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>shadowsocks</title>
-        <pubTime>2016-05-05T03:44:58.000Z</pubTime>
-        
-        <tag>shadowsocks</tag>
-         
-         
-           
-             
-              <breadCrumb title="杂谈" url="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://sam2099.github.io/2015/10/15/other/reference/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -520,6 +529,26 @@
 
     
   <url>
+    <loc>https://sam2099.github.io/2016/05/05/other/shadowsocks/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>shadowsocks</title>
+        <pubTime>2016-05-05T03:44:58.000Z</pubTime>
+        
+        <tag>shadowsocks</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://sam2099.github.io/2015/08/11/spring/s-SpringTest1/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -528,26 +557,6 @@
         <pubTime>2015-08-11T07:56:15.000Z</pubTime>
         
         <tag>Spring Testing</tag>
-         
-         
-           
-             
-              <breadCrumb title="spring" url="https://sam2099.github.io/categories/spring/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/08/07/spring/s-springPortletMVCFramework/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>SpringPortletMVCFramework</title>
-        <pubTime>2015-08-07T07:30:47.000Z</pubTime>
-        
-        <tag>Spring Portlet</tag>
          
          
            
@@ -600,6 +609,26 @@
 
     
   <url>
+    <loc>https://sam2099.github.io/2015/08/07/spring/s-springPortletMVCFramework/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>SpringPortletMVCFramework</title>
+        <pubTime>2015-08-07T07:30:47.000Z</pubTime>
+        
+        <tag>Spring Portlet</tag>
+         
+         
+           
+             
+              <breadCrumb title="spring" url="https://sam2099.github.io/categories/spring/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://sam2099.github.io/2015/08/18/spring/s-springWebSocket/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -620,14 +649,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/08/19/spring/springCors/</loc>
+    <loc>https://sam2099.github.io/2015/08/06/spring/s-springmvc%201/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>spring CORS</title>
-        <pubTime>2015-08-19T08:51:45.000Z</pubTime>
+        <title>Spring MVC（一） 常用点</title>
+        <pubTime>2015-08-06T09:37:37.000Z</pubTime>
         
-        <tag>Spring CORS</tag>
+        <tag>Spring MVC</tag>
          
          
            
@@ -646,26 +675,6 @@
         <display>
         <title>Spring MVC（二） 配置</title>
         <pubTime>2015-08-07T05:17:37.000Z</pubTime>
-        
-        <tag>Spring MVC</tag>
-         
-         
-           
-             
-              <breadCrumb title="spring" url="https://sam2099.github.io/categories/spring/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/08/06/spring/s-springmvc%201/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>Spring MVC（一） 常用点</title>
-        <pubTime>2015-08-06T09:37:37.000Z</pubTime>
         
         <tag>Spring MVC</tag>
          
@@ -700,14 +709,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/08/25/spring/springWebService/</loc>
+    <loc>https://sam2099.github.io/2015/09/06/spring/springJms-2/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>spring WebService JAX-WS</title>
-        <pubTime>2015-08-25T11:51:43.000Z</pubTime>
+        <title>Spring JMS （二）</title>
+        <pubTime>2015-09-06T10:53:49.000Z</pubTime>
         
-        <tag>Spring WebService JAX-WS</tag>
+        <tag>Spring JMS</tag>
          
          
            
@@ -720,19 +729,19 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/11/18/web%20server/serverInit/</loc>
+    <loc>https://sam2099.github.io/2015/08/19/spring/springCors/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>linux server 配置选项</title>
-        <pubTime>2016-11-18T11:29:44.000Z</pubTime>
+        <title>spring CORS</title>
+        <pubTime>2015-08-19T08:51:45.000Z</pubTime>
         
-        <tag>linux server</tag>
+        <tag>Spring CORS</tag>
          
          
            
              
-              <breadCrumb title="server" url="https://sam2099.github.io/categories/server/"/>
+              <breadCrumb title="spring" url="https://sam2099.github.io/categories/spring/"/>
           
         </display>
     </data>
@@ -740,14 +749,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/09/06/spring/springJms-2/</loc>
+    <loc>https://sam2099.github.io/2015/08/25/spring/springWebService/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>Spring JMS （二）</title>
-        <pubTime>2015-09-06T10:53:49.000Z</pubTime>
+        <title>spring WebService JAX-WS</title>
+        <pubTime>2015-08-25T11:51:43.000Z</pubTime>
         
-        <tag>Spring JMS</tag>
+        <tag>Spring WebService JAX-WS</tag>
          
          
            
@@ -779,15 +788,36 @@
     </url>
 
     
+    
   <url>
-    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-5/</loc>
+    <loc>https://sam2099.github.io/2016/11/18/web%20server/serverInit/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （五） 数组</title>
-        <pubTime>2015-12-28T12:29:44.000Z</pubTime>
+        <title>linux server 配置选项</title>
+        <pubTime>2016-11-18T11:29:44.000Z</pubTime>
         
-        <tag>shell</tag>
+        <tag>linux server</tag>
+         
+         
+           
+             
+              <breadCrumb title="server" url="https://sam2099.github.io/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/12/06/linux/base/godLinux1-9/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-9 文件归档和解压缩</title>
+        <pubTime>2015-12-06T12:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
          
          
            
@@ -800,12 +830,156 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-4/</loc>
+    <loc>https://sam2099.github.io/2015/12/04/linux/base/godLinux1-6/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （四） 字符串</title>
-        <pubTime>2015-12-28T11:59:44.000Z</pubTime>
+        <title>1-6 用户管理</title>
+        <pubTime>2015-12-04T14:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/12/04/linux/base/godLinux1-5/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-5 vim编辑器</title>
+        <pubTime>2015-12-04T08:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/12/03/linux/base/godLinux1-4/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-4 rhel7文件管理和xfs文件系统备份</title>
+        <pubTime>2015-12-03T07:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/12/24/linux/base/godLinux1-23/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-23 RHEL7启动配置</title>
+        <pubTime>2015-12-24T08:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>linux service</title>
+        <pubTime>2016-01-26T08:29:44.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>service</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/11/27/linux/base/godLinux1-3/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-3 rhel7基本命令和操作</title>
+        <pubTime>2015-11-27T07:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2016/01/26/linux/service/2-1%20sshd/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>2-1 sshd</title>
+        <pubTime>2016-01-26T08:29:44.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>sshd</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2016/01/22/linux/shell/shell-10/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>shell （九） 色彩</title>
+        <pubTime>2016-01-22T11:59:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -860,12 +1034,12 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/01/22/linux/shell/shell-10/</loc>
+    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-4/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （九） 色彩</title>
-        <pubTime>2016-01-22T11:59:44.000Z</pubTime>
+        <title>shell （四） 字符串</title>
+        <pubTime>2015-12-28T11:59:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -880,16 +1054,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/01/26/linux/service/2-1%20sshd/</loc>
+    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-3/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>2-1 sshd</title>
-        <pubTime>2016-01-26T08:29:44.000Z</pubTime>
+        <title>shell （三） 运算符</title>
+        <pubTime>2015-12-28T11:29:44.000Z</pubTime>
         
-        <tag>linux</tag>
-         
-        <tag>sshd</tag>
+        <tag>shell</tag>
          
          
            
@@ -902,16 +1074,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/</loc>
+    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-5/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>linux service</title>
-        <pubTime>2016-01-26T08:29:44.000Z</pubTime>
+        <title>shell （五） 数组</title>
+        <pubTime>2015-12-28T12:29:44.000Z</pubTime>
         
-        <tag>linux</tag>
-         
-        <tag>service</tag>
+        <tag>shell</tag>
          
          
            
@@ -924,14 +1094,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/06/linux/base/godLinux1-8/</loc>
+    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-7/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>1-8-RHEL7软件包管理</title>
-        <pubTime>2015-12-06T07:29:44.000Z</pubTime>
+        <title>shell （七） 循环</title>
+        <pubTime>2015-12-28T13:49:44.000Z</pubTime>
         
-        <tag>GOD linux</tag>
+        <tag>shell</tag>
          
          
            
@@ -944,14 +1114,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/05/linux/base/godLinux1-7/</loc>
+    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-6/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>1-7 文件权限管理</title>
-        <pubTime>2015-12-05T10:29:44.000Z</pubTime>
+        <title>shell （六） 条件</title>
+        <pubTime>2015-12-28T13:29:44.000Z</pubTime>
         
-        <tag>GOD linux</tag>
+        <tag>shell</tag>
          
          
            
@@ -964,14 +1134,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/06/linux/base/godLinux1-9/</loc>
+    <loc>https://sam2099.github.io/2015/12/28/linux/shell/shell-8/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>1-9 文件归档和解压缩</title>
-        <pubTime>2015-12-06T12:29:44.000Z</pubTime>
+        <title>shell （八） 函数, 文件包含, 转码工具</title>
+        <pubTime>2015-12-28T14:29:44.000Z</pubTime>
         
-        <tag>GOD linux</tag>
+        <tag>shell</tag>
          
          
            
@@ -984,112 +1154,12 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/04/linux/base/godLinux1-5/</loc>
+    <loc>https://sam2099.github.io/2016/01/06/linux/shell/shell9/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>1-5 vim编辑器</title>
-        <pubTime>2015-12-04T08:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/04/linux/base/godLinux1-6/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-6 用户管理</title>
-        <pubTime>2015-12-04T14:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/03/linux/base/godLinux1-4/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-4 rhel7文件管理和xfs文件系统备份</title>
-        <pubTime>2015-12-03T07:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/11/27/linux/base/godLinux1-3/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-3 rhel7基本命令和操作</title>
-        <pubTime>2015-11-27T07:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/22/linux/base/godLinux1-19~20/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-19~20 源码编译Linux内核, Linux内核模块操作</title>
-        <pubTime>2015-12-22T07:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/23/linux/base/godLinux1-21/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-21 RHEL7网络管理</title>
-        <pubTime>2015-12-23T08:29:44.000Z</pubTime>
+        <title>1-29 Linux 正则表达式 sed awk cut</title>
+        <pubTime>2016-01-06T11:59:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1124,12 +1194,32 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/24/linux/base/godLinux1-23/</loc>
+    <loc>https://sam2099.github.io/2015/12/23/linux/base/godLinux1-21/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>1-23 RHEL7启动配置</title>
-        <pubTime>2015-12-24T08:29:44.000Z</pubTime>
+        <title>1-21 RHEL7网络管理</title>
+        <pubTime>2015-12-23T08:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/12/22/linux/base/godLinux1-19~20/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-19~20 源码编译Linux内核, Linux内核模块操作</title>
+        <pubTime>2015-12-22T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1164,12 +1254,12 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/18/linux/base/godLinux1-18/</loc>
+    <loc>https://sam2099.github.io/2015/12/14/linux/base/godLinux1-13/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-18-计划任务和日志管理</title>
-        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
+        <title>1-13 Linux 磁盘管理</title>
+        <pubTime>2015-12-14T06:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1204,6 +1294,26 @@
 
     
   <url>
+    <loc>https://sam2099.github.io/2015/12/18/linux/base/godLinux1-17/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>1-17 系统存储管理器和磁盘配额</title>
+        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>https://sam2099.github.io/2015/12/15/linux/base/godLinux1-14/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
@@ -1224,12 +1334,12 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/14/linux/base/godLinux1-13/</loc>
+    <loc>https://sam2099.github.io/2015/12/07/linux/base/godLinux1-10/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-13 Linux 磁盘管理</title>
-        <pubTime>2015-12-14T06:29:44.000Z</pubTime>
+        <title>1-10 RHEL7 进程管理</title>
+        <pubTime>2015-12-07T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1244,12 +1354,12 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/16/linux/base/godLinux1-15/</loc>
+    <loc>https://sam2099.github.io/2015/12/18/linux/base/godLinux1-18/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-15 Linux RAID（Redundant Array of Independent Disks,独立磁盘冗余阵列）</title>
-        <pubTime>2015-12-16T07:29:44.000Z</pubTime>
+        <title>1-18-计划任务和日志管理</title>
+        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1270,26 +1380,6 @@
         <display>
         <title>1-11~12 - 重定向和文件查找</title>
         <pubTime>2015-12-09T07:28:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="https://sam2099.github.io/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/12/07/linux/base/godLinux1-10/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>1-10 RHEL7 进程管理</title>
-        <pubTime>2015-12-07T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1344,26 +1434,6 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/06/20/devEnv/gitlab/gitlab/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>gitlab</title>
-        <pubTime>2016-06-20T05:46:15.000Z</pubTime>
-        
-        <tag>gitlab</tag>
-         
-         
-           
-             
-              <breadCrumb title="developEnv" url="https://sam2099.github.io/categories/developEnv/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://sam2099.github.io/2015/10/15/devEnv/nexus/restlet/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
@@ -1384,12 +1454,12 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/12/18/linux/base/godLinux1-17/</loc>
+    <loc>https://sam2099.github.io/2015/12/16/linux/base/godLinux1-15/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-17 系统存储管理器和磁盘配额</title>
-        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
+        <title>1-15 Linux RAID（Redundant Array of Independent Disks,独立磁盘冗余阵列）</title>
+        <pubTime>2015-12-16T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1404,19 +1474,19 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/06/14/devEnv/10years/</loc>
+    <loc>https://sam2099.github.io/2015/07/29/devEnv/ci/o-jenkins/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>十年回头望</title>
-        <pubTime>2016-06-14T13:28:38.000Z</pubTime>
+        <title>jenkins集合</title>
+        <pubTime>2015-07-29T02:14:56.000Z</pubTime>
         
-        <tag>十年回头望</tag>
+        <tag>jenkins</tag>
          
          
            
              
-              <breadCrumb title="杂谈" url="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+              <breadCrumb title="developEnv" url="https://sam2099.github.io/categories/developEnv/"/>
           
         </display>
     </data>
@@ -1424,14 +1494,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/05/03/devEnv/git/git/</loc>
+    <loc>https://sam2099.github.io/2016/06/20/devEnv/gitlab/gitlab/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>git</title>
-        <pubTime>2016-05-03T03:44:58.000Z</pubTime>
+        <title>gitlab</title>
+        <pubTime>2016-06-20T05:46:15.000Z</pubTime>
         
-        <tag>git</tag>
+        <tag>gitlab</tag>
          
          
            
@@ -1484,48 +1554,6 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2015/10/29/exception/tomcat-jdbc-hibernate/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>tomcat-jdbc hibernate 版本冲突</title>
-        <pubTime>2015-10-29T08:10:08.000Z</pubTime>
-        
-        <tag>hibernate</tag>
-         
-        <tag>tomcat-jdbc</tag>
-         
-         
-           
-             
-              <breadCrumb title="exception" url="https://sam2099.github.io/categories/exception/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2016/05/10/android/android1_UnitTest/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>Android入门 一 ： unit test</title>
-        <pubTime>2016-05-10T11:29:44.000Z</pubTime>
-        
-        <tag>Android junit</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="https://sam2099.github.io/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>https://sam2099.github.io/2016/02/15/exception/ClientAbortException/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
@@ -1548,6 +1576,49 @@
 
     
   <url>
+    <loc>https://sam2099.github.io/2016/06/14/devEnv/10years/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>十年回头望</title>
+        <pubTime>2016-06-14T13:28:38.000Z</pubTime>
+        
+        <tag>十年回头望</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>https://sam2099.github.io/2015/10/29/exception/tomcat-jdbc-hibernate/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>tomcat-jdbc hibernate 版本冲突</title>
+        <pubTime>2015-10-29T08:10:08.000Z</pubTime>
+        
+        <tag>hibernate</tag>
+         
+        <tag>tomcat-jdbc</tag>
+         
+         
+           
+             
+              <breadCrumb title="exception" url="https://sam2099.github.io/categories/exception/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
     <loc>https://sam2099.github.io/2015/09/16/devEnv/ide/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
@@ -1568,55 +1639,14 @@
 
     
   <url>
-    <loc>https://sam2099.github.io/2016/05/17/android/broadcast/</loc>
+    <loc>https://sam2099.github.io/2016/05/03/devEnv/git/git/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>Android broadcast</title>
-        <pubTime>2016-05-17T14:28:38.000Z</pubTime>
+        <title>git</title>
+        <pubTime>2016-05-03T03:44:58.000Z</pubTime>
         
-        <tag>Android broadcast</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="https://sam2099.github.io/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>https://sam2099.github.io/2016/05/13/android/android0_index/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>Android入门 总纲</title>
-        <pubTime>2016-05-13T11:29:44.000Z</pubTime>
-        
-        <tag>Android</tag>
-         
-         
-           
-             
-              <breadCrumb title="Android" url="https://sam2099.github.io/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>https://sam2099.github.io/2015/07/29/devEnv/ci/o-jenkins/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>jenkins集合</title>
-        <pubTime>2015-07-29T02:14:56.000Z</pubTime>
-        
-        <tag>jenkins</tag>
+        <tag>git</tag>
          
          
            
