@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sam2099.github.io/"/>
-  <updated>2017-02-22T06:18:05.471Z</updated>
+  <updated>2017-03-02T05:39:46.803Z</updated>
   <id>https://sam2099.github.io/</id>
   
   <author>
@@ -16,11 +16,63 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>hadoop 全排序</title>
+    <link href="https://sam2099.github.io/2017/02/28/hadoop/hadoopAllSort/"/>
+    <id>https://sam2099.github.io/2017/02/28/hadoop/hadoopAllSort/</id>
+    <published>2017-02-28T09:19:43.000Z</published>
+    <updated>2017-03-02T05:39:46.803Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>步骤</li>
+</ul>
+<p>……</p>
+<a id="more"></a>
+<p>## </p>
+<ul>
+<li>Writable 和 WritableComparable接口<br><span style="color:red">Mapper 输出的键类</span>或 <span style="color:red">Reduce 输入的键类</span>都应该实现 WritableComparable接口，<br>其他所有类型（例如 Mapper<code>输入</code>使用的键和值类，Mapper<code>输出</code>的值类， Reduce<code>输出</code>的键类）</li>
+</ul>
+<h2 id="全排序"><a href="#全排序" class="headerlink" title="全排序"></a>全排序</h2><ol>
+<li><p>reduce键的排序<br>键到reduce之前排序， 在WritableConparable键中实现排序逻辑或自定义Comparator</p>
+</li>
+<li><p>reduce键的转换为索引数值</p>
+</li>
+<li><p>自定义Partitioner</p>
+<ol>
+<li>清楚reduce键的索引范围</li>
+<li>根据reduce键的索引范围 和 reduce的数目 实现划分逻辑</li>
+</ol>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;步骤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;……&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="hadoop" scheme="https://sam2099.github.io/categories/hadoop/"/>
+    
+    
+      <category term="bigData" scheme="https://sam2099.github.io/tags/bigData/"/>
+    
+      <category term="hadoop" scheme="https://sam2099.github.io/tags/hadoop/"/>
+    
+      <category term="全排序" scheme="https://sam2099.github.io/tags/%E5%85%A8%E6%8E%92%E5%BA%8F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Nginx + Tomcat + HTTPS</title>
     <link href="https://sam2099.github.io/2017/02/22/web%20server/nginxTomcatSSL/"/>
     <id>https://sam2099.github.io/2017/02/22/web server/nginxTomcatSSL/</id>
     <published>2017-02-22T03:12:14.000Z</published>
-    <updated>2017-02-22T06:18:05.471Z</updated>
+    <updated>2017-03-02T05:26:37.671Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <ul>
@@ -33,13 +85,13 @@
 <p>本文基本参照 <a href="https://www.oschina.net/question/12_213459" target="_blank" rel="external"> oschina 红薯 大大的文章 </a> 。<br>基本思路是 Nginx 上启用了 HTTPS，而 Nginx 和 Tomcat 之间走的却是普通的 HTTP 连接。</p>
 <p><img src="http://amadis.qiniudn.com/nginx_tomcat_ssl.png" alt=""></p>
 <a id="more"></a>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>主要以Centos为例。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /etc/redhat-release</div><div class="line">CentOS release 5.4 (Final)</div></pre></td></tr></table></figure></p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>主要以Centos为例。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cat /etc/redhat-release</span></div><div class="line">CentOS release 5.4 (Final)</div></pre></td></tr></table></figure></p>
 <h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>阿里云提供免费的<code>Symantec DV 证书</code>， 生成好后下载nginx的证书，包含 <code>xxxxxxx.pem</code> 和 <code>xxxxxxxxx.key</code></p>
 <h2 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a>nginx配置</h2><h3 id="证书上传"><a href="#证书上传" class="headerlink" title="证书上传"></a>证书上传</h3><p>将 <code>xxxxxxx.pem</code> 和 <code>xxxxxxxxx.key</code> 上传到 ngixn 的配置根目录 <code>/etc/nginx</code>。</p>
-<h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">        listen       443 ssl;</div><div class="line">        listen       80 ;</div><div class="line">        server_name  ssl.test.com  ;                                                                                                                                                                    </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        proxy_intercept_errors on;                                                                                                                                                                                </div><div class="line">        charset utf-8;                                                                                                                                                                                            </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        # ssl                                                                                                                                                                                                     </div><div class="line">        ssl_certificate   xxxxxxxxx.pem;                                                                                                                                                                    </div><div class="line">        ssl_certificate_key  xxxxxxxxx.key;                                                                                                                                                                 </div><div class="line">        ssl_session_timeout 5m;                                                                                                                                                                                   </div><div class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">        ssl_ciphers AESGCM:ALL:!DH:!EXPORT:!RC4:+HIGH:!MEDIUM:!LOW:!aNULL:!eNULL;</div><div class="line">        ssl_prefer_server_ciphers on;</div><div class="line"></div><div class="line">        location /</div><div class="line">        &#123;</div><div class="line">                proxy_pass http://localhost:8080;</div><div class="line">                proxy_redirect off;</div><div class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</div><div class="line">                proxy_set_header X-Real-IP $remote_addr;</div><div class="line">                proxy_set_header Host $http_host;</div><div class="line">                proxy_set_header X-Forwarded-Proto https;</div><div class="line">        </div><div class="line">        &#125;</div><div class="line"></div><div class="line">        location /status</div><div class="line">        &#123;</div><div class="line">                stub_status on;</div><div class="line">                access_log   off;</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        #  让http请求重定向到https请求   </div><div class="line">        error_page 497  https://$host$uri?$args;  </div><div class="line"></div><div class="line">        error_page  404              /404.html;</div><div class="line">        location = /404.html &#123;</div><div class="line">          root /usr/share/nginx/html;</div><div class="line">          internal;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">        listen       443 ssl;</div><div class="line">        listen       80 ;</div><div class="line">        server_name  ssl.test.com  ;                                                                                                                                                                    </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        proxy_intercept_errors on;                                                                                                                                                                                </div><div class="line">        charset utf-8;                                                                                                                                                                                            </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        # ssl                                                                                                                                                                                                     </div><div class="line">        ssl_certificate   xxxxxxxxx.pem;                                                                                                                                                                    </div><div class="line">        ssl_certificate_key  xxxxxxxxx.key;                                                                                                                                                                 </div><div class="line">        ssl_session_timeout 5m;                                                                                                                                                                                   </div><div class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">        ssl_ciphers AESGCM:ALL:!DH:!EXPORT:!RC4:+HIGH:!MEDIUM:!LOW:!aNULL:!eNULL;</div><div class="line">        ssl_prefer_server_ciphers on;</div><div class="line"></div><div class="line">        location /</div><div class="line">        &#123;</div><div class="line">                proxy_pass http://localhost:8080;</div><div class="line">                proxy_redirect off;</div><div class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</div><div class="line">                proxy_set_header X-Real-IP $remote_addr;</div><div class="line">                proxy_set_header Host $http_host;</div><div class="line">                proxy_set_header X-Forwarded-Proto https;</div><div class="line">        </div><div class="line">        &#125;</div><div class="line"></div><div class="line">        location /status</div><div class="line">        &#123;</div><div class="line">                stub_status on;</div><div class="line">                access_log   off;</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        #  让http请求重定向到https请求   </div><div class="line">        error_page 497  https://$host$uri?$args;  </div><div class="line"></div><div class="line">        error_page  404              /404.html;</div><div class="line">        location = /404.html &#123;</div><div class="line">          root /usr/share/nginx/html;</div><div class="line">          internal;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><code>497</code> 是nginx 内置 http 状态。<br>可参考<a href="http://blog.csdn.net/vfush/article/details/51086274" target="_blank" rel="external">nginx强制使用https访问</a></p>
 <h2 id="tomcat配置"><a href="#tomcat配置" class="headerlink" title="tomcat配置"></a>tomcat配置</h2><p>主要配置 <code>server.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&apos;1.0&apos; encoding=&apos;utf-8&apos;?&gt;</div><div class="line">&lt;Server port=&quot;8005&quot; shutdown=&quot;SHUTDOWN&quot;&gt;</div><div class="line">  &lt;Service name=&quot;Catalina&quot;&gt;</div><div class="line">    &lt;Connector port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot;</div><div class="line">               connectionTimeout=&quot;20000&quot;</div><div class="line">               redirectPort=&quot;443&quot;</div><div class="line">               proxyPort=&quot;443&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;Engine name=&quot;Catalina&quot; defaultHost=&quot;localhost&quot;&gt;</div><div class="line"></div><div class="line">      &lt;Host name=&quot;localhost&quot;  appBase=&quot;webapps&quot;</div><div class="line">            unpackWARs=&quot;true&quot; autoDeploy=&quot;true&quot;&gt;</div><div class="line">            &lt;Valve className=&quot;org.apache.catalina.valves.RemoteIpValve&quot;</div><div class="line">                  remoteIpHeader=&quot;x-forwarded-for&quot;</div><div class="line">                  remoteIpProxiesHeader=&quot;x-forwarded-by&quot;</div><div class="line">                  protocolHeader=&quot;x-forwarded-proto&quot;</div><div class="line">            /&gt;</div><div class="line">            &lt;Context path=&quot;&quot; docBase=&quot;&quot; reloadable=&quot;false&quot;/&gt;</div><div class="line">      &lt;/Host&gt;</div><div class="line">    &lt;/Engine&gt;</div><div class="line">  &lt;/Service&gt;</div><div class="line">&lt;/Server&gt;</div></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version='1.0' encoding='utf-8'?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">Server</span> <span class="attr">port</span>=<span class="string">"8005"</span> <span class="attr">shutdown</span>=<span class="string">"SHUTDOWN"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">Service</span> <span class="attr">name</span>=<span class="string">"Catalina"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">"8080"</span> <span class="attr">protocol</span>=<span class="string">"HTTP/1.1"</span></span></div><div class="line">               <span class="attr">connectionTimeout</span>=<span class="string">"20000"</span></div><div class="line">               <span class="attr">redirectPort</span>=<span class="string">"443"</span></div><div class="line">               <span class="attr">proxyPort</span>=<span class="string">"443"</span>/&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">Engine</span> <span class="attr">name</span>=<span class="string">"Catalina"</span> <span class="attr">defaultHost</span>=<span class="string">"localhost"</span>&gt;</span></div><div class="line"></div><div class="line">      <span class="tag">&lt;<span class="name">Host</span> <span class="attr">name</span>=<span class="string">"localhost"</span>  <span class="attr">appBase</span>=<span class="string">"webapps"</span></span></div><div class="line">            <span class="attr">unpackWARs</span>=<span class="string">"true"</span> <span class="attr">autoDeploy</span>=<span class="string">"true"</span>&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"org.apache.catalina.valves.RemoteIpValve"</span></span></div><div class="line">                  <span class="attr">remoteIpHeader</span>=<span class="string">"x-forwarded-for"</span></div><div class="line">                  <span class="attr">remoteIpProxiesHeader</span>=<span class="string">"x-forwarded-by"</span></div><div class="line">                  <span class="attr">protocolHeader</span>=<span class="string">"x-forwarded-proto"</span></div><div class="line">            /&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">Context</span> <span class="attr">path</span>=<span class="string">""</span> <span class="attr">docBase</span>=<span class="string">""</span> <span class="attr">reloadable</span>=<span class="string">"false"</span>/&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">Host</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">Engine</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">Service</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">Server</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>特别特别注意的是必须有 <span style="color:red"> proxyPort=”443”  redirectPort=”443” </span>。<br>同时 <code>&lt;Value&gt;</code> 节点的配置也非常重要，否则你在 Tomcat 中的应用在读取 getScheme() 方法以及在 web.xml 中配置的一些安全策略会不起作用。</p>
 ]]></content>
     
@@ -74,27 +126,27 @@
     <link href="https://sam2099.github.io/2017/02/21/web%20server/tomcat/tomcatLog/"/>
     <id>https://sam2099.github.io/2017/02/21/web server/tomcat/tomcatLog/</id>
     <published>2017-02-21T09:07:07.000Z</published>
-    <updated>2017-02-22T06:19:06.371Z</updated>
+    <updated>2017-03-02T05:36:12.747Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容<br>tomcat的catalina.out会不断增长，很麻烦，看了多张解决方案，包括官方的，决定采用cronolog的方案。</p>
 <a id="more"></a>
-<h2 id="cronolog"><a href="#cronolog" class="headerlink" title="cronolog"></a>cronolog</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># cat /etc/redhat-release</div><div class="line">CentOS release 5.4 (Final)</div></pre></td></tr></table></figure>
-<h3 id="安装yum源"><a href="#安装yum源" class="headerlink" title="安装yum源"></a>安装yum源</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup </div><div class="line"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</div></pre></td></tr></table></figure>
-<h3 id="安装cronolog"><a href="#安装cronolog" class="headerlink" title="安装cronolog"></a>安装cronolog</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"># yum install -y cronolog</div></pre></td></tr></table></figure>
+<h2 id="cronolog"><a href="#cronolog" class="headerlink" title="cronolog"></a>cronolog</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cat /etc/redhat-release</span></div><div class="line">CentOS release 5.4 (Final)</div></pre></td></tr></table></figure>
+<h3 id="安装yum源"><a href="#安装yum源" class="headerlink" title="安装yum源"></a>安装yum源</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup </span></div><div class="line"><span class="comment"># wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span></div></pre></td></tr></table></figure>
+<h3 id="安装cronolog"><a href="#安装cronolog" class="headerlink" title="安装cronolog"></a>安装cronolog</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># yum install -y cronolog</span></div></pre></td></tr></table></figure>
 <p>查看cronolog安装后所在目录（验证安装是否成功）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># which cronolog</div><div class="line">正常情况下显示：</div><div class="line">/usr/sbin/cronolog</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># which cronolog</span></div><div class="line">正常情况下显示：</div><div class="line">/usr/sbin/cronolog</div></pre></td></tr></table></figure>
 <h2 id="Tomcat7以后的版本配置"><a href="#Tomcat7以后的版本配置" class="headerlink" title="Tomcat7以后的版本配置"></a>Tomcat7以后的版本配置</h2><p><code>bin/catalina.sh</code></p>
 <h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>大概213行<br>将</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">if [ -z &quot;$CATALINA_OUT&quot; ] ; then</div><div class="line"></div><div class="line">CATALINA_OUT=&quot;$CATALINA_BASE&quot;/logs/catalina.out</div><div class="line"></div><div class="line">fi</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> [ -z <span class="string">"<span class="variable">$CATALINA_OUT</span>"</span> ] ; <span class="keyword">then</span></div><div class="line"></div><div class="line">CATALINA_OUT=<span class="string">"<span class="variable">$CATALINA_BASE</span>"</span>/logs/catalina.out</div><div class="line"></div><div class="line"><span class="keyword">fi</span></div></pre></td></tr></table></figure>
 <p>修改为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">if [ -z &quot;$CATALINA_OUT&quot; ] ; then</div><div class="line"></div><div class="line">CATALINA_OUT=&quot;$CATALINA_BASE&quot;/logs/catalina.%Y-%m-%d.out</div><div class="line"></div><div class="line">fi</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> [ -z <span class="string">"<span class="variable">$CATALINA_OUT</span>"</span> ] ; <span class="keyword">then</span></div><div class="line"></div><div class="line">CATALINA_OUT=<span class="string">"<span class="variable">$CATALINA_BASE</span>"</span>/logs/catalina.%Y-%m-%d.out</div><div class="line"></div><div class="line"><span class="keyword">fi</span></div></pre></td></tr></table></figure>
 <h3 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h3><p>大概414行左右<br>将</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch &quot;$CATALINA_OUT&quot;</div></pre></td></tr></table></figure>
-<p>改为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#touch &quot;$CATALINA_OUT&quot;</div></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch <span class="string">"<span class="variable">$CATALINA_OUT</span>"</span></div></pre></td></tr></table></figure>
+<p>改为<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#touch "$CATALINA_OUT"</span></div></pre></td></tr></table></figure></p>
 <h3 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h3><p>大概 436～437<br>将</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.startup.Bootstrap &quot;$@&quot; start \</div><div class="line">&gt;&gt; &quot;$CATALINA_OUT&quot;  2&gt;&amp;1 &quot;&amp;&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.startup.Bootstrap <span class="string">"<span class="variable">$@</span>"</span> start \</div><div class="line">&gt;&gt; <span class="string">"<span class="variable">$CATALINA_OUT</span>"</span>  2&gt;&amp;1 <span class="string">"&amp;"</span></div></pre></td></tr></table></figure>
 <p>修改为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.startup.Bootstrap &quot;$@&quot; start 2&gt;&amp;1 \</div><div class="line">| /usr/sbin/cronolog &quot;$CATALINA_OUT&quot; &gt;&gt; /dev/null &amp;</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.startup.Bootstrap <span class="string">"<span class="variable">$@</span>"</span> start 2&gt;&amp;1 \</div><div class="line">| /usr/sbin/cronolog <span class="string">"<span class="variable">$CATALINA_OUT</span>"</span> &gt;&gt; /dev/null &amp;</div></pre></td></tr></table></figure>
 ]]></content>
     
     <summary type="html">
@@ -117,7 +169,7 @@
     <link href="https://sam2099.github.io/2016/11/18/web%20server/serverInit/"/>
     <id>https://sam2099.github.io/2016/11/18/web server/serverInit/</id>
     <published>2016-11-18T11:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
+    <updated>2017-02-28T09:18:13.155Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <ul>
@@ -175,7 +227,9 @@ reboot
       <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
     
     
-      <category term="linux server" scheme="https://sam2099.github.io/tags/linux-server/"/>
+      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+    
+      <category term="server" scheme="https://sam2099.github.io/tags/server/"/>
     
   </entry>
   
@@ -242,7 +296,7 @@ fc-list |grep SimSun
     <link href="https://sam2099.github.io/2016/10/10/linux/vnc/"/>
     <id>https://sam2099.github.io/2016/10/10/linux/vnc/</id>
     <published>2016-10-10T11:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
+    <updated>2017-02-28T09:16:32.451Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容<br>大部分情况下Linux的系统管理员都是通过SSH完成管理任务，特殊情况下可能会需要图形会话。VNC服务器就是这样一个自由开源软件，他可以让用户远程访问服务器的桌面环境。<br>下面就是关于CentOS 7 上配置VNC服务的内容。</p>
 <a id="more"></a>
@@ -275,7 +329,9 @@ fc-list |grep SimSun
       <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
     
     
-      <category term="linux vnc" scheme="https://sam2099.github.io/tags/linux-vnc/"/>
+      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+    
+      <category term="vnc" scheme="https://sam2099.github.io/tags/vnc/"/>
     
   </entry>
   
@@ -1232,32 +1288,6 @@ forward-socks5t / 127.0.0.1:1080 .
   </entry>
   
   <entry>
-    <title>linux service</title>
-    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/"/>
-    <id>https://sam2099.github.io/2016/01/26/linux/service/2-0 service/</id>
-    <published>2016-01-26T08:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-
-    
-    </summary>
-    
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
-    
-      <category term="service" scheme="https://sam2099.github.io/tags/service/"/>
-    
-  </entry>
-  
-  <entry>
     <title>2-1 sshd</title>
     <link href="https://sam2099.github.io/2016/01/26/linux/service/2-1%20sshd/"/>
     <id>https://sam2099.github.io/2016/01/26/linux/service/2-1 sshd/</id>
@@ -1305,6 +1335,32 @@ $ chmod 600 ~/.ssh/*
       <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
     
       <category term="sshd" scheme="https://sam2099.github.io/tags/sshd/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux service</title>
+    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/"/>
+    <id>https://sam2099.github.io/2016/01/26/linux/service/2-0 service/</id>
+    <published>2016-01-26T08:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+    
+      <category term="service" scheme="https://sam2099.github.io/tags/service/"/>
     
   </entry>
   
@@ -1372,42 +1428,6 @@ $ chmod 600 ~/.ssh/*
     
     
       <category term="shell" scheme="https://sam2099.github.io/tags/shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nginx</title>
-    <link href="https://sam2099.github.io/2016/01/22/web%20server/nginx/nginx/"/>
-    <id>https://sam2099.github.io/2016/01/22/web server/nginx/nginx/</id>
-    <published>2016-01-22T02:48:42.000Z</published>
-    <updated>2017-02-22T06:20:07.151Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<p>nginx</p>
-<h2 id="异常页面配置"><a href="#异常页面配置" class="headerlink" title="异常页面配置"></a>异常页面配置</h2><ul>
-<li><p>异常页面存放<br>默认存放在 <code>/usr/share/nginx/html</code> 目录下。</p>
-</li>
-<li><p>nginx配置文件</p>
-</li>
-</ul>
-<p>配置完类似下面的内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">        listen 80 default_server;</div><div class="line">        listen [::]:80 default_server ipv6only=on;</div><div class="line"></div><div class="line">        . . .</div><div class="line"></div><div class="line">        error_page 404 /40x.html;</div><div class="line">        location = /40x.html &#123;</div><div class="line">                root /usr/share/nginx/html;</div><div class="line">                internal;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>注意</code> ： 如果配置多个 server， 需要在对应的server中配置 error_page 。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;p&gt;nginx&lt;/p&gt;
-&lt;h2 id=&quot;异常页面配置&quot;&gt;&lt;a href=&quot;#异常页面配置&quot; class=&quot;headerlink&quot; title=&quot;异常页面配置&quot;&gt;&lt;/a&gt;异常页面配置&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;异常页面存放&lt;br&gt;默认存放在 &lt;cod
-    
-    </summary>
-    
-      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
-    
-    
-      <category term="nginx" scheme="https://sam2099.github.io/tags/nginx/"/>
     
   </entry>
   
