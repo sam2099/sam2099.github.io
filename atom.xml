@@ -4,9 +4,9 @@
   <subtitle>梦想还是要有的，万一实现了呢</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://sam2099.github.io/"/>
+  <link href="http://giveme5.cc/"/>
   <updated>2017-03-02T05:39:46.803Z</updated>
-  <id>https://sam2099.github.io/</id>
+  <id>http://giveme5.cc/</id>
   
   <author>
     <name>sam chen</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>hadoop 全排序</title>
-    <link href="https://sam2099.github.io/2017/02/28/hadoop/hadoopAllSort/"/>
-    <id>https://sam2099.github.io/2017/02/28/hadoop/hadoopAllSort/</id>
+    <link href="http://giveme5.cc/2017/02/28/hadoop/hadoopAllSort/"/>
+    <id>http://giveme5.cc/2017/02/28/hadoop/hadoopAllSort/</id>
     <published>2017-02-28T09:19:43.000Z</published>
     <updated>2017-03-02T05:39:46.803Z</updated>
     
@@ -56,21 +56,21 @@
     
     </summary>
     
-      <category term="hadoop" scheme="https://sam2099.github.io/categories/hadoop/"/>
+      <category term="hadoop" scheme="http://giveme5.cc/categories/hadoop/"/>
     
     
-      <category term="bigData" scheme="https://sam2099.github.io/tags/bigData/"/>
+      <category term="bigData" scheme="http://giveme5.cc/tags/bigData/"/>
     
-      <category term="hadoop" scheme="https://sam2099.github.io/tags/hadoop/"/>
+      <category term="hadoop" scheme="http://giveme5.cc/tags/hadoop/"/>
     
-      <category term="全排序" scheme="https://sam2099.github.io/tags/%E5%85%A8%E6%8E%92%E5%BA%8F/"/>
+      <category term="全排序" scheme="http://giveme5.cc/tags/%E5%85%A8%E6%8E%92%E5%BA%8F/"/>
     
   </entry>
   
   <entry>
     <title>Nginx + Tomcat + HTTPS</title>
-    <link href="https://sam2099.github.io/2017/02/22/web%20server/nginxTomcatSSL/"/>
-    <id>https://sam2099.github.io/2017/02/22/web server/nginxTomcatSSL/</id>
+    <link href="http://giveme5.cc/2017/02/22/web%20server/nginxTomcatSSL/"/>
+    <id>http://giveme5.cc/2017/02/22/web server/nginxTomcatSSL/</id>
     <published>2017-02-22T03:12:14.000Z</published>
     <updated>2017-03-02T05:26:37.671Z</updated>
     
@@ -110,21 +110,21 @@
     
     </summary>
     
-      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
+      <category term="server" scheme="http://giveme5.cc/categories/server/"/>
     
     
-      <category term="tomcat" scheme="https://sam2099.github.io/tags/tomcat/"/>
+      <category term="tomcat" scheme="http://giveme5.cc/tags/tomcat/"/>
     
-      <category term="nginx" scheme="https://sam2099.github.io/tags/nginx/"/>
+      <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
     
-      <category term="https" scheme="https://sam2099.github.io/tags/https/"/>
+      <category term="https" scheme="http://giveme5.cc/tags/https/"/>
     
   </entry>
   
   <entry>
     <title>tomcat  日志分割</title>
-    <link href="https://sam2099.github.io/2017/02/21/web%20server/tomcat/tomcatLog/"/>
-    <id>https://sam2099.github.io/2017/02/21/web server/tomcat/tomcatLog/</id>
+    <link href="http://giveme5.cc/2017/02/21/web%20server/tomcat/tomcatLog/"/>
+    <id>http://giveme5.cc/2017/02/21/web server/tomcat/tomcatLog/</id>
     <published>2017-02-21T09:07:07.000Z</published>
     <updated>2017-03-02T05:36:12.747Z</updated>
     
@@ -155,19 +155,19 @@
     
     </summary>
     
-      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
+      <category term="server" scheme="http://giveme5.cc/categories/server/"/>
     
     
-      <category term="tomcat" scheme="https://sam2099.github.io/tags/tomcat/"/>
+      <category term="tomcat" scheme="http://giveme5.cc/tags/tomcat/"/>
     
-      <category term="cronolog" scheme="https://sam2099.github.io/tags/cronolog/"/>
+      <category term="cronolog" scheme="http://giveme5.cc/tags/cronolog/"/>
     
   </entry>
   
   <entry>
     <title>linux server 配置选项</title>
-    <link href="https://sam2099.github.io/2016/11/18/web%20server/serverInit/"/>
-    <id>https://sam2099.github.io/2016/11/18/web server/serverInit/</id>
+    <link href="http://giveme5.cc/2016/11/18/web%20server/serverInit/"/>
+    <id>http://giveme5.cc/2016/11/18/web server/serverInit/</id>
     <published>2016-11-18T11:29:44.000Z</published>
     <updated>2017-02-28T09:18:13.155Z</updated>
     
@@ -224,19 +224,19 @@ reboot
     
     </summary>
     
-      <category term="server" scheme="https://sam2099.github.io/categories/server/"/>
+      <category term="server" scheme="http://giveme5.cc/categories/server/"/>
     
     
-      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
     
-      <category term="server" scheme="https://sam2099.github.io/tags/server/"/>
+      <category term="server" scheme="http://giveme5.cc/tags/server/"/>
     
   </entry>
   
   <entry>
     <title>linux wine 32 &amp; 64</title>
-    <link href="https://sam2099.github.io/2016/10/29/linux/wine/"/>
-    <id>https://sam2099.github.io/2016/10/29/linux/wine/</id>
+    <link href="http://giveme5.cc/2016/10/29/linux/wine/"/>
+    <id>http://giveme5.cc/2016/10/29/linux/wine/</id>
     <published>2016-10-29T05:00:10.000Z</published>
     <updated>2017-02-21T07:18:44.691Z</updated>
     
@@ -284,17 +284,17 @@ fc-list |grep SimSun
     
     </summary>
     
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
     
     
-      <category term="wine" scheme="https://sam2099.github.io/tags/wine/"/>
+      <category term="wine" scheme="http://giveme5.cc/tags/wine/"/>
     
   </entry>
   
   <entry>
     <title>centos vnc远程桌面</title>
-    <link href="https://sam2099.github.io/2016/10/10/linux/vnc/"/>
-    <id>https://sam2099.github.io/2016/10/10/linux/vnc/</id>
+    <link href="http://giveme5.cc/2016/10/10/linux/vnc/"/>
+    <id>http://giveme5.cc/2016/10/10/linux/vnc/</id>
     <published>2016-10-10T11:29:44.000Z</published>
     <updated>2017-02-28T09:16:32.451Z</updated>
     
@@ -326,19 +326,19 @@ fc-list |grep SimSun
     
     </summary>
     
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
     
     
-      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
     
-      <category term="vnc" scheme="https://sam2099.github.io/tags/vnc/"/>
+      <category term="vnc" scheme="http://giveme5.cc/tags/vnc/"/>
     
   </entry>
   
   <entry>
     <title>Sonatype nexus</title>
-    <link href="https://sam2099.github.io/2016/06/20/devEnv/nexus/nexus/"/>
-    <id>https://sam2099.github.io/2016/06/20/devEnv/nexus/nexus/</id>
+    <link href="http://giveme5.cc/2016/06/20/devEnv/nexus/nexus/"/>
+    <id>http://giveme5.cc/2016/06/20/devEnv/nexus/nexus/</id>
     <published>2016-06-20T07:22:59.000Z</published>
     <updated>2017-02-21T07:18:44.687Z</updated>
     
@@ -388,17 +388,17 @@ fc-list |grep SimSun
     
     </summary>
     
-      <category term="developEnv" scheme="https://sam2099.github.io/categories/developEnv/"/>
+      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
     
     
-      <category term="nexus" scheme="https://sam2099.github.io/tags/nexus/"/>
+      <category term="nexus" scheme="http://giveme5.cc/tags/nexus/"/>
     
   </entry>
   
   <entry>
     <title>gitlab</title>
-    <link href="https://sam2099.github.io/2016/06/20/devEnv/gitlab/gitlab/"/>
-    <id>https://sam2099.github.io/2016/06/20/devEnv/gitlab/gitlab/</id>
+    <link href="http://giveme5.cc/2016/06/20/devEnv/gitlab/gitlab/"/>
+    <id>http://giveme5.cc/2016/06/20/devEnv/gitlab/gitlab/</id>
     <published>2016-06-20T05:46:15.000Z</published>
     <updated>2017-02-21T07:18:44.687Z</updated>
     
@@ -461,17 +461,17 @@ gitlab_rails[&apos;backup_keep_time&apos;] = 604800
     
     </summary>
     
-      <category term="developEnv" scheme="https://sam2099.github.io/categories/developEnv/"/>
+      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
     
     
-      <category term="gitlab" scheme="https://sam2099.github.io/tags/gitlab/"/>
+      <category term="gitlab" scheme="http://giveme5.cc/tags/gitlab/"/>
     
   </entry>
   
   <entry>
     <title>十年回头望</title>
-    <link href="https://sam2099.github.io/2016/06/14/devEnv/10years/"/>
-    <id>https://sam2099.github.io/2016/06/14/devEnv/10years/</id>
+    <link href="http://giveme5.cc/2016/06/14/devEnv/10years/"/>
+    <id>http://giveme5.cc/2016/06/14/devEnv/10years/</id>
     <published>2016-06-14T13:28:38.000Z</published>
     <updated>2017-02-21T07:18:44.687Z</updated>
     
@@ -558,17 +558,17 @@ gitlab_rails[&apos;backup_keep_time&apos;] = 604800
     
     </summary>
     
-      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+      <category term="杂谈" scheme="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
     
     
-      <category term="十年回头望" scheme="https://sam2099.github.io/tags/%E5%8D%81%E5%B9%B4%E5%9B%9E%E5%A4%B4%E6%9C%9B/"/>
+      <category term="十年回头望" scheme="http://giveme5.cc/tags/%E5%8D%81%E5%B9%B4%E5%9B%9E%E5%A4%B4%E6%9C%9B/"/>
     
   </entry>
   
   <entry>
     <title>Android broadcast</title>
-    <link href="https://sam2099.github.io/2016/05/17/android/broadcast/"/>
-    <id>https://sam2099.github.io/2016/05/17/android/broadcast/</id>
+    <link href="http://giveme5.cc/2016/05/17/android/broadcast/"/>
+    <id>http://giveme5.cc/2016/05/17/android/broadcast/</id>
     <published>2016-05-17T14:28:38.000Z</published>
     <updated>2017-02-22T06:22:31.767Z</updated>
     
@@ -847,19 +847,19 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
     
     </summary>
     
-      <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
+      <category term="Android" scheme="http://giveme5.cc/categories/Android/"/>
     
     
-      <category term="android" scheme="https://sam2099.github.io/tags/android/"/>
+      <category term="android" scheme="http://giveme5.cc/tags/android/"/>
     
-      <category term="broadcast" scheme="https://sam2099.github.io/tags/broadcast/"/>
+      <category term="broadcast" scheme="http://giveme5.cc/tags/broadcast/"/>
     
   </entry>
   
   <entry>
     <title>Android入门 总纲</title>
-    <link href="https://sam2099.github.io/2016/05/13/android/android0_index/"/>
-    <id>https://sam2099.github.io/2016/05/13/android/android0_index/</id>
+    <link href="http://giveme5.cc/2016/05/13/android/android0_index/"/>
+    <id>http://giveme5.cc/2016/05/13/android/android0_index/</id>
     <published>2016-05-13T11:29:44.000Z</published>
     <updated>2017-02-22T06:21:35.583Z</updated>
     
@@ -896,17 +896,17 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
     
     </summary>
     
-      <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
+      <category term="Android" scheme="http://giveme5.cc/categories/Android/"/>
     
     
-      <category term="android" scheme="https://sam2099.github.io/tags/android/"/>
+      <category term="android" scheme="http://giveme5.cc/tags/android/"/>
     
   </entry>
   
   <entry>
     <title>Android入门 一 ： unit test</title>
-    <link href="https://sam2099.github.io/2016/05/10/android/android1_UnitTest/"/>
-    <id>https://sam2099.github.io/2016/05/10/android/android1_UnitTest/</id>
+    <link href="http://giveme5.cc/2016/05/10/android/android1_UnitTest/"/>
+    <id>http://giveme5.cc/2016/05/10/android/android1_UnitTest/</id>
     <published>2016-05-10T11:29:44.000Z</published>
     <updated>2017-02-22T06:21:53.947Z</updated>
     
@@ -978,19 +978,19 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
     
     </summary>
     
-      <category term="Android" scheme="https://sam2099.github.io/categories/Android/"/>
+      <category term="Android" scheme="http://giveme5.cc/categories/Android/"/>
     
     
-      <category term="android" scheme="https://sam2099.github.io/tags/android/"/>
+      <category term="android" scheme="http://giveme5.cc/tags/android/"/>
     
-      <category term="junit" scheme="https://sam2099.github.io/tags/junit/"/>
+      <category term="junit" scheme="http://giveme5.cc/tags/junit/"/>
     
   </entry>
   
   <entry>
     <title>shadowsocks</title>
-    <link href="https://sam2099.github.io/2016/05/05/other/shadowsocks/"/>
-    <id>https://sam2099.github.io/2016/05/05/other/shadowsocks/</id>
+    <link href="http://giveme5.cc/2016/05/05/other/shadowsocks/"/>
+    <id>http://giveme5.cc/2016/05/05/other/shadowsocks/</id>
     <published>2016-05-05T03:44:58.000Z</published>
     <updated>2017-02-21T07:18:44.691Z</updated>
     
@@ -1054,17 +1054,17 @@ forward-socks5t / 127.0.0.1:1080 .
     
     </summary>
     
-      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+      <category term="杂谈" scheme="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
     
     
-      <category term="shadowsocks" scheme="https://sam2099.github.io/tags/shadowsocks/"/>
+      <category term="shadowsocks" scheme="http://giveme5.cc/tags/shadowsocks/"/>
     
   </entry>
   
   <entry>
     <title>git</title>
-    <link href="https://sam2099.github.io/2016/05/03/devEnv/git/git/"/>
-    <id>https://sam2099.github.io/2016/05/03/devEnv/git/git/</id>
+    <link href="http://giveme5.cc/2016/05/03/devEnv/git/git/"/>
+    <id>http://giveme5.cc/2016/05/03/devEnv/git/git/</id>
     <published>2016-05-03T03:44:58.000Z</published>
     <updated>2017-02-21T07:18:44.687Z</updated>
     
@@ -1091,17 +1091,17 @@ forward-socks5t / 127.0.0.1:1080 .
     
     </summary>
     
-      <category term="developEnv" scheme="https://sam2099.github.io/categories/developEnv/"/>
+      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
     
     
-      <category term="git" scheme="https://sam2099.github.io/tags/git/"/>
+      <category term="git" scheme="http://giveme5.cc/tags/git/"/>
     
   </entry>
   
   <entry>
     <title>搜索引擎技巧 搜索引擎指令 提高搜索效率</title>
-    <link href="https://sam2099.github.io/2016/03/02/other/searchEngine/"/>
-    <id>https://sam2099.github.io/2016/03/02/other/searchEngine/</id>
+    <link href="http://giveme5.cc/2016/03/02/other/searchEngine/"/>
+    <id>http://giveme5.cc/2016/03/02/other/searchEngine/</id>
     <published>2016-03-02T08:35:05.000Z</published>
     <updated>2017-02-21T07:18:44.691Z</updated>
     
@@ -1163,15 +1163,15 @@ forward-socks5t / 127.0.0.1:1080 .
     
     </summary>
     
-      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+      <category term="杂谈" scheme="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
     
     
   </entry>
   
   <entry>
     <title>ClientAbortException</title>
-    <link href="https://sam2099.github.io/2016/02/15/exception/ClientAbortException/"/>
-    <id>https://sam2099.github.io/2016/02/15/exception/ClientAbortException/</id>
+    <link href="http://giveme5.cc/2016/02/15/exception/ClientAbortException/"/>
+    <id>http://giveme5.cc/2016/02/15/exception/ClientAbortException/</id>
     <published>2016-02-15T08:10:08.000Z</published>
     <updated>2017-02-21T07:18:44.687Z</updated>
     
@@ -1184,19 +1184,19 @@ forward-socks5t / 127.0.0.1:1080 .
     
     </summary>
     
-      <category term="exception" scheme="https://sam2099.github.io/categories/exception/"/>
+      <category term="exception" scheme="http://giveme5.cc/categories/exception/"/>
     
     
-      <category term="tomcat" scheme="https://sam2099.github.io/tags/tomcat/"/>
+      <category term="tomcat" scheme="http://giveme5.cc/tags/tomcat/"/>
     
-      <category term="Spring MVC" scheme="https://sam2099.github.io/tags/Spring-MVC/"/>
+      <category term="Spring MVC" scheme="http://giveme5.cc/tags/Spring-MVC/"/>
     
   </entry>
   
   <entry>
     <title>字符编码</title>
-    <link href="https://sam2099.github.io/2016/01/26/other/encoding/"/>
-    <id>https://sam2099.github.io/2016/01/26/other/encoding/</id>
+    <link href="http://giveme5.cc/2016/01/26/other/encoding/"/>
+    <id>http://giveme5.cc/2016/01/26/other/encoding/</id>
     <published>2016-01-26T09:09:32.000Z</published>
     <updated>2017-02-21T07:18:44.691Z</updated>
     
@@ -1280,17 +1280,43 @@ forward-socks5t / 127.0.0.1:1080 .
     
     </summary>
     
-      <category term="杂谈" scheme="https://sam2099.github.io/categories/%E6%9D%82%E8%B0%88/"/>
+      <category term="杂谈" scheme="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
     
     
-      <category term="字符编码" scheme="https://sam2099.github.io/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/"/>
+      <category term="字符编码" scheme="http://giveme5.cc/tags/%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux service</title>
+    <link href="http://giveme5.cc/2016/01/26/linux/service/2-0%20service/"/>
+    <id>http://giveme5.cc/2016/01/26/linux/service/2-0 service/</id>
+    <published>2016-01-26T08:29:44.000Z</published>
+    <updated>2017-02-21T07:18:44.691Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+
+    
+    </summary>
+    
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
+    
+      <category term="service" scheme="http://giveme5.cc/tags/service/"/>
     
   </entry>
   
   <entry>
     <title>2-1 sshd</title>
-    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-1%20sshd/"/>
-    <id>https://sam2099.github.io/2016/01/26/linux/service/2-1 sshd/</id>
+    <link href="http://giveme5.cc/2016/01/26/linux/service/2-1%20sshd/"/>
+    <id>http://giveme5.cc/2016/01/26/linux/service/2-1 sshd/</id>
     <published>2016-01-26T08:29:44.000Z</published>
     <updated>2017-02-21T07:18:44.691Z</updated>
     
@@ -1329,45 +1355,19 @@ $ chmod 600 ~/.ssh/*
     
     </summary>
     
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
     
     
-      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
     
-      <category term="sshd" scheme="https://sam2099.github.io/tags/sshd/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux service</title>
-    <link href="https://sam2099.github.io/2016/01/26/linux/service/2-0%20service/"/>
-    <id>https://sam2099.github.io/2016/01/26/linux/service/2-0 service/</id>
-    <published>2016-01-26T08:29:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-
-    
-    </summary>
-    
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="https://sam2099.github.io/tags/linux/"/>
-    
-      <category term="service" scheme="https://sam2099.github.io/tags/service/"/>
+      <category term="sshd" scheme="http://giveme5.cc/tags/sshd/"/>
     
   </entry>
   
   <entry>
     <title>shell （九） 色彩</title>
-    <link href="https://sam2099.github.io/2016/01/22/linux/shell/shell-10/"/>
-    <id>https://sam2099.github.io/2016/01/22/linux/shell/shell-10/</id>
+    <link href="http://giveme5.cc/2016/01/22/linux/shell/shell-10/"/>
+    <id>http://giveme5.cc/2016/01/22/linux/shell/shell-10/</id>
     <published>2016-01-22T11:59:44.000Z</published>
     <updated>2017-02-21T07:18:44.691Z</updated>
     
@@ -1424,10 +1424,10 @@ $ chmod 600 ~/.ssh/*
     
     </summary>
     
-      <category term="linux" scheme="https://sam2099.github.io/categories/linux/"/>
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
     
     
-      <category term="shell" scheme="https://sam2099.github.io/tags/shell/"/>
+      <category term="shell" scheme="http://giveme5.cc/tags/shell/"/>
     
   </entry>
   
