@@ -103,7 +103,7 @@
 步骤
 
 ……">
-<meta property="og:updated_time" content="2017-03-02T05:39:46.803Z">
+<meta property="og:updated_time" content="2017-03-02T08:24:34.247Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hadoop 全排序">
 <meta name="twitter:description" content="主要内容
@@ -396,9 +396,21 @@
 </ul>
 <p>……</p>
 <a id="more"></a>
-<p>## </p>
+<h2 id="hadoop-I-O"><a href="#hadoop-I-O" class="headerlink" title="hadoop I/O"></a>hadoop I/O</h2><h3 id="键值特征"><a href="#键值特征" class="headerlink" title="键值特征"></a>键值特征</h3><ul>
+<li>键和值 都可以序列化和反序列化</li>
+<li>Reduce的键支持用户自定义排序</li>
+</ul>
+<h3 id="Writable-和-WritableComparable接口"><a href="#Writable-和-WritableComparable接口" class="headerlink" title="Writable 和 WritableComparable接口"></a>Writable 和 WritableComparable接口</h3><ul>
+<li><p>Writable接口方法</p>
 <ul>
-<li>Writable 和 WritableComparable接口<br><span style="color:red">Mapper 输出的键类</span>或 <span style="color:red">Reduce 输入的键类</span>都应该实现 WritableComparable接口，<br>其他所有类型（例如 Mapper<code>输入</code>使用的键和值类，Mapper<code>输出</code>的值类， Reduce<code>输出</code>的键类）</li>
+<li>write<br>  序列化， 将实例中所有原始属性写道java.io.DataOutput类型的输出流。</li>
+<li><p>readField<br>  反序列化，利用从java.io.DataInput类型的输入流中抓取的数据重新创建Writable实例。</p>
+<p>字段顺序必须和 <code>write()</code> 和 <code>readField()</code> 方法中的顺序保持一致。</p>
+</li>
+</ul>
+</li>
+<li><p>优秀实践<br><span style="color:red">Mapper 输出的键类</span>或 <span style="color:red">Reduce 输入的键类</span>都应该实现 WritableComparable接口，<br>其他所有类型（例如 Mapper<code>输入</code>使用的键和值类，Mapper<code>输出</code>的值类， Reduce<code>输出</code>的键类）</p>
+</li>
 </ul>
 <h2 id="全排序"><a href="#全排序" class="headerlink" title="全排序"></a>全排序</h2><ol>
 <li><p>reduce键的排序<br>键到reduce之前排序， 在WritableConparable键中实现排序逻辑或自定义Comparator</p>
@@ -461,6 +473,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/03/devEnv/ci/jenkinsRole/" rel="prev" title="jenkins 管理项目权限">
+                jenkins 管理项目权限 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -536,7 +552,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-count">84</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -596,7 +612,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#全排序"><span class="nav-number">1.</span> <span class="nav-text">全排序</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hadoop-I-O"><span class="nav-number">1.</span> <span class="nav-text">hadoop I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#键值特征"><span class="nav-number">1.1.</span> <span class="nav-text">键值特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Writable-和-WritableComparable接口"><span class="nav-number">1.2.</span> <span class="nav-text">Writable 和 WritableComparable接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全排序"><span class="nav-number">2.</span> <span class="nav-text">全排序</span></a></li></ol></div>
             
 
           </div>

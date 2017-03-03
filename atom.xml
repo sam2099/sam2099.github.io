@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2017-03-02T05:39:46.803Z</updated>
+  <updated>2017-03-03T06:23:11.528Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -16,11 +16,68 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>jenkins 管理项目权限</title>
+    <link href="http://giveme5.cc/2017/03/03/devEnv/ci/jenkinsRole/"/>
+    <id>http://giveme5.cc/2017/03/03/devEnv/ci/jenkinsRole/</id>
+    <published>2017-03-03T03:30:08.000Z</published>
+    <updated>2017-03-03T06:23:11.528Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>利用 插件<code>Role-based Authorization Strategy</code> 管理项目权限</p>
+<a id="more"></a>
+<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>安装插件<code>Role-based Authorization Strategy</code></p>
+<p><img src="/images/jenkins_role_1.png" alt="Role-based Authorization Strategy"></p>
+<h2 id="授权策略"><a href="#授权策略" class="headerlink" title="授权策略"></a>授权策略</h2><p><code>Manage Jenkins</code> -&gt; <code>Configure Global Security</code> -&gt; <code>Access Control</code> -&gt; <code>Authorization</code> -&gt; 选择“Role-Based Strategy”</p>
+<p><img src="/images/jenkins_role_2.png" alt=""></p>
+<p>注意下拉到最后 <code>保存</code></p>
+<h2 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h2><p><code>Manage Jenkins</code> -&gt; <code>Manage Users</code> -&gt; <code>Create User</code>，<br>创建用户<code>productManager</code><br><img src="/images/jenkins_role_3.png" alt=""></p>
+<h2 id="管理角色"><a href="#管理角色" class="headerlink" title="管理角色"></a>管理角色</h2><h3 id="创建角色"><a href="#创建角色" class="headerlink" title="创建角色"></a>创建角色</h3><p><code>Manage Jenkins</code> -&gt; <code>Manage and Assign Roles</code> -&gt; <code>Manage Roles</code>，<br>需要分别在 <code>Global roles</code> 全局级别， <code>Project roles</code> 项目级别 操作</p>
+<p><img src="/images/jenkins_role_4.png" alt=""></p>
+<p>2个级别：</p>
+<ul>
+<li><code>Global roles</code> 全局级别<br>创建角色<code>member</code>，给<code>member</code>角色 赋予 <code>Overall.Read</code>  <code>Job.Create</code> 这2个全局权限。<code>Overall.Read</code> 必须要赋予。</li>
+</ul>
+<ul>
+<li><code>Project roles</code> 项目级别<br>创建角色<code>pm</code>，例如定义<code>pm</code>角色为该项目管理员，所以赋予其项目的全部权限， 看你们的实际情况。</li>
+</ul>
+<p>注意下拉到最后 <code>保存</code></p>
+<h3 id="赋予角色"><a href="#赋予角色" class="headerlink" title="赋予角色"></a>赋予角色</h3><p><code>Manage Jenkins</code> -&gt; <code>Manage and Assign Roles</code> -&gt; <code>Assign Roles</code>，<br>为上面创建的用户<code>productManager</code> 赋予角色， 这里也需要分别在 <code>Global roles</code> 全局级别， <code>Project roles</code> 项目级别 操作。<br><img src="/images/jenkins_role_5.png" alt=""></p>
+<p>2个级别：</p>
+<ul>
+<li><code>Global roles</code> 全局级别<br>用户<code>productManager</code> 赋予角色<code>member</code></li>
+</ul>
+<ul>
+<li><code>Project roles</code> 项目级别<br>用户<code>productManager</code> 赋予角色<code>pm</code>。</li>
+</ul>
+<p>注意下拉到最后 <code>保存</code></p>
+<h2 id="验证角色"><a href="#验证角色" class="headerlink" title="验证角色"></a>验证角色</h2><ul>
+<li>管理员视图：<br><img src="/images/jenkins_role_6.png" alt=""></li>
+</ul>
+<ul>
+<li>用户<code>productManager</code> 视图：<br><img src="/images/jenkins_role_7.png" alt=""></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;利用 插件&lt;code&gt;Role-based Authorization Strategy&lt;/code&gt; 管理项目权限&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
+    
+    
+      <category term="jenkins" scheme="http://giveme5.cc/tags/jenkins/"/>
+    
+  </entry>
+  
+  <entry>
     <title>hadoop 全排序</title>
     <link href="http://giveme5.cc/2017/02/28/hadoop/hadoopAllSort/"/>
     <id>http://giveme5.cc/2017/02/28/hadoop/hadoopAllSort/</id>
     <published>2017-02-28T09:19:43.000Z</published>
-    <updated>2017-03-02T05:39:46.803Z</updated>
+    <updated>2017-03-02T08:24:34.247Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <ul>
@@ -28,9 +85,21 @@
 </ul>
 <p>……</p>
 <a id="more"></a>
-<p>## </p>
+<h2 id="hadoop-I-O"><a href="#hadoop-I-O" class="headerlink" title="hadoop I/O"></a>hadoop I/O</h2><h3 id="键值特征"><a href="#键值特征" class="headerlink" title="键值特征"></a>键值特征</h3><ul>
+<li>键和值 都可以序列化和反序列化</li>
+<li>Reduce的键支持用户自定义排序</li>
+</ul>
+<h3 id="Writable-和-WritableComparable接口"><a href="#Writable-和-WritableComparable接口" class="headerlink" title="Writable 和 WritableComparable接口"></a>Writable 和 WritableComparable接口</h3><ul>
+<li><p>Writable接口方法</p>
 <ul>
-<li>Writable 和 WritableComparable接口<br><span style="color:red">Mapper 输出的键类</span>或 <span style="color:red">Reduce 输入的键类</span>都应该实现 WritableComparable接口，<br>其他所有类型（例如 Mapper<code>输入</code>使用的键和值类，Mapper<code>输出</code>的值类， Reduce<code>输出</code>的键类）</li>
+<li>write<br>  序列化， 将实例中所有原始属性写道java.io.DataOutput类型的输出流。</li>
+<li><p>readField<br>  反序列化，利用从java.io.DataInput类型的输入流中抓取的数据重新创建Writable实例。</p>
+<p>字段顺序必须和 <code>write()</code> 和 <code>readField()</code> 方法中的顺序保持一致。</p>
+</li>
+</ul>
+</li>
+<li><p>优秀实践<br><span style="color:red">Mapper 输出的键类</span>或 <span style="color:red">Reduce 输入的键类</span>都应该实现 WritableComparable接口，<br>其他所有类型（例如 Mapper<code>输入</code>使用的键和值类，Mapper<code>输出</code>的值类， Reduce<code>输出</code>的键类）</p>
+</li>
 </ul>
 <h2 id="全排序"><a href="#全排序" class="headerlink" title="全排序"></a>全排序</h2><ol>
 <li><p>reduce键的排序<br>键到reduce之前排序， 在WritableConparable键中实现排序逻辑或自定义Comparator</p>
@@ -1361,73 +1430,6 @@ $ chmod 600 ~/.ssh/*
       <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
     
       <category term="sshd" scheme="http://giveme5.cc/tags/sshd/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shell （九） 色彩</title>
-    <link href="http://giveme5.cc/2016/01/22/linux/shell/shell-10/"/>
-    <id>http://giveme5.cc/2016/01/22/linux/shell/shell-10/</id>
-    <published>2016-01-22T11:59:44.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>色彩</li>
-</ul>
-<h2 id="色彩"><a href="#色彩" class="headerlink" title="色彩"></a>色彩</h2><p>shell脚本中echo显示内容带颜色显示,echo显示带颜色，需要使用参数-e开启转义</p>
-<ul>
-<li><p>格式</p>
-<pre><code>echo -e &quot;\033[字背景颜色;文字颜色m字符串\033[0m&quot;
-</code></pre><p><code>\033[</code> 是固定语法; <code>0m</code> 是清除所有格式</p>
-<p>例：<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/shellColor1.png" alt=""><br>其中42的位置代表底色，31的位置代表的是字的颜色</p>
-<p>注：<br>  1、字背景颜色和文字颜色之间是英文的”;”<br>  2、文字颜色后面有个m<br>  3、字符串前后可以没有空格，如果有的话，输出也是同样有空格</p>
-</li>
-</ul>
-<ul>
-<li><p>颜色定义</p>
-<p>可以自己来尝试找出不同颜色搭配<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/shellColor2.png" alt=""><br><img src="http://7xklqw.com1.z0.glb.clouddn.com/shellColor3.png" alt=""></p>
-</li>
-</ul>
-<ul>
-<li><p>最后面控制选项说明</p>
-<pre><code>\33[0m 关闭所有属性
-\33[1m 设置高亮度
-\33[4m 下划线
-\33[5m 闪烁
-\33[7m 反显
-\33[8m 消隐
-\33[30m — \33[37m 设置前景色
-\33[40m — \33[47m 设置背景色
-\33[nA 光标上移n行
-\33[nB 光标下移n行
-\33[nC 光标右移n行
-\33[nD 光标左移n行
-\33[y;xH设置光标位置
-\33[2J 清屏
-\33[K 清除从光标到行尾的内容
-\33[s 保存光标位置
-\33[u 恢复光标位置
-\33[?25l 隐藏光标 
-\33[?25h 显示光标
-</code></pre></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;色彩&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;色彩&quot;&gt;&lt;a href=&quot;#色彩&quot; class=&quot;headerlink&quot; title=&quot;色彩&quot;&gt;&lt;/a&gt;色彩&lt;/h2&gt;&lt;p&gt;shell脚本中echo显示内容带颜色显示,echo显示带颜色，需要使
-    
-    </summary>
-    
-      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
-    
-    
-      <category term="shell" scheme="http://giveme5.cc/tags/shell/"/>
     
   </entry>
   
