@@ -77,7 +77,7 @@
 
 
 
-  <link rel="alternate" href="/atom.xml" title="sam's notes" type="application/atom+xml" />
+  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
 
 
 
@@ -89,15 +89,15 @@
 
 
 
-<meta name="description" content="sam&apos;s notes, sam&apos;s note">
+<meta name="description" content="sam&apos;s notes, sam&apos;s note, sam&apos;s blog">
 <meta property="og:type" content="website">
-<meta property="og:title" content="sam's notes">
+<meta property="og:title" content="Sam's Notes | Sam Blog">
 <meta property="og:url" content="http://giveme5.cc/page/6/index.html">
-<meta property="og:site_name" content="sam's notes">
-<meta property="og:description" content="sam&apos;s notes, sam&apos;s note">
+<meta property="og:site_name" content="Sam's Notes | Sam Blog">
+<meta property="og:description" content="sam&apos;s notes, sam&apos;s note, sam&apos;s blog">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sam's notes">
-<meta name="twitter:description" content="sam&apos;s notes, sam&apos;s note">
+<meta name="twitter:title" content="Sam's Notes | Sam Blog">
+<meta name="twitter:description" content="sam&apos;s notes, sam&apos;s note, sam&apos;s blog">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <title> sam's notes </title>
+  <title> Sam's Notes | Sam Blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -169,7 +169,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">sam's notes</span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -272,6 +272,407 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/03/linux/base/godLinux1-4/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/03/linux/base/godLinux1-4/" itemprop="url">
+                  1-4 rhel7文件管理和xfs文件系统备份
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-03T15:29:44+08:00">
+                2015-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/03/linux/base/godLinux1-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/03/linux/base/godLinux1-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>Linux系统目录结构</li>
+<li>相对/绝对路径</li>
+<li>创建/复制/删除文件</li>
+<li>查看文件内容</li>
+<li>xfs文件系统的备份和恢复</li>
+</ul>
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><p>详细的可以参考 <a href="http://vbird.dic.ksu.edu.tw/linux_basic/0210filepermission_3.php">鸟哥</a></p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>应放置文件内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/</td>
+<td>通常称为根分区。所有的文件和目录皆由此开始。只有root用户对此目录拥有写权限。</td>
+</tr>
+<tr>
+<td>/boot</td>
+<td>存放Linux系统启动时需要加载的文件。 (一般在单独的一个磁盘分区里面保存) Kernel、grub等文件都存放在此。</td>
+</tr>
+<tr>
+<td>/etc</td>
+<td>RHEL6中主要存放服务的配置文件，RHEL7中，以/usr/lib/systemd/system进行代替</td>
+</tr>
+<tr>
+<td>/var</td>
+<td>是一个可增长的目录，包含很经常变的文件。例如，/var/log（系统日志）、/var/lib （包文件）</td>
+</tr>
+<tr>
+<td>/root</td>
+<td>管理员所有数据。  root用户的家目录</td>
+</tr>
+<tr>
+<td>/tmp</td>
+<td>临时文件存储位置</td>
+</tr>
+<tr>
+<td>/usr</td>
+<td>unix software source， 放置是所有系统默认的软件(distribution发布者提供的软件)，有点类似Windows 系统的『C:\Windows\ + C:\Program files\』这两个目录的综合体，鸟哥的链接有次级目录的说明</td>
+</tr>
+<tr>
+<td>/opt</td>
+<td>给第三方协力软件放置的目录，自行安装额外的软件(非原本的distribution提供的)</td>
+</tr>
+<tr>
+<td>/bin</td>
+<td>此目录包含二进制可执行文件，在单人维护模式下还能够被操作</td>
+</tr>
+<tr>
+<td>/sbin</td>
+<td>系统命令 ，此目录中的命令主要供系统管理员使用，为开机过程中所需要的，里面包括了开机、修复、还原系统所需要的指令，常见的指令包括：fdisk, fsck, ifconfig, init, mkfs等等。</td>
+</tr>
+<tr>
+<td>/mnt</td>
+<td>暂时挂载某些额外的装置</td>
+</tr>
+<tr>
+<td>/media</td>
+<td>放置的就是可移除的装置啦！ 包括软盘、光盘、DVD等等装置都暂时挂载于此。</td>
+</tr>
+<tr>
+<td>/dev</td>
+<td>包含设备文件。在Linux中，一切都被看做文件。终端设备、USB、磁盘等等都被看做文件</td>
+</tr>
+<tr>
+<td>/home</td>
+<td>普通用户所有数据存放在这个目录下</td>
+</tr>
+<tr>
+<td>/proc</td>
+<td>本身是一个『虚拟文件系统(virtual filesystem)』放置的数据都是在内存当中， 例如系统核心、行程信息(process)、周边装置的状态及网络状态等等。因为这个目录下的数据都是在内存当中， 所以本身不占任何硬盘空间啊！比较重要的文件例如：/proc/cpuinfo, /proc/dma, /proc/interrupts, /proc/ioports, /proc/net/* 等等。</td>
+</tr>
+<tr>
+<td>/lib</td>
+<td>系统最基本的动态链接共享库，尤其重要的是/lib/modules/这个目录， 因为该目录会放置核心相关的模块(驱动程序)</td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/03/linux/base/godLinux1-4/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/11/27/linux/base/godLinux1-3/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/11/27/linux/base/godLinux1-3/" itemprop="url">
+                  1-3 rhel7基本命令和操作
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-27T15:29:44+08:00">
+                2015-11-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/11/27/linux/base/godLinux1-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/27/linux/base/godLinux1-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>每个linux发行版有不一致，本文以rhel7.1 为准。</p>
+<ul>
+<li><p>图形界面和字符界面相互切换<br>linux终端tyy1 ~ tyy6, tyy1 就是图形界面;<br>Ctrl + Alt + F1～6 （根据笔记本灵活试试）</p>
+</li>
+<li><p>虚拟终端 Terminal  pts<br>Ctrl + shift + T （在Terminal焦点中才起作用，可看看terminal的菜单）</p>
+</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/11/27/linux/base/godLinux1-3/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/11/24/linux/base/godLinux1-1/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -281,9 +682,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -438,9 +839,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -598,9 +999,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -755,9 +1156,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -913,9 +1314,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -1069,9 +1470,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -1202,9 +1603,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -1395,9 +1796,9 @@
   </span>
 
   <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
     <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
     </span>
   </span>
 
@@ -1538,364 +1939,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/25/mq/activemq3/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/25/mq/activemq3/" itemprop="url">
-                  activemq(三) Spring集成 - 消息驱动
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-25T21:22:22+08:00">
-                2015-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mq/" itemprop="url" rel="index">
-                    <span itemprop="name">mq</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/09/25/mq/activemq3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/25/mq/activemq3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上篇介绍了 <a href="">集成Spring-远程调用</a>, 本次介绍集成 Spring， 常规JMS，消息驱动。主角是 activeMq， JmsTemplate， @JmsListener。</p>
-<ul>
-<li>activeMq 是消息总线，JMS provider； </li>
-<li>JmsTemplate 是由 Spring提供的消息模板，简化消息生产者和消费者端的代码开发量。就是封装了 连接JMS provider（如ActiveMQ），建立JMS Session（如QueueSession），建立消息生产者，建立消费者，发送消息，接收消息；</li>
-<li>@JmsListener 由 Spring 提供的最简单的消息接收端操作方式。</li>
-</ul>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="必须的jar"><a href="#必须的jar" class="headerlink" title="必须的jar"></a>必须的jar</h3><p>maven管理的方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.apache.activemq&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;activemq-all&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;5.12.0&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
-<p>activemq 的 PooledConnectionFactory 会调用 commons-pool2。</p>
-<h3 id="PropertySourcesPlaceholderConfigurer"><a href="#PropertySourcesPlaceholderConfigurer" class="headerlink" title="PropertySourcesPlaceholderConfigurer"></a>PropertySourcesPlaceholderConfigurer</h3><p>配置<code>PropertySourcesPlaceholderConfigurer</code>， 下面用得着，比较优雅。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class ApplicationConfiguration</div><div class="line">&#123;</div><div class="line">    //To resolve $&#123;&#125; in @Value (in *.properties files by @PropertySource included)</div><div class="line">    @Bean</div><div class="line">    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() &#123;</div><div class="line">      return new PropertySourcesPlaceholderConfigurer();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>消息生产者和消费者都需要。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line">import org.apache.activemq.ActiveMQConnectionFactory;</div><div class="line">    import org.apache.activemq.command.ActiveMQQueue;</div><div class="line">import org.apache.activemq.pool.PooledConnectionFactory;</div><div class="line">import org.springframework.beans.factory.annotation.Autowired;</div><div class="line">import org.springframework.context.annotation.Bean;</div><div class="line">import org.springframework.context.annotation.Configuration;</div><div class="line">import org.springframework.context.annotation.PropertySource;</div><div class="line">import org.springframework.core.env.Environment;</div><div class="line">import org.springframework.jms.annotation.EnableJms;</div><div class="line">import org.springframework.jms.config.DefaultJmsListenerContainerFactory;</div><div class="line">import org.springframework.jms.connection.CachingConnectionFactory;</div><div class="line">import org.springframework.jms.core.JmsTemplate;</div><div class="line"></div><div class="line">@Configuration</div><div class="line">@EnableJms //开启jsm 注解</div><div class="line">@PropertySource(&#123; &quot;classpath:conf/jms.properties&quot;&#125;) // 加载配置资源文件</div><div class="line">public class JmsConfiguration</div><div class="line">&#123;</div><div class="line"></div><div class="line">    @Autowired</div><div class="line">    private Environment env;</div><div class="line"></div><div class="line">    //ConnectionFactory</div><div class="line">    @Bean</div><div class="line">    public ActiveMQConnectionFactory jmsConnectionFactory()</div><div class="line">    &#123;</div><div class="line">        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();</div><div class="line">        connectionFactory.setBrokerURL(&quot;tcp://localhost:61616&quot;);</div><div class="line">        return connectionFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //activeMq PooledConnectionFactory</div><div class="line">    @Bean</div><div class="line">    public PooledConnectionFactory activeMqPooledConnectionFactory()</div><div class="line">    &#123;</div><div class="line">        PooledConnectionFactory jmsFactory = new PooledConnectionFactory();</div><div class="line">        jmsFactory.setConnectionFactory(jmsConnectionFactory());</div><div class="line">        return jmsFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //spring CachingConnectionFactory</div><div class="line">    @Bean</div><div class="line">    public CachingConnectionFactory springCachingConnectionFactory()</div><div class="line">    &#123;</div><div class="line">        CachingConnectionFactory jmsFactory = new CachingConnectionFactory();</div><div class="line">        jmsFactory.setTargetConnectionFactory(jmsConnectionFactory());</div><div class="line">        return jmsFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // Queue</div><div class="line">    @Bean</div><div class="line">    public ActiveMQQueue jmsQueue()</div><div class="line">    &#123;</div><div class="line">        ActiveMQQueue queue = new ActiveMQQueue(env.getProperty(&quot;testQueue&quot;));</div><div class="line">        return queue;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // ListenerContainerFactory， @EnableJms 需要这个默认 bean</div><div class="line">    @Bean</div><div class="line">    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() &#123;</div><div class="line">        DefaultJmsListenerContainerFactory factory =</div><div class="line">                new DefaultJmsListenerContainerFactory();</div><div class="line">        factory.setConnectionFactory(activeMqPooledConnectionFactory());</div><div class="line">        factory.setConcurrency(&quot;3-10&quot;);</div><div class="line">        return factory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // Spring jmsTemplate</div><div class="line">    @Bean</div><div class="line">    public JmsTemplate myJmsTemplate()</div><div class="line">    &#123;</div><div class="line">        JmsTemplate jmsTp = new JmsTemplate();</div><div class="line">        jmsTp.setDefaultDestination(jmsQueue());</div><div class="line">        jmsTp.setConnectionFactory(activeMqPooledConnectionFactory());</div><div class="line">        return jmsTp;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>补充说明：</p>
-<ul>
-<li>@EnableJms：开启 JMS 注解， 这样 @JmsListener 等注解才会生效；默认需要jmsListenerContainerFactory 这个 Bean。</li>
-<li>activeMq PooledConnectionFactory 和 springCachingConnectionFactory 同等作用，可以替换。</li>
-<li>testQueue 具体value 在 jms.properties 里配置，类似常量。</li>
-</ul>
-<h2 id="消息发送和接收"><a href="#消息发送和接收" class="headerlink" title="消息发送和接收"></a>消息发送和接收</h2><p>首先看代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">@Service(&quot;GmGameAchvServiceImpl&quot;)</div><div class="line">@PropertySource(&#123; &quot;classpath:conf/jms.properties&quot;&#125;)</div><div class="line">public class GmGameAchvServiceImpl</div><div class="line">&#123;</div><div class="line">    @Resource(name = &quot;myJmsTemplate&quot;)</div><div class="line">    private JmsTemplate jmsTemplate;</div><div class="line"></div><div class="line"></div><div class="line">    // 消息接收</div><div class="line">    @JmsListener(destination = &quot;$&#123;testQueue&#125;&quot;)</div><div class="line">    public void JmsReceiveTest(String data)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;jms ----------------------------- &quot; + data);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    //消息发送</div><div class="line">    public void jmsSendTest()</div><div class="line">    &#123;</div><div class="line">        int numberOfMessages = 10;</div><div class="line">        StringBuilder payload = null;</div><div class="line">        for (int i = 0; i &lt; numberOfMessages; ++i)</div><div class="line">        &#123;</div><div class="line">            payload = new StringBuilder();</div><div class="line">            payload.append(&quot;Message [&quot;).append(i).append(&quot;] sent at: &quot;).append(new Date());</div><div class="line">            final int finalI = i;</div><div class="line">            final StringBuilder finalPayload = payload;</div><div class="line">            jmsTemplate.send((Session session) -&gt; &#123;</div><div class="line">                TextMessage message = session.createTextMessage(finalPayload.toString());</div><div class="line">                message.setIntProperty(&quot;messageCount&quot;, finalI);</div><div class="line">                return message;</div><div class="line">            &#125;);</div><div class="line"></div><div class="line"></div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
-<ul>
-<li>消息发送<br>方法 <code>jmsSendTest</code>， 利用 jmsTemplate 很方便</li>
-<li>消息接收<br><code>JmsReceiveTest</code>， 使用了 <code>@JmsListener</code>，这是最简单的方式，比 jmsTemplate 更简单。<br><code>@JmsListener</code> 需要制定 <code>destination</code>， 这里 <code>${testQueue}</code> 的值由 <code>conf/jms.properties</code> 里具体制定， 由上文提到的 <code>PropertySourcesPlaceholderConfigurer</code> 负责转化。 如此在一个配置文件里配置，多个地方使用，如需改动，仅需修改配置文件，不用修改源代码。</li>
-</ul>
-<h2 id="消息数据转换-Message-Converters"><a href="#消息数据转换-Message-Converters" class="headerlink" title="消息数据转换 Message Converters"></a>消息数据转换 Message Converters</h2><p>Spring 会自动进行消息转换， 比如上面 <code>jmsSendTest</code> 发送的是 <code>TextMessage</code>， <code>JmsReceiveTest</code> 用 String 类型参数接收就好。POJO 对象一样可以如此操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">@Override</div><div class="line">@JmsListener(destination = &quot;$&#123;testQueue&#125;&quot;)</div><div class="line">public void JmsReceiveTest(GmGameAchvEntity data)</div><div class="line">&#123;</div><div class="line">    System.out.println(&quot;jms ----------------------------- &quot; + data.getId());</div><div class="line">&#125;</div><div class="line"></div><div class="line">@Override</div><div class="line">public void jmsSendTest()</div><div class="line">&#123;</div><div class="line">    int numberOfMessages = 10;</div><div class="line">    StringBuilder payload = null;</div><div class="line">    for (int i = 0; i &lt; numberOfMessages; ++i)</div><div class="line">    &#123;</div><div class="line">        final int finalI = i;</div><div class="line">        GmGameAchvEntity achv = new GmGameAchvEntity();</div><div class="line">        achv.setId((long) i);</div><div class="line">        jmsTemplate.send((Session session) -&gt; &#123;</div><div class="line">            ObjectMessage message = session.createObjectMessage(achv);</div><div class="line">            message.setIntProperty(&quot;messageCount&quot;, finalI);</div><div class="line">            return message;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>如此这般就好了，是不是 很简单方便。</p>
-<h2 id="响应管理"><a href="#响应管理" class="headerlink" title="响应管理"></a>响应管理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@JmsListener(destination = &quot;myQueue&quot;)</div><div class="line">@SendTo(&quot;queueOut&quot;)</div><div class="line">public OrderStatus processOrder(Order order) &#123;</div><div class="line">    // order processing</div><div class="line">    return status;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>@SendTo</code> 就可以返回值 到 <code>queueOut</code> 这个destination</p>
-<p>～～～～～～～ 嗯嗯， 很不错的样子 ：）</p>
-<h2 id="activemq集合贴"><a href="#activemq集合贴" class="headerlink" title="activemq集合贴"></a><a href="http://giveme5.top/2015/09/11/mq/mq/#ActiveMQ" target="_blank" rel="external">activemq集合贴</a></h2>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/18/mq/activemq2/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="sam's notes">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="sam's notes" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2015/09/18/mq/activemq2/" itemprop="url">
-                  activemq （二）  集成Spring-远程调用
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-18T20:34:05+08:00">
-                2015-09-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mq/" itemprop="url" rel="index">
-                    <span itemprop="name">mq</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/09/18/mq/activemq2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/18/mq/activemq2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>上篇介绍了 <a href="http://giveme5.top/2015/09/11/mq/activemq/" target="_blank" rel="external">activemq 的安装和使用</a>，这篇介绍下集成 spring 最简单的运用，远程调用。注意，这种方式是没有事务控制的。</p>
-<h2 id="加入activemq-的-jar"><a href="#加入activemq-的-jar" class="headerlink" title="加入activemq 的 jar"></a>加入activemq 的 jar</h2><p>maven 方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.apache.activemq&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;activemq-all&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;5.12.0&lt;/version&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
-<h2 id="辅助类"><a href="#辅助类" class="headerlink" title="辅助类"></a>辅助类</h2><ul>
-<li><p>接口（服务端和客户端都要有）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public interface IGmGameAchvService</div><div class="line">&#123;</div><div class="line">	/**</div><div class="line">	 * 根据ID获取对象</div><div class="line">	 * @param companyId</div><div class="line">	 * @return</div><div class="line">	 */</div><div class="line">	GmGameAchvEntity findById(Long id);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>实现（服务端）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@Service(&quot;GmGameAchvServiceImpl&quot;)</div><div class="line">public class GmGameAchvServiceImpl implements IGmGameAchvService</div><div class="line">&#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public GmGameAchvEntity findById(Long id)</div><div class="line">    &#123;</div><div class="line">	GmGameAchvEntity achv = new GmGameAchvEntity();</div><div class="line">	achv.setId(1L);</div><div class="line">        return achv;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>如下内容服务端和客户端都需要配置<br>1 jmsConnectionFactory<br>2 jmsQueue</p>
-<p>服务端另需配置<br>3 MessageListenerContainer<br>4 ServiceExporter</p>
-<p>客户端另需配置<br>5 ProxyFactoryBean</p>
-<h3 id="具体内容"><a href="#具体内容" class="headerlink" title="具体内容"></a>具体内容</h3><p>以下都是java based的配置，xml的配置可以参考 <a href="http://docs.spring.io/spring/docs/4.2.2.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#remoting-jms" target="_blank" rel="external">Spring doc</a></p>
-<ul>
-<li>jmsConnectionFactory  jmsQueue</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class JmsConfiguration</div><div class="line">&#123;</div><div class="line"></div><div class="line">    @Bean</div><div class="line">    public ActiveMQConnectionFactory jmsConnectionFactory()&#123;</div><div class="line">        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();</div><div class="line">        connectionFactory.setBrokerURL(&quot;tcp://localhost:61616&quot;);</div><div class="line">        return connectionFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    @Bean</div><div class="line">    public ActiveMQQueue jmsQueue()&#123;</div><div class="line">        ActiveMQQueue queue = new ActiveMQQueue(&quot;spring-activemq&quot;);</div><div class="line">        return queue;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li><p>服务端</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class JmsServerConfiguration</div><div class="line">&#123;</div><div class="line"></div><div class="line">    @Autowired</div><div class="line">    private IGmGameAchvService gameAchvService;</div><div class="line"></div><div class="line">    @Autowired</div><div class="line">    private ActiveMQConnectionFactory jmsConnectionFactory;</div><div class="line"></div><div class="line">    @Autowired</div><div class="line">    private ActiveMQQueue jmsQueue;</div><div class="line"></div><div class="line">    @Bean</div><div class="line">    public JmsInvokerServiceExporter service()</div><div class="line">    &#123;</div><div class="line">        JmsInvokerServiceExporter service = new JmsInvokerServiceExporter();</div><div class="line">        service.setServiceInterface(IGmGameAchvService.class);</div><div class="line">        service.setService(gameAchvService);</div><div class="line"></div><div class="line">        return service;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Bean</div><div class="line">    public SimpleMessageListenerContainer msgListenerContainer()</div><div class="line">    &#123;</div><div class="line">        SimpleMessageListenerContainer msgListenerContainer = new SimpleMessageListenerContainer();</div><div class="line">        msgListenerContainer.setConnectionFactory(jmsConnectionFactory);</div><div class="line">        msgListenerContainer.setDestination(jmsQueue);</div><div class="line">        msgListenerContainer.setConcurrentConsumers(3);</div><div class="line">        msgListenerContainer.setMessageListener(service());</div><div class="line">        return msgListenerContainer;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>客户端<br>配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class JmsClientConfiguration</div><div class="line">&#123;</div><div class="line">    @Autowired</div><div class="line">    private ActiveMQConnectionFactory jmsConnectionFactory;</div><div class="line"></div><div class="line">    @Autowired</div><div class="line">    private ActiveMQQueue jmsQueue;</div><div class="line"></div><div class="line">    @Bean</div><div class="line">    public JmsInvokerProxyFactoryBean achvService()</div><div class="line">    &#123;</div><div class="line">        JmsInvokerProxyFactoryBean service = new JmsInvokerProxyFactoryBean();</div><div class="line">        service.setServiceInterface(IGmGameAchvService.class);</div><div class="line">        service.setConnectionFactory(jmsConnectionFactory);</div><div class="line">        service.setQueue(jmsQueue);</div><div class="line">        return service;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">IGmGameAchvService gmservice = (IGmGameAchvService) service;</div><div class="line">GmGameAchvEntity achv = gmservice.findById(1L);</div><div class="line">if (achv == null)</div><div class="line">&#123;</div><div class="line">    System.out.println(&quot;achv is null&quot;);</div><div class="line">&#125;</div><div class="line">else</div><div class="line">&#123;</div><div class="line">    System.out.println(&quot;achv id=&quot; + achv.getId());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h2><p>正常启动后， 在 activemq 的监控中可以看到相应内容。<br>如<br><a href="http://localhost:8161/admin/queues.jsp" target="_blank" rel="external">Queues</a><br><a href="http://localhost:8161/admin/connections.jsp" target="_blank" rel="external">connections</a></p>
-<h2 id="activemq集合贴"><a href="#activemq集合贴" class="headerlink" title="activemq集合贴"></a><a href="http://giveme5.top/2015/09/11/mq/mq/#ActiveMQ" target="_blank" rel="external">activemq集合贴</a></h2>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1945,7 +1988,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">86</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1963,7 +2006,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-count">51</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
