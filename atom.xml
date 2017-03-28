@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2017-03-14T07:41:52.620Z</updated>
+  <updated>2017-03-28T10:26:01.364Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,134 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>CentOS 7 Firewalld</title>
+    <link href="http://giveme5.cc/2017/03/28/linux/Firewalld-md/"/>
+    <id>http://giveme5.cc/2017/03/28/linux/Firewalld-md/</id>
+    <published>2017-03-28T10:11:43.000Z</published>
+    <updated>2017-03-28T10:26:01.364Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容<br>CentOS 7 Firewalld 防火墙介紹</p>
+<p>CentOS 7 之后改用 firewalld 以 zone 的区域分割来建立，并可动态设置方式执行避免中断的问题。</p>
+<a id="more"></a>
+<p>Firewalld 相關路徑<br>/etc/firewalld：設定檔路徑<br>/usr/bin/：firewall-cmd 指令所在的位置<br>/usr/lib/firewalld/：firewalld 預設的設定資料 (xml 格式)，例如 nfs.xml 就定義了 <port protocol="tcp" port="2049"><br>/usr/lib/firewalld/services/ 下的服務</port></p>
+<p>共有這些服務，可以直接叫用<br>amanda-client.xml high-availability.xml kpasswd.xml mysql.xml pop3s.xml smtp.xml<br>bacula-client.xml https.xml ldaps.xml nfs.xml postgresql.xml ssh.xml<br>bacula.xml http.xml ldap.xml ntp.xml proxy-dhcp.xml telnet.xml<br>dhcpv6-client.xml imaps.xml libvirt-tls.xml openvpn.xml radius.xml tftp-client.xml<br>dhcpv6.xml ipp-client.xml libvirt.xml pmcd.xml RH-Satellite-6.xml tftp.xml<br>dhcp.xml ipp.xml mdns.xml pmproxy.xml rpc-bind.xml transmission-client.xml<br>dns.xml ipsec.xml mountd.xml pmwebapis.xml samba-client.xml vnc-server.xml<br>ftp.xml kerberos.xml ms-wbt.xml pmwebapi.xml samba.xml wbem-https.xm</p>
+<p>所謂的 zone 就表示主機位於何種環境，需要設定哪些規則，在 firewalld 裡共有 7 個zones</p>
+<blockquote>
+<p>先決定主機要設定在那個區域 zone &gt;&gt; 再往該 zone 設定規則 &gt;&gt;&gt; 重新讀取設定檔 sudo firewall-cmd –reload</p>
+</blockquote>
+<p>public： 公開的場所，不信任網域內所有連線，只有被允許的連線才能進入，一般只要設定這裡就可以了</p>
+<p>dmz： (Demilitarized Zone) 非軍事區，允許對外連線，內部網路只有允許的才可以連線進來</p>
+<h2 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h2><p>firewall-cmd –reload</p>
+<h2 id="常用"><a href="#常用" class="headerlink" title="常用"></a>常用</h2><ul>
+<li><p>顯示目前的設定<br>firewall-cmd –list-all</p>
+</li>
+<li><p>關掉 DHCP 服務 port<br>firewall-cmd –zone=public –remove-service dhcpv6-client</p>
+</li>
+<li><p>暫時開啟 DNS port 53</p>
+<h1 id="sudo-systemctl-start-named"><a href="#sudo-systemctl-start-named" class="headerlink" title="sudo systemctl start named"></a>sudo systemctl start named</h1><h1 id="sudo-systemctl-enable-named"><a href="#sudo-systemctl-enable-named" class="headerlink" title="sudo systemctl enable named"></a>sudo systemctl enable named</h1><h1 id="sudo-firewall-cmd-–add-service-dns"><a href="#sudo-firewall-cmd-–add-service-dns" class="headerlink" title="sudo firewall-cmd –add-service=dns"></a>sudo firewall-cmd –add-service=dns</h1><h1 id="sudo-firewall-cmd-–reload"><a href="#sudo-firewall-cmd-–reload" class="headerlink" title="sudo firewall-cmd –reload"></a>sudo firewall-cmd –reload</h1><h1 id="firewall-cmd-–list-all"><a href="#firewall-cmd-–list-all" class="headerlink" title="firewall-cmd –list-all"></a>firewall-cmd –list-all</h1></li>
+<li><p>永久開啟 DNS port 53</p>
+<h1 id="sudo-firewall-cmd-–add-service-dns-–permanent"><a href="#sudo-firewall-cmd-–add-service-dns-–permanent" class="headerlink" title="sudo firewall-cmd –add-service=dns –permanent"></a>sudo firewall-cmd –add-service=dns –permanent</h1><h1 id="sudo-firewall-cmd-–reload-1"><a href="#sudo-firewall-cmd-–reload-1" class="headerlink" title="sudo firewall-cmd –reload"></a>sudo firewall-cmd –reload</h1></li>
+<li><p>如何修改主機的預設 zone<br>vi /etc/firewalld/firewalld.conf</p>
+<blockquote>
+<p>修改 DefaultZone=public<br>變成 DefaultZone=dmz<br>firewall-cmd –reload</p>
+</blockquote>
+</li>
+<li><p>加入自行指定的連接<br>firewall-cmd –add-port=8080/tcp –permanent<br>success</p>
+<h1 id="sudo-firewall-cmd-–reload-2"><a href="#sudo-firewall-cmd-–reload-2" class="headerlink" title="sudo firewall-cmd –reload"></a>sudo firewall-cmd –reload</h1><p>success</p>
+<h1 id="sudo-firewall-cmd-–list-all"><a href="#sudo-firewall-cmd-–list-all" class="headerlink" title="sudo firewall-cmd –list-all"></a>sudo firewall-cmd –list-all</h1></li>
+<li><p>限制某服務只能從哪IP連入</p>
+<h1 id="sudo-firewall-cmd-–add-rich-rule-”rule-family-”ipv4”-source-address-”192-168-1-88”-service-name-”ssh”-accept”"><a href="#sudo-firewall-cmd-–add-rich-rule-”rule-family-”ipv4”-source-address-”192-168-1-88”-service-name-”ssh”-accept”" class="headerlink" title="sudo firewall-cmd –add-rich-rule=”rule family=”ipv4” source address=”192.168.1.88” service name=”ssh” accept”"></a>sudo firewall-cmd –add-rich-rule=”rule family=”ipv4” source address=”192.168.1.88” service name=”ssh” accept”</h1><p>或 ip subnet</p>
+<h1 id="sudo-firewall-cmd-–add-rich-rule-”rule-family-”ipv4”-source-address-”192-168-1-0-24”-service-name-”ssh”-accept”"><a href="#sudo-firewall-cmd-–add-rich-rule-”rule-family-”ipv4”-source-address-”192-168-1-0-24”-service-name-”ssh”-accept”" class="headerlink" title="sudo firewall-cmd –add-rich-rule=”rule family=”ipv4” source address=”192.168.1.0/24” service name=”ssh” accept”"></a>sudo firewall-cmd –add-rich-rule=”rule family=”ipv4” source address=”192.168.1.0/24” service name=”ssh” accept”</h1></li>
+<li><p>限制某 port 只能從哪IP連入<br>firewall-cmd –add-rich-rule=”rule family=”ipv4” source address=”192.168.12.9” port port=”8080” protocol=”tcp” accept”<br>注意：port port=”8080” 不是寫錯唷！這是他的格式</p>
+</li>
+<li>從 zone 移除某項服務<h1 id="sudo-firewall-cmd-–zone-public-–add-service-http-–permanent"><a href="#sudo-firewall-cmd-–zone-public-–add-service-http-–permanent" class="headerlink" title="sudo firewall-cmd –zone=public –add-service=http –permanent"></a>sudo firewall-cmd –zone=public –add-service=http –permanent</h1><h1 id="sudo-firewall-cmd-–zone-public-–remove-service-http-–permanent"><a href="#sudo-firewall-cmd-–zone-public-–remove-service-http-–permanent" class="headerlink" title="sudo firewall-cmd –zone=public –remove-service=http –permanent"></a>sudo firewall-cmd –zone=public –remove-service=http –permanent</h1></li>
+</ul>
+<h1 id="sudo-firewall-cmd-–zone-public-–add-port-8080-tcp-–permanent"><a href="#sudo-firewall-cmd-–zone-public-–add-port-8080-tcp-–permanent" class="headerlink" title="sudo firewall-cmd –zone=public –add-port=8080/tcp –permanent"></a>sudo firewall-cmd –zone=public –add-port=8080/tcp –permanent</h1><h1 id="sudo-firewall-cmd-–zone-public-–remove-port-8080-tcp-–permanent"><a href="#sudo-firewall-cmd-–zone-public-–remove-port-8080-tcp-–permanent" class="headerlink" title="sudo firewall-cmd –zone=public –remove-port=8080/tcp –permanent"></a>sudo firewall-cmd –zone=public –remove-port=8080/tcp –permanent</h1><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.xuite.net/tolarku/blog/363801991-CentOS+7+Firewalld+%E9%98%B2%E7%81%AB%E7%89%86%E8%AA%AA%E6%98%8E%E4%BB%8B%E7%B4%B9" target="_blank" rel="external">CentOS 7 Firewalld 防火牆說明介紹</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;br&gt;CentOS 7 Firewalld 防火墙介紹&lt;/p&gt;
+&lt;p&gt;CentOS 7 之后改用 firewalld 以 zone 的区域分割来建立，并可动态设置方式执行避免中断的问题。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
+    
+      <category term="fail2ban" scheme="http://giveme5.cc/tags/fail2ban/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>fail2ban防御暴力破解攻击</title>
+    <link href="http://giveme5.cc/2017/03/28/linux/fail2ban-md/"/>
+    <id>http://giveme5.cc/2017/03/28/linux/fail2ban-md/</id>
+    <published>2017-03-28T09:30:41.000Z</published>
+    <updated>2017-03-28T10:10:22.180Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>安装</li>
+<li>配置</li>
+<li>使用</li>
+</ul>
+<p>使用 fail2ban 防御服务器的暴力破解攻击， ssh 服务为例。</p>
+<a id="more"></a>
+<p>实验环境<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># lsb_release -a</span></div><div class="line">LSB Version:    :core-4.1-amd64:core-4.1-noarch</div><div class="line">Distributor ID: CentOS</div><div class="line">Description:    CentOS Linux release 7.2.1511 (Core) </div><div class="line">Release:        7.2.1511</div><div class="line">Codename:       Core</div></pre></td></tr></table></figure></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="EPEL-源"><a href="#EPEL-源" class="headerlink" title="EPEL 源"></a>EPEL 源</h3><p>需要安装 EPEL 源， 国内可使用阿里云的镜像。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup</div><div class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</div></pre></td></tr></table></figure>
+<h3 id="fail2ban"><a href="#fail2ban" class="headerlink" title="fail2ban"></a>fail2ban</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install fail2ban-firewalld</div></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置文件根路径 <code>/etc/fail2ban/</code>。 默认服务的配置文件 <code>jail.conf</code>。<br>自定义服务配置文件 存放路径 <code>jail.d</code>， 建议以 <code>jail_服务名.local</code> 命名。<br>各个服务的拦截条件 在 <code>filter.d</code> 。</p>
+<h2 id="ssh服务配置"><a href="#ssh服务配置" class="headerlink" title="ssh服务配置"></a>ssh服务配置</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># vim jail.d/jail_ssh.local</span></div></pre></td></tr></table></figure>
+<p>增加如下内容<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[sshd]</div><div class="line">enabled = <span class="literal">true</span></div><div class="line">maxretry = 3 <span class="comment"># 尝试次数</span></div><div class="line">bantime = 7200 <span class="comment"># 禁止访问时间（秒）</span></div></pre></td></tr></table></figure></p>
+<p>如果你使用用户密码登录，以上配置就可以了。</p>
+<p>如果你使用公钥登录， 在修改下 ssh 的拦截条件, 增加 <code>^%(__prefix_line)sConnection closed by &lt;HOST&gt; \[preauth\]$</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># vim filter.d/sshd.conf</span></div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># PasswordAuthentication in sshd_config.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># "Connection from &lt;HOST&gt; port \d+" requires LogLevel VERBOSE in sshd_config</span></div><div class="line"><span class="comment">#</span></div><div class="line"></div><div class="line">[INCLUDES]</div><div class="line"></div><div class="line"><span class="comment"># Read common prefixes. If any customizations available -- read them from</span></div><div class="line"><span class="comment"># common.local</span></div><div class="line">before = common.conf</div><div class="line"></div><div class="line">[Definition]</div><div class="line"></div><div class="line">_daemon = sshd</div><div class="line"></div><div class="line">failregex = ^%(__prefix_line)s(?:error: PAM: )?[aA]uthentication (?:failure|error|failed) <span class="keyword">for</span> .* from &lt;HOST&gt;( via \S+)?\s*$</div><div class="line">            ^%(__prefix_line)s(?:error: PAM: )?User not known to the underlying authentication module <span class="keyword">for</span> .* from &lt;HOST&gt;\s*$</div><div class="line">            ^%(__prefix_line)sFailed \S+ <span class="keyword">for</span> (?P&lt;cond_inv&gt;invalid user )?(?P&lt;user&gt;(?P&lt;cond_user&gt;\S+)|(?(cond_inv)(?:(?! from ).)*?|[^:]+)) from &lt;HOST&gt;(?: port \d+)?(?: ssh\d*)?(?(cond_user):|(?:(?:(?! from ).)*)$)</div><div class="line">            ^%(__prefix_line)sROOT LOGIN REFUSED.* FROM &lt;HOST&gt;\s*$</div><div class="line">            ^%(__prefix_line)s[iI](?:llegal|nvalid) user .*? from &lt;HOST&gt;(?: port \d+)?\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because not listed <span class="keyword">in</span> AllowUsers\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because listed <span class="keyword">in</span> DenyUsers\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because not <span class="keyword">in</span> any group\s*$</div><div class="line">            ^%(__prefix_line)srefused connect from \S+ \(&lt;HOST&gt;\)\s*$</div><div class="line">            ^%(__prefix_line)s(?:error: )?Received disconnect from &lt;HOST&gt;: 3: .*: Auth fail(?: \[preauth\])?$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because a group is listed <span class="keyword">in</span> DenyGroups\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because none of user<span class="string">'s groups are listed in AllowGroups\s*$</span></div><div class="line">            ^(?P&lt;__prefix&gt;%(__prefix_line)s)User .+ not allowed because account is locked&lt;SKIPLINES&gt;(?P=__prefix)(?:error: )?Received disconnect from &lt;HOST&gt;: 11: .+ \[preauth\]$</div><div class="line">            ^(?P&lt;__prefix&gt;%(__prefix_line)s)Disconnecting: Too many authentication failures for .+? \[preauth\]&lt;SKIPLINES&gt;(?P=__prefix)(?:error: )?Connection closed by &lt;HOST&gt; \[preauth\]$</div><div class="line">            ^(?P&lt;__prefix&gt;%(__prefix_line)s)Connection from &lt;HOST&gt; port \d+(?: on \S+ port \d+)?&lt;SKIPLINES&gt;(?P=__prefix)Disconnecting: Too many authentication failures for .+? \[preauth\]$</div><div class="line">            ^%(__prefix_line)s(error: )?maximum authentication attempts exceeded for .* from &lt;HOST&gt;(?: port \d*)?(?: ssh\d*)? \[preauth\]$</div><div class="line">            ^%(__prefix_line)spam_unix\(sshd:auth\):\s+authentication failure;\s*logname=\S*\s*uid=\d*\s*euid=\d*\s*tty=\S*\s*ruser=\S*\s*rhost=&lt;HOST&gt;\s.*$</div><div class="line">            ^%(__prefix_line)sConnection closed by &lt;HOST&gt; \[preauth\]$  ##增加在这里</div><div class="line"></div><div class="line">ignoreregex =</div><div class="line"></div><div class="line">[Init]</div><div class="line"></div><div class="line"># "maxlines" is number of log lines to buffer for multi-line regex searches</div><div class="line">maxlines = 10</div><div class="line"></div><div class="line">journalmatch = _SYSTEMD_UNIT=sshd.service + _COMM=sshd</div><div class="line"></div><div class="line"># DEV Notes:</div><div class="line">#</div><div class="line">#   "Failed \S+ for .*? from &lt;HOST&gt;..." failregex uses non-greedy catch-all because</div><div class="line">#   it is coming before use of &lt;HOST&gt; which is not hard-anchored at the end as well,</div><div class="line">#   and later catch-all's could contain user-provided input, <span class="built_in">which</span> need to be greedily</div><div class="line"><span class="comment">#   matched away first.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Author: Cyril Jaquier, Yaroslav Halchenko, Petr Voralek, Daniel Black</span></div></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul>
+<li><p>启动/重启 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─# systemctl restart fail2ban.service</div></pre></td></tr></table></figure>
+</li>
+<li><p>开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─# systemctl enable fail2ban.service</div></pre></td></tr></table></figure>
+</li>
+<li><p>检验fail2ban状态， 显示出当前活动的监狱列表</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># fail2ban-client status                                                                                                                                                                                  255 ↵</span></div><div class="line">Status</div><div class="line">|- Number of jail:      1</div><div class="line">`- Jail list:   sshd</div></pre></td></tr></table></figure>
+</li>
+<li><p>检验一个特定监狱的状态</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># fail2ban-client status sshd </span></div><div class="line">Status <span class="keyword">for</span> the jail: sshd</div><div class="line">|- Filter</div><div class="line">|  |- Currently failed: 1</div><div class="line">|  |- Total failed:     4</div><div class="line">|  `- Journal matches:  _SYSTEMD_UNIT=sshd.service + _COMM=sshd</div><div class="line">`- Actions</div><div class="line">   |- Currently banned: 1</div><div class="line">   |- Total banned:     2</div><div class="line">   `- Banned IP list:   140.205.201.42</div></pre></td></tr></table></figure>
+</li>
+<li><p>解锁特定的IP地址</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># fail2ban-client set 特定监狱 unbanip ip</span></div><div class="line">fail2ban-client <span class="built_in">set</span> sshd unbanip 192.168.1.8</div></pre></td></tr></table></figure>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装&lt;/li&gt;
+&lt;li&gt;配置&lt;/li&gt;
+&lt;li&gt;使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;使用 fail2ban 防御服务器的暴力破解攻击， ssh 服务为例。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
+    
+      <category term="fail2ban" scheme="http://giveme5.cc/tags/fail2ban/"/>
+    
+  </entry>
   
   <entry>
     <title>springfox 整合springmvc 生成rest接口文档</title>
@@ -509,7 +637,7 @@ reboot
     <link href="http://giveme5.cc/2016/10/29/linux/wine/"/>
     <id>http://giveme5.cc/2016/10/29/linux/wine/</id>
     <published>2016-10-29T05:00:10.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
+    <updated>2017-03-28T09:31:38.711Z</updated>
     
     <content type="html"><![CDATA[<p>  wine在linux中很常用，目前是32位和64位的软件都有；在此讨论在64位centos 7中安装32位和64位的wine。<br>还有wine的中文环境下一些乱码问题。</p>
 <a id="more"></a>
@@ -557,6 +685,8 @@ fc-list |grep SimSun
     
       <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
     
+    
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
     
       <category term="wine" scheme="http://giveme5.cc/tags/wine/"/>
     
@@ -1366,101 +1496,6 @@ forward-socks5t / 127.0.0.1:1080 .
     
     
       <category term="git" scheme="http://giveme5.cc/tags/git/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>搜索引擎技巧 搜索引擎指令 提高搜索效率</title>
-    <link href="http://giveme5.cc/2016/03/02/other/searchEngine/"/>
-    <id>http://giveme5.cc/2016/03/02/other/searchEngine/</id>
-    <published>2016-03-02T08:35:05.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>  索引擎能使用一些特殊的搜索引擎高级指令，对于提高搜索效率，了解网站seo优化效果、研究竞争对手以及找寻网站外链优化资源是非常有用的。</p>
-<p>主要有如下技巧/指令：</p>
-<p><a href="http://giveme5.top/2016/03/02/other/searchEngine/#%E5%8F%8C%E5%BC%95%E5%8F%B7" target="_blank" rel="external">双引号</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#%E7%A9%BA%E6%A0%BC_%E5%8A%A0%E5%8F%B7_%E5%87%8F%E5%8F%B7" target="_blank" rel="external">空格 加号 减号</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#%E6%98%9F%E5%8F%B7" target="_blank" rel="external">星号</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#inurl:" target="_blank" rel="external">inurl:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#inanchor:" target="_blank" rel="external">inanchor:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#intitle:" target="_blank" rel="external">intitle:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#site:" target="_blank" rel="external">site:</a><br><a href="http://giveme5.top/2016/03/02/other/searchEngine/#link:" target="_blank" rel="external">link:</a></p>
-<a id="more"></a>
-<h2 id="双引号"><a href="#双引号" class="headerlink" title="双引号"></a>双引号</h2><p>把搜索词放在双引号中，表示精确匹配搜索，也就是说搜索结果返回的页面包含双引号中出现的所有的词，连顺序也必须完全匹配。<br>百度和谷歌都支持这个指令。</p>
-<pre><code>&quot;搜索词&quot;
-</code></pre><p>使用双引号扫完可以更准确地找到特定关键词的竟争对手。</p>
-<h2 id="空格-加号-减号"><a href="#空格-加号-减号" class="headerlink" title="空格 加号 减号"></a>空格 加号 减号</h2><ul>
-<li><p>空格 加号 表示and， 搜索结果的并集</p>
-<pre><code>搜索词1 搜索词2
-搜索词1 +搜索词2
-</code></pre></li>
-</ul>
-<ul>
-<li><p>减号（-）表示搜索结果不包含减号后面的词。谷歌和百度都支持。</p>
-<pre><code>搜索词 -不要的词  #减号前面必须是空格，减号后面没有空格
-</code></pre></li>
-</ul>
-<h2 id="星号"><a href="#星号" class="headerlink" title="星号"></a>星号</h2><p>星号常用作通配符，百度不支持 <code>*</code> 号搜索指令，谷歌支持</p>
-<pre><code>搜索词*搜索词
-</code></pre><h2 id="inurl"><a href="#inurl" class="headerlink" title="inurl:"></a>inurl:</h2><p><code>inurl:</code> 指令用于搜索搜索词出现在URL中的结果。</p>
-<pre><code>inurl:搜索词
-</code></pre><p>关键词出现在 URL中对排名有一定影响，因此使用inurl:搜索可以更准确地找到竟争对手。</p>
-<h2 id="inanchor"><a href="#inanchor" class="headerlink" title="inanchor:"></a>inanchor:</h2><p><code>inanchor:</code> 指令搜索链接锚文字中包含搜索词的结果。（百度不支持）</p>
-<pre><code>inanchor:搜索词
-</code></pre><h2 id="intitle"><a href="#intitle" class="headerlink" title="intitle:"></a>intitle:</h2><p><code>intitle:</code> 指令搜索title中包含搜索词的页面。Google和百度都支持。</p>
-<pre><code>intitle:搜索词
-</code></pre><p>title是目前页面优化的最重要因素。</p>
-<h2 id="site"><a href="#site" class="headerlink" title="site:"></a>site:</h2><p><code>site:</code> 搜索某个域名下的所有结果</p>
-<pre><code>site:domainName
-</code></pre><p>查询网站收录页面数最直接方法。</p>
-<h2 id="link"><a href="#link" class="headerlink" title="link:"></a>link:</h2><p><code>link:</code> 用来搜索某个url的反向链接，既包含内部链接，也包含外部链接。</p>
-<pre><code>link:domainName #返回domain的反向链接
-</code></pre><h2 id="allintitle-allinurl"><a href="#allintitle-allinurl" class="headerlink" title="allintitle:   allinurl:"></a>allintitle:   allinurl:</h2><p><code>allintitle:</code> 搜索title中包含多组搜索词的结果。（百度不支持）</p>
-<pre><code>allintitle:搜索1 搜索2  #相当于 title:搜索1 title:搜索2
-</code></pre><p><code>allinurl:</code> 就是 多组<code>inurl</code>的集合，跟 <code>allintitle:</code> 类似 （百度不支持）</p>
-<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><ul>
-<li><p>inurl:gov 淘宝<br>返回的就是URL中包含“gov”，页面中有“淘宝”这个词的页面。很多SEO人员认为政府和学校网站有比较高的权重，找到相关的政府和学校网站，就找到了最好的链接资源。</p>
-</li>
-<li><p>inurl:.edu.cn 交换链接<br>返回的是来自.edu.cn，也就是学校域名上的包含 “交换链接” 这个词的页面。从中SEO人员可以找到愿意交换链接的学校网站。<br>或者使用一个更精确的搜索：inurl:.edu.cn intitle:交换链接     </p>
-</li>
-</ul>
-<ul>
-<li><p>淘宝 inurl:links<br>很多站长把交换链接的页面命名为　links.html等，所以这个指令返回的就是与淘宝主题相关的交换链接页面。      </p>
-</li>
-<li><p>allinurl:gov.cn+links<br>返回的是url中包含“gov.cn” 以及“links” 的页面，也就是政府域名上的交换链接页面。      </p>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;  索引擎能使用一些特殊的搜索引擎高级指令，对于提高搜索效率，了解网站seo优化效果、研究竞争对手以及找寻网站外链优化资源是非常有用的。&lt;/p&gt;
-&lt;p&gt;主要有如下技巧/指令：&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#%E5%8F%8C%E5%BC%95%E5%8F%B7&quot;&gt;双引号&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#%E7%A9%BA%E6%A0%BC_%E5%8A%A0%E5%8F%B7_%E5%87%8F%E5%8F%B7&quot;&gt;空格 加号 减号&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#%E6%98%9F%E5%8F%B7&quot;&gt;星号&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#inurl:&quot;&gt;inurl:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#inanchor:&quot;&gt;inanchor:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#intitle:&quot;&gt;intitle:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#site:&quot;&gt;site:&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://giveme5.top/2016/03/02/other/searchEngine/#link:&quot;&gt;link:&lt;/a&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="杂谈" scheme="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>ClientAbortException</title>
-    <link href="http://giveme5.cc/2016/02/15/exception/ClientAbortException/"/>
-    <id>http://giveme5.cc/2016/02/15/exception/ClientAbortException/</id>
-    <published>2016-02-15T08:10:08.000Z</published>
-    <updated>2017-02-21T07:18:44.687Z</updated>
-    
-    <content type="html"><![CDATA[<p>Spring MVC 4.2.1.RELEASE ， 容器 tomcat 8.21， nginx ： 客户端在服务端响应前就关闭（socket），比如下载文件一半关闭浏览器，<br>服务端会有如下异常， 该异常服务器从业务上不需要处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">org.apache.catalina.connector.ClientAbortException: java.io.IOException: 断开的管道</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:393) ~[catalina.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.buf.ByteChunk.flushBuffer(ByteChunk.java:426) ~[tomcat-util.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:342) ~[catalina.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:317) ~[catalina.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.CoyoteOutputStream.flush(CoyoteOutputStream.java:110) ~[catalina.jar:8.0.18]</div><div class="line"> ......</div><div class="line"> at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:516) [catalina.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1086) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:659) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.Http11NioProtocol$Http11ConnectionHandler.process(Http11NioProtocol.java:223) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1558) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1515) [tomcat-coyote.jar:8.0.18]</div><div class="line"> at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [na:1.8.0_31]</div><div class="line"> at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [na:1.8.0_31]</div><div class="line"> at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-util.jar:8.0.18]</div><div class="line"> at java.lang.Thread.run(Thread.java:745) [na:1.8.0_31]</div><div class="line">Caused by: java.io.IOException: 断开的管道</div><div class="line"> at sun.nio.ch.FileDispatcherImpl.write0(Native Method) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:93) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.IOUtil.write(IOUtil.java:65) ~[na:1.8.0_31]</div><div class="line"> at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:470) ~[na:1.8.0_31]</div><div class="line"> at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:127) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioBlockingSelector.write(NioBlockingSelector.java:101) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.tomcat.util.net.NioSelectorPool.write(NioSelectorPool.java:173) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer.writeToSocket(InternalNioOutputBuffer.java:139) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer.addToBB(InternalNioOutputBuffer.java:197) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer.access$000(InternalNioOutputBuffer.java:41) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.InternalNioOutputBuffer$SocketOutputBuffer.doWrite(InternalNioOutputBuffer.java:320) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.filters.IdentityOutputFilter.doWrite(IdentityOutputFilter.java:93) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.http11.AbstractOutputBuffer.doWrite(AbstractOutputBuffer.java:256) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.coyote.Response.doWrite(Response.java:503) ~[tomcat-coyote.jar:8.0.18]</div><div class="line"> at org.apache.catalina.connector.OutputBuffer.realWriteBytes(OutputBuffer.java:388) ~[catalina.jar:8.0.18]</div><div class="line"> ... 76 common frames omitted</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Spring MVC 4.2.1.RELEASE ， 容器 tomcat 8.21， nginx ： 客户端在服务端响应前就关闭（socket），比如下载文件一半关闭浏览器，&lt;br&gt;服务端会有如下异常， 该异常服务器从业务上不需要处理。&lt;br&gt;&lt;figure class=&quot;
-    
-    </summary>
-    
-      <category term="exception" scheme="http://giveme5.cc/categories/exception/"/>
-    
-    
-      <category term="tomcat" scheme="http://giveme5.cc/tags/tomcat/"/>
-    
-      <category term="Spring MVC" scheme="http://giveme5.cc/tags/Spring-MVC/"/>
     
   </entry>
   
