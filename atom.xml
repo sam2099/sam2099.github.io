@@ -199,7 +199,7 @@ firewall-cmd --zone=public --remove-port=8080/tcp --permanent
     <link href="http://giveme5.cc/2017/03/14/spring/springfox-md/"/>
     <id>http://giveme5.cc/2017/03/14/spring/springfox-md/</id>
     <published>2017-03-14T10:31:21.000Z</published>
-    <updated>2017-03-31T10:29:03.449Z</updated>
+    <updated>2017-03-31T10:33:19.740Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <p><code>springfox</code> 可以用来快速生成RESTful API文档,使后台开发人员与移动端开发人员更好的对接.<br>前身是 <code>swagger-springmvc</code> , 根基都是 <code>swagger</code></p>
@@ -230,6 +230,7 @@ firewall-cmd --zone=public --remove-port=8080/tcp --permanent
 </li>
 <li>@ApiImplicitParam:对单个参数进行说明,其中dataType一定为小写</li>
 <li>@ApiOperation:描述了一种操作或通常针对特定的路径的HTTP方法。</li>
+<li>@ApiModel: 描述一个实体</li>
 <li>@ApiModelProperty：描述一个字段</li>
 </ul>
 <blockquote>
