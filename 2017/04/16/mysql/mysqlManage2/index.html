@@ -1,0 +1,944 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="mysql," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="概要
+MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
+拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.本篇主要包括故障诊断，性能调优， 备份和恢复。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【mysql 管理之道】读书笔记二">
+<meta property="og:url" content="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/index.html">
+<meta property="og:site_name" content="Sam's Notes | Sam Blog">
+<meta property="og:description" content="概要
+MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
+拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.本篇主要包括故障诊断，性能调优， 备份和恢复。">
+<meta property="og:updated_time" content="2017-04-17T06:10:39.212Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【mysql 管理之道】读书笔记二">
+<meta name="twitter:description" content="概要
+MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
+拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.本篇主要包括故障诊断，性能调优， 备份和恢复。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/"/>
+
+
+
+
+
+  <title> 【mysql 管理之道】读书笔记二 | Sam's Notes | Sam Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="sam chen">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/logo.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                【mysql 管理之道】读书笔记二
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-16T12:53:57+08:00">
+                2017-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/16/mysql/mysqlManage2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/04/16/mysql/mysqlManage2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>概要</p>
+<p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.<br>本篇主要包括故障诊断，性能调优， 备份和恢复。</p>
+<a id="more"></a>
+<h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h3 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h3><p>Linux 性能监控工具 dstat</p>
+<h3 id="故障与处理"><a href="#故障与处理" class="headerlink" title="故障与处理"></a>故障与处理</h3><h4 id="连接数过多导致程序连接报错的原因"><a href="#连接数过多导致程序连接报错的原因" class="headerlink" title="连接数过多导致程序连接报错的原因"></a>连接数过多导致程序连接报错的原因</h4><p>keys：</p>
+<ul>
+<li>max_connections 通常 500 ~ 1000 比较合理， 一直增大不能治本</li>
+<li>wait_timeout (服务器关闭非交互连接之前等待活动的秒数) ， 一般设置为 100 就可， 默认是 28800 秒</li>
+<li>重启数据库导致早高峰连接数过多<br>  可使用 InnoDB Buffer Pool 预热</li>
+<li>磁盘高负荷拖垮MySQL<br>  加内存， InnoDB_Buffer_Pool 最大可调整成内存的 70%</li>
+</ul>
+<h4 id="binlog-format"><a href="#binlog-format" class="headerlink" title="binlog_format"></a>binlog_format</h4><p>binlog_format 有3种格式 ， statement， row 和 mixed</p>
+<ul>
+<li><p>statement 记录的是实际的SQL语句</p>
+</li>
+<li><p>row 记录的是实际行的变更</p>
+</li>
+<li><p>mixed 默认是 statement， 在如下情况会转换为 row。<br>  NDB引擎，表的DML； SQL语句包含UUID()函数； 自增字段被更新； 包含 INSERT DELAYED 语句； 使用用户定义函数 UDF； 使用临时表。</p>
+</li>
+</ul>
+<p>row格式 安全稳定，binlog 可能会很大， 性能较差；<br>statement格式 性能较好，可能会导致同步数据问题</p>
+<h4 id="未设置-swap-分区导致内存耗尽，死机"><a href="#未设置-swap-分区导致内存耗尽，死机" class="headerlink" title="未设置 swap 分区导致内存耗尽，死机"></a>未设置 swap 分区导致内存耗尽，死机</h4><p>swappiness 设置为 0， 只能减少使用 swap 的概率， 不能避免 Linux 使用 swap，所以内存被耗尽后， 主机仍旧会被Hang死。<br>增加 swap<br>监控内存， 达到一定量， 重启 MySQL</p>
+<h4 id="恢复-人工误删除-InnoDB-ibdata-数据文件"><a href="#恢复-人工误删除-InnoDB-ibdata-数据文件" class="headerlink" title="恢复 人工误删除 InnoDB ibdata 数据文件"></a>恢复 人工误删除 InnoDB ibdata 数据文件</h4><p>切记 千万千万不要杀死 mysql 进程！！！！！<br>page 130 ~ 132</p>
+<h4 id="闪回功能"><a href="#闪回功能" class="headerlink" title="闪回功能"></a>闪回功能</h4><p><strong> Binlog 必须是 row 格式！！！ </strong></p>
+<ul>
+<li><p>恢复update忘记where条件误操作<br>page 133</p>
+</li>
+<li><p>恢复delete忘记where条件误操作<br>page 141</p>
+</li>
+</ul>
+<h3 id="同步复制报错故障处理"><a href="#同步复制报错故障处理" class="headerlink" title="同步复制报错故障处理"></a>同步复制报错故障处理</h3><p>page 145</p>
+<h4 id="干净清除-slave-同步信息"><a href="#干净清除-slave-同步信息" class="headerlink" title="干净清除 slave 同步信息"></a>干净清除 slave 同步信息</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">reset</span> <span class="keyword">slave</span> all; <span class="comment">-- reset slave 会把 master.info 和 relay-log.info 文件删除， 但同步信息还在。</span></div><div class="line"><span class="keyword">show</span> <span class="keyword">slave</span> <span class="keyword">status</span>;</div></pre></td></tr></table></figure>
+<h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h3 id="三范式"><a href="#三范式" class="headerlink" title="三范式"></a>三范式</h3><p>设计数据库需要最大可能遵守三范式； 有时为了性能，我们需要有意违反三范式，适度做冗余，提高查询效率。注意，反范式是适度的，必须有充足的理由。</p>
+<h3 id="字段类型"><a href="#字段类型" class="headerlink" title="字段类型"></a>字段类型</h3><p>保小不保大，能用占用字节少的字段就不用大字段。</p>
+<h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th style="text-align:center">字节</th>
+<th>最小值</th>
+<th>最大值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tinyint</td>
+<td style="text-align:center">1</td>
+<td>有符号 -128  <br> 无符号 0</td>
+<td>有符号 127  <br> 无符号 255</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td style="text-align:center">2</td>
+<td>有符号 -32 768  <br> 无符号 0</td>
+<td>有符号 32 767  <br> 无符号 65 535</td>
+</tr>
+<tr>
+<td>mediumint</td>
+<td style="text-align:center">3</td>
+<td>有符号 -8 388 608  <br> 无符号 0</td>
+<td>有符号 8 388 607  <br> 无符号 16 777 215</td>
+</tr>
+<tr>
+<td>int</td>
+<td style="text-align:center">4</td>
+<td>有符号 -2 147 483 648  <br> 无符号 0</td>
+<td>有符号 2 147 483 647  <br> 无符号 4 294 967 295</td>
+</tr>
+<tr>
+<td>bigint</td>
+<td style="text-align:center">8</td>
+<td>有符号 -9 223 372 036 854 775 808  <br> 无符号 0</td>
+<td>有符号 9 223 372 036 854 775 807  <br> 无符号 18 446 744 073 709 551 615</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>手机号码可以用 bigint<br>字符集 utf8，utf8 占用3字节， char（11) 就是 11 * 3 = 33 字节； bigint(20) 占用8字节</p>
+</li>
+<li><p>ip地址可采用 无符号int<br>mysql 内置函数： inet_aton(), 它负责ip地址转换成数字； inet_ntoa()负责把数字转换为ip地址</p>
+</li>
+<li><p>根据需求选择最小整数类型</p>
+</li>
+</ul>
+<h4 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h4><p>char  varchar<br>char(N) 长度最大255， 超长会被截取， 比N 小会被空格填补；<br>varchar(N) 最大长度 65 535， 额外使用 1~2 个字节来存储值得长度， 如果N小于或等于255， 则占用1字节， 否则就是2字节；<br>char和varchar跟字符编码也有关， latin1占用1个字节， gbk占用2个字节， utf8占用3个字节。</p>
+<p>计算varchar(N)的最大长度</p>
+<ul>
+<li>GBK字符集<br>（65 535 -2 ） /2 = 32766</li>
+<li>UTF8字符集<br>（65 535 -2 ） /3 = 218 44</li>
+<li>一行总长度不能超过 65 535</li>
+</ul>
+<h4 id="时间类型"><a href="#时间类型" class="headerlink" title="时间类型"></a>时间类型</h4><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>值</th>
+<th>存储字节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date</td>
+<td>‘0000-00-00’</td>
+<td>3字节</td>
+</tr>
+<tr>
+<td>time</td>
+<td>‘00:00:00’</td>
+<td>3字节</td>
+</tr>
+<tr>
+<td>datetime</td>
+<td>‘0000-00-00 00:00:00’</td>
+<td>8字节</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>‘0000-00-00 00:00:00’</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>year</td>
+<td>0000</td>
+<td>1字节</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>timestamp 默认值 current_timestamp, 自动插入，更新时间</li>
+<li>MySQL 5.5之前， 一个表只允许一个字段timestamp， 自动插入，更新时间<br>  MySQL 5.6之后， datetime 有了timestamp功能， 自动插入，更新时间， 也可由多个自动插入，更新时间的字段</li>
+</ul>
+<h3 id="事务隔离"><a href="#事务隔离" class="headerlink" title="事务隔离"></a>事务隔离</h3><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>读数据一致性</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读 read uncommitted</td>
+<td>最低级别， 只能保证不读取物理上损坏的数据</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>已提交读 read committed</td>
+<td>语句级</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可重复读 repeatable read</td>
+<td>事务级</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可序列化 serializable</td>
+<td>最高级别，事务级</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>oracle 和 SQL server 的默认隔离级别 是 read committed； MySQL 的默认隔离级别是 Repeatable read。</p>
+<h3 id="my-cnf-配置文件调优"><a href="#my-cnf-配置文件调优" class="headerlink" title="my.cnf 配置文件调优"></a>my.cnf 配置文件调优</h3><p>page231</p>
+<h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/15/mysql/mysqlManage/" rel="next" title="【mysql 管理之道】读书笔记一">
+                <i class="fa fa-chevron-left"></i> 【mysql 管理之道】读书笔记一
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/16/mysql/mysqlManage3/" rel="prev" title="【mysql 管理之道】读书笔记三">
+                【mysql 管理之道】读书笔记三 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/04/16/mysql/mysqlManage2/"
+           data-title="【mysql 管理之道】读书笔记二" data-url="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">92</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#故障诊断"><span class="nav-number">1.</span> <span class="nav-text">故障诊断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dstat"><span class="nav-number">1.1.</span> <span class="nav-text">dstat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#故障与处理"><span class="nav-number">1.2.</span> <span class="nav-text">故障与处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#连接数过多导致程序连接报错的原因"><span class="nav-number">1.2.1.</span> <span class="nav-text">连接数过多导致程序连接报错的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#binlog-format"><span class="nav-number">1.2.2.</span> <span class="nav-text">binlog_format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#未设置-swap-分区导致内存耗尽，死机"><span class="nav-number">1.2.3.</span> <span class="nav-text">未设置 swap 分区导致内存耗尽，死机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#恢复-人工误删除-InnoDB-ibdata-数据文件"><span class="nav-number">1.2.4.</span> <span class="nav-text">恢复 人工误删除 InnoDB ibdata 数据文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#闪回功能"><span class="nav-number">1.2.5.</span> <span class="nav-text">闪回功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步复制报错故障处理"><span class="nav-number">1.3.</span> <span class="nav-text">同步复制报错故障处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#干净清除-slave-同步信息"><span class="nav-number">1.3.1.</span> <span class="nav-text">干净清除 slave 同步信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能调优"><span class="nav-number">2.</span> <span class="nav-text">性能调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三范式"><span class="nav-number">2.1.</span> <span class="nav-text">三范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字段类型"><span class="nav-number">2.2.</span> <span class="nav-text">字段类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型"><span class="nav-number">2.2.1.</span> <span class="nav-text">数值类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符类型"><span class="nav-number">2.2.2.</span> <span class="nav-text">字符类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间类型"><span class="nav-number">2.2.3.</span> <span class="nav-text">时间类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务隔离"><span class="nav-number">2.3.</span> <span class="nav-text">事务隔离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#my-cnf-配置文件调优"><span class="nav-number">2.4.</span> <span class="nav-text">my.cnf 配置文件调优</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#备份和恢复"><span class="nav-number">3.</span> <span class="nav-text">备份和恢复</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"amadis"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+
+  
+
+</body>
+</html>

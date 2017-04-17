@@ -90,42 +90,18 @@
 
 
 <meta name="description" content="主要内容
-nginx
-异常页面配置
-异常页面存放默认存放在 /usr/share/nginx/html 目录下。
-
-nginx配置文件
-
-
-配置完类似下面的内容
-123456789101112server &amp;#123;        listen 80 default_server;        listen [::]:80 default_server ipv6only=on;">
+nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx">
 <meta property="og:url" content="http://giveme5.cc/2016/01/22/web server/nginx/nginx/index.html">
 <meta property="og:site_name" content="Sam's Notes | Sam Blog">
 <meta property="og:description" content="主要内容
-nginx
-异常页面配置
-异常页面存放默认存放在 /usr/share/nginx/html 目录下。
-
-nginx配置文件
-
-
-配置完类似下面的内容
-123456789101112server &amp;#123;        listen 80 default_server;        listen [::]:80 default_server ipv6only=on;">
-<meta property="og:updated_time" content="2017-02-22T06:20:07.151Z">
+nginx">
+<meta property="og:updated_time" content="2017-04-17T06:10:39.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx">
 <meta name="twitter:description" content="主要内容
-nginx
-异常页面配置
-异常页面存放默认存放在 /usr/share/nginx/html 目录下。
-
-nginx配置文件
-
-
-配置完类似下面的内容
-123456789101112server &amp;#123;        listen 80 default_server;        listen [::]:80 default_server ipv6only=on;">
+nginx">
 
 
 
@@ -407,6 +383,15 @@ nginx配置文件
       
         <p>主要内容</p>
 <p>nginx</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h3><p>如果系统自带yum源中没有nginx，按如下增加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># vim /etc/yum.repos.d/nginx.repo</div><div class="line">[nginx]</div><div class="line">name=nginx repo</div><div class="line">baseurl=http://nginx.org/packages/centos/$releasever/$basearch/</div><div class="line">gpgcheck=0</div><div class="line">enabled=1</div></pre></td></tr></table></figure></p>
+<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><pre><code># install
+yum -y install nginx
+
+# check
+nginx -v
+</code></pre><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="主配置文件"><a href="#主配置文件" class="headerlink" title="主配置文件"></a>主配置文件</h3><p>主配置文件<code>/etc/nginx/nginx.conf</code>, 增加如下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">worker_rlimit_nofile 4096; # set open fd limit, 根据服务器具体情况</div><div class="line"></div><div class="line"></div><div class="line">http &#123;</div><div class="line"> server_tokens  off; #隐藏nginx版本号</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="子配置"><a href="#子配置" class="headerlink" title="子配置"></a>子配置</h3><p>子配置文件目录<code>/etc/nginx/conf.d</code>, 文件名<code>*.conf</code>, <code>nj.mg.quanhouse.cn.conf</code> 为例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">        listen       80;</div><div class="line">        server_name nj.mg.quanhouse.cn;  #和tomcat的host name 或 alias name 一致。</div><div class="line"></div><div class="line">        index index.html;</div><div class="line">#       root  ;</div><div class="line">        charset utf-8;</div><div class="line"></div><div class="line">        location /</div><div class="line">        &#123;</div><div class="line">                proxy_pass http://localhost:8080; # tomcat 端口</div><div class="line">                proxy_redirect off;</div><div class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</div><div class="line">                proxy_set_header X-Real-IP $remote_addr;</div><div class="line">                proxy_set_header Host $http_host;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        location /status</div><div class="line">        &#123;</div><div class="line">                stub_status on;</div><div class="line">                access_log   off;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        </div><div class="line"></div><div class="line">        #access_log off;</div><div class="line">        #access_log  /data/logs/quanhouse.log  access;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="异常页面配置"><a href="#异常页面配置" class="headerlink" title="异常页面配置"></a>异常页面配置</h2><ul>
 <li><p>异常页面存放<br>默认存放在 <code>/usr/share/nginx/html</code> 目录下。</p>
 </li>
@@ -540,7 +525,7 @@ nginx配置文件
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -600,7 +585,7 @@ nginx配置文件
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#异常页面配置"><span class="nav-number">1.</span> <span class="nav-text">异常页面配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum源"><span class="nav-number">1.1.</span> <span class="nav-text">yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主配置文件"><span class="nav-number">2.1.</span> <span class="nav-text">主配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子配置"><span class="nav-number">2.2.</span> <span class="nav-text">子配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常页面配置"><span class="nav-number">3.</span> <span class="nav-text">异常页面配置</span></a></li></ol></div>
             
 
           </div>

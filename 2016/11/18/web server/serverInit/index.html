@@ -111,7 +111,7 @@ sshd管理
 
 主要以Centos为主。
 ……">
-<meta property="og:updated_time" content="2017-02-28T09:18:13.155Z">
+<meta property="og:updated_time" content="2017-04-17T06:10:39.212Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux server 配置选项">
 <meta name="twitter:description" content="主要内容
@@ -439,7 +439,7 @@ reboot
 <h2 id="Sonatype-nexus"><a href="#Sonatype-nexus" class="headerlink" title="Sonatype nexus"></a>Sonatype nexus</h2><p><a href="/">nexus</a></p>
 <h2 id="gitlab"><a href="#gitlab" class="headerlink" title="gitlab"></a>gitlab</h2><p><a href="/tags/gitlab/">gitlab</a></p>
 <h2 id="CI"><a href="#CI" class="headerlink" title="CI"></a>CI</h2><p><a href="/tags/jenkins/">jenkins</a></p>
-
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a><a href="/2016/01/22/web server/nginx/nginx/">nginx</a></h2><h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a><a href="/categories/mysql/">mysql</a></h2>
       
     </div>
 
@@ -487,8 +487,8 @@ reboot
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/02/21/web server/tomcat/tomcatLog/" rel="prev" title="tomcat  日志分割">
-                tomcat  日志分割 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/11/23/mysql/mysql/" rel="prev" title="mysql">
+                mysql <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -565,7 +565,7 @@ reboot
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -625,7 +625,7 @@ reboot
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Centos"><span class="nav-number">1.</span> <span class="nav-text">安装Centos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘安装。"><span class="nav-number">1.1.</span> <span class="nav-text">U盘安装。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hostname"><span class="nav-number">1.2.</span> <span class="nav-text">hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum源"><span class="nav-number">2.1.</span> <span class="nav-text">yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#科学上网"><span class="nav-number">2.2.</span> <span class="nav-text">科学上网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-git-flow"><span class="nav-number">2.3.</span> <span class="nav-text">git (git-flow)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh"><span class="nav-number">2.4.</span> <span class="nav-text">zsh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oh-my-zsh"><span class="nav-number">2.5.</span> <span class="nav-text">oh-my-zsh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户管理"><span class="nav-number">3.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sshd管理"><span class="nav-number">4.</span> <span class="nav-text">sshd管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防暴力破解"><span class="nav-number">5.</span> <span class="nav-text">防暴力破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VNC"><span class="nav-number">6.</span> <span class="nav-text">VNC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sonatype-nexus"><span class="nav-number">7.</span> <span class="nav-text">Sonatype nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab"><span class="nav-number">8.</span> <span class="nav-text">gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CI"><span class="nav-number">9.</span> <span class="nav-text">CI</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Centos"><span class="nav-number">1.</span> <span class="nav-text">安装Centos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘安装。"><span class="nav-number">1.1.</span> <span class="nav-text">U盘安装。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hostname"><span class="nav-number">1.2.</span> <span class="nav-text">hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">2.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum源"><span class="nav-number">2.1.</span> <span class="nav-text">yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#科学上网"><span class="nav-number">2.2.</span> <span class="nav-text">科学上网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-git-flow"><span class="nav-number">2.3.</span> <span class="nav-text">git (git-flow)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh"><span class="nav-number">2.4.</span> <span class="nav-text">zsh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oh-my-zsh"><span class="nav-number">2.5.</span> <span class="nav-text">oh-my-zsh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户管理"><span class="nav-number">3.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sshd管理"><span class="nav-number">4.</span> <span class="nav-text">sshd管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防暴力破解"><span class="nav-number">5.</span> <span class="nav-text">防暴力破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VNC"><span class="nav-number">6.</span> <span class="nav-text">VNC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sonatype-nexus"><span class="nav-number">7.</span> <span class="nav-text">Sonatype nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab"><span class="nav-number">8.</span> <span class="nav-text">gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CI"><span class="nav-number">9.</span> <span class="nav-text">CI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-number">10.</span> <span class="nav-text">nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">11.</span> <span class="nav-text">mysql</span></a></li></ol></div>
             
 
           </div>

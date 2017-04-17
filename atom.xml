@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2017-03-29T02:39:36.606Z</updated>
+  <updated>2017-04-17T06:10:39.212Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,318 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【mysql 管理之道】读书笔记三</title>
+    <link href="http://giveme5.cc/2017/04/16/mysql/mysqlManage3/"/>
+    <id>http://giveme5.cc/2017/04/16/mysql/mysqlManage3/</id>
+    <published>2017-04-16T10:53:57.000Z</published>
+    <updated>2017-04-17T06:10:39.212Z</updated>
+    
+    <content type="html"><![CDATA[<p>概要</p>
+<p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇主要包括高可用，读写分离， 分库分表</p>
+<a id="more"></a>
+<h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><h3 id="MHA"><a href="#MHA" class="headerlink" title="MHA"></a>MHA</h3><h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><h3 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h3>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;概要&lt;/p&gt;
+&lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
+&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。&lt;br&gt;本篇主要包括高可用，读写分离， 分库分表&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://giveme5.cc/categories/mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://giveme5.cc/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【mysql 管理之道】读书笔记二</title>
+    <link href="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/"/>
+    <id>http://giveme5.cc/2017/04/16/mysql/mysqlManage2/</id>
+    <published>2017-04-16T04:53:57.000Z</published>
+    <updated>2017-04-17T06:10:39.212Z</updated>
+    
+    <content type="html"><![CDATA[<p>概要</p>
+<p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.<br>本篇主要包括故障诊断，性能调优， 备份和恢复。</p>
+<a id="more"></a>
+<h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h3 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h3><p>Linux 性能监控工具 dstat</p>
+<h3 id="故障与处理"><a href="#故障与处理" class="headerlink" title="故障与处理"></a>故障与处理</h3><h4 id="连接数过多导致程序连接报错的原因"><a href="#连接数过多导致程序连接报错的原因" class="headerlink" title="连接数过多导致程序连接报错的原因"></a>连接数过多导致程序连接报错的原因</h4><p>keys：</p>
+<ul>
+<li>max_connections 通常 500 ~ 1000 比较合理， 一直增大不能治本</li>
+<li>wait_timeout (服务器关闭非交互连接之前等待活动的秒数) ， 一般设置为 100 就可， 默认是 28800 秒</li>
+<li>重启数据库导致早高峰连接数过多<br>  可使用 InnoDB Buffer Pool 预热</li>
+<li>磁盘高负荷拖垮MySQL<br>  加内存， InnoDB_Buffer_Pool 最大可调整成内存的 70%</li>
+</ul>
+<h4 id="binlog-format"><a href="#binlog-format" class="headerlink" title="binlog_format"></a>binlog_format</h4><p>binlog_format 有3种格式 ， statement， row 和 mixed</p>
+<ul>
+<li><p>statement 记录的是实际的SQL语句</p>
+</li>
+<li><p>row 记录的是实际行的变更</p>
+</li>
+<li><p>mixed 默认是 statement， 在如下情况会转换为 row。<br>  NDB引擎，表的DML； SQL语句包含UUID()函数； 自增字段被更新； 包含 INSERT DELAYED 语句； 使用用户定义函数 UDF； 使用临时表。</p>
+</li>
+</ul>
+<p>row格式 安全稳定，binlog 可能会很大， 性能较差；<br>statement格式 性能较好，可能会导致同步数据问题</p>
+<h4 id="未设置-swap-分区导致内存耗尽，死机"><a href="#未设置-swap-分区导致内存耗尽，死机" class="headerlink" title="未设置 swap 分区导致内存耗尽，死机"></a>未设置 swap 分区导致内存耗尽，死机</h4><p>swappiness 设置为 0， 只能减少使用 swap 的概率， 不能避免 Linux 使用 swap，所以内存被耗尽后， 主机仍旧会被Hang死。<br>增加 swap<br>监控内存， 达到一定量， 重启 MySQL</p>
+<h4 id="恢复-人工误删除-InnoDB-ibdata-数据文件"><a href="#恢复-人工误删除-InnoDB-ibdata-数据文件" class="headerlink" title="恢复 人工误删除 InnoDB ibdata 数据文件"></a>恢复 人工误删除 InnoDB ibdata 数据文件</h4><p>切记 千万千万不要杀死 mysql 进程！！！！！<br>page 130 ~ 132</p>
+<h4 id="闪回功能"><a href="#闪回功能" class="headerlink" title="闪回功能"></a>闪回功能</h4><p><strong> Binlog 必须是 row 格式！！！ </strong></p>
+<ul>
+<li><p>恢复update忘记where条件误操作<br>page 133</p>
+</li>
+<li><p>恢复delete忘记where条件误操作<br>page 141</p>
+</li>
+</ul>
+<h3 id="同步复制报错故障处理"><a href="#同步复制报错故障处理" class="headerlink" title="同步复制报错故障处理"></a>同步复制报错故障处理</h3><p>page 145</p>
+<h4 id="干净清除-slave-同步信息"><a href="#干净清除-slave-同步信息" class="headerlink" title="干净清除 slave 同步信息"></a>干净清除 slave 同步信息</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">reset</span> <span class="keyword">slave</span> all; <span class="comment">-- reset slave 会把 master.info 和 relay-log.info 文件删除， 但同步信息还在。</span></div><div class="line"><span class="keyword">show</span> <span class="keyword">slave</span> <span class="keyword">status</span>;</div></pre></td></tr></table></figure>
+<h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h3 id="三范式"><a href="#三范式" class="headerlink" title="三范式"></a>三范式</h3><p>设计数据库需要最大可能遵守三范式； 有时为了性能，我们需要有意违反三范式，适度做冗余，提高查询效率。注意，反范式是适度的，必须有充足的理由。</p>
+<h3 id="字段类型"><a href="#字段类型" class="headerlink" title="字段类型"></a>字段类型</h3><p>保小不保大，能用占用字节少的字段就不用大字段。</p>
+<h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th style="text-align:center">字节</th>
+<th>最小值</th>
+<th>最大值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tinyint</td>
+<td style="text-align:center">1</td>
+<td>有符号 -128  <br> 无符号 0</td>
+<td>有符号 127  <br> 无符号 255</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td style="text-align:center">2</td>
+<td>有符号 -32 768  <br> 无符号 0</td>
+<td>有符号 32 767  <br> 无符号 65 535</td>
+</tr>
+<tr>
+<td>mediumint</td>
+<td style="text-align:center">3</td>
+<td>有符号 -8 388 608  <br> 无符号 0</td>
+<td>有符号 8 388 607  <br> 无符号 16 777 215</td>
+</tr>
+<tr>
+<td>int</td>
+<td style="text-align:center">4</td>
+<td>有符号 -2 147 483 648  <br> 无符号 0</td>
+<td>有符号 2 147 483 647  <br> 无符号 4 294 967 295</td>
+</tr>
+<tr>
+<td>bigint</td>
+<td style="text-align:center">8</td>
+<td>有符号 -9 223 372 036 854 775 808  <br> 无符号 0</td>
+<td>有符号 9 223 372 036 854 775 807  <br> 无符号 18 446 744 073 709 551 615</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>手机号码可以用 bigint<br>字符集 utf8，utf8 占用3字节， char（11) 就是 11 * 3 = 33 字节； bigint(20) 占用8字节</p>
+</li>
+<li><p>ip地址可采用 无符号int<br>mysql 内置函数： inet_aton(), 它负责ip地址转换成数字； inet_ntoa()负责把数字转换为ip地址</p>
+</li>
+<li><p>根据需求选择最小整数类型</p>
+</li>
+</ul>
+<h4 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h4><p>char  varchar<br>char(N) 长度最大255， 超长会被截取， 比N 小会被空格填补；<br>varchar(N) 最大长度 65 535， 额外使用 1~2 个字节来存储值得长度， 如果N小于或等于255， 则占用1字节， 否则就是2字节；<br>char和varchar跟字符编码也有关， latin1占用1个字节， gbk占用2个字节， utf8占用3个字节。</p>
+<p>计算varchar(N)的最大长度</p>
+<ul>
+<li>GBK字符集<br>（65 535 -2 ） /2 = 32766</li>
+<li>UTF8字符集<br>（65 535 -2 ） /3 = 218 44</li>
+<li>一行总长度不能超过 65 535</li>
+</ul>
+<h4 id="时间类型"><a href="#时间类型" class="headerlink" title="时间类型"></a>时间类型</h4><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>值</th>
+<th>存储字节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>date</td>
+<td>‘0000-00-00’</td>
+<td>3字节</td>
+</tr>
+<tr>
+<td>time</td>
+<td>‘00:00:00’</td>
+<td>3字节</td>
+</tr>
+<tr>
+<td>datetime</td>
+<td>‘0000-00-00 00:00:00’</td>
+<td>8字节</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>‘0000-00-00 00:00:00’</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>year</td>
+<td>0000</td>
+<td>1字节</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>timestamp 默认值 current_timestamp, 自动插入，更新时间</li>
+<li>MySQL 5.5之前， 一个表只允许一个字段timestamp， 自动插入，更新时间<br>  MySQL 5.6之后， datetime 有了timestamp功能， 自动插入，更新时间， 也可由多个自动插入，更新时间的字段</li>
+</ul>
+<h3 id="事务隔离"><a href="#事务隔离" class="headerlink" title="事务隔离"></a>事务隔离</h3><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>读数据一致性</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>未提交读 read uncommitted</td>
+<td>最低级别， 只能保证不读取物理上损坏的数据</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>已提交读 read committed</td>
+<td>语句级</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可重复读 repeatable read</td>
+<td>事务级</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可序列化 serializable</td>
+<td>最高级别，事务级</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>oracle 和 SQL server 的默认隔离级别 是 read committed； MySQL 的默认隔离级别是 Repeatable read。</p>
+<h3 id="my-cnf-配置文件调优"><a href="#my-cnf-配置文件调优" class="headerlink" title="my.cnf 配置文件调优"></a>my.cnf 配置文件调优</h3><p>page231</p>
+<h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;概要&lt;/p&gt;
+&lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
+&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.&lt;br&gt;本篇主要包括故障诊断，性能调优， 备份和恢复。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://giveme5.cc/categories/mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://giveme5.cc/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>【mysql 管理之道】读书笔记一</title>
+    <link href="http://giveme5.cc/2017/04/15/mysql/mysqlManage/"/>
+    <id>http://giveme5.cc/2017/04/15/mysql/mysqlManage/</id>
+    <published>2017-04-15T04:53:57.000Z</published>
+    <updated>2017-04-17T06:10:39.212Z</updated>
+    
+    <content type="html"><![CDATA[<p>概要</p>
+<p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇主要包括MySQL5.7新特性</p>
+<a id="more"></a>
+<h2 id="MySQL5-7新特性"><a href="#MySQL5-7新特性" class="headerlink" title="MySQL5.7新特性"></a>MySQL5.7新特性</h2><h3 id="安全性提高"><a href="#安全性提高" class="headerlink" title="安全性提高"></a>安全性提高</h3><ul>
+<li><p>SSL<br>默认可开启SSL连接</p>
+</li>
+<li><p>sql_mode<br>默认启用 <code>STRICT_TRANS_TABLES</code> 严格模式， 用于进行数据的严格校验，错误数据不能插入，报error， 并且事务回滚。</p>
+</li>
+</ul>
+<h3 id="InnoDB-存储引擎提升"><a href="#InnoDB-存储引擎提升" class="headerlink" title="InnoDB 存储引擎提升"></a>InnoDB 存储引擎提升</h3><ul>
+<li><p>更改索引名不锁表</p>
+</li>
+<li><p>在线DDL修改varchar字段属性不锁表<br>  这里还是有坑的，一定要执行 <code>show processlist</code> 命令并观察， 是否有慢SQL正在操作，如有则不要进行 alter table</p>
+</li>
+<li><p>InnoDB 支持中文全文索引<br><code>ngram</code>解析器， <code>ngram_token_size</code> 参数不可动态修改， 停止词不能动态修改， 需要重建一次全文索引</p>
+</li>
+<li><p>InnoDB Buffer Pool 预热<br>数据库重启时， 将之前频繁访问的数据重新加载回Buffer中， 快速恢复之前的性能状态。<br>只需要在 <code>my.cnf</code> 里加入</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">innodb_buffer_pool_dump_at_shutdown = 1  <span class="comment"># 关闭时把热数据备份到本地， 正常关闭或pkill时才起作用</span></div><div class="line">innodb_buffer_pool_load_at_startup = 1   <span class="comment"># 启动时把热数据加载到内存</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>可在线调整 Innodb_buffer_pool_size 而不用重启 MySQL</p>
+</li>
+<li><p>回收 undo log 回滚日志物理文件空间<br>undo log 回滚日志 在 MySQL 5.6 之前， 保存在共享表空间ibdata1文件里的， MySQL 5.6 支持 单独表空间， MySQL 5.7 支持 在线收缩<br>初始化数据库前 在 <code>my.cnf</code> 指定如下参数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">innodb_undo_directory = /data2/ <span class="comment"># </span></div><div class="line">innodb_undo_log_truncate = 1 <span class="comment"># 开始在线回收， 支持动态设置</span></div><div class="line">innodb_undo_logs = 128 <span class="comment"># undo 回滚段的数量， 至少大于等于 35， 默认 128</span></div><div class="line">innodb_undo_tablespaces = 4 <span class="comment"># 指定有多少个 undo log 文件， 必须大于 2</span></div><div class="line">innodb_max_undo_log_size = 1G <span class="comment"># 可省略，默认1G， 当超过这个阈值，会触发 truncate 回收动作， truncate后 空间缩小到 10MB</span></div><div class="line">innodb_purge_rseg_truncate_frequncy : 控制回收 undo <span class="built_in">log</span> 的频率</div></pre></td></tr></table></figure>
+</li>
+<li><p>通用表空间<br>可以理解为加强版独立表空间，可以指定某些表存放在同一个 share.ibd 文件里。需要开始参数 <code>innodb_file_per_table = 1</code></p>
+</li>
+<li><p>修改 InnoDB redo log 事务日志文件大小 人性化</p>
+<ul>
+<li>执行 set global innodb_fast_shutdown = 0; 将所有脏页刷到磁盘</li>
+<li>执行 mysqladmin shutdown 关闭数据库</li>
+<li>在 my.cnf 修改 innodb_log_file_size 参数值</li>
+<li>执行 mysqld_safe –default-file=/etc/my.cnf –user=mysql&amp; , 最后启动 MySQL<br>在 5.5 版本，启动mysql之前， 必须 mv ib_logfile* /bak, 将redo log 移动到 bak 目录</li>
+</ul>
+</li>
+<li><p>死锁可 打印到 错误日志<br>命令 show engine innodb status；<br>在 <code>my.cnf</code> 中 设置 <code>innodb_print_all_deadlocks = 1</code></p>
+</li>
+<li><p>支持 InnoDB 只读事务</p>
+</li>
+</ul>
+<h3 id="JSON-格式支持"><a href="#JSON-格式支持" class="headerlink" title="JSON 格式支持"></a>JSON 格式支持</h3><p>MySQL 5.7 版本支持 原生的 JSON 格式，将关系型数据库和文档型NoSQL数据库集成一身。<br><a href="https://dev.mysql.com/doc/refman/5.7/en/json.html" target="_blank" rel="external">JSON TYPE</a><br><a href="https://dev.mysql.com/doc/refman/5.7/en/json-function-reference.html" target="_blank" rel="external">JSON FUNCTION</a></p>
+<h3 id="函数索引"><a href="#函数索引" class="headerlink" title="函数索引"></a>函数索引</h3><p>虚拟列方式支持函数索引</p>
+<h3 id="功能提升"><a href="#功能提升" class="headerlink" title="功能提升"></a>功能提升</h3><ul>
+<li><p>一张表多个 insert/delete/update  触发器</p>
+</li>
+<li><p>支持 explain update</p>
+</li>
+<li><p>Ctrl + C 组合键不会退出客户端</p>
+</li>
+</ul>
+<h3 id="优化器改进"><a href="#优化器改进" class="headerlink" title="优化器改进"></a>优化器改进</h3><ul>
+<li>子查询select 采用半连接优化</li>
+<li>优化排序 limit</li>
+<li>优化IN条件</li>
+<li>支持 Multi Range Read 优化<br>  大表进行范围扫描，通过 MRR 优化减少随机I/O<br>  可以通过 <code>show variables like &#39;optimizer_switch&#39;;</code> 来查看是否开启 MRR。</li>
+</ul>
+<h3 id="半同步复制改进"><a href="#半同步复制改进" class="headerlink" title="半同步复制改进"></a>半同步复制改进</h3><p>复制功能默认是异步的， 异步复制可以提供最佳性能， 主库把 Binlog 日志发给从库， 这一动作就完成了， 并不验证从库是否接收完毕。<br>从库可能没有接收，从而导致复制数据丢失。<br>半同步复制模式，可以确保从服务器接收完主服务器发送的 Binlog 日志文件并写入自己的中继日志（relay log）里， 然后给主服务器一个反馈， 这是主服务器才结束操作。<br>需要主从服务端都开启半同步模式。</p>
+<h3 id="GTID-全局事务标识符"><a href="#GTID-全局事务标识符" class="headerlink" title="GTID 全局事务标识符"></a>GTID 全局事务标识符</h3><p>由uuid和事务id 组成。 主从切换后，同步失败，MySQL 可以通过GTID 自动找点同步。 需要主从都开启。</p>
+<h3 id="salve-支持多源复制"><a href="#salve-支持多源复制" class="headerlink" title="salve 支持多源复制"></a>salve 支持多源复制</h3><p>多主一从</p>
+<h3 id="同步复制过滤不用重启-mysql-服务进程"><a href="#同步复制过滤不用重启-mysql-服务进程" class="headerlink" title="同步复制过滤不用重启 mysql 服务进程"></a>同步复制过滤不用重启 mysql 服务进程</h3><h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2><h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><h3 id="MHA"><a href="#MHA" class="headerlink" title="MHA"></a>MHA</h3><h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><h3 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h3>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;概要&lt;/p&gt;
+&lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
+&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。&lt;br&gt;本篇主要包括MySQL5.7新特性&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://giveme5.cc/categories/mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://giveme5.cc/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>CentOS 7 Firewalld</title>
@@ -631,11 +943,48 @@ firewall-cmd --zone=public --remove-port=8080/tcp --permanent
   </entry>
   
   <entry>
+    <title>mysql</title>
+    <link href="http://giveme5.cc/2016/11/23/mysql/mysql/"/>
+    <id>http://giveme5.cc/2016/11/23/mysql/mysql/</id>
+    <published>2016-11-23T14:53:57.000Z</published>
+    <updated>2017-04-17T06:10:39.212Z</updated>
+    
+    <content type="html"><![CDATA[<p>概要</p>
+<p>安装<br>配置</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>centos 安装 最新版 mysql， 目前mysql 是 5.7.16</p>
+<h3 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h3><p><code>http://dev.mysql.com/downloads/repo/yum/</code>下载对应版本的RPM</p>
+<p>安装生成yum源配置文件<br>        sudo rpm -Uvh platform-and-version-specific-package-name.rpm<br>        yum makecache</p>
+<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y  mysql-community-client.x86_64 mysql-community-devel.x86_64 mysql-community-server.x86_64   #基本安装3个组件</div></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p><a href="http://dev.mysql.com/doc/refman/5.7/en/data-directory-initialization-mysqld.html" target="_blank" rel="external">官方文档</a><br>为安全和备份方便，把mysql的<code>datadir</code>配置在非系统目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 1 mysql basedir</div><div class="line">which mysql</div><div class="line">/usr/bin/mysql</div><div class="line"></div><div class="line"># 2 初始化数据文件</div><div class="line">cd /usr/bin/</div><div class="line">mysqld --initialize --user=mysql --datadir=/home/data//mysql/data</div></pre></td></tr></table></figure>
+<h3 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h3><p>默认配置文件 <code>/etc/my.cnf</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[mysqld]</div><div class="line">#</div><div class="line"># Remove leading # and set to the amount of RAM for the most important data</div><div class="line"># cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.</div><div class="line"># innodb_buffer_pool_size = 128M</div><div class="line">#</div><div class="line"># Remove leading # to turn on a very important data integrity option: logging</div><div class="line"># changes to the binary log between backups.</div><div class="line"># log_bin</div><div class="line">#</div><div class="line"># Remove leading # to set options mainly useful for reporting servers.</div><div class="line"># The server defaults are faster for transactions and fast SELECTs.</div><div class="line"># Adjust sizes as needed, experiment to find the optimal values.</div><div class="line"># join_buffer_size = 128M</div><div class="line"># sort_buffer_size = 2M</div><div class="line"># read_rnd_buffer_size = 2M</div><div class="line">datadir=/data/mysql/data</div><div class="line">socket=/var/lib/mysql/mysql.sock</div><div class="line"></div><div class="line"># Disabling symbolic-links is recommended to prevent assorted security risks</div><div class="line">symbolic-links=0</div><div class="line"></div><div class="line">log-error=/var/log/mysqld.log</div><div class="line">pid-file=/var/run/mysqld/mysqld.pid</div><div class="line">lower_case_table_names=1 # 0：区分大小写，1：不区分大小写</div><div class="line"></div><div class="line">default-storage-engine=INNODB</div><div class="line"></div><div class="line">slow_query_log=on</div><div class="line">slow_query_log_file=/data/mysql/log/slow_query_log.log</div><div class="line">long_query_time=2</div><div class="line"></div><div class="line"># character-set</div><div class="line"># ignore character set information sent by the client</div><div class="line">character-set-client-handshake = FALSE</div><div class="line">character-set-server = utf8mb4</div><div class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</div><div class="line"></div><div class="line"></div><div class="line"># max_allowed_packet=512M</div><div class="line">max_connections        = 1000</div><div class="line">server_id=1</div><div class="line">innodb_buffer_pool_size = 2048M</div><div class="line"># innodb_log_file_size=2048M</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"># mysql model</div><div class="line">sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</div><div class="line"></div><div class="line">[client]</div><div class="line">default-character-set = utf8mb4</div><div class="line">[mysql]</div><div class="line">default-character-set = utf8mb4</div></pre></td></tr></table></figure></p>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># 1 启动</div><div class="line">systemctl start mysqld</div><div class="line"></div><div class="line"># 2 开机启动</div><div class="line">systemctl enable mysqld</div></pre></td></tr></table></figure>
+<h3 id="root密码"><a href="#root密码" class="headerlink" title="root密码"></a>root密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># 1 root 初始密码</div><div class="line">╰─# less /var/log/mysqld.log |grep password</div><div class="line">2016-11-23T14:10:00.473337Z 1 [Note] A temporary password is generated for root@localhost: G80K__o3eugw</div><div class="line"></div><div class="line"># 2 修改密码</div><div class="line">╰─# mysql -uroot -p</div><div class="line">Enter password: #1获得的密码</div><div class="line">mysql&gt; ALTER USER &apos;root&apos;@&apos;localhost&apos; IDENTIFIED BY &apos;new_password&apos;;</div></pre></td></tr></table></figure>
+<h2 id="有趣的链接"><a href="#有趣的链接" class="headerlink" title="有趣的链接"></a>有趣的链接</h2><p><a href="http://mysql.taobao.org" target="_blank" rel="external">淘宝MySQL</a></p>
+<p><a href="http://www.csdn.net/article/2015-01-16/2823591" target="_blank" rel="external">淘宝内部分享：怎么跳出MySQL的10个大坑</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;概要&lt;/p&gt;
+&lt;p&gt;安装&lt;br&gt;配置&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://giveme5.cc/categories/mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://giveme5.cc/tags/mysql/"/>
+    
+  </entry>
+  
+  <entry>
     <title>linux server 配置选项</title>
     <link href="http://giveme5.cc/2016/11/18/web%20server/serverInit/"/>
     <id>http://giveme5.cc/2016/11/18/web server/serverInit/</id>
     <published>2016-11-18T11:29:44.000Z</published>
-    <updated>2017-02-28T09:18:13.155Z</updated>
+    <updated>2017-04-17T06:10:39.212Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <ul>
@@ -674,7 +1023,7 @@ reboot
 <h2 id="Sonatype-nexus"><a href="#Sonatype-nexus" class="headerlink" title="Sonatype nexus"></a>Sonatype nexus</h2><p><a href="/">nexus</a></p>
 <h2 id="gitlab"><a href="#gitlab" class="headerlink" title="gitlab"></a>gitlab</h2><p><a href="/tags/gitlab/">gitlab</a></p>
 <h2 id="CI"><a href="#CI" class="headerlink" title="CI"></a>CI</h2><p><a href="/tags/jenkins/">jenkins</a></p>
-]]></content>
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a><a href="/2016/01/22/web server/nginx/nginx/">nginx</a></h2><h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a><a href="/categories/mysql/">mysql</a></h2>]]></content>
     
     <summary type="html">
     
@@ -1321,248 +1670,6 @@ tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
       <category term="android" scheme="http://giveme5.cc/tags/android/"/>
     
       <category term="broadcast" scheme="http://giveme5.cc/tags/broadcast/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android入门 总纲</title>
-    <link href="http://giveme5.cc/2016/05/13/android/android0_index/"/>
-    <id>http://giveme5.cc/2016/05/13/android/android0_index/</id>
-    <published>2016-05-13T11:29:44.000Z</published>
-    <updated>2017-02-22T06:21:35.583Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><h2 id="logcat"><a href="#logcat" class="headerlink" title="logcat"></a>logcat</h2><h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><h2 id="线性布局"><a href="#线性布局" class="headerlink" title="线性布局"></a>线性布局</h2><h2 id="相对布局"><a href="#相对布局" class="headerlink" title="相对布局"></a>相对布局</h2><h2 id="帧布局"><a href="#帧布局" class="headerlink" title="帧布局"></a>帧布局</h2><h2 id="表格布局"><a href="#表格布局" class="headerlink" title="表格布局"></a>表格布局</h2><h2 id="绝对布局"><a href="#绝对布局" class="headerlink" title="绝对布局"></a>绝对布局</h2><h1 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h1><h2 id="内部存储"><a href="#内部存储" class="headerlink" title="内部存储"></a>内部存储</h2><h2 id="SD卡"><a href="#SD卡" class="headerlink" title="SD卡"></a>SD卡</h2><h2 id="SharedPreference"><a href="#SharedPreference" class="headerlink" title="SharedPreference"></a>SharedPreference</h2><h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h1 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h1><h2 id="建库"><a href="#建库" class="headerlink" title="建库"></a>建库</h2><h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><h2 id="原生-CRUD"><a href="#原生-CRUD" class="headerlink" title="原生 CRUD"></a>原生 CRUD</h2><h2 id="API-CRUD"><a href="#API-CRUD" class="headerlink" title="API CRUD"></a>API CRUD</h2><h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h1 id="控件"><a href="#控件" class="headerlink" title="控件"></a>控件</h1><h2 id="Toast"><a href="#Toast" class="headerlink" title="Toast"></a>Toast</h2><h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><p>导入局部布局<br>条目点击监听 ： <code>setOnItemClickListener</code></p>
-<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ul>
-<li>convertView</li>
-<li>ViewHolder</li>
-</ul>
-<h2 id="Dialog-对话框"><a href="#Dialog-对话框" class="headerlink" title="Dialog 对话框"></a>Dialog 对话框</h2><h3 id="确定取消Dialog"><a href="#确定取消Dialog" class="headerlink" title="确定取消Dialog"></a>确定取消Dialog</h3><h3 id="单选Dialog"><a href="#单选Dialog" class="headerlink" title="单选Dialog"></a>单选Dialog</h3><h3 id="多选Dialog"><a href="#多选Dialog" class="headerlink" title="多选Dialog"></a>多选Dialog</h3><h1 id="网络访问"><a href="#网络访问" class="headerlink" title="网络访问"></a>网络访问</h1><h2 id="堵塞"><a href="#堵塞" class="headerlink" title="堵塞"></a>堵塞</h2><h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><h1 id="四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器"><a href="#四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器" class="headerlink" title="四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器"></a>四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器</h1><h1 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h1><h2 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h2><p>显式效率高</p>
-<h3 id="显式跳转"><a href="#显式跳转" class="headerlink" title="显式跳转"></a>显式跳转</h3><h3 id="隐式跳转"><a href="#隐式跳转" class="headerlink" title="隐式跳转"></a>隐式跳转</h3><h2 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h2><h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><h3 id="返回"><a href="#返回" class="headerlink" title="返回"></a>返回</h3><ul>
-<li><p>子Activity</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent data = new Intent();</div><div class="line">data.putExtra(&quot;key&quot;, value);</div><div class="line">setRestult(resultCode, data) //set result vaule</div><div class="line">finish(); //销毁当前Activity, 返回父Activity</div></pre></td></tr></table></figure>
-</li>
-<li><p>父Activity<br>启动 ： <code>StartActivityForResult(Intent, requestCode)</code><br>接收 ： <code>OnActivityResult(int requestCode, int resultCode, Intent data)</code> 打开多个的情况可以采用requestCode和resultCode来区别每个子Activity及其返回数据的目的</p>
-</li>
-</ul>
-<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><h2 id="启动模式"><a href="#启动模式" class="headerlink" title="启动模式"></a>启动模式</h2><h3 id="launchMode"><a href="#launchMode" class="headerlink" title="launchMode"></a>launchMode</h3><ul>
-<li>standard</li>
-<li>singleTop : 栈顶已经有一个相同类型的Activity实例，Intent不会再创建一个Activity，而是通过onNewIntent()被发送到现有的Activity</li>
-<li>singleTask : singleTask模式的Activity只允许在一个APP栈中有一个实例。如果系统中已经有了一个实例，持有这个实例的任务将移动到顶部，（将其上方的所有Activity销毁）同时intent将被通过onNewIntent()发送。如果没有，则会创建一个新的Activity并置放在合适的任务中。</li>
-<li>singleInstance : 非常接近于singleTask，系统中只允许一个Activity的实例存在。每个singleInstance会有自己独立的栈。实际开发中只有平台型应用（qq，微信，微博），提供给其他应用使用的情况，才采用。</li>
-</ul>
-<h2 id="横竖切换"><a href="#横竖切换" class="headerlink" title="横竖切换"></a>横竖切换</h2><ul>
-<li><p>默认切换会调用生命周期方法；<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:configChanges=&quot;orientation|keyboardHidden&quot;</code> 时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法</p>
-</li>
-<li><p>锁定<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:orientation</code><br>或者 在 <code>OnCreate</code>方法中 增加 <code>setRequestOrientation(Activity.)</code></p>
-</li>
-</ul>
-<h1 id="BroadcastReceiver广播接收器"><a href="#BroadcastReceiver广播接收器" class="headerlink" title="BroadcastReceiver广播接收器"></a>BroadcastReceiver广播接收器</h1><h1 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h1>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;开发环境&quot;&gt;&lt;a href=&quot;#开发环境&quot; class=&quot;headerlink&quot; title=&quot;开发环境&quot;&gt;&lt;/a&gt;开发环境&lt;/h1&gt;&lt;h2 id=&quot;logcat&quot;&gt;&lt;a href=&quot;#logcat&quot; class=&quot;headerlink&quot; title=&quot;logca
-    
-    </summary>
-    
-      <category term="Android" scheme="http://giveme5.cc/categories/Android/"/>
-    
-    
-      <category term="android" scheme="http://giveme5.cc/tags/android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android入门 一 ： unit test</title>
-    <link href="http://giveme5.cc/2016/05/10/android/android1_UnitTest/"/>
-    <id>http://giveme5.cc/2016/05/10/android/android1_UnitTest/</id>
-    <published>2016-05-10T11:29:44.000Z</published>
-    <updated>2017-02-22T06:21:53.947Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>Local Unit Test</li>
-<li>Instrumented Unit Test</li>
-</ul>
-<p>本文主要以idea 说明如何进行 Android Unit Test。<br>分为与Android环境相关的<code>Instrumented Unit Test</code> ， 与Android环境无关的<code>Local Unit Test</code></p>
-<a id="more"></a>
-<h2 id="Local-Unit-Test"><a href="#Local-Unit-Test" class="headerlink" title="Local Unit Test"></a>Local Unit Test</h2><p><code>Local Unit Test</code> 用来做跟android环境无关的Unit Test。</p>
-<h3 id="配置依赖"><a href="#配置依赖" class="headerlink" title="配置依赖"></a>配置依赖</h3><p><code>build.gradle</code> 中增加必要的依赖</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    ...</div><div class="line">    testCompile &apos;junit:junit:4.12&apos;</div><div class="line">    androidTestCompile &apos;junit:junit:4.12&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="Test-java-class"><a href="#Test-java-class" class="headerlink" title="Test java class"></a>Test java class</h3><p>以 <code>JUnit 4</code> 为基础的话， 仅需要 用 <code>@Test</code> 注解测试method。<br>android官方例子像这样的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">import org.junit.Test;</div><div class="line">import java.util.regex.Pattern;</div><div class="line">import static org.junit.Assert.assertFalse;</div><div class="line">import static org.junit.Assert.assertTrue;</div><div class="line"></div><div class="line">public class EmailValidatorTest &#123;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public void emailValidator_CorrectEmailSimple_ReturnsTrue() &#123;</div><div class="line">        assertThat(EmailValidator.isValidEmail(&quot;name@email.com&quot;), is(true));</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>别忘记将 <code>/src/test/java</code> 设置成 <code>Test Source Root</code></p>
-<ul>
-<li><p>同步<br><code>project</code> 视图下， 右键工程， <code>synchronize ${your project name}</code></p>
-</li>
-<li><p>配置BuildVariants<br><code>Test Artifact</code> 选择 <code>Unit Tests</code></p>
-</li>
-<li><p>运行<br>右键测试class， run ！</p>
-</li>
-</ul>
-<p><img src="http://amadis.qiniudn.com/androidJunit1a1.png" alt=""></p>
-<h2 id="Instrumented-Unit-Test"><a href="#Instrumented-Unit-Test" class="headerlink" title="Instrumented Unit Test"></a>Instrumented Unit Test</h2><p>如果你的测试需要访问 <code>instrumentation information</code> (例如 app’s Context) 或者需要 <code>Android framework component</code> (例如 Parcelable  SharedPreferences)，那么你可以使用 <code>Instrumented Unit Test</code>。<br>目前有2中方式实现： <code>AndroidJUnit4</code> 以及 <code>TestCase</code></p>
-<h3 id="AndroidJUnit4"><a href="#AndroidJUnit4" class="headerlink" title="AndroidJUnit4"></a>AndroidJUnit4</h3><p>这是Android官方的例子， 需要注意的是如需要取 <code>context</code> 必须使用 <code>getTargetContext()</code></p>
-<blockquote>
-<p>InstrumentationRegistry is an exposed registry instance that holds a reference to the instrumentation running in the process and it’s arguments and allows injection of the following instances:</p>
-<ul>
-<li>InstrumentationRegistry.getInstrumentation(), returns the Instrumentation currently running.</li>
-<li>InstrumentationRegistry.getContext(), returns the Context of this Instrumentation’s package.</li>
-<li>InstrumentationRegistry.getTargetContext(), returns the application Context of the target application.</li>
-<li>InstrumentationRegistry.getArguments(), returns a copy of arguments Bundle that was passed to this Instrumentation. This is useful when you want to access the command line arguments passed to Instrumentation for your test.</li>
-</ul>
-</blockquote>
-<h4 id="配置依赖-1"><a href="#配置依赖-1" class="headerlink" title="配置依赖"></a>配置依赖</h4><ul>
-<li>在顶层<code>build.gradle</code> 中增加必要的依赖</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    androidTestCompile &apos;com.android.support:support-annotations:23.0.1&apos;</div><div class="line">    androidTestCompile &apos;com.android.support.test:runner:0.4.1&apos;</div><div class="line">    androidTestCompile &apos;com.android.support.test:rules:0.4.1&apos;</div><div class="line">    // Optional -- Hamcrest library</div><div class="line">    androidTestCompile &apos;org.hamcrest:hamcrest-library:1.3&apos;</div><div class="line">    // Optional -- UI testing with Espresso</div><div class="line">    androidTestCompile &apos;com.android.support.test.espresso:espresso-core:2.2.1&apos;</div><div class="line">    // Optional -- UI testing with UI Automator</div><div class="line">    androidTestCompile &apos;com.android.support.test.uiautomator:uiautomator-v18:2.1.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li>在模块<code>build.gradle</code> 中配置 <code>instrumentation runner</code></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">android &#123;</div><div class="line">    defaultConfig &#123;</div><div class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="Test-java-class-1"><a href="#Test-java-class-1" class="headerlink" title="Test java class"></a>Test java class</h4><p><code>instrumentation Test</code> 应该使用 Junit4 的方式编写， 代码默认路径为 <code>src/androidTest/java</code>。<br>Android 的官方例子如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">import android.os.Parcel;</div><div class="line">import android.support.test.runner.AndroidJUnit4;</div><div class="line">import android.util.Pair;</div><div class="line">import org.junit.Test;</div><div class="line">import org.junit.runner.RunWith;</div><div class="line">import java.util.List;</div><div class="line">import static org.hamcrest.Matchers.is;</div><div class="line">import static org.junit.Assert.assertThat;</div><div class="line"></div><div class="line">@RunWith(AndroidJUnit4.class)</div><div class="line">@SmallTest</div><div class="line">public class LogHistoryAndroidUnitTest &#123;</div><div class="line"></div><div class="line">    public static final String TEST_STRING = &quot;This is a string&quot;;</div><div class="line">    public static final long TEST_LONG = 12345678L;</div><div class="line">    private LogHistory mLogHistory;</div><div class="line"></div><div class="line">    //前处理</div><div class="line">    @Before</div><div class="line">    public void createLogHistory() &#123;</div><div class="line">        mLogHistory = new LogHistory();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public void logHistory_ParcelableWriteRead() &#123;</div><div class="line">        // Set up the Parcelable object to send and receive.</div><div class="line">        mLogHistory.addEntry(TEST_STRING, TEST_LONG);</div><div class="line"></div><div class="line">        // Write the data.</div><div class="line">        Parcel parcel = Parcel.obtain();</div><div class="line">        mLogHistory.writeToParcel(parcel, mLogHistory.describeContents());</div><div class="line"></div><div class="line">        // After you&apos;re done with writing, you need to reset the parcel for reading.</div><div class="line">        parcel.setDataPosition(0);</div><div class="line"></div><div class="line">        // Read the data.</div><div class="line">        LogHistory createdFromParcel = LogHistory.CREATOR.createFromParcel(parcel);</div><div class="line">        List&lt;Pair&lt;String, Long&gt;&gt; createdFromParcelData = createdFromParcel.getData();</div><div class="line"></div><div class="line">        // Verify that the received data is correct.</div><div class="line">        assertThat(createdFromParcelData.size(), is(1));</div><div class="line">        assertThat(createdFromParcelData.get(0).first, is(TEST_STRING));</div><div class="line">        assertThat(createdFromParcelData.get(0).second, is(TEST_LONG));</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    //后处理</div><div class="line">    @After</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="TestCase"><a href="#TestCase" class="headerlink" title="TestCase"></a>TestCase</h3><p>继承 <code>android.test</code> 包下面一系列 <code>xxxxTestCase</code>。<br>IDEA 自动生存的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">package com.example.sam.myapplication;</div><div class="line"></div><div class="line">import android.app.Application;</div><div class="line">import android.test.ApplicationTestCase;</div><div class="line">import org.junit.Test;</div><div class="line"></div><div class="line">/**</div><div class="line"> * &lt;a href=&quot;http://d.android.com/tools/testing/testing_android.html&quot;&gt;Testing Fundamentals&lt;/a&gt;</div><div class="line"> */</div><div class="line">public class ApplicationTest extends ApplicationTestCase&lt;Application&gt; &#123;</div><div class="line">    public ApplicationTest() &#123;</div><div class="line">        super(Application.class);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //前处理</div><div class="line">    @Override</div><div class="line">    protected void setUp() throws Exception &#123;</div><div class="line">        super.setUp();</div><div class="line">        </div><div class="line">        // 增加你自己的前处理</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Test</div><div class="line">    public void test()&#123;</div><div class="line">        System.out.println(&quot;ok              ok&quot;);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    //后处理</div><div class="line">        @Override</div><div class="line">    protected void tearDown() throws Exception &#123;</div><div class="line">        super.tearDown();</div><div class="line">        </div><div class="line">        //增加你自己的后处理</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    </div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="运行-1"><a href="#运行-1" class="headerlink" title="运行"></a>运行</h3><p>别忘记将 <code>src/androidTest/java</code> 设置成 <code>Test Source Root</code></p>
-<ul>
-<li><p>同步<br><code>project</code> 视图下， 右键工程， <code>synchronize ${your project name}</code></p>
-</li>
-<li><p>配置BuildVariants<br><code>Test Artifact</code> 选择 <code>Android instrumentation Tests</code></p>
-</li>
-<li><p>运行<br>右键测试class，  <code>Android Test</code> 方式运行！ 在 <code>Local Unit Test</code> 的 下一格，带Android机器人图标的。<br>run ！</p>
-</li>
-</ul>
-<p><img src="http://amadis.qiniudn.com/androidJunit1a2.png" alt=""></p>
-<h2 id="官方链接"><a href="#官方链接" class="headerlink" title="官方链接"></a>官方链接</h2><p><a href="http://developer.android.com/training/testing/index.html" target="_blank" rel="external">Best Practices for Testing</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Local Unit Test&lt;/li&gt;
-&lt;li&gt;Instrumented Unit Test&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;本文主要以idea 说明如何进行 Android Unit Test。&lt;br&gt;分为与Android环境相关的&lt;code&gt;Instrumented Unit Test&lt;/code&gt; ， 与Android环境无关的&lt;code&gt;Local Unit Test&lt;/code&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Android" scheme="http://giveme5.cc/categories/Android/"/>
-    
-    
-      <category term="android" scheme="http://giveme5.cc/tags/android/"/>
-    
-      <category term="junit" scheme="http://giveme5.cc/tags/junit/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>shadowsocks</title>
-    <link href="http://giveme5.cc/2016/05/05/other/shadowsocks/"/>
-    <id>http://giveme5.cc/2016/05/05/other/shadowsocks/</id>
-    <published>2016-05-05T03:44:58.000Z</published>
-    <updated>2017-02-21T07:18:44.691Z</updated>
-    
-    <content type="html"><![CDATA[<p>关键词不说了， 知道ss的人就好，哈哈</p>
-<a id="more"></a>
-<h2 id="shadowsocks-安装"><a href="#shadowsocks-安装" class="headerlink" title="shadowsocks 安装"></a>shadowsocks 安装</h2><p>python版本安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install shadowsocks</div></pre></td></tr></table></figure>
-<h2 id="server-配置"><a href="#server-配置" class="headerlink" title="server 配置"></a>server 配置</h2><p>找到你自己的供应商，将server的信息 配置成 文件， 比如<code>gui-config.json</code></p>
-<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>写了几个脚本，内容有点像这样的</p>
-<ul>
-<li><p>shadowsocks.sh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">cmd=$1</div><div class="line"></div><div class="line"># start</div><div class="line">if [ $cmd == &quot;start&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/shadowsocks/gui-config.json -d start </div><div class="line">  #xxxxxx/shadowsocks 是 gui-config.json 的存放位置， gui-config.json 是上步的server配置信息</div><div class="line">  #password 是你自己系统管理员密码，记得修改哦</div><div class="line">  </div><div class="line">#stop</div><div class="line">elif [ $cmd == &quot;stop&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/soft/shadowsocks/gui-config.json -d stop</div><div class="line"></div><div class="line"># error</div><div class="line">else</div><div class="line">  echo &quot;cmd only &apos;start&apos; or &apos;stop&apos;&quot;</div><div class="line">fi</div></pre></td></tr></table></figure>
-</li>
-<li><p>启动命令<br><code>./shadowsocks.sh start</code></p>
-</li>
-</ul>
-<h2 id="http-全局代理"><a href="#http-全局代理" class="headerlink" title="http 全局代理"></a>http 全局代理</h2><p>shadowsocks是socks5服务，在浏览器里使用一些插件可以满足浏览器使用了。一些其他场合，Privoxy实现Socks5转换为Http 服务。</p>
-<h3 id="Privoxy"><a href="#Privoxy" class="headerlink" title="Privoxy"></a>Privoxy</h3><p>官方网站：<a href="http://www.privoxy.org/" target="_blank" rel="external">http://www.privoxy.org/</a> </p>
-<ul>
-<li><p>下载 privoxy<br>比如目前最新的  privoxy-3.0.24-stable-src.tar.gz</p>
-</li>
-<li><p>解压</p>
-<p>  tar xf privoxy-3.0.24-stable-src.tar.gz</p>
-</li>
-<li><p>编译安装</p>
-</li>
-</ul>
-<pre><code>cd privoxy-3.0.24-stable
-
-useradd privoxy
-
-autoheader &amp;&amp; autoconf
-./configure --prefix=你自己喜欢的安装路径， 装完后上面的源码文件夹可以删除
-
-make &amp;&amp; make install
-</code></pre><ul>
-<li><p>配置<br>在 <code>--prefix=</code> 指定的路径中配置 <code>config</code> 文件；如果没指定， <code>config</code> 文件大概在 <code>/usr/local/etc/privoxy/</code></p>
-<p>privoxy监听端口 </p>
-<pre><code>listen-address 127.0.0.1:8118  
-</code></pre><p>查找<code>listen-address</code>， 端口可以修改</p>
-<p>shadowsocks 端口，（查找 关键字 forward-socks5t） 默认是这样的</p>
-<pre><code># forward-socks5t / 127.0.0.1:9050 .
-
-修改成 ==&gt; 
-
-forward-socks5t / 127.0.0.1:1080 .
-</code></pre></li>
-<li><p>启动<br>编辑完成， copy 一份<code>config</code> 到 sbin目录下, 切换到sbin目录， 启动</p>
-<pre><code>./privoxy
-</code></pre></li>
-</ul>
-<h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">vim /etc/profile</div><div class="line"></div><div class="line">##文件末尾加入：</div><div class="line"> # add follows to the end (set proxy settings to the environment variables)</div><div class="line">MY_PROXY_URL=&quot;http://127.0.0.1:8118/&quot;</div><div class="line">HTTP_PROXY=$MY_PROXY_URL</div><div class="line">HTTPS_PROXY=$MY_PROXY_URL</div><div class="line">FTP_PROXY=$MY_PROXY_URL</div><div class="line">http_proxy=$MY_PROXY_URL</div><div class="line">https_proxy=$MY_PROXY_URL</div><div class="line">ftp_proxy=$MY_PROXY_URL</div><div class="line">export HTTP_PROXY HTTPS_PROXY FTP_PROXY http_proxy https_proxy ftp_proxy</div></pre></td></tr></table></figure>
-<p>然后 <code>source</code> 下。</p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>访问下 gg，哈哈</p>
-<pre><code>curl google.com
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;关键词不说了， 知道ss的人就好，哈哈&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="杂谈" scheme="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
-    
-    
-      <category term="shadowsocks" scheme="http://giveme5.cc/tags/shadowsocks/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>git</title>
-    <link href="http://giveme5.cc/2016/05/03/devEnv/git/git/"/>
-    <id>http://giveme5.cc/2016/05/03/devEnv/git/git/</id>
-    <published>2016-05-03T03:44:58.000Z</published>
-    <updated>2017-02-21T07:18:44.687Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="git-的后悔药"><a href="#git-的后悔药" class="headerlink" title="git 的后悔药"></a>git 的后悔药</h2><ul>
-<li>场景1：直接丢弃工作区的修改（还没有add）</li>
-</ul>
-<p><code>git checkout -- file</code></p>
-<ul>
-<li><p>场景2： 丢弃暂存区（已经add，未commit）<br>分两步，第一步用命令 <code>git reset HEAD file</code> ，就回到了场景1，第二步按场景1操作。</p>
-</li>
-<li><p>场景3：已经提交了不合适的修改到版本库（已经commit， 未push）<br><code>git reset --hard HEAD^ #还原到上个</code><br><code>git reset --hard commitId</code></p>
-</li>
-<li><p>场景4：已经推送到远程（已经push）<br><code>revert commitId</code></p>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;git-的后悔药&quot;&gt;&lt;a href=&quot;#git-的后悔药&quot; class=&quot;headerlink&quot; title=&quot;git 的后悔药&quot;&gt;&lt;/a&gt;git 的后悔药&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;场景1：直接丢弃工作区的修改（还没有add）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;co
-    
-    </summary>
-    
-      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
-    
-    
-      <category term="git" scheme="http://giveme5.cc/tags/git/"/>
     
   </entry>
   
