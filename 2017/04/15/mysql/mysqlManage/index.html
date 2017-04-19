@@ -91,20 +91,20 @@
 
 <meta name="description" content="概要
 MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
-拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。本篇主要包括MySQL5.7新特性">
+拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。本篇为第一篇， 主要包括MySQL5.7新特性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【mysql 管理之道】读书笔记一">
 <meta property="og:url" content="http://giveme5.cc/2017/04/15/mysql/mysqlManage/index.html">
 <meta property="og:site_name" content="Sam's Notes | Sam Blog">
 <meta property="og:description" content="概要
 MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
-拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。本篇主要包括MySQL5.7新特性">
-<meta property="og:updated_time" content="2017-04-17T06:10:39.212Z">
+拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。本篇为第一篇， 主要包括MySQL5.7新特性">
+<meta property="og:updated_time" content="2017-04-19T08:15:19.413Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【mysql 管理之道】读书笔记一">
 <meta name="twitter:description" content="概要
 MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
-拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。本篇主要包括MySQL5.7新特性">
+拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。本篇为第一篇， 主要包括MySQL5.7新特性">
 
 
 
@@ -386,7 +386,7 @@ MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
       
         <p>概要</p>
 <p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
-<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇主要包括MySQL5.7新特性</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇为第一篇， 主要包括MySQL5.7新特性</p>
 <a id="more"></a>
 <h2 id="MySQL5-7新特性"><a href="#MySQL5-7新特性" class="headerlink" title="MySQL5.7新特性"></a>MySQL5.7新特性</h2><h3 id="安全性提高"><a href="#安全性提高" class="headerlink" title="安全性提高"></a>安全性提高</h3><ul>
 <li><p>SSL<br>默认可开启SSL连接</p>
@@ -445,7 +445,7 @@ MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
 <h3 id="半同步复制改进"><a href="#半同步复制改进" class="headerlink" title="半同步复制改进"></a>半同步复制改进</h3><p>复制功能默认是异步的， 异步复制可以提供最佳性能， 主库把 Binlog 日志发给从库， 这一动作就完成了， 并不验证从库是否接收完毕。<br>从库可能没有接收，从而导致复制数据丢失。<br>半同步复制模式，可以确保从服务器接收完主服务器发送的 Binlog 日志文件并写入自己的中继日志（relay log）里， 然后给主服务器一个反馈， 这是主服务器才结束操作。<br>需要主从服务端都开启半同步模式。</p>
 <h3 id="GTID-全局事务标识符"><a href="#GTID-全局事务标识符" class="headerlink" title="GTID 全局事务标识符"></a>GTID 全局事务标识符</h3><p>由uuid和事务id 组成。 主从切换后，同步失败，MySQL 可以通过GTID 自动找点同步。 需要主从都开启。</p>
 <h3 id="salve-支持多源复制"><a href="#salve-支持多源复制" class="headerlink" title="salve 支持多源复制"></a>salve 支持多源复制</h3><p>多主一从</p>
-<h3 id="同步复制过滤不用重启-mysql-服务进程"><a href="#同步复制过滤不用重启-mysql-服务进程" class="headerlink" title="同步复制过滤不用重启 mysql 服务进程"></a>同步复制过滤不用重启 mysql 服务进程</h3><h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2><h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><h3 id="MHA"><a href="#MHA" class="headerlink" title="MHA"></a>MHA</h3><h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><h3 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h3>
+<h3 id="同步复制过滤不用重启-mysql-服务进程"><a href="#同步复制过滤不用重启-mysql-服务进程" class="headerlink" title="同步复制过滤不用重启 mysql 服务进程"></a>同步复制过滤不用重启 mysql 服务进程</h3>
       
     </div>
 
@@ -629,7 +629,7 @@ MySQL5.7新特性故障处理性能调优备份和恢复高可用架构
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL5-7新特性"><span class="nav-number">1.</span> <span class="nav-text">MySQL5.7新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全性提高"><span class="nav-number">1.1.</span> <span class="nav-text">安全性提高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB-存储引擎提升"><span class="nav-number">1.2.</span> <span class="nav-text">InnoDB 存储引擎提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON-格式支持"><span class="nav-number">1.3.</span> <span class="nav-text">JSON 格式支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数索引"><span class="nav-number">1.4.</span> <span class="nav-text">函数索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能提升"><span class="nav-number">1.5.</span> <span class="nav-text">功能提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化器改进"><span class="nav-number">1.6.</span> <span class="nav-text">优化器改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半同步复制改进"><span class="nav-number">1.7.</span> <span class="nav-text">半同步复制改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GTID-全局事务标识符"><span class="nav-number">1.8.</span> <span class="nav-text">GTID 全局事务标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#salve-支持多源复制"><span class="nav-number">1.9.</span> <span class="nav-text">salve 支持多源复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步复制过滤不用重启-mysql-服务进程"><span class="nav-number">1.10.</span> <span class="nav-text">同步复制过滤不用重启 mysql 服务进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#故障诊断"><span class="nav-number">2.</span> <span class="nav-text">故障诊断</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能调优"><span class="nav-number">3.</span> <span class="nav-text">性能调优</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#备份和恢复"><span class="nav-number">4.</span> <span class="nav-text">备份和恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高可用架构"><span class="nav-number">5.</span> <span class="nav-text">高可用架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MHA"><span class="nav-number">5.1.</span> <span class="nav-text">MHA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读写分离"><span class="nav-number">5.2.</span> <span class="nav-text">读写分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分库分表"><span class="nav-number">5.3.</span> <span class="nav-text">分库分表</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL5-7新特性"><span class="nav-number">1.</span> <span class="nav-text">MySQL5.7新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全性提高"><span class="nav-number">1.1.</span> <span class="nav-text">安全性提高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#InnoDB-存储引擎提升"><span class="nav-number">1.2.</span> <span class="nav-text">InnoDB 存储引擎提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON-格式支持"><span class="nav-number">1.3.</span> <span class="nav-text">JSON 格式支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数索引"><span class="nav-number">1.4.</span> <span class="nav-text">函数索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#功能提升"><span class="nav-number">1.5.</span> <span class="nav-text">功能提升</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化器改进"><span class="nav-number">1.6.</span> <span class="nav-text">优化器改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#半同步复制改进"><span class="nav-number">1.7.</span> <span class="nav-text">半同步复制改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GTID-全局事务标识符"><span class="nav-number">1.8.</span> <span class="nav-text">GTID 全局事务标识符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#salve-支持多源复制"><span class="nav-number">1.9.</span> <span class="nav-text">salve 支持多源复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步复制过滤不用重启-mysql-服务进程"><span class="nav-number">1.10.</span> <span class="nav-text">同步复制过滤不用重启 mysql 服务进程</span></a></li></ol></li></ol></div>
             
 
           </div>

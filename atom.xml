@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2017-04-17T06:10:39.212Z</updated>
+  <updated>2017-04-19T09:25:38.819Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -17,22 +17,50 @@
   
   <entry>
     <title>【mysql 管理之道】读书笔记三</title>
-    <link href="http://giveme5.cc/2017/04/16/mysql/mysqlManage3/"/>
-    <id>http://giveme5.cc/2017/04/16/mysql/mysqlManage3/</id>
-    <published>2017-04-16T10:53:57.000Z</published>
-    <updated>2017-04-17T06:10:39.212Z</updated>
+    <link href="http://giveme5.cc/2017/04/19/mysql/mysqlManage3/"/>
+    <id>http://giveme5.cc/2017/04/19/mysql/mysqlManage3/</id>
+    <published>2017-04-19T10:53:57.000Z</published>
+    <updated>2017-04-19T09:25:38.819Z</updated>
     
     <content type="html"><![CDATA[<p>概要</p>
 <p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
-<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇主要包括高可用，读写分离， 分库分表</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇为第三篇， 主要包括高可用，读写分离， 分库分表</p>
 <a id="more"></a>
-<h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><h3 id="MHA"><a href="#MHA" class="headerlink" title="MHA"></a>MHA</h3><h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><h3 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h3>]]></content>
+<h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><h3 id="MHA"><a href="#MHA" class="headerlink" title="MHA"></a>MHA</h3><p>MHA （master high availability） : 会把丢失的数据在每个slave节点上补齐。<br><a href="https://github.com/yoshinorim/mha4mysql-manager" target="_blank" rel="external">MHA github</a><br>提供3种故障转移模式：</p>
+<ul>
+<li>master 自动监控和故障转移<br>需要开启半自动复制（semi replication）</li>
+<li>手工处理master故障转移<br>机器长时间启动不了或者崩溃恢复时间太长，并可能丢失数据。</li>
+<li>在线平滑切换<br>如果机器需要维护， 将master在线切换到其他主机上</li>
+</ul>
+<p>page 270</p>
+<h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><p>读/写分离 技术为 一个 master数据库， 多个 slave 数据库。 master 负责数据更新和实时数据查询， slave 负责非实时数据查询。实际应用， 大部分是读多写少， 而读数据通常耗时时间比较长， cpu内存占用都比较多， 对此通常就把查询从主库分离，采用多个salve， 负载均衡， 减轻每个从库的眼里。</p>
+<h4 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h4><p>既有效减轻master库的压力， 又可以把用户查询数据的请求分发到不通slave库</p>
+<h4 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h4><p>master 处理增， 删， 改操作， slave 处理select 操作， replication 负责把数据变更同步到集群的 slave库。</p>
+<h4 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h4><ul>
+<li><p>MaxScale<br><a href="https://mariadb.com/blog-tags/maxscale" target="_blank" rel="external">MaxScale 官网</a><br><a href="https://github.com/mariadb-corporation/MaxScale" target="_blank" rel="external">MaxScale github</a></p>
+</li>
+<li><p>OneProxy</p>
+</li>
+<li><p>Atlas</p>
+</li>
+<li><p>MyCAT</p>
+</li>
+</ul>
+<h3 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h3><ul>
+<li><p>OneProxy</p>
+</li>
+<li><p>Atlas</p>
+</li>
+<li><p>MyCAT</p>
+</li>
+</ul>
+]]></content>
     
     <summary type="html">
     
       &lt;p&gt;概要&lt;/p&gt;
 &lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
-&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。&lt;br&gt;本篇主要包括高可用，读写分离， 分库分表&lt;/p&gt;
+&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。&lt;br&gt;本篇为第三篇， 主要包括高可用，读写分离， 分库分表&lt;/p&gt;
     
     </summary>
     
@@ -48,11 +76,11 @@
     <link href="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/"/>
     <id>http://giveme5.cc/2017/04/16/mysql/mysqlManage2/</id>
     <published>2017-04-16T04:53:57.000Z</published>
-    <updated>2017-04-17T06:10:39.212Z</updated>
+    <updated>2017-04-19T08:15:41.445Z</updated>
     
     <content type="html"><![CDATA[<p>概要</p>
 <p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
-<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.<br>本篇主要包括故障诊断，性能调优， 备份和恢复。</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.<br>本篇为第二篇， 主要包括故障诊断，性能调优， 备份和恢复。</p>
 <a id="more"></a>
 <h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h3 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h3><p>Linux 性能监控工具 dstat</p>
 <h3 id="故障与处理"><a href="#故障与处理" class="headerlink" title="故障与处理"></a>故障与处理</h3><h4 id="连接数过多导致程序连接报错的原因"><a href="#连接数过多导致程序连接报错的原因" class="headerlink" title="连接数过多导致程序连接报错的原因"></a>连接数过多导致程序连接报错的原因</h4><p>keys：</p>
@@ -224,14 +252,48 @@
 </tbody>
 </table>
 <p>oracle 和 SQL server 的默认隔离级别 是 read committed； MySQL 的默认隔离级别是 Repeatable read。</p>
-<h3 id="my-cnf-配置文件调优"><a href="#my-cnf-配置文件调优" class="headerlink" title="my.cnf 配置文件调优"></a>my.cnf 配置文件调优</h3><p>page231</p>
-<h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2>]]></content>
+<h3 id="my-cnf-配置文件调优"><a href="#my-cnf-配置文件调优" class="headerlink" title="my.cnf 配置文件调优"></a>my.cnf 配置文件调优</h3><p>page231<br>per_thread_buffers + global_buffer 不能大于物理内存</p>
+<h4 id="per-thread-buffers"><a href="#per-thread-buffers" class="headerlink" title="per_thread_buffers"></a>per_thread_buffers</h4><p>可以理解为 oracle 的 PGA， 为每个连接到 MySQL 的用户分配的内存。<br>per_thread_buffers = (read_buffer_size + read_rnd_buffer_size + sort_buffer_size + thread_stack + join_buffer_size + binlog_cache_size) * max_connections</p>
+<ul>
+<li>read_buffer_size<br>用于表的顺序扫描，表示每个线程分配的缓冲区大小。默认128KB， 一般在128 ～ 256KB</li>
+<li>read_rnd_buffer_size<br>用于表的随机读取，表示每个线程分配的缓冲区大小。64位默认256KB， 一般在128 ～ 256KB</li>
+<li>sort_buffer_size<br>在表进行 order by 和 group by 排序操作时， 由于排序没有索引， 会出现 Using filesort， 可用此参数增加每个线程分配的缓冲区大小， 64位默认256KB，一般在128 ～ 256KB， 如果出现 filesort，可增加索引。</li>
+<li>thread_stack<br>表示每个线程的堆栈大小。64位默认256KB</li>
+<li>join_buffer_size<br>表进行join时，如果没有索引，会出现 Using join buffer， 可用此参数增加每个线程分配的缓冲区大小，64位默认256KB，一般在128 ～ 256KB， 如果出现 Using join buffer，可增加索引。</li>
+<li>binlog_cache_size<br>一般来说， 如果数据库没有特别大事务， 写入也不是特频繁，将其设置为1 ～ 2MB, 默认32KB</li>
+<li>max_connections<br>该参数设置最大连接数， 默认为100, 一般设置为 500 ～ 1000.</li>
+</ul>
+<h4 id="global-buffer"><a href="#global-buffer" class="headerlink" title="global_buffer"></a>global_buffer</h4><p>可以理解为 oracle 的 SGA， 用于在内存中缓存从数据文件检索出来的数据块。<br>global_buffer= innodb_buffer_pool_size + innodb_additional_mem_pool_size + innodb_log_buffer_size + key_buffer_size + query_cahce_size</p>
+<ul>
+<li><p>innodb_buffer_pool_size<br>InnoDB 存储引擎的核心数据， 默认128MB， 建议设置成物理内存的 60% ~ 70%</p>
+</li>
+<li><p>innodb_additional_mem_pool_size<br>设置存储数据字典信息和其他内部数据结构。表越多， 需要这里分配的内存越多， 单位是 byte，参数默认值为8M。如果 InnoDB 用完了内存池中的内存，就会从操作系统中分配内存，同时在 error log 中打入报警信息。<br>从 MySQL 5.7.4 中移除， InnoDB 实现的内存分配器相比操作系统的内存分配器并没有明显优势，所以在之后的版本，会移除 innodb_additional_mem_pool_size 和 innodb_use_sys_malloc 两个参数，统一使用操作系统的内存分配器。</p>
+</li>
+<li><p>innodb_log_buffer_size<br>事务日志所使用缓冲区。默认16M， 一般设置16M ～ 64MB</p>
+</li>
+<li><p>key_buffer_size<br>MyISAM 存储引擎的索引参数</p>
+</li>
+<li><p>query_cahce_size<br>缓存select 语句和结果集大小的参数。<br>如果写操作很少，读操作频繁， 那么打开 query_cahce_type=1, 并设置 query_cahce_size 16M， 看情况调试。<br>反之写操作很频繁，读操作少， 那么打开 query_cahce_type=0, query_cahce_size=0</p>
+</li>
+</ul>
+<h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2><h3 id="冷备份"><a href="#冷备份" class="headerlink" title="冷备份"></a>冷备份</h3><h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><ul>
+<li>关闭mysql</li>
+<li>复制 数据目录（包括 ibdata1） 和 日志目录 （包括 ib_logfile0, ib_logfile1, ib_logfile2)</li>
+</ul>
+<h4 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h4><ul>
+<li>拷贝上步的数据目录和日志目录</li>
+<li>启动mysql</li>
+</ul>
+<h3 id="逻辑备份"><a href="#逻辑备份" class="headerlink" title="逻辑备份"></a>逻辑备份</h3><p>mysqldump<br>mydumper </p>
+<p>全量，增量备份脚本 page262</p>
+<h3 id="热备份"><a href="#热备份" class="headerlink" title="热备份"></a>热备份</h3><p>xtrabackup - 相对完美的免费开源数据备份工具<br>page 263</p>
+]]></content>
     
     <summary type="html">
     
       &lt;p&gt;概要&lt;/p&gt;
 &lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
-&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.&lt;br&gt;本篇主要包括故障诊断，性能调优， 备份和恢复。&lt;/p&gt;
+&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.&lt;br&gt;本篇为第二篇， 主要包括故障诊断，性能调优， 备份和恢复。&lt;/p&gt;
     
     </summary>
     
@@ -247,11 +309,11 @@
     <link href="http://giveme5.cc/2017/04/15/mysql/mysqlManage/"/>
     <id>http://giveme5.cc/2017/04/15/mysql/mysqlManage/</id>
     <published>2017-04-15T04:53:57.000Z</published>
-    <updated>2017-04-17T06:10:39.212Z</updated>
+    <updated>2017-04-19T08:15:19.413Z</updated>
     
     <content type="html"><![CDATA[<p>概要</p>
 <p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
-<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇主要包括MySQL5.7新特性</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。<br>本篇为第一篇， 主要包括MySQL5.7新特性</p>
 <a id="more"></a>
 <h2 id="MySQL5-7新特性"><a href="#MySQL5-7新特性" class="headerlink" title="MySQL5.7新特性"></a>MySQL5.7新特性</h2><h3 id="安全性提高"><a href="#安全性提高" class="headerlink" title="安全性提高"></a>安全性提高</h3><ul>
 <li><p>SSL<br>默认可开启SSL连接</p>
@@ -310,13 +372,13 @@
 <h3 id="半同步复制改进"><a href="#半同步复制改进" class="headerlink" title="半同步复制改进"></a>半同步复制改进</h3><p>复制功能默认是异步的， 异步复制可以提供最佳性能， 主库把 Binlog 日志发给从库， 这一动作就完成了， 并不验证从库是否接收完毕。<br>从库可能没有接收，从而导致复制数据丢失。<br>半同步复制模式，可以确保从服务器接收完主服务器发送的 Binlog 日志文件并写入自己的中继日志（relay log）里， 然后给主服务器一个反馈， 这是主服务器才结束操作。<br>需要主从服务端都开启半同步模式。</p>
 <h3 id="GTID-全局事务标识符"><a href="#GTID-全局事务标识符" class="headerlink" title="GTID 全局事务标识符"></a>GTID 全局事务标识符</h3><p>由uuid和事务id 组成。 主从切换后，同步失败，MySQL 可以通过GTID 自动找点同步。 需要主从都开启。</p>
 <h3 id="salve-支持多源复制"><a href="#salve-支持多源复制" class="headerlink" title="salve 支持多源复制"></a>salve 支持多源复制</h3><p>多主一从</p>
-<h3 id="同步复制过滤不用重启-mysql-服务进程"><a href="#同步复制过滤不用重启-mysql-服务进程" class="headerlink" title="同步复制过滤不用重启 mysql 服务进程"></a>同步复制过滤不用重启 mysql 服务进程</h3><h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2><h2 id="高可用架构"><a href="#高可用架构" class="headerlink" title="高可用架构"></a>高可用架构</h2><h3 id="MHA"><a href="#MHA" class="headerlink" title="MHA"></a>MHA</h3><h3 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h3><h3 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h3>]]></content>
+<h3 id="同步复制过滤不用重启-mysql-服务进程"><a href="#同步复制过滤不用重启-mysql-服务进程" class="headerlink" title="同步复制过滤不用重启 mysql 服务进程"></a>同步复制过滤不用重启 mysql 服务进程</h3>]]></content>
     
     <summary type="html">
     
       &lt;p&gt;概要&lt;/p&gt;
 &lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
-&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。&lt;br&gt;本篇主要包括MySQL5.7新特性&lt;/p&gt;
+&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。&lt;br&gt;本篇为第一篇， 主要包括MySQL5.7新特性&lt;/p&gt;
     
     </summary>
     
