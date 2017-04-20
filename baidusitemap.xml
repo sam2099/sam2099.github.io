@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2016/11/18/web%20server/serverInit/</loc>
+    <lastmod>2017-04-20T07:13:10.636Z</lastmod>
+    <data>
+        <display>
+        <title>linux server 配置选项</title>
+        <pubTime>2016-11-18T11:29:44.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>server</tag>
+         
+         
+           
+             
+              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2017/04/19/mysql/mysqlManage3/</loc>
     <lastmod>2017-04-19T09:25:38.819Z</lastmod>
     <data>
@@ -112,28 +134,6 @@
         <pubTime>2016-01-22T02:48:42.000Z</pubTime>
         
         <tag>nginx</tag>
-         
-         
-           
-             
-              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/11/18/web%20server/serverInit/</loc>
-    <lastmod>2017-04-17T06:10:39.212Z</lastmod>
-    <data>
-        <display>
-        <title>linux server 配置选项</title>
-        <pubTime>2016-11-18T11:29:44.000Z</pubTime>
-        
-        <tag>linux</tag>
-         
-        <tag>server</tag>
          
          
            

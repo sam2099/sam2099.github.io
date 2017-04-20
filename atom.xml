@@ -1046,7 +1046,7 @@ firewall-cmd --zone=public --remove-port=8080/tcp --permanent
     <link href="http://giveme5.cc/2016/11/18/web%20server/serverInit/"/>
     <id>http://giveme5.cc/2016/11/18/web server/serverInit/</id>
     <published>2016-11-18T11:29:44.000Z</published>
-    <updated>2017-04-17T06:10:39.212Z</updated>
+    <updated>2017-04-20T07:13:10.636Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <ul>
@@ -1080,7 +1080,8 @@ reboot
 <li>修改服务端口</li>
 <li>禁止密码登录<br><a href="/2016/01/26/linux/service/2-1%20sshd/">ssh</a></li>
 </ul>
-<h2 id="防暴力破解"><a href="#防暴力破解" class="headerlink" title="防暴力破解"></a>防暴力破解</h2><p>使用 <code>fail2ban</code> 防止暴力破解， 将对方IP放入防火墙.</p>
+<h2 id="firewall"><a href="#firewall" class="headerlink" title="firewall"></a>firewall</h2><p><a href="http://giveme5.cc/2017/03/28/linux/Firewalld-md/">firewall</a></p>
+<h2 id="防暴力破解"><a href="#防暴力破解" class="headerlink" title="防暴力破解"></a>防暴力破解</h2><p>使用 <code>fail2ban</code> 防止暴力破解， 将对方IP放入防火墙.<br><a href="http://giveme5.cc/2017/03/28/linux/fail2ban-md/">fail2ban</a></p>
 <h2 id="VNC"><a href="#VNC" class="headerlink" title="VNC"></a>VNC</h2><p><a href="/2016/10/10/linux/vnc/">VNC</a></p>
 <h2 id="Sonatype-nexus"><a href="#Sonatype-nexus" class="headerlink" title="Sonatype nexus"></a>Sonatype nexus</h2><p><a href="/">nexus</a></p>
 <h2 id="gitlab"><a href="#gitlab" class="headerlink" title="gitlab"></a>gitlab</h2><p><a href="/tags/gitlab/">gitlab</a></p>
