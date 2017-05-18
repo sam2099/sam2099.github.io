@@ -394,7 +394,7 @@
     <link href="http://giveme5.cc/2017/03/28/linux/Firewalld-md/"/>
     <id>http://giveme5.cc/2017/03/28/linux/Firewalld-md/</id>
     <published>2017-03-28T11:11:43.000Z</published>
-    <updated>2017-03-29T02:39:36.606Z</updated>
+    <updated>2017-05-18T10:21:11.148Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容<br>CentOS 7 Firewalld 防火墙介紹</p>
 <p>主要内容</p>
@@ -477,7 +477,8 @@ firewall-cmd --zone=public --remove-service=http --permanent
 
 firewall-cmd --zone=public --add-port=8080/tcp --permanent
 firewall-cmd --zone=public --remove-port=8080/tcp --permanent
-</code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.xuite.net/tolarku/blog/363801991-CentOS+7+Firewalld+%E9%98%B2%E7%81%AB%E7%89%86%E8%AA%AA%E6%98%8E%E4%BB%8B%E7%B4%B9" target="_blank" rel="external">CentOS 7 Firewalld 防火牆說明介紹</a><br><a href="https://havee.me/linux/2015-01/using-firewalls-on-centos-7.html" target="_blank" rel="external">CentOS 7 下使用 Firewall</a><br><a href="https://fedoraproject.org/wiki/FirewallD" target="_blank" rel="external">fedora FirewallD</a></p>
+</code></pre><h2 id="rule-自定义规则"><a href="#rule-自定义规则" class="headerlink" title="rule 自定义规则"></a>rule 自定义规则</h2><p><a href="http://jevic.blog.51cto.com/2183736/1785162" target="_blank" rel="external">自定义规则 直接选项</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.xuite.net/tolarku/blog/363801991-CentOS+7+Firewalld+%E9%98%B2%E7%81%AB%E7%89%86%E8%AA%AA%E6%98%8E%E4%BB%8B%E7%B4%B9" target="_blank" rel="external">CentOS 7 Firewalld 防火牆說明介紹</a><br><a href="https://havee.me/linux/2015-01/using-firewalls-on-centos-7.html" target="_blank" rel="external">CentOS 7 下使用 Firewall</a><br><a href="https://fedoraproject.org/wiki/FirewallD" target="_blank" rel="external">fedora FirewallD</a></p>
 ]]></content>
     
     <summary type="html">
