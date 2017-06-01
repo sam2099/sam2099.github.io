@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2017-04-19T09:25:38.819Z</updated>
+  <updated>2017-06-01T11:08:33.853Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,116 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Opencv3.2 python2.7 的CentOS7安装</title>
+    <link href="http://giveme5.cc/2017/06/01/computerVision/opencv-python-md/"/>
+    <id>http://giveme5.cc/2017/06/01/computerVision/opencv-python-md/</id>
+    <published>2017-06-01T10:48:06.000Z</published>
+    <updated>2017-06-01T11:08:33.853Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>系统环境</li>
+<li>软件源</li>
+<li>软件环境</li>
+<li>源码安装</li>
+</ul>
+<p>Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。</p>
+<p>……</p>
+<a id="more"></a>
+<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">╭─root@localhost ~  </div><div class="line">╰─<span class="comment"># uname -a                                                                1 ↵</span></div><div class="line">Linux localhost.localdomain 3.10.0-514.21.1.el7.x86_64 <span class="comment">#1 SMP Thu May 25 17:04:51 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span></div><div class="line">╭─root@localhost ~  </div><div class="line">╰─<span class="comment"># cat /etc/redhat-release </span></div><div class="line">CentOS Linux release 7.3.1611 (Core)</div></pre></td></tr></table></figure>
+<h2 id="软件源"><a href="#软件源" class="headerlink" title="软件源"></a>软件源</h2><ul>
+<li><a href="">epel</a><br>epel 源， 阿里的镜像</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</div></pre></td></tr></table></figure>
+<ul>
+<li><a href="http://li.nux.ro/repos.html" target="_blank" rel="external">Nux Dextop</a><br>vlc 播放器 和 视频解码器 等</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release &amp;&amp; rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm</div></pre></td></tr></table></figure>
+<h2 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h2><p>编译opencv需要的软件包</p>
+<ul>
+<li>GCC 4.4.x or later</li>
+<li>CMake 2.8.7 or higher</li>
+<li>Git</li>
+<li>GTK+2.x or higher</li>
+<li>pkg-config</li>
+<li>Python 2.6 or later and Numpy 1.5 or later with developer packages (python-dev, python-numpy)</li>
+<li>ffmpeg and development packages</li>
+<li>[optional] libtbb2 libtbb-dev</li>
+<li>[optional] libdc1394 2.x</li>
+<li>[optional] libdc1394-devel libv4l-devel gstreamer-plugins-base-devel</li>
+<li>[optional] CUDA Toolkit 6.5 or higher</li>
+</ul>
+<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y update</div></pre></td></tr></table></figure>
+<h3 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum groupinstall <span class="string">'Development Tools'</span></div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install cmake cmake-gui git pkgconfig autoconf automake  freetype-devel gcc gcc-c++  libtool make mercurial nasm pkgconfig zlib-devel</div></pre></td></tr></table></figure>
+<h3 id="视频和图像格式"><a href="#视频和图像格式" class="headerlink" title="视频和图像格式"></a>视频和图像格式</h3><p>#图像<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install libpng-devel libjpeg-turbo-devel jasper-devel openexr-devel libtiff-devel libwebp-devel</div></pre></td></tr></table></figure></p>
+<p>#视频<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install libdc1394-devel libv4l-devel gstreamer-plugins-base-devel ffmpeg ffmpeg-devel</div></pre></td></tr></table></figure></p>
+<h3 id="GUI特征"><a href="#GUI特征" class="headerlink" title="GUI特征"></a>GUI特征</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install gtk2-devel</div></pre></td></tr></table></figure>
+<h3 id="Threading-Building-Blocks-TBB"><a href="#Threading-Building-Blocks-TBB" class="headerlink" title="Threading Building Blocks (TBB)"></a>Threading Building Blocks (TBB)</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install tbb-devel eigen3-devel</div></pre></td></tr></table></figure>
+<h3 id="cuda安装"><a href="#cuda安装" class="headerlink" title="cuda安装"></a>cuda安装</h3><p>//TODO</p>
+<h3 id="vlc"><a href="#vlc" class="headerlink" title="vlc"></a>vlc</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install vlc</div></pre></td></tr></table></figure>
+<h3 id="python"><a href="#python" class="headerlink" title="python"></a>python</h3><p>centos 7 默认安装的是 python 2.7</p>
+<h4 id="pip-python-package-manager"><a href="#pip-python-package-manager" class="headerlink" title="pip (python package manager)"></a>pip (python package manager)</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl <span class="string">"https://bootstrap.pypa.io/get-pip.py"</span> -o <span class="string">"get-pip.py"</span></div><div class="line">python get-pip.py</div></pre></td></tr></table></figure>
+<p>或者yum安装，然后升级<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y python-pip</div><div class="line">pip install --upgrade pip</div></pre></td></tr></table></figure></p>
+<h4 id="python-2-7-development-tools"><a href="#python-2-7-development-tools" class="headerlink" title="python 2.7 development tools"></a>python 2.7 development tools</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-devel</div></pre></td></tr></table></figure>
+<h4 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install numpy</div></pre></td></tr></table></figure>
+<h2 id="Opencv3-2-源码安装"><a href="#Opencv3-2-源码安装" class="headerlink" title="Opencv3.2 源码安装"></a>Opencv3.2 源码安装</h2><p>工作目录为 <code>～</code>， 按照你的喜爱调整，记得下面的目录都要调整</p>
+<h3 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h3><ul>
+<li>opencv</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv.git</div><div class="line"><span class="built_in">cd</span> opencv</div><div class="line">git checkout 3.2.0</div></pre></td></tr></table></figure>
+<ul>
+<li>opencv_contrib<br>从 opencv 3.0 开始， opencv_contrib 单独发布， 这里有很多有意思的功能</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv_contrib.git</div><div class="line"><span class="built_in">cd</span> opencv_contrib</div><div class="line">git checkout 3.2.0</div></pre></td></tr></table></figure>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><h4 id="编译目录"><a href="#编译目录" class="headerlink" title="编译目录"></a>编译目录</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~/opencv</div><div class="line">mkdir build</div><div class="line"><span class="built_in">cd</span> build</div></pre></td></tr></table></figure>
+<h4 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cmake -D CMAKE_BUILD_TYPE=RELEASE \</div><div class="line">    -D CMAKE_INSTALL_PREFIX=/usr/local \</div><div class="line">    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \</div><div class="line">    -D INSTALL_C_EXAMPLES=OFF \</div><div class="line">    -D INSTALL_PYTHON_EXAMPLES=ON \</div><div class="line">    -D BUILD_EXAMPLES=ON \</div><div class="line">    -D BUILD_OPENCV_PYTHON2=ON ..</div></pre></td></tr></table></figure>
+<p>特保注意：</p>
+<ul>
+<li><p>ippicv<br>cmake 会停留在 如下类似位置：</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-- checking <span class="keyword">for</span> module <span class="string">'libgphoto2'</span></div><div class="line">--   package <span class="string">'libgphoto2'</span> not found</div><div class="line">-- ICV: Downloading ippicv_linux_2017xxxx.tgz...</div></pre></td></tr></table></figure>
+<p>  cmake 需要下载 <code>ippicv</code>， 会持续一段时间，耐心等待下。<br>  如果超时或者你想手动下载， 参照你 <code>build</code> 目录下 <code>CMakeDownloadLog.txt</code> 文件</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; cat CMakeDownloadLog.txt </div><div class="line">use_cache <span class="string">"/home/alalek/projects/opencv/dev/.cache"</span></div><div class="line">do_unpack <span class="string">"ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"87cbdeb627415d8e4bc811156289fa3a"</span> <span class="string">"https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"/home/alalek/projects/opencv/build/opencv/3rdparty/ippicv"</span></div><div class="line"><span class="comment">#cmake_download "/home/alalek/projects/opencv/dev/.cache/ippicv/87cbdeb627415d8e4bc811156289fa3a-ippicv_2017u2_lnx_intel64_20170418.tgz" "https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>python<br>检查 python相关环境是否一致， 类似如下</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Python 2:</div><div class="line">    Interpreter:                 /usr/<span class="built_in">local</span>/bin/python2.7 (ver 2.7.11)</div><div class="line">    Libraries:                   /usr/<span class="built_in">local</span>/lib/libpython2.7.so (ver 2.7.11)</div><div class="line">    numpy:                       /usr/<span class="built_in">local</span>/lib/python2.7/site-packages/numpy/core/include (ver 1.10.1)</div><div class="line">    packages path:               /usr/<span class="built_in">local</span>/lib/python2.7/site-packages</div></pre></td></tr></table></figure>
+<p>  可以通过 图像工具 <code>cmake-gui</code> 来调整</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cmake-gui ..</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="make"><a href="#make" class="headerlink" title="make"></a>make</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">make -j4 <span class="comment"># 4是你的电脑cpu线程</span></div><div class="line">make install</div><div class="line">ldconfig</div></pre></td></tr></table></figure>
+<p>检查 <code>/usr/local/lib/python2.7/site-packages</code> 目录下 是否已经成功安装 <code>cv2.so</code></p>
+<h4 id="链接给python"><a href="#链接给python" class="headerlink" title="链接给python"></a>链接给python</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/lib64/python2.7/site-packages </div><div class="line">ln <span class="_">-s</span> /usr/<span class="built_in">local</span>/lib/python2.7/site-packages/cv2.so cv2.so</div></pre></td></tr></table></figure>
+<h3 id="测试opencv-python"><a href="#测试opencv-python" class="headerlink" title="测试opencv-python"></a>测试opencv-python</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">python</div><div class="line">&gt;&gt;&gt;import cv2</div><div class="line">&gt;&gt;&gt;cv2.__version__</div><div class="line">3.2.0<span class="string">'</span></div></pre></td></tr></table></figure>
+<p>congratulation！！！</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;系统环境&lt;/li&gt;
+&lt;li&gt;软件源&lt;/li&gt;
+&lt;li&gt;软件环境&lt;/li&gt;
+&lt;li&gt;源码安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。&lt;/p&gt;
+&lt;p&gt;……&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="机器视觉" scheme="http://giveme5.cc/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
+    
+    
+      <category term="opencv" scheme="http://giveme5.cc/tags/opencv/"/>
+    
+      <category term="centos" scheme="http://giveme5.cc/tags/centos/"/>
+    
+      <category term="python" scheme="http://giveme5.cc/tags/python/"/>
+    
+  </entry>
   
   <entry>
     <title>【mysql 管理之道】读书笔记三</title>
@@ -394,7 +504,7 @@
     <link href="http://giveme5.cc/2017/03/28/linux/Firewalld-md/"/>
     <id>http://giveme5.cc/2017/03/28/linux/Firewalld-md/</id>
     <published>2017-03-28T11:11:43.000Z</published>
-    <updated>2017-05-18T10:21:11.148Z</updated>
+    <updated>2017-05-18T10:24:06.077Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容<br>CentOS 7 Firewalld 防火墙介紹</p>
 <p>主要内容</p>
@@ -478,7 +588,7 @@ firewall-cmd --zone=public --remove-service=http --permanent
 firewall-cmd --zone=public --add-port=8080/tcp --permanent
 firewall-cmd --zone=public --remove-port=8080/tcp --permanent
 </code></pre><h2 id="rule-自定义规则"><a href="#rule-自定义规则" class="headerlink" title="rule 自定义规则"></a>rule 自定义规则</h2><p><a href="http://jevic.blog.51cto.com/2183736/1785162" target="_blank" rel="external">自定义规则 直接选项</a></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.xuite.net/tolarku/blog/363801991-CentOS+7+Firewalld+%E9%98%B2%E7%81%AB%E7%89%86%E8%AA%AA%E6%98%8E%E4%BB%8B%E7%B4%B9" target="_blank" rel="external">CentOS 7 Firewalld 防火牆說明介紹</a><br><a href="https://havee.me/linux/2015-01/using-firewalls-on-centos-7.html" target="_blank" rel="external">CentOS 7 下使用 Firewall</a><br><a href="https://fedoraproject.org/wiki/FirewallD" target="_blank" rel="external">fedora FirewallD</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.xuite.net/tolarku/blog/363801991-CentOS+7+Firewalld+%E9%98%B2%E7%81%AB%E7%89%86%E8%AA%AA%E6%98%8E%E4%BB%8B%E7%B4%B9" target="_blank" rel="external">CentOS 7 Firewalld 防火牆說明介紹</a><br><a href="https://havee.me/linux/2015-01/using-firewalls-on-centos-7.html" target="_blank" rel="external">CentOS 7 下使用 Firewall</a><br><a href="https://fedoraproject.org/wiki/FirewallD" target="_blank" rel="external">fedora FirewallD</a><br><a href="https://access.redhat.com/documentation/zh-CN/Red_Hat_Enterprise_Linux/7/html/Security_Guide/sec-Using_Firewalls.html" target="_blank" rel="external">redhat 安全</a></p>
 ]]></content>
     
     <summary type="html">
@@ -1443,297 +1553,6 @@ gitlab_rails[&apos;backup_keep_time&apos;] = 604800
     
     
       <category term="十年回头望" scheme="http://giveme5.cc/tags/%E5%8D%81%E5%B9%B4%E5%9B%9E%E5%A4%B4%E6%9C%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android broadcast</title>
-    <link href="http://giveme5.cc/2016/05/17/android/broadcast/"/>
-    <id>http://giveme5.cc/2016/05/17/android/broadcast/</id>
-    <published>2016-05-17T14:28:38.000Z</published>
-    <updated>2017-02-22T06:22:31.767Z</updated>
-    
-    <content type="html"><![CDATA[<p>#广播</p>
-<ul>
-<li>广播的概念<ul>
-<li>现实：电台通过发送广播发布消息，买个收音机，就能收听</li>
-<li>Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。<br>Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-<hr>
-<p>#IP拨号器</p>
-<blockquote>
-<p>原理：接收拨打电话的广播，修改广播内携带的电话号码</p>
-<ul>
-<li>定义广播接收者接收打电话广播</li>
-</ul>
-</blockquote>
-<pre><code>public class CallReceiver extends BroadcastReceiver {
-
-    //当广播接收者接收到广播时，此方法会调用
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        //拿到用户拨打的号码
-        String number = getResultData();
-        //修改广播内的号码
-        setResultData(&quot;17951&quot; + number);
-    }
-}
-</code></pre><ul>
-<li><p>在清单文件中定义该广播接收者接收的广播类型</p>
-<pre><code>&lt;receiver android:name=&quot;com.itheima.ipdialer.CallReceiver&quot;&gt;
-    &lt;intent-filter &gt;
-        &lt;action android:name=&quot;android.intent.action.NEW_OUTGOING_CALL&quot;/&gt;
-    &lt;/intent-filter&gt;
-&lt;/receiver&gt;
-</code></pre></li>
-<li><p>接收打电话广播需要权限</p>
-<pre><code>&lt;uses-permission android:name=&quot;android.permission.PROCESS_OUTGOING_CALLS&quot;/&gt;
-</code></pre></li>
-<li>即使广播接收者的进程没有启动，当系统发送的广播可以被该接收者接收时，系统会自动启动该接收者所在的进程</li>
-<li>桌面隐藏<br>删除 <code>AndroidManifest.xml</code> 中</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">    &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;</div><div class="line"></div><div class="line">    &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;</div><div class="line">&lt;/intent-filter&gt;</div></pre></td></tr></table></figure>
-<p>利用上一特点，进程自动启动</p>
-<hr>
-<p>#短信拦截器</p>
-<blockquote>
-<p>系统收到短信时会产生一条广播，广播中包含了短信的号码和内容</p>
-</blockquote>
-<ul>
-<li><p>定义广播接收者接收短信广播</p>
-<pre><code>public void onReceive(Context context, Intent intent) {
-//拿到广播里携带的短信内容
-Bundle bundle = intent.getExtras();
-Object[] objects = (Object[]) bundle.get(&quot;pdus&quot;);
-for(Object ob : objects ){
-    //通过object对象创建一个短信对象
-    SmsMessage sms = SmsMessage.createFromPdu((byte[])ob);
-    System.out.println(sms.getMessageBody());
-    System.out.println(sms.getOriginatingAddress());
-
-    //阻止其他接收者接收这条广播
-    abortBroadCast();
-}
-</code></pre><p>  }</p>
-</li>
-<li>系统创建广播时，把短信存放到一个数组，然后把数据以pdus为key存入bundle，再把bundle存入intent</li>
-<li><p>清单文件中配置广播接收者接收的广播类型，注意要设置优先级属性，要保证优先级高于短信应用，才可以实现拦截</p>
-<pre><code>&lt;receiver android:name=&quot;com.itheima.smslistener.SmsReceiver&quot;&gt;
-    &lt;intent-filter android:priority=&quot;1000&quot;&gt;
-        &lt;action android:name=&quot;android.provider.Telephony.SMS_RECEIVED&quot;/&gt;
-    &lt;/intent-filter&gt;
-&lt;/receiver&gt;
-</code></pre></li>
-<li><p>添加权限</p>
-<pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_SMS&quot;/&gt;
-</code></pre></li>
-</ul>
-<ul>
-<li>4.0以后广播接收者安装以后必须手动启动一次，否则不生效</li>
-<li>4.0以后广播接收者如果被手动关闭，就不会再启动了</li>
-</ul>
-<hr>
-<p>#监听SD卡状态</p>
-<ul>
-<li><p>清单文件中定义广播接收者接收的类型，监听SD卡常见的三种状态，所以广播接收者需要接收三种广播</p>
-<pre><code> &lt;receiver android:name=&quot;com.itheima.sdcradlistener.SDCardReceiver&quot;&gt;
-    &lt;intent-filter &gt;
-        &lt;action android:name=&quot;android.intent.action.MEDIA_MOUNTED&quot;/&gt;
-        &lt;action android:name=&quot;android.intent.action.MEDIA_UNMOUNTED&quot;/&gt;
-        &lt;action android:name=&quot;android.intent.action.MEDIA_REMOVED&quot;/&gt;
-        &lt;data android:scheme=&quot;file&quot;/&gt;
-    &lt;/intent-filter&gt;
-&lt;/receiver&gt;
-</code></pre></li>
-<li><p>广播接收者的定义</p>
-<pre><code>public class SDCardReceiver extends BroadcastReceiver {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        // 区分接收到的是哪个广播
-        String action = intent.getAction();
-
-        if(action.equals(&quot;android.intent.action.MEDIA_MOUNTED&quot;)){
-            System.out.println(&quot;sd卡就绪&quot;);
-        }
-        else if(action.equals(&quot;android.intent.action.MEDIA_UNMOUNTED&quot;)){
-            System.out.println(&quot;sd卡被移除&quot;);
-        }
-        else if(action.equals(&quot;android.intent.action.MEDIA_REMOVED&quot;)){
-            System.out.println(&quot;sd卡被拔出&quot;);
-        }
-    }
-}
-</code></pre></li>
-</ul>
-<hr>
-<p>#勒索软件</p>
-<ul>
-<li>接收开机广播，在广播接收者中启动勒索的Activity</li>
-<li><p>清单文件中配置接收<code>开机成功</code>广播</p>
-<pre><code>&lt;receiver android:name=&quot;com.itheima.lesuo.BootReceiver&quot;&gt;
-    &lt;intent-filter &gt;
-        &lt;action android:name=&quot;android.intent.action.BOOT_COMPLETED&quot;/&gt;
-    &lt;/intent-filter&gt;
-&lt;/receiver&gt;
-</code></pre></li>
-<li><p>权限</p>
-<pre><code>&lt;uses-permission android:name=&quot;android.permission.RECEIVE_BOOT_COMPLETED&quot;/&gt;
-</code></pre></li>
-<li><p>定义广播接收者</p>
-<pre><code>@Override
-public void onReceive(Context context, Intent intent) {
-    //开机的时候就启动勒索软件
-    Intent it = new Intent(context, MainActivity.class);        
-    context.startActivity(it);
-}
-</code></pre></li>
-<li>以上代码还不能启动MainActivity，因为广播接收者的启动，并不会创建任务栈，那么没有任务栈，就无法启动activity</li>
-<li><p>手动设置创建新任务栈的flag</p>
-<pre><code>it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-</code></pre></li>
-</ul>
-<hr>
-<p>#监听应用的安装、卸载、更新</p>
-<blockquote>
-<p>原理：应用在安装卸载更新时，系统会发送广播，广播里会携带应用的包名</p>
-<ul>
-<li>清单文件定义广播接收者接收的类型，因为要监听应用的三个动作，所以需要接收三种广播</li>
-</ul>
-</blockquote>
-<pre><code>&lt;receiver android:name=&quot;com.itheima.app.AppReceiver&quot;&gt;
-    &lt;intent-filter &gt;
-        &lt;action android:name=&quot;android.intent.action.PACKAGE_ADDED&quot;/&gt;
-        &lt;action android:name=&quot;android.intent.action.PACKAGE_REPLACED&quot;/&gt;
-        &lt;action android:name=&quot;android.intent.action.PACKAGE_REMOVED&quot;/&gt;
-        &lt;data android:scheme=&quot;package&quot;/&gt;
-    &lt;/intent-filter&gt;
-&lt;/receiver&gt;
-</code></pre><ul>
-<li><p>广播接收者的定义</p>
-<pre><code>public void onReceive(Context context, Intent intent) {
-    //区分接收到的是哪种广播
-    String action = intent.getAction();
-    //获取广播中包含的应用包名
-    Uri uri = intent.getData();
-    if(action.equals(&quot;android.intent.action.PACKAGE_ADDED&quot;)){
-        System.out.println(uri + &quot;被安装了&quot;);
-    }
-    else if(action.equals(&quot;android.intent.action.PACKAGE_REPLACED&quot;)){
-        System.out.println(uri + &quot;被更新了&quot;);
-    }
-    else if(action.equals(&quot;android.intent.action.PACKAGE_REMOVED&quot;)){
-        System.out.println(uri + &quot;被卸载了&quot;);
-    }
-}
-</code></pre></li>
-</ul>
-<hr>
-<p>#广播的两种类型</p>
-<ul>
-<li>无序广播：所有跟广播的intent匹配的广播接收者都可以收到该广播，并且是没有先后顺序（同时收到）</li>
-<li>有序广播：所有跟广播的intent匹配的广播接收者都可以收到该广播，但是会按照广播接收者的优先级来决定接收的先后顺序<ul>
-<li>优先级的定义：-1000~1000</li>
-<li>最终接收者：所有广播接收者都接收到广播之后，它才接收，并且一定会接收</li>
-<li>abortBroadCast：阻止其他接收者接收这条广播，类似拦截，只有有序广播可以被拦截</li>
-</ul>
-</li>
-</ul>
-<h2 id="有序广播"><a href="#有序广播" class="headerlink" title="有序广播"></a>有序广播</h2><p>broadordercast()</p>
-<hr>
-<p>#Service</p>
-<ul>
-<li>就是默默运行在后台的组件，可以理解为是没有前台的activity，适合用来运行不需要前台界面的代码</li>
-<li>服务可以被手动关闭，不会重启，但是如果被自动关闭，内存充足就会重启</li>
-<li>startService启动服务的生命周期<ul>
-<li>onCreate-onStartCommand-onDestroy</li>
-</ul>
-</li>
-<li>重复的调用startService会导致onStartCommand被重复调用</li>
-</ul>
-<hr>
-<h1 id="进程优先级"><a href="#进程优先级" class="headerlink" title="进程优先级"></a>进程优先级</h1><ol>
-<li>前台进程：拥有前台activity（onResume方法被调用）</li>
-<li>可见进程：拥有可见activity（onPause方法被调用）</li>
-<li>服务进程：不到万不得已不会被回收，而且即便被回收，内存充足时也会被重启</li>
-<li>后台进程：拥有后台activity（activity的onStop方法被调用了），很容易被回收</li>
-<li>空进程：没有运行任何activity，很容易被回收</li>
-</ol>
-<hr>
-<p>#电话窃听器</p>
-<ul>
-<li>电话状态：空闲、响铃、接听</li>
-<li><p>获取电话管理器，设置侦听</p>
-<pre><code>TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
-tm.listen(new MyPhoneStateListener(), PhoneStateListener.LISTEN_CALL_STATE);
-</code></pre></li>
-<li><p>侦听对象的实现</p>
-<pre><code>class MyPhoneStateListener extends PhoneStateListener{
-
-    //当电话状态改变时，此方法调用
-    @Override
-    public void onCallStateChanged(int state, String incomingNumber) {
-        // TODO Auto-generated method stub
-        super.onCallStateChanged(state, incomingNumber);
-        switch (state) {
-        case TelephonyManager.CALL_STATE_IDLE://空闲
-            if(recorder != null){
-                recorder.stop();
-                recorder.release();
-            }
-            break;
-        case TelephonyManager.CALL_STATE_OFFHOOK://摘机
-            if(recorder != null){
-                recorder.start();
-            }
-            break;
-        case TelephonyManager.CALL_STATE_RINGING://响铃
-            recorder = new MediaRecorder();
-            //设置声音来源
-            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            //设置音频文件格式
-            recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-            recorder.setOutputFile(&quot;sdcard/haha.3gp&quot;);
-            //设置音频文件编码
-            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            try {
-                recorder.prepare();
-            } catch (IllegalStateException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            break;
-        }
-    }
-}
-</code></pre></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;#广播&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;广播的概念&lt;ul&gt;
-&lt;li&gt;现实：电台通过发送广播发布消息，买个收音机，就能收听&lt;/li&gt;
-&lt;li&gt;Android：系统在产生某个事件时发送广播，应用程序使用广播接收者接收这个广播，就知道系统产生了什么事件。&lt;br&gt;Android系统在运行的过程中，会产生很多事件，比如开机、电量改变、收发短信、拨打电话、屏幕解锁&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-      <category term="Android" scheme="http://giveme5.cc/categories/Android/"/>
-    
-    
-      <category term="android" scheme="http://giveme5.cc/tags/android/"/>
-    
-      <category term="broadcast" scheme="http://giveme5.cc/tags/broadcast/"/>
     
   </entry>
   
