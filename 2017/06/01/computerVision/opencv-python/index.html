@@ -13,6 +13,12 @@
 
 
 
+
+
+
+
+
+
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 
@@ -68,7 +74,7 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="opencv,centos,python," />
@@ -82,7 +88,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -156,11 +162,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 
 
 
-  <title> Opencv3.2 python2.7 的CentOS7安装 | Sam's Notes | Sam Blog </title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
+  <title>Opencv3.2 python2.7 的CentOS7安装 | Sam's Notes | Sam Blog</title>
   
 
 
@@ -175,13 +177,17 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 
 
 
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -197,7 +203,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
       </a>
     </div>
       
-        <h1 class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</h1>
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
       
   </div>
 
@@ -228,7 +234,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -238,7 +244,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -248,7 +254,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -295,34 +301,24 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/06/01/computerVision/opencv-python/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/06/01/computerVision/opencv-python/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                Opencv3.2 python2.7 的CentOS7安装
-              
-            
-          </h2>
+          <h1 class="post-title" itemprop="name headline">Opencv3.2 python2.7 的CentOS7安装</h1>
         
 
         <div class="post-meta">
@@ -376,7 +372,8 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2017/06/01/computerVision/opencv-python/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/06/01/computerVision/opencv-python/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/06/01/computerVision/opencv-python/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -394,7 +391,6 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
         </div>
       </header>
     
-
 
     <div class="post-body" itemprop="articleBody">
 
@@ -500,6 +496,12 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
       
     </div>
 
+    <div>
+      
+        
+
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -515,7 +517,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
       
 
       
-        
+      
       
 
       
@@ -552,7 +554,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
     </div>
   </div>
 
-          
+
           </div>
           
 
@@ -560,8 +562,11 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2017/06/01/computerVision/opencv-python/"
-           data-title="Opencv3.2 python2.7 的CentOS7安装" data-url="http://giveme5.cc/2017/06/01/computerVision/opencv-python/">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -602,14 +607,14 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
                alt="sam chen" />
           <p class="site-author-name" itemprop="name">sam chen</p>
            
-              <p class="site-description motion-element" itemprop="description"></p>
-           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
         </div>
         <nav class="site-state motion-element">
-        
+
           
             <div class="site-state-item site-state-posts">
-              <a href="/archives">
+              <a href="/archives/">
                 <span class="site-state-item-count">94</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -617,8 +622,10 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
           
 
           
+            
+            
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              <a href="/categories/index.html">
                 <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
@@ -626,8 +633,10 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
           
 
           
+            
+            
             <div class="site-state-item site-state-tags">
-              <a href="/tags">
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">标签</span>
               </a>
@@ -725,7 +734,7 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
         
       </div>
     
-    
+
   </div>
 
   
@@ -745,6 +754,14 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 
 
   
+
+
+
+
+
+
+
+
 
 
 
@@ -771,59 +788,75 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
 
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
 
 
 
   
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
 
 
 
   
 
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
   
+
+
+  
+
     
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"amadis"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
     
+
     
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://giveme5.cc/2017/06/01/computerVision/opencv-python/';
+          this.page.identifier = '2017/06/01/computerVision/opencv-python/';
+          this.page.title = 'Opencv3.2 python2.7 的CentOS7安装';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://amadis.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
   
 
 
@@ -833,15 +866,11 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 
 
 
-
-
-
-
-
-  
   
 
-  
+
+
+
 
   
 
@@ -864,6 +893,9 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 
   
 
+  
+
+  
 
   
 

@@ -13,6 +13,12 @@
 
 
 
+
+
+
+
+
+
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 
@@ -68,7 +74,7 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="sam's note, sam's notes, sam's blog, blog, giveme5" />
@@ -82,7 +88,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -138,38 +144,32 @@
 
 
 
-  <title>
+  <title> | Sam's Notes | Sam Blog</title>
   
 
-  
-     | Sam's Notes | Sam Blog
-  
-</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -185,7 +185,7 @@
       </a>
     </div>
       
-        <h1 class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</h1>
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
       
   </div>
 
@@ -216,7 +216,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -226,7 +226,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -236,7 +236,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -276,7 +276,7 @@
   <div id="posts" class="posts-expand">
   <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline"></h2>
+	<h1 class="post-title" itemprop="name headline"></h1>
 
 
 
@@ -291,7 +291,7 @@
     
   </div>
 
-          
+
           </div>
           
 
@@ -299,8 +299,11 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="README.html"
-           data-title="" data-url="http://giveme5.cc/README.html">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
       </div>
     
   </div>
@@ -324,22 +327,31 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/logo.png"
                alt="sam chen" />
           <p class="site-author-name" itemprop="name">sam chen</p>
            
-              <p class="site-description motion-element" itemprop="description"></p>
-           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
         </div>
         <nav class="site-state motion-element">
-        
+
           
             <div class="site-state-item site-state-posts">
-              <a href="/archives">
+              <a href="/archives/">
                 <span class="site-state-item-count">94</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -347,8 +359,10 @@
           
 
           
+            
+            
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              <a href="/categories/index.html">
                 <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
@@ -356,8 +370,10 @@
           
 
           
+            
+            
             <div class="site-state-item site-state-tags">
-              <a href="/tags">
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">标签</span>
               </a>
@@ -390,6 +406,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#blog"><span class="nav-number">1.</span> <span class="nav-text">blog</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">1.2.</span> <span class="nav-text">配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -439,7 +471,7 @@
         
       </div>
     
-    
+
   </div>
 
   
@@ -459,6 +491,14 @@
 
 
   
+
+
+
+
+
+
+
+
 
 
 
@@ -485,55 +525,75 @@
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
 
 
 
   
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+  
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
 
 
 
   
 
+
   
+
     
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"amadis"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
     
+
     
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://giveme5.cc/README.html';
+          this.page.identifier = 'README.html';
+          this.page.title = '';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://amadis.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
   
 
 
@@ -543,15 +603,11 @@
 
 
 
-
-
-
-
-
-  
   
 
-  
+
+
+
 
   
 
@@ -574,6 +630,9 @@
 
   
 
+  
+
+  
 
   
 

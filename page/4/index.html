@@ -13,6 +13,12 @@
 
 
 
+
+
+
+
+
+
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 
@@ -68,7 +74,7 @@
 
 <link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
 
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
   <meta name="keywords" content="sam's note, sam's notes, sam's blog, blog, giveme5" />
@@ -82,7 +88,7 @@
 
 
 
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
 
 
 
@@ -131,11 +137,7 @@
 
 
 
-  <title> Sam's Notes | Sam Blog </title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
+  <title>Sam's Notes | Sam Blog</title>
   
 
 
@@ -150,13 +152,17 @@
 
 
 
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
     
   
 
-  <div class="container one-collumn sidebar-position-left 
+  <div class="container sidebar-position-left 
    page-home 
  ">
     <div class="headband"></div>
@@ -174,7 +180,7 @@
       </a>
     </div>
       
-        <h1 class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</h1>
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
       
   </div>
 
@@ -205,7 +211,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -215,7 +221,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -225,7 +231,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -272,37 +278,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/26/linux/service/2-1 sshd/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/26/linux/service/2-1 sshd/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/01/26/linux/service/2-1 sshd/" itemprop="url">
-                  2-1 sshd
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2016/01/26/linux/service/2-1 sshd/" itemprop="url">2-1 sshd</a></h1>
         
 
         <div class="post-meta">
@@ -356,7 +351,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2016/01/26/linux/service/2-1 sshd/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/26/linux/service/2-1 sshd/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/26/linux/service/2-1 sshd/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -375,7 +371,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -391,7 +386,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/01/26/linux/service/2-1 sshd/#more" rel="contents">
+            <a class="btn" href="/2016/01/26/linux/service/2-1 sshd/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -408,6 +403,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -434,37 +432,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/22/linux/shell/shell-10/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/22/linux/shell/shell-10/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/01/22/linux/shell/shell-10/" itemprop="url">
-                  shell （九） 色彩
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2016/01/22/linux/shell/shell-10/" itemprop="url">shell （九） 色彩</a></h1>
         
 
         <div class="post-meta">
@@ -518,7 +505,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2016/01/22/linux/shell/shell-10/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/22/linux/shell/shell-10/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/22/linux/shell/shell-10/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -536,7 +524,6 @@
         </div>
       </header>
     
-
 
     <div class="post-body" itemprop="articleBody">
 
@@ -601,6 +588,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -627,37 +617,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/22/web server/nginx/nginx/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/22/web server/nginx/nginx/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/01/22/web server/nginx/nginx/" itemprop="url">
-                  nginx
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2016/01/22/web server/nginx/nginx/" itemprop="url">nginx</a></h1>
         
 
         <div class="post-meta">
@@ -711,7 +690,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2016/01/22/web server/nginx/nginx/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/22/web server/nginx/nginx/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/22/web server/nginx/nginx/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -730,7 +710,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -742,7 +721,7 @@
 <p>nginx</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/01/22/web server/nginx/nginx/#more" rel="contents">
+            <a class="btn" href="/2016/01/22/web server/nginx/nginx/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -759,6 +738,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -785,37 +767,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/06/linux/shell/shell9/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/06/linux/shell/shell9/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2016/01/06/linux/shell/shell9/" itemprop="url">
-                  1-29 Linux 正则表达式 sed awk cut
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2016/01/06/linux/shell/shell9/" itemprop="url">1-29 Linux 正则表达式 sed awk cut</a></h1>
         
 
         <div class="post-meta">
@@ -869,7 +840,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2016/01/06/linux/shell/shell9/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/01/06/linux/shell/shell9/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/01/06/linux/shell/shell9/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -888,7 +860,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -905,7 +876,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2016/01/06/linux/shell/shell9/#more" rel="contents">
+            <a class="btn" href="/2016/01/06/linux/shell/shell9/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -922,6 +893,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -948,37 +922,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-8/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-8/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-8/" itemprop="url">
-                  shell （八） 函数, 文件包含, 转码工具
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-8/" itemprop="url">shell （八） 函数, 文件包含, 转码工具</a></h1>
         
 
         <div class="post-meta">
@@ -1032,7 +995,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2015/12/28/linux/shell/shell-8/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/28/linux/shell/shell-8/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/28/linux/shell/shell-8/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1051,7 +1015,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -1066,7 +1029,7 @@
 <li>转码工具
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/28/linux/shell/shell-8/#more" rel="contents">
+            <a class="btn" href="/2015/12/28/linux/shell/shell-8/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1083,6 +1046,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -1109,37 +1075,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-7/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-7/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-7/" itemprop="url">
-                  shell （七） 循环
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-7/" itemprop="url">shell （七） 循环</a></h1>
         
 
         <div class="post-meta">
@@ -1193,7 +1148,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2015/12/28/linux/shell/shell-7/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/28/linux/shell/shell-7/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/28/linux/shell/shell-7/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1212,7 +1168,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -1228,7 +1183,7 @@
 <li>跳出循环
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/28/linux/shell/shell-7/#more" rel="contents">
+            <a class="btn" href="/2015/12/28/linux/shell/shell-7/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1245,6 +1200,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -1271,37 +1229,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-6/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-6/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-6/" itemprop="url">
-                  shell （六） 条件
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-6/" itemprop="url">shell （六） 条件</a></h1>
         
 
         <div class="post-meta">
@@ -1355,7 +1302,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2015/12/28/linux/shell/shell-6/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/28/linux/shell/shell-6/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/28/linux/shell/shell-6/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1374,7 +1322,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -1390,7 +1337,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/28/linux/shell/shell-6/#more" rel="contents">
+            <a class="btn" href="/2015/12/28/linux/shell/shell-6/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1407,6 +1354,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -1433,37 +1383,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-5/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-5/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-5/" itemprop="url">
-                  shell （五） 数组
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-5/" itemprop="url">shell （五） 数组</a></h1>
         
 
         <div class="post-meta">
@@ -1517,7 +1456,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2015/12/28/linux/shell/shell-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/28/linux/shell/shell-5/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/28/linux/shell/shell-5/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1536,7 +1476,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -1551,7 +1490,7 @@
 <li>数组长度
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/28/linux/shell/shell-5/#more" rel="contents">
+            <a class="btn" href="/2015/12/28/linux/shell/shell-5/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1568,6 +1507,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -1594,37 +1536,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-4/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-4/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-4/" itemprop="url">
-                  shell （四） 字符串
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-4/" itemprop="url">shell （四） 字符串</a></h1>
         
 
         <div class="post-meta">
@@ -1678,7 +1609,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2015/12/28/linux/shell/shell-4/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/28/linux/shell/shell-4/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/28/linux/shell/shell-4/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1696,7 +1628,6 @@
         </div>
       </header>
     
-
 
     <div class="post-body" itemprop="articleBody">
 
@@ -1718,7 +1649,7 @@
 <li>双引号仅特殊符号 <strong>$ \ `</strong> 这三个的含义保留。
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/28/linux/shell/shell-4/#more" rel="contents">
+            <a class="btn" href="/2015/12/28/linux/shell/shell-4/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1735,6 +1666,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -1761,37 +1695,26 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-3/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/28/linux/shell/shell-3/">
 
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="sam chen">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/logo.png">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Sam's Notes | Sam Blog" src="">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
     </span>
-  </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
 
     
       <header class="post-header">
 
         
         
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
+          <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-3/" itemprop="url">
-                  shell （三） 运算符
-                </a>
-              
-            
-          </h2>
+                <a class="post-title-link" href="/2015/12/28/linux/shell/shell-3/" itemprop="url">shell （三） 运算符</a></h1>
         
 
         <div class="post-meta">
@@ -1845,7 +1768,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
                 <a href="/2015/12/28/linux/shell/shell-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/12/28/linux/shell/shell-3/" itemprop="commentCount"></span>
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/28/linux/shell/shell-3/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1864,7 +1788,6 @@
       </header>
     
 
-
     <div class="post-body" itemprop="articleBody">
 
       
@@ -1882,7 +1805,7 @@
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2015/12/28/linux/shell/shell-3/#more" rel="contents">
+            <a class="btn" href="/2015/12/28/linux/shell/shell-3/#далее" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1899,6 +1822,9 @@
       
     </div>
 
+    <div>
+      
+    </div>
 
     <footer class="post-footer">
       
@@ -1924,7 +1850,7 @@
   </nav>
 
 
-          
+
           </div>
           
 
@@ -1957,14 +1883,14 @@
                alt="sam chen" />
           <p class="site-author-name" itemprop="name">sam chen</p>
            
-              <p class="site-description motion-element" itemprop="description"></p>
-           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
         </div>
         <nav class="site-state motion-element">
-        
+
           
             <div class="site-state-item site-state-posts">
-              <a href="/archives">
+              <a href="/archives/">
                 <span class="site-state-item-count">94</span>
                 <span class="site-state-item-name">日志</span>
               </a>
@@ -1972,8 +1898,10 @@
           
 
           
+            
+            
             <div class="site-state-item site-state-categories">
-              <a href="/categories">
+              <a href="/categories/index.html">
                 <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">分类</span>
               </a>
@@ -1981,8 +1909,10 @@
           
 
           
+            
+            
             <div class="site-state-item site-state-tags">
-              <a href="/tags">
+              <a href="/tags/index.html">
                 <span class="site-state-item-count">62</span>
                 <span class="site-state-item-name">标签</span>
               </a>
@@ -2064,7 +1994,7 @@
         
       </div>
     
-    
+
   </div>
 
   
@@ -2084,6 +2014,14 @@
 
 
   
+
+
+
+
+
+
+
+
 
 
 
@@ -2110,55 +2048,63 @@
   
 
 
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
 
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
 
 
 
   
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+  
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
 
 
 
   
 
+
   
+
     
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"amadis"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
     
+
     
-    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
   
 
 
@@ -2168,15 +2114,11 @@
 
 
 
-
-
-
-
-
-  
   
 
-  
+
+
+
 
   
 
@@ -2199,6 +2141,9 @@
 
   
 
+  
+
+  
 
   
 
