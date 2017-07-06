@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/</loc>
-    <lastmod>2017-06-28T03:24:58.844Z</lastmod>
+    <lastmod>2017-07-06T02:17:43.990Z</lastmod>
     <data>
         <display>
         <title>U盘引导多个linux镜像</title>
@@ -33,7 +33,7 @@
     
   <url>
     <loc>http://giveme5.cc/2017/06/01/computerVision/opencv-python/</loc>
-    <lastmod>2017-06-01T11:08:33.853Z</lastmod>
+    <lastmod>2017-06-28T03:29:31.753Z</lastmod>
     <data>
         <display>
         <title>Opencv3.2 python2.7 的CentOS7安装</title>
@@ -160,14 +160,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/09/16/web%20server/servers/</loc>
+    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
     <lastmod>2017-04-17T06:10:39.212Z</lastmod>
     <data>
         <display>
-        <title>web 服务器</title>
-        <pubTime>2015-09-16T11:44:58.000Z</pubTime>
+        <title>nginx</title>
+        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
         
-        <tag>server</tag>
+        <tag>nginx</tag>
          
          
            
@@ -180,14 +180,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
+    <loc>http://giveme5.cc/2015/09/16/web%20server/servers/</loc>
     <lastmod>2017-04-17T06:10:39.212Z</lastmod>
     <data>
         <display>
-        <title>nginx</title>
-        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
+        <title>web 服务器</title>
+        <pubTime>2015-09-16T11:44:58.000Z</pubTime>
         
-        <tag>nginx</tag>
+        <tag>server</tag>
          
          
            
@@ -554,26 +554,6 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/08/25/spring/springWebService/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>spring WebService JAX-WS</title>
-        <pubTime>2015-08-25T11:51:43.000Z</pubTime>
-        
-        <tag>Spring WebService JAX-WS</tag>
-         
-         
-           
-             
-              <breadCrumb title="spring" url="http://giveme5.cc/categories/spring/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://giveme5.cc/2015/11/17/linux/ddos/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -609,14 +589,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2016/01/06/linux/shell/shell9/</loc>
+    <loc>http://giveme5.cc/2015/11/17/linux/lamp/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>1-29 Linux 正则表达式 sed awk cut</title>
-        <pubTime>2016-01-06T11:59:44.000Z</pubTime>
+        <title>lamp</title>
+        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
         
-        <tag>GOD linux</tag>
+        <tag>lamp</tag>
          
          
            
@@ -627,6 +607,7 @@
     </data>
     </url>
 
+    
     
   <url>
     <loc>http://giveme5.cc/2015/09/14/other/checkList/</loc>
@@ -668,6 +649,25 @@
     </url>
 
     
+  <url>
+    <loc>http://giveme5.cc/2016/01/06/linux/shell/shell9/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-29 Linux 正则表达式 sed awk cut</title>
+        <pubTime>2016-01-06T11:59:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
     
   <url>
     <loc>http://giveme5.cc/2015/09/08/other/interview/</loc>
@@ -679,24 +679,6 @@
         
         <tag>面试</tag>
          
-         
-           
-             
-              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/03/02/other/searchEngine/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>搜索引擎技巧 搜索引擎指令 提高搜索效率</title>
-        <pubTime>2016-03-02T08:35:05.000Z</pubTime>
-        
          
            
              
@@ -728,19 +710,17 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-8/</loc>
+    <loc>http://giveme5.cc/2016/03/02/other/searchEngine/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （八） 函数, 文件包含, 转码工具</title>
-        <pubTime>2015-12-28T14:29:44.000Z</pubTime>
+        <title>搜索引擎技巧 搜索引擎指令 提高搜索效率</title>
+        <pubTime>2016-03-02T08:35:05.000Z</pubTime>
         
-        <tag>shell</tag>
-         
          
            
              
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
           
         </display>
     </data>
@@ -788,19 +768,19 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/07/20/linux/cmd/</loc>
+    <loc>http://giveme5.cc/2015/08/12/spring/s-SpringTest2/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>linux 常用规则， 酷～～～</title>
-        <pubTime>2015-07-20T02:09:38.000Z</pubTime>
+        <title>SpringTesting （二） Spring TestContext Framework</title>
+        <pubTime>2015-08-12T11:56:15.000Z</pubTime>
         
-        <tag>linux</tag>
+        <tag>Spring Testing</tag>
          
          
            
              
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+              <breadCrumb title="spring" url="http://giveme5.cc/categories/spring/"/>
           
         </display>
     </data>
@@ -848,14 +828,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/08/12/spring/s-SpringTest2/</loc>
+    <loc>http://giveme5.cc/2015/08/06/spring/s-springmvc%201/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>SpringTesting （二） Spring TestContext Framework</title>
-        <pubTime>2015-08-12T11:56:15.000Z</pubTime>
+        <title>Spring MVC（一） 常用点</title>
+        <pubTime>2015-08-06T09:37:37.000Z</pubTime>
         
-        <tag>Spring Testing</tag>
+        <tag>Spring MVC</tag>
          
          
            
@@ -888,34 +868,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/08/06/spring/s-springmvc%201/</loc>
+    <loc>http://giveme5.cc/2015/08/07/spring/s-springmvc2/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>Spring MVC（一） 常用点</title>
-        <pubTime>2015-08-06T09:37:37.000Z</pubTime>
+        <title>Spring MVC（二） 配置</title>
+        <pubTime>2015-08-07T05:17:37.000Z</pubTime>
         
         <tag>Spring MVC</tag>
-         
-         
-           
-             
-              <breadCrumb title="spring" url="http://giveme5.cc/categories/spring/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2015/08/19/spring/springCors/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>spring CORS</title>
-        <pubTime>2015-08-19T08:51:45.000Z</pubTime>
-        
-        <tag>Spring CORS</tag>
          
          
            
@@ -948,26 +908,6 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/08/07/spring/s-springmvc2/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>Spring MVC（二） 配置</title>
-        <pubTime>2015-08-07T05:17:37.000Z</pubTime>
-        
-        <tag>Spring MVC</tag>
-         
-         
-           
-             
-              <breadCrumb title="spring" url="http://giveme5.cc/categories/spring/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://giveme5.cc/2015/09/06/spring/springJms-2/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -988,19 +928,19 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/11/17/linux/lamp/</loc>
+    <loc>http://giveme5.cc/2015/08/25/spring/springWebService/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>lamp</title>
-        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
+        <title>spring WebService JAX-WS</title>
+        <pubTime>2015-08-25T11:51:43.000Z</pubTime>
         
-        <tag>lamp</tag>
+        <tag>Spring WebService JAX-WS</tag>
          
          
            
              
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+              <breadCrumb title="spring" url="http://giveme5.cc/categories/spring/"/>
           
         </display>
     </data>
@@ -1008,14 +948,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-6/</loc>
+    <loc>http://giveme5.cc/2015/07/20/linux/cmd/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （六） 条件</title>
-        <pubTime>2015-12-28T13:29:44.000Z</pubTime>
+        <title>linux 常用规则， 酷～～～</title>
+        <pubTime>2015-07-20T02:09:38.000Z</pubTime>
         
-        <tag>shell</tag>
+        <tag>linux</tag>
          
          
            
@@ -1045,6 +985,26 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2015/09/11/mq/activemq/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>activemq (一) 简介</title>
+        <pubTime>2015-09-11T11:59:44.000Z</pubTime>
+        
+        <tag>activemq</tag>
+         
+         
+           
+             
+              <breadCrumb title="mq" url="http://giveme5.cc/categories/mq/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2015/09/18/mq/activemq2/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -1065,19 +1025,59 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/09/11/mq/activemq/</loc>
+    <loc>http://giveme5.cc/2015/08/19/spring/springCors/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>activemq (一) 简介</title>
-        <pubTime>2015-09-11T11:59:44.000Z</pubTime>
+        <title>spring CORS</title>
+        <pubTime>2015-08-19T08:51:45.000Z</pubTime>
         
-        <tag>activemq</tag>
+        <tag>Spring CORS</tag>
          
          
            
              
-              <breadCrumb title="mq" url="http://giveme5.cc/categories/mq/"/>
+              <breadCrumb title="spring" url="http://giveme5.cc/categories/spring/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-6/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>shell （六） 条件</title>
+        <pubTime>2015-12-28T13:29:44.000Z</pubTime>
+        
+        <tag>shell</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-8/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>shell （八） 函数, 文件包含, 转码工具</title>
+        <pubTime>2015-12-28T14:29:44.000Z</pubTime>
+        
+        <tag>shell</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
           
         </display>
     </data>
@@ -1125,6 +1125,26 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2015/09/11/mq/mq/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>消息总线(消息中间件)</title>
+        <pubTime>2015-09-11T11:59:44.000Z</pubTime>
+        
+        <tag>MQ(Message Queue)</tag>
+         
+         
+           
+             
+              <breadCrumb title="mq" url="http://giveme5.cc/categories/mq/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-5/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -1145,12 +1165,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-4/</loc>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-3/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （四） 字符串</title>
-        <pubTime>2015-12-28T11:59:44.000Z</pubTime>
+        <title>shell （三） 运算符</title>
+        <pubTime>2015-12-28T11:29:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -1165,12 +1185,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-3/</loc>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-4/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
         <display>
-        <title>shell （三） 运算符</title>
-        <pubTime>2015-12-28T11:29:44.000Z</pubTime>
+        <title>shell （四） 字符串</title>
+        <pubTime>2015-12-28T11:59:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -1225,26 +1245,6 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/09/11/mq/mq/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>消息总线(消息中间件)</title>
-        <pubTime>2015-09-11T11:59:44.000Z</pubTime>
-        
-        <tag>MQ(Message Queue)</tag>
-         
-         
-           
-             
-              <breadCrumb title="mq" url="http://giveme5.cc/categories/mq/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://giveme5.cc/2015/12/25/linux/shell/shell-1/</loc>
     <lastmod>2017-02-21T07:18:44.691Z</lastmod>
     <data>
@@ -1253,28 +1253,6 @@
         <pubTime>2015-12-25T10:29:44.000Z</pubTime>
         
         <tag>shell</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/01/26/linux/service/2-1%20sshd/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>2-1 sshd</title>
-        <pubTime>2016-01-26T08:29:44.000Z</pubTime>
-        
-        <tag>linux</tag>
-         
-        <tag>sshd</tag>
          
          
            
@@ -1297,6 +1275,28 @@
         <tag>linux</tag>
          
         <tag>service</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2016/01/26/linux/service/2-1%20sshd/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>2-1 sshd</title>
+        <pubTime>2016-01-26T08:29:44.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>sshd</tag>
          
          
            
@@ -1355,6 +1355,46 @@
         <display>
         <title>1-7 文件权限管理</title>
         <pubTime>2015-12-05T10:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/12/04/linux/base/godLinux1-6/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-6 用户管理</title>
+        <pubTime>2015-12-04T14:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/12/04/linux/base/godLinux1-5/</loc>
+    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
+    <data>
+        <display>
+        <title>1-5 vim编辑器</title>
+        <pubTime>2015-12-04T08:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1488,54 +1528,34 @@
     </url>
 
     
-  <url>
-    <loc>http://giveme5.cc/2015/12/04/linux/base/godLinux1-5/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-5 vim编辑器</title>
-        <pubTime>2015-12-04T08:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
     
   <url>
-    <loc>http://giveme5.cc/2015/12/04/linux/base/godLinux1-6/</loc>
-    <lastmod>2017-02-21T07:18:44.691Z</lastmod>
-    <data>
-        <display>
-        <title>1-6 用户管理</title>
-        <pubTime>2015-12-04T14:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://giveme5.cc/2015/12/17/linux/base/godLinux1-16/</loc>
+    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-16 Linux LVM （Logical Volume Manager 逻辑卷管理）</title>
-        <pubTime>2015-12-17T07:29:44.000Z</pubTime>
+        <title>1-18-计划任务和日志管理</title>
+        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/12/16/linux/base/godLinux1-15/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>1-15 Linux RAID（Redundant Array of Independent Disks,独立磁盘冗余阵列）</title>
+        <pubTime>2015-12-16T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1570,6 +1590,26 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2015/12/17/linux/base/godLinux1-16/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>1-16 Linux LVM （Logical Volume Manager 逻辑卷管理）</title>
+        <pubTime>2015-12-17T07:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2015/12/14/linux/base/godLinux1-13/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
@@ -1590,12 +1630,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/07/linux/base/godLinux1-10/</loc>
+    <loc>http://giveme5.cc/2015/12/09/linux/base/godLinux1-11~12/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-10 RHEL7 进程管理</title>
-        <pubTime>2015-12-07T07:29:44.000Z</pubTime>
+        <title>1-11~12 - 重定向和文件查找</title>
+        <pubTime>2015-12-09T07:28:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1610,12 +1650,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/09/linux/base/godLinux1-11~12/</loc>
+    <loc>http://giveme5.cc/2015/12/07/linux/base/godLinux1-10/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-11~12 - 重定向和文件查找</title>
-        <pubTime>2015-12-09T07:28:44.000Z</pubTime>
+        <title>1-10 RHEL7 进程管理</title>
+        <pubTime>2015-12-07T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -1690,19 +1730,19 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/10/30/devEnv/maven/maven/</loc>
+    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-17/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>maven</title>
-        <pubTime>2015-10-30T06:40:45.000Z</pubTime>
+        <title>1-17 系统存储管理器和磁盘配额</title>
+        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
         
-        <tag>maven</tag>
+        <tag>GOD linux</tag>
          
          
            
              
-              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
           
         </display>
     </data>
@@ -1730,14 +1770,74 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/16/linux/base/godLinux1-15/</loc>
+    <loc>http://giveme5.cc/2016/05/03/devEnv/git/git/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-15 Linux RAID（Redundant Array of Independent Disks,独立磁盘冗余阵列）</title>
-        <pubTime>2015-12-16T07:29:44.000Z</pubTime>
+        <title>git</title>
+        <pubTime>2016-05-03T03:44:58.000Z</pubTime>
         
-        <tag>GOD linux</tag>
+        <tag>git</tag>
+         
+         
+           
+             
+              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2016/06/14/devEnv/10years/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>十年回头望</title>
+        <pubTime>2016-06-14T13:28:38.000Z</pubTime>
+        
+        <tag>十年回头望</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/09/16/devEnv/ide/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>idea 和 eclipse 快捷键</title>
+        <pubTime>2015-09-16T03:44:58.000Z</pubTime>
+        
+        <tag>idea eclipse 快捷键</tag>
+         
+         
+           
+             
+              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/07/21/linux/L-nagios/</loc>
+    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
+    <data>
+        <display>
+        <title>Nagios</title>
+        <pubTime>2015-07-21T06:06:18.000Z</pubTime>
+        
+        <tag>Nagios zabbix</tag>
          
          
            
@@ -1770,26 +1870,6 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/07/21/linux/L-nagios/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>Nagios</title>
-        <pubTime>2015-07-21T06:06:18.000Z</pubTime>
-        
-        <tag>Nagios zabbix</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://giveme5.cc/2015/10/29/exception/tomcat-jdbc-hibernate/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
@@ -1810,6 +1890,7 @@
     </data>
     </url>
 
+    
     
   <url>
     <loc>http://giveme5.cc/2016/02/15/exception/ClientAbortException/</loc>
@@ -1834,95 +1915,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-17/</loc>
+    <loc>http://giveme5.cc/2015/10/30/devEnv/maven/maven/</loc>
     <lastmod>2017-02-21T07:18:44.687Z</lastmod>
     <data>
         <display>
-        <title>1-17 系统存储管理器和磁盘配额</title>
-        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
+        <title>maven</title>
+        <pubTime>2015-10-30T06:40:45.000Z</pubTime>
         
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>1-18-计划任务和日志管理</title>
-        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2015/09/16/devEnv/ide/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>idea 和 eclipse 快捷键</title>
-        <pubTime>2015-09-16T03:44:58.000Z</pubTime>
-        
-        <tag>idea eclipse 快捷键</tag>
-         
-         
-           
-             
-              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
-    <loc>http://giveme5.cc/2016/06/14/devEnv/10years/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>十年回头望</title>
-        <pubTime>2016-06-14T13:28:38.000Z</pubTime>
-        
-        <tag>十年回头望</tag>
-         
-         
-           
-             
-              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/05/03/devEnv/git/git/</loc>
-    <lastmod>2017-02-21T07:18:44.687Z</lastmod>
-    <data>
-        <display>
-        <title>git</title>
-        <pubTime>2016-05-03T03:44:58.000Z</pubTime>
-        
-        <tag>git</tag>
+        <tag>maven</tag>
          
          
            
