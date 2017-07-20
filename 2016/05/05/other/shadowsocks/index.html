@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="shadowsocks," />
+  <meta name="keywords" content="shadowsssocks," />
 
 
 
@@ -95,16 +95,16 @@
 
 
 
-<meta name="description" content="关键词不说了， 知道ss的人就好，哈哈">
+<meta name="description" content="shadowsssocks 是错误的单词， 改成正确的再看">
 <meta property="og:type" content="article">
-<meta property="og:title" content="shadowsocks">
+<meta property="og:title" content="ss">
 <meta property="og:url" content="http://giveme5.cc/2016/05/05/other/shadowsocks/index.html">
 <meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="关键词不说了， 知道ss的人就好，哈哈">
-<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
+<meta property="og:description" content="shadowsssocks 是错误的单词， 改成正确的再看">
+<meta property="og:updated_time" content="2017-07-20T03:17:49.701Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="shadowsocks">
-<meta name="twitter:description" content="关键词不说了， 知道ss的人就好，哈哈">
+<meta name="twitter:title" content="ss">
+<meta name="twitter:description" content="shadowsssocks 是错误的单词， 改成正确的再看">
 
 
 
@@ -138,7 +138,7 @@
 
 
 
-  <title>shadowsocks | Sam's Notes | Sam Blog</title>
+  <title>ss | Sam's Notes | Sam Blog</title>
   
 
 
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">shadowsocks</h1>
+          <h1 class="post-title" itemprop="name headline">ss</h1>
         
 
         <div class="post-meta">
@@ -374,20 +374,20 @@
       
 
       
-        <p>关键词不说了， 知道ss的人就好，哈哈</p>
+        <p>shadowsssocks 是错误的单词， 改成正确的再看</p>
 <a id="more"></a>
-<h2 id="shadowsocks-安装"><a href="#shadowsocks-安装" class="headerlink" title="shadowsocks 安装"></a>shadowsocks 安装</h2><p>python版本安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install shadowsocks</div></pre></td></tr></table></figure>
+<h2 id="shadowsssocks-安装"><a href="#shadowsssocks-安装" class="headerlink" title="shadowsssocks 安装"></a>shadowsssocks 安装</h2><p>python版本安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install shadowsssocks</div></pre></td></tr></table></figure>
 <h2 id="server-配置"><a href="#server-配置" class="headerlink" title="server 配置"></a>server 配置</h2><p>找到你自己的供应商，将server的信息 配置成 文件， 比如<code>gui-config.json</code></p>
 <h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>写了几个脚本，内容有点像这样的</p>
 <ul>
-<li><p>shadowsocks.sh</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">cmd=$1</div><div class="line"></div><div class="line"># start</div><div class="line">if [ $cmd == &quot;start&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/shadowsocks/gui-config.json -d start </div><div class="line">  #xxxxxx/shadowsocks 是 gui-config.json 的存放位置， gui-config.json 是上步的server配置信息</div><div class="line">  #password 是你自己系统管理员密码，记得修改哦</div><div class="line">  </div><div class="line">#stop</div><div class="line">elif [ $cmd == &quot;stop&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/soft/shadowsocks/gui-config.json -d stop</div><div class="line"></div><div class="line"># error</div><div class="line">else</div><div class="line">  echo &quot;cmd only &apos;start&apos; or &apos;stop&apos;&quot;</div><div class="line">fi</div></pre></td></tr></table></figure>
+<li><p>shadowsssocks.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">cmd=$1</div><div class="line"></div><div class="line"># start</div><div class="line">if [ $cmd == &quot;start&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/shadowsssocks/gui-config.json -d start </div><div class="line">  #xxxxxx/shadowsssocks 是 gui-config.json 的存放位置， gui-config.json 是上步的server配置信息</div><div class="line">  #password 是你自己系统管理员密码，记得修改哦</div><div class="line">  </div><div class="line">#stop</div><div class="line">elif [ $cmd == &quot;stop&quot; ]</div><div class="line">then</div><div class="line">  echo &apos;password&apos; | sudo -S sslocal -c /xxxxxx/soft/shadowsssocks/gui-config.json -d stop</div><div class="line"></div><div class="line"># error</div><div class="line">else</div><div class="line">  echo &quot;cmd only &apos;start&apos; or &apos;stop&apos;&quot;</div><div class="line">fi</div></pre></td></tr></table></figure>
 </li>
-<li><p>启动命令<br><code>./shadowsocks.sh start</code></p>
+<li><p>启动命令<br><code>./shadowsssocks.sh start</code></p>
 </li>
 </ul>
-<h2 id="http-全局代理"><a href="#http-全局代理" class="headerlink" title="http 全局代理"></a>http 全局代理</h2><p>shadowsocks是socks5服务，在浏览器里使用一些插件可以满足浏览器使用了。一些其他场合，Privoxy实现Socks5转换为Http 服务。</p>
+<h2 id="http-全局代理"><a href="#http-全局代理" class="headerlink" title="http 全局代理"></a>http 全局代理</h2><p>shadow  sock   s是socks5服务，在浏览器里使用一些插件可以满足浏览器使用了。一些其他场合，Privoxy实现Socks5转换为Http 服务。</p>
 <h3 id="Privoxy"><a href="#Privoxy" class="headerlink" title="Privoxy"></a>Privoxy</h3><p>官方网站：<a href="http://www.privoxy.org/" target="_blank" rel="external">http://www.privoxy.org/</a> </p>
 <ul>
 <li><p>下载 privoxy<br>比如目前最新的  privoxy-3.0.24-stable-src.tar.gz</p>
@@ -411,7 +411,7 @@ make &amp;&amp; make install
 <p>privoxy监听端口 </p>
 <pre><code>listen-address 127.0.0.1:8118  
 </code></pre><p>查找<code>listen-address</code>， 端口可以修改</p>
-<p>shadowsocks 端口，（查找 关键字 forward-socks5t） 默认是这样的</p>
+<p>shadowsssocks 端口，（查找 关键字 forward-socks5t） 默认是这样的</p>
 <pre><code># forward-socks5t / 127.0.0.1:9050 .
 
 修改成 ==&gt; 
@@ -424,9 +424,8 @@ forward-socks5t / 127.0.0.1:1080 .
 </ul>
 <h3 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">vim /etc/profile</div><div class="line"></div><div class="line">##文件末尾加入：</div><div class="line"> # add follows to the end (set proxy settings to the environment variables)</div><div class="line">MY_PROXY_URL=&quot;http://127.0.0.1:8118/&quot;</div><div class="line">HTTP_PROXY=$MY_PROXY_URL</div><div class="line">HTTPS_PROXY=$MY_PROXY_URL</div><div class="line">FTP_PROXY=$MY_PROXY_URL</div><div class="line">http_proxy=$MY_PROXY_URL</div><div class="line">https_proxy=$MY_PROXY_URL</div><div class="line">ftp_proxy=$MY_PROXY_URL</div><div class="line">export HTTP_PROXY HTTPS_PROXY FTP_PROXY http_proxy https_proxy ftp_proxy</div></pre></td></tr></table></figure>
 <p>然后 <code>source</code> 下。</p>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>访问下 gg，哈哈</p>
-<pre><code>curl google.com
-</code></pre>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>访问下 gg</p>
+
       
     </div>
 
@@ -455,7 +454,7 @@ forward-socks5t / 127.0.0.1:1080 .
       
         <div class="post-tags">
           
-            <a href="/tags/shadowsocks/" rel="tag"># shadowsocks</a>
+            <a href="/tags/shadowsssocks/" rel="tag"># shadowsssocks</a>
           
         </div>
       
@@ -623,7 +622,7 @@ forward-socks5t / 127.0.0.1:1080 .
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#shadowsocks-安装"><span class="nav-number">1.</span> <span class="nav-text">shadowsocks 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#server-配置"><span class="nav-number">2.</span> <span class="nav-text">server 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动"><span class="nav-number">3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http-全局代理"><span class="nav-number">4.</span> <span class="nav-text">http 全局代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Privoxy"><span class="nav-number">4.1.</span> <span class="nav-text">Privoxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量"><span class="nav-number">4.2.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">4.3.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#shadowsssocks-安装"><span class="nav-number">1.</span> <span class="nav-text">shadowsssocks 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#server-配置"><span class="nav-number">2.</span> <span class="nav-text">server 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动"><span class="nav-number">3.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#http-全局代理"><span class="nav-number">4.</span> <span class="nav-text">http 全局代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Privoxy"><span class="nav-number">4.1.</span> <span class="nav-text">Privoxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境变量"><span class="nav-number">4.2.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">4.3.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -775,7 +774,7 @@ forward-socks5t / 127.0.0.1:1080 .
         var disqus_config = function () {
           this.page.url = 'http://giveme5.cc/2016/05/05/other/shadowsocks/';
           this.page.identifier = '2016/05/05/other/shadowsocks/';
-          this.page.title = 'shadowsocks';
+          this.page.title = 'ss';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://amadis.disqus.com/embed.js';
