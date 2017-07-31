@@ -278,6 +278,505 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/06/spring/springJms-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/09/06/spring/springJms-2/" itemprop="url">Spring JMS （二）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-06T18:53:49+08:00">
+                2015-09-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/06/spring/springJms-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/06/spring/springJms-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="发送-JMS-消息"><a href="#发送-JMS-消息" class="headerlink" title="发送 JMS 消息"></a>发送 JMS 消息</h2><h3 id="简单的使用默认destination"><a href="#简单的使用默认destination" class="headerlink" title="简单的使用默认destination"></a>简单的使用默认destination</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">import javax.jms.ConnectionFactory;</div><div class="line">import javax.jms.JMSException;</div><div class="line">import javax.jms.Message;</div><div class="line">import javax.jms.Queue;</div><div class="line">import javax.jms.Session;</div><div class="line"></div><div class="line">import org.springframework.jms.core.MessageCreator;</div><div class="line">import org.springframework.jms.core.JmsTemplate;</div><div class="line"></div><div class="line">public class JmsQueueSender &#123;</div><div class="line"></div><div class="line">    private JmsTemplate jmsTemplate;</div><div class="line">    private Queue queue;</div><div class="line"></div><div class="line">    public void setConnectionFactory(ConnectionFactory cf) &#123;</div><div class="line">        this.jmsTemplate = new JmsTemplate(cf);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setQueue(Queue queue) &#123;</div><div class="line">        this.queue = queue;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void simpleSend() &#123;</div><div class="line">        this.jmsTemplate.send(this.queue, new MessageCreator() &#123;</div><div class="line">            public Message createMessage(Session session) throws JMSException &#123;</div><div class="line">                return session.createTextMessage(&quot;hello queue world&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Message-Converters"><a href="#Message-Converters" class="headerlink" title="Message Converters"></a>Message Converters</h3><p> Message Converters 提供Java 对象 message‘s 数据间的转换。Spring的默认实现 SimpleMessageConverter 可以支持String 和 TextMessage, byte[] 和 BytesMesssage,  java.util.Map 和 MapMessage 之间的转换。<br>下面是个Map的发送：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public void sendWithConversion() &#123;</div><div class="line">    Map map = new HashMap();</div><div class="line">    map.put(&quot;Name&quot;, &quot;Mark&quot;);</div><div class="line">    map.put(&quot;Age&quot;, new Integer(47));</div><div class="line">    jmsTemplate.convertAndSend(&quot;testQueue&quot;, map, new MessagePostProcessor() &#123;</div><div class="line">        public Message postProcessMessage(Message message) throws JMSException &#123;</div><div class="line">            message.setIntProperty(&quot;AccountID&quot;, 1234);</div><div class="line">            message.setJMSCorrelationID(&quot;123-00001&quot;);</div><div class="line">            return message;</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//This results in a message of the form:</div><div class="line">//MapMessage=&#123;</div><div class="line">//	Header=&#123;</div><div class="line">//		... standard headers ...</div><div class="line">//		CorrelationID=&#123;123-00001&#125;</div><div class="line">//	&#125;</div><div class="line">//	Properties=&#123;</div><div class="line">//		AccountID=&#123;Integer:1234&#125;</div><div class="line">//	&#125;</div><div class="line">//	Fields=&#123;</div><div class="line">//		Name=&#123;String:Mark&#125;</div><div class="line">//		Age=&#123;Integer:47&#125;</div><div class="line">//	&#125;</div><div class="line">//&#125;</div></pre></td></tr></table></figure></p>
+<p>SessionCallback 回调和 ProducerCallback 回调</p>
+<h2 id="接收-JMS-消息"><a href="#接收-JMS-消息" class="headerlink" title="接收 JMS 消息"></a>接收 JMS 消息</h2><h3 id="同步接收-Synchronous"><a href="#同步接收-Synchronous" class="headerlink" title="同步接收 Synchronous"></a>同步接收 Synchronous</h3><p>同步接收 JMS 消息会堵塞， 可设置 <code>receiveTimeout</code> 。</p>
+<h3 id="异步接收-Asynchronous-Message-Driven-POJOs"><a href="#异步接收-Asynchronous-Message-Driven-POJOs" class="headerlink" title="异步接收 Asynchronous - Message-Driven POJOs"></a>异步接收 Asynchronous - Message-Driven POJOs</h3><p>类似于 EJB 里的  Message-Driven Bean (MDB) ，Spring 定义了 Message-Driven POJO (MDP) 来作为 JMS 的接收者。<br>一个 Message-Driven POJO (MDP) 必须实现 <code>javax.jms.MessageListener</code> （或者 MessageListenerAdapter， SessionAwareMessageListener），而且必须是线程安全，它会被多线程调用。<br> MDP的一个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import javax.jms.JMSException;</div><div class="line">import javax.jms.Message;</div><div class="line">import javax.jms.MessageListener;</div><div class="line">import javax.jms.TextMessage;</div><div class="line"></div><div class="line">public class ExampleListener implements MessageListener &#123;</div><div class="line"></div><div class="line">    public void onMessage(Message message) &#123;</div><div class="line">        if (message instanceof TextMessage) &#123;</div><div class="line">            try &#123;</div><div class="line">                System.out.println(((TextMessage) message).getText());</div><div class="line">            &#125;</div><div class="line">            catch (JMSException ex) &#123;</div><div class="line">                throw new RuntimeException(ex);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            throw new IllegalArgumentException(&quot;Message must be of type TextMessage&quot;);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对应的配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!-- this is the Message Driven POJO (MDP) --&gt;</div><div class="line">&lt;bean id=&quot;messageListener&quot; class=&quot;jmsexample.ExampleListener&quot; /&gt;</div><div class="line"></div><div class="line">&lt;!-- and this is the message listener container --&gt;</div><div class="line">&lt;bean id=&quot;jmsContainer&quot; class=&quot;org.springframework.jms.listener.DefaultMessageListenerContainer&quot;&gt;</div><div class="line">    &lt;property name=&quot;connectionFactory&quot; ref=&quot;connectionFactory&quot;/&gt;</div><div class="line">    &lt;property name=&quot;destination&quot; ref=&quot;destination&quot;/&gt;</div><div class="line">    ---&lt;property name=&quot;messageListener&quot; ref=&quot;messageListener&quot; /&gt;---</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="事务-transaction"><a href="#事务-transaction" class="headerlink" title="事务 transaction"></a>事务 transaction</h3><p>本地事务只需要简单配置 <code>sessionTransacted</code> 就可以激活。发送响应是该本地事务的一部分，但其他所有资源（如数据库操作）的操作都是独立的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;jmsContainer&quot; class=&quot;org.springframework.jms.listener.DefaultMessageListenerContainer&quot;&gt;</div><div class="line">    &lt;property name=&quot;connectionFactory&quot; ref=&quot;connectionFactory&quot;/&gt;</div><div class="line">    &lt;property name=&quot;destination&quot; ref=&quot;destination&quot;/&gt;</div><div class="line">    &lt;property name=&quot;messageListener&quot; ref=&quot;messageListener&quot;/&gt;</div><div class="line">    &lt;property name=&quot;sessionTransacted&quot; value=&quot;true&quot;/&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>分布式事务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.transaction.jta.JtaTransactionManager&quot;/&gt;</div><div class="line"></div><div class="line">&lt;bean id=&quot;jmsContainer&quot; class=&quot;org.springframework.jms.listener.DefaultMessageListenerContainer&quot;&gt;</div><div class="line">    &lt;property name=&quot;connectionFactory&quot; ref=&quot;connectionFactory&quot;/&gt;</div><div class="line">    &lt;property name=&quot;destination&quot; ref=&quot;destination&quot;/&gt;</div><div class="line">    &lt;property name=&quot;messageListener&quot; ref=&quot;messageListener&quot;/&gt;</div><div class="line">    &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot;/&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="注解驱动的监听端点"><a href="#注解驱动的监听端点" class="headerlink" title="注解驱动的监听端点"></a>注解驱动的监听端点</h2><p>@JmsListener</p>
+<h3 id="开启监听端点-注解"><a href="#开启监听端点-注解" class="headerlink" title="开启监听端点 注解"></a>开启监听端点 注解</h3><p>在<code>@Configuration</code>类中加入<code>@EnableJms</code>来使<code>@JmsListener</code>生效。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">@EnableJms</div><div class="line">public class AppConfig &#123;</div><div class="line"></div><div class="line">    @Bean</div><div class="line">    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() &#123;   //default name</div><div class="line">        DefaultJmsListenerContainerFactory factory =</div><div class="line">                new DefaultJmsListenerContainerFactory();</div><div class="line">        factory.setConnectionFactory(connectionFactory());</div><div class="line">        factory.setDestinationResolver(destinationResolver());</div><div class="line">        factory.setConcurrency(&quot;3-10&quot;); //pool size 3～10 threads</div><div class="line">        return factory;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="注册监听端点"><a href="#注册监听端点" class="headerlink" title="注册监听端点"></a>注册监听端点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">@EnableJms</div><div class="line">public class AppConfig implements JmsListenerConfigurer &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) &#123;</div><div class="line">        SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();</div><div class="line">        endpoint.setId(&quot;myJmsEndpoint&quot;);</div><div class="line">        endpoint.setDestination(&quot;anotherQueue&quot;);</div><div class="line">        endpoint.setMessageListener(message -&gt; &#123;</div><div class="line">            // processing</div><div class="line">        &#125;);</div><div class="line">        registrar.registerEndpoint(endpoint);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="端点方法-签名"><a href="#端点方法-签名" class="headerlink" title="端点方法 签名"></a>端点方法 签名</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Component</div><div class="line">public class MyService &#123;</div><div class="line"></div><div class="line">    @JmsListener(destination = &quot;myDestination&quot;)</div><div class="line">    public void processOrder(Order order, @Header(&quot;order_type&quot;) String orderType) &#123;</div><div class="line">        ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="响应管理"><a href="#响应管理" class="headerlink" title="响应管理"></a>响应管理</h3><p><code>@SendTo</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">@JmsListener(destination = &quot;myDestination&quot;)</div><div class="line">@SendTo(&quot;status&quot;)</div><div class="line">public OrderStatus processOrder(Order order) &#123;</div><div class="line">    // order processing</div><div class="line">    return status;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">//or</div><div class="line"></div><div class="line">@JmsListener(destination = &quot;myDestination&quot;)</div><div class="line">@SendTo(&quot;status&quot;)</div><div class="line">public Message&lt;OrderStatus&gt; processOrder(Order order) &#123;</div><div class="line">    // order processing</div><div class="line">    return MessageBuilder</div><div class="line">            .withPayload(status)</div><div class="line">            .setHeader(&quot;code&quot;, 1234)</div><div class="line">            .build();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行时响应destination<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">@JmsListener(destination = &quot;myDestination&quot;)</div><div class="line">public JmsResponse&lt;Message&lt;OrderStatus&gt;&gt; processOrder(Order order) &#123;</div><div class="line">    // order processing</div><div class="line">    Message&lt;OrderStatus&gt; response = MessageBuilder</div><div class="line">            .withPayload(status)</div><div class="line">            .setHeader(&quot;code&quot;, 1234)</div><div class="line">            .build();</div><div class="line">    return JmsResponse.forQueue(response, &quot;status&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="JMS-命名空间"><a href="#JMS-命名空间" class="headerlink" title="JMS 命名空间"></a><a href="http://docs.spring.io/spring/docs/4.2.2.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#jms-namespace" target="_blank" rel="external">JMS 命名空间</a></h2><h2 id="Spring-集成-ActiveMq"><a href="#Spring-集成-ActiveMq" class="headerlink" title="Spring 集成 ActiveMq"></a><a href="http://giveme5.top/2015/09/25/mq/activemq3/" target="_blank" rel="external">Spring 集成 ActiveMq</a></h2>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/26/spring/springJms-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/26/spring/springJms-1/" itemprop="url">Spring JMS (一)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-26T19:53:49+08:00">
+                2015-08-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/08/26/spring/springJms-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/08/26/spring/springJms-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="JMS"><a href="#JMS" class="headerlink" title="JMS"></a>JMS</h2><p>JMS（Java Messaging Service）是Java平台上有关面向消息中间件(MOM)的技术规范.</p>
+<ul>
+<li>组成<br>JMS提供者<br>连接面向消息中间件的，JMS接口的一个实现。提供者可以是Java平台的JMS实现，也可以是非Java平台的面向消息中间件的适配器。</li>
+</ul>
+<p>JMS客户<br>生产或消费基于消息的Java的应用程序或对象。</p>
+<p>JMS生产者（Message Producer）<br>创建并发送消息的JMS客户。</p>
+<p>JMS消费者（Message Consumer）<br>接收消息的JMS客户。</p>
+<p>JMS消息<br>包括可以在JMS客户之间传递的数据的对象</p>
+<p>JMS队列<br>一个容纳那些被发送的等待阅读的消息的区域。与队列名字所暗示的意思不同，消息的接受顺序并不一定要与消息的发送顺序相同。一旦一个消息被阅读，该消息将被从队列中移走。</p>
+<p>JMS主题<br>一种支持发送消息给多个订阅者的机制。</p>
+<ul>
+<li>对象模型<br>连接工厂。连接工厂（ConnectionFactory）是由管理员创建，并绑定到JNDI树中。客户端使用JNDI查找连接工厂，然后利用连接工厂创建一个JMS连接。</li>
+</ul>
+<p>JMS连接。JMS连接（Connection）表示JMS客户端和服务器端之间的一个活动的连接，是由客户端通过调用连接工厂的方法建立的。</p>
+<p>JMS会话。JMS会话（Session）表示JMS客户与JMS服务器之间的会话状态。JMS会话建立在JMS连接上，表示客户与服务器之间的一个会话线程。</p>
+<p>JMS目的。JMS目的（ Destination ），又称为消息队列，是实际的消息源。可以是 queue 或 topic 。</p>
+<p>JMS生产者和消费者。生产者（Message Producer）和消费者（Message Consumer）对象由Session对象创建，用于发送和接收消息。</p>
+<ul>
+<li>消息模型<br>点对点（Point-to-Point）。在点对点的消息系统中，消息分发给一个单独的使用者。点对点消息往往与队列（javax.jms.Queue）相关联。<br>发布/订阅（Publish/Subscribe）。发布/订阅消息系统支持一个事件驱动模型，消息生产者和消费者都参与消息的传递。生产者发布事件，而使用者订阅感兴趣的事件，并使用事件。该类型消息一般与特定的主题（javax.jms.Topic）关联。</li>
+</ul>
+<h2 id="Spring-JMS"><a href="#Spring-JMS" class="headerlink" title="Spring JMS"></a>Spring JMS</h2><p>Spring 提供类似JDBC的 JMS集成框架来简单得使用 JMS API。</p>
+<h3 id="JmsTemplate"><a href="#JmsTemplate" class="headerlink" title="JmsTemplate"></a>JmsTemplate</h3><p><code>JmsTemplate</code> 是 JMS 核心包的中心类。它简化了JMS的使用，因为它处理了发送或<strong>同步接收消息</strong>时资源的创建和释放。</p>
+<h3 id="Connections"><a href="#Connections" class="headerlink" title="Connections"></a>Connections</h3><p>JmsTemplate的需要一个ConnectionFactory的引用。ConnectionFactory是JMS规范的一部分，并作为JMS切入点。</p>
+<ul>
+<li><p>SingleConnectionFactory<br>SingleConnectionFactory会在所有 createConnection() 调用时返回相同的 Connection 。</p>
+</li>
+<li><p>CachingConnectionFactory<br>CachingConnectionFactory继承SingleConnectionFactory，并增加了会话，MessageProducer，和MessageConsumers的缓存</p>
+</li>
+</ul>
+<h3 id="Destination-Management"><a href="#Destination-Management" class="headerlink" title="Destination Management"></a>Destination Management</h3><h3 id="Message-Listener-Containers"><a href="#Message-Listener-Containers" class="headerlink" title="Message Listener Containers"></a>Message Listener Containers</h3><p>用来从JMS消息队列接收消息并驱动已经注入的 <code>MessageListener</code>，负责所有线程消息的接收和分发到监听器的进程，是MDP和消息提供者之间的中介，并注册接收的消息，参与事务，资源获取和释放，异常转换等等。使程序开发人员可以编写和接收消息相关的（可能比较复杂）业务逻辑。<br>有以下两种监听器</p>
+<ul>
+<li>SimpleMessageListenerContainer<br>简单，但不兼容JavaEE的JMS规范</li>
+</ul>
+<ul>
+<li>DefaultMessageListenerContainer<br>最常用的。XA transaction（JtaTransactionManager）， 可以自定义缓存，可以回复（默认是每5秒，可以自己实现<code>BackOff</code>来制定更细的粒度，参考<code>ExponentialBackOff</code>）</li>
+</ul>
+<h3 id="Transaction-management"><a href="#Transaction-management" class="headerlink" title="Transaction management"></a>Transaction management</h3><p>Spring提供了JmsTransactionManager来为单独的ConnectionFactory管理事务。<br>JmsTransactionManager 来管理本地事务和资源。</p>
+<p>JtaTransactionManager 来处理分布式事务。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/25/spring/springWebService/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/25/spring/springWebService/" itemprop="url">spring WebService JAX-WS</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-25T19:51:43+08:00">
+                2015-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index">
+                    <span itemprop="name">spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/08/25/spring/springWebService/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/08/25/spring/springWebService/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>spring提供完整的对标准 Java web services 的支持。有2种方式 SpringBeanAutowiringSupport 和 SimpleJaxWsServiceExporter 。</p>
+<p>SpringBeanAutowiringSupport没实验成功 ：（ ， 下面只说 SimpleJaxWsServiceExporter 的方式。我是直接混合springMVC使用的。</p>
+<ul>
+<li><p>EndPoint</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Component(&quot;UserService&quot;) // auto scan</div><div class="line">@WebService(serviceName=&quot;UserService&quot;)</div><div class="line">public class UrUserEndpoint</div><div class="line">&#123;</div><div class="line"></div><div class="line">    @Autowired</div><div class="line">    IUrUserService        userService;</div><div class="line">    </div><div class="line">    @WebMethod</div><div class="line">    public UrAbsUserEntity getUser(String username)&#123;</div><div class="line">        </div><div class="line">      return userService.findByUsername(username);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>xml config</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;bean class=&quot;org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter&quot;&gt;</div><div class="line">    &lt;property name=&quot;baseAddress&quot; value=&quot;http://localhost:8081/&quot;/&gt; //注意，如果是直接混合springMVC使用的，不能和servlet容器端口冲突</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>java config</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class ApplicationConfiguration </div><div class="line">&#123;</div><div class="line">    @Bean</div><div class="line">    public SimpleJaxWsServiceExporter jaxms()</div><div class="line">    &#123;</div><div class="line">        SimpleJaxWsServiceExporter jaxws = new SimpleJaxWsServiceExporter();</div><div class="line">        jaxws.setBaseAddress(&quot;http://localhost:8081/&quot;); //注意，如果是直接混合springMVC使用的，不能和servlet容器端口冲突</div><div class="line">        //此处可以有更多设置</div><div class="line">        </div><div class="line">        </div><div class="line">        return jaxws;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>wsdl<br>启动容器，在浏览器中访问 <a href="http://localhost:8081/UserService?wsdl" target="_blank" rel="external">http://localhost:8081/UserService?wsdl</a> , 就能看到wsdl的内容了</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/19/spring/springCors/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1403,541 +1902,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/07/spring/s-springmvc2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/07/spring/s-springmvc2/" itemprop="url">Spring MVC（二） 配置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-07T13:17:37+08:00">
-                2015-08-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/spring/" itemprop="url" rel="index">
-                    <span itemprop="name">spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/08/07/spring/s-springmvc2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/08/07/spring/s-springmvc2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Spring-MVC-的配置-Configuring-Spring-MVC"><a href="#Spring-MVC-的配置-Configuring-Spring-MVC" class="headerlink" title="Spring MVC 的配置 Configuring Spring MVC"></a>Spring MVC 的配置 <a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-config" target="_blank" rel="external">Configuring Spring MVC</a></h2><h3 id="开启Spring-MVC默认配置"><a href="#开启Spring-MVC默认配置" class="headerlink" title="* 开启Spring MVC默认配置"></a>* 开启Spring MVC默认配置</h3><p>Java Config: 加入<code>@EnableWebMvc</code> 到 某个有 <code>@Configuration</code> 注解的类头。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">@EnableWebMvc</div><div class="line">public class WebConfig &#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>XML方式: 增加<code>mvc:annotation-driven</code> 到 DispatcherServlet 的context里面。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</div><div class="line">    xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;</div><div class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</div><div class="line">    xsi:schemaLocation=&quot;</div><div class="line">        http://www.springframework.org/schema/beans</div><div class="line">        http://www.springframework.org/schema/beans/spring-beans.xsd</div><div class="line">        http://www.springframework.org/schema/mvc</div><div class="line">        http://www.springframework.org/schema/mvc/spring-mvc.xsd&quot;&gt;</div><div class="line"></div><div class="line">    &lt;mvc:annotation-driven /&gt;</div><div class="line"></div><div class="line">&lt;/beans&gt;</div></pre></td></tr></table></figure></p>
-<h3 id="自定义Spring-MVC配置"><a href="#自定义Spring-MVC配置" class="headerlink" title="* 自定义Spring MVC配置"></a>* 自定义Spring MVC配置</h3><p>Java Config: 加入<code>@EnableWebMvc</code> 到 某个有 <code>@Configuration</code> 注解的类头。自己实现<code>WebMvcConfigurer</code>， 更多是继承<code>WebMvcConfigurerAdapter</code>并重写你自己需要的方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">@EnableWebMvc</div><div class="line">public class WebConfig extends WebMvcConfigurerAdapter &#123;</div><div class="line"></div><div class="line">    // Override configuration methods...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>XML方式: 增加<code>mvc:annotation-driven</code> 到 DispatcherServlet 的context里面。设置自己需要<a href="http://schema.spring.io/mvc/spring-mvc.xsd" target="_blank" rel="external">Spring MVC XML schema</a>里面的元素值。</p>
-<h3 id="高级自定义Spring-MVC配置"><a href="#高级自定义Spring-MVC配置" class="headerlink" title="* 高级自定义Spring MVC配置"></a>* 高级自定义Spring MVC配置</h3><p>Java Config: 去掉<code>@EnableWebMvc</code>。 <code>@Configuration</code> 注解类头，自己实现<code>WebMvcConfigurationSupport.</code>， 更多是继承<code>DelegatingWebMvcConfiguration</code>并重写你自己需要的方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Configuration</div><div class="line">public class WebConfig extends DelegatingWebMvcConfiguration &#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void addInterceptors(InterceptorRegistry registry)&#123;</div><div class="line">        // ...</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    @Bean</div><div class="line">    public RequestMappingHandlerAdapter requestMappingHandlerAdapter() &#123;</div><div class="line">        // Create or let &quot;super&quot; create the adapter</div><div class="line">        // Then customize one of its properties</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>具体内容看头部的官方文档</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/06/spring/s-springmvc 1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/08/06/spring/s-springmvc 1/" itemprop="url">Spring MVC（一） 常用点</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-06T17:37:37+08:00">
-                2015-08-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/spring/" itemprop="url" rel="index">
-                    <span itemprop="name">spring</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/08/06/spring/s-springmvc 1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/08/06/spring/s-springmvc 1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>springmvc一</p>
-<h2 id="RequestMapping-URI"><a href="#RequestMapping-URI" class="headerlink" title="@RequestMapping URI"></a>@RequestMapping URI</h2><h3 id="URI-Template-Patterns"><a href="#URI-Template-Patterns" class="headerlink" title="URI Template Patterns"></a>URI Template Patterns</h3><p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-ann-requestmapping-uri-templates" target="_blank" rel="external">spring doc</a></p>
-<p>如何匹配这个url <code>&quot;/spring-web/spring-web-3.0.5.jar&quot;</code> ？</p>
-<p><code>@RequestMapping</code> 支持正则表达式， 语法就是 <code>{varName:regex}</code>。</p>
-<p>比如上面那个url就可以这样<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/spring-web/&#123;symbolicName:[a-z-]+&#125;-&#123;version:\\d\\.\\d\\.\\d&#125;&#123;extension:\\.[a-z]+&#125;"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(@PathVariable String version, @PathVariable String extension)</span> </span>&#123;</div><div class="line">        <span class="comment">// ...</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="Path-Pattern-Comparison"><a href="#Path-Pattern-Comparison" class="headerlink" title="Path Pattern Comparison"></a>Path Pattern Comparison</h4><p>多重匹配优先规则：</p>
-<ul>
-<li>越少数量URI variables 和 wild cards 的表达式越优先；例如<code>/hotels/{hotel}/*</code> 比 <code>/hotels/{hotel}/**</code> 优先</li>
-<li>数量一致，越长的表达式越优先；例如<code>/foo/bar*</code> 比 <code>/foo/*</code> 优先</li>
-<li>数量和长度一致， 越少wild cards的表达式越优先；例如<code>/hotels/{hotel}</code> 比 <code>/hotels/*</code> 优先</li>
-<li>例外的 <code>/api/{a}/{b}/{c</code> 比 <code>/**</code> 优先</li>
-</ul>
-<h3 id="Path-Pattern-Matching-By-Suffix"><a href="#Path-Pattern-Matching-By-Suffix" class="headerlink" title="Path Pattern Matching By Suffix"></a>Path Pattern Matching By Suffix</h3><p>默认Spring MVC会自动增加后缀 <code>&quot;.*&quot;</code> 来匹配URI。比如 <code>/person</code> 会自动映射成 <code>/person.*</code> ， 可以自动匹配文件类型，如<code>/person.pdf</code>, <code>/person.xml</code>，不能匹配 <code>/person.com</code><br><code>.com</code> 不是文件类型。</p>
-<h3 id="Matrix-Variables"><a href="#Matrix-Variables" class="headerlink" title="Matrix Variables"></a>Matrix Variables</h3><p>需要修改下默认<a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-ann-matrix-variables" target="_blank" rel="external">配置</a> ，，，，就可以使用<a href="http://www.w3.org/DesignIssues/MatrixURIs.html" target="_blank" rel="external"> “Matrix URIs”</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// GET /pets/42;q=11;r=22</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(@PathVariable String petId, @MatrixVariable int q) &#123;</div><div class="line"></div><div class="line">    // petId == 42</div><div class="line">    // q == 11</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// GET /owners/42;q=11/pets/21;q=22</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/owners/&#123;ownerId&#125;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(</div><div class="line">        @MatrixVariable(name=&quot;q&quot;, pathVar=&quot;ownerId&quot;) int q1,</div><div class="line">        @MatrixVariable(name=&quot;q&quot;, pathVar=&quot;petId&quot;) int q2) &#123;</div><div class="line"></div><div class="line">    // q1 == 11</div><div class="line">    // q2 == 22</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// GET /pets/42</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(@MatrixVariable(required=false, defaultValue=&quot;1&quot;) int q) &#123;</div><div class="line"></div><div class="line">    // q == 1</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// GET /owners/42;q=11;r=12/pets/21;q=22;s=23</div><div class="line"></div><div class="line">@RequestMapping(path = &quot;/owners/&#123;ownerId&#125;/pets/&#123;petId&#125;&quot;, method = RequestMethod.GET)</div><div class="line">public void findPet(</div><div class="line">        @MatrixVariable Map&lt;String, String&gt; matrixVars,</div><div class="line">        @MatrixVariable(pathVar=&quot;petId&quot;&quot;) Map&lt;String, String&gt; petMatrixVars) &#123;</div><div class="line"></div><div class="line">    // matrixVars: [&quot;q&quot; : [11,22], &quot;r&quot; : 12, &quot;s&quot; : 23]</div><div class="line">    // petMatrixVars: [&quot;q&quot; : 11, &quot;s&quot; : 23]</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="BindingResult-and-ModelAttribute"><a href="#BindingResult-and-ModelAttribute" class="headerlink" title="BindingResult and @ModelAttribute"></a>BindingResult and @ModelAttribute</h3><p>BindingResult必须直接跟在@ModelAttribute后面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@RequestMapping(method = RequestMethod.POST)</div><div class="line">public String processSubmit(@ModelAttribute(&quot;pet&quot;) Pet pet, BindingResult result, Model model) &#123; ... &#125;</div></pre></td></tr></table></figure></p>
-<h3 id="各种参数绑定"><a href="#各种参数绑定" class="headerlink" title="各种参数绑定"></a>各种参数绑定</h3><h4 id="PathVariable"><a href="#PathVariable" class="headerlink" title="@PathVariable"></a>@PathVariable</h4><ul>
-<li>绑定URI的参数，若方法参数名称和需要绑定的uri template中变量名称不一致，需要在@PathVariable(“name”)指定uri template中的名称。</li>
-</ul>
-<h4 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="@RequestHeader"></a>@RequestHeader</h4><ul>
-<li>可以把Request请求header部分的值绑定到方法的参数<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@RequestMapping(&quot;/displayHeaderInfo.do&quot;)  </div><div class="line">public void displayHeaderInfo(@RequestHeader(&quot;Accept-Encoding&quot;) String encoding,  </div><div class="line">                              @RequestHeader(&quot;Keep-Alive&quot;) long keepAlive)  &#123;  </div><div class="line">  </div><div class="line">  //...  </div><div class="line">  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="CookieValue"><a href="#CookieValue" class="headerlink" title="@CookieValue"></a>@CookieValue</h4><ul>
-<li>把Request header中关于cookie的值绑定到方法的参数  </li>
-</ul>
-<h4 id="RequestParam"><a href="#RequestParam" class="headerlink" title="@RequestParam"></a>@RequestParam</h4><ul>
-<li>常用来处理简单类型的绑定，通过Request.getParameter() 获取的String可直接转换为简单类型的情况（ String–&gt; 简单类型的转换操作由ConversionService配置的转换器来完成）；因为使用request.getParameter()方式获取参数，所以可以处理get 方式中queryString的值，也可以处理post方式中 body data的值；</li>
-<li>用来处理Content-Type: 为 application/x-www-form-urlencoded编码的内容，提交方式GET、POST；</li>
-<li>该注解有两个属性： value、required； value用来指定要传入值的id名称，required用来指示参数是否必须绑定  </li>
-</ul>
-<h4 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h4><ul>
-<li>该注解常用来处理Content-Type: 不是application/x-www-form-urlencoded编码的内容，例如application/json, application/xml等；</li>
-<li>它是通过使用HandlerAdapter 配置的HttpMessageConverters来解析post data body，然后绑定到相应的bean上的。</li>
-<li>因为配置有FormHttpMessageConverter，所以也可以用来处理 application/x-www-form-urlencoded的内容，处理完的结果放在一个MultiValueMap<string, string="">里，这种情况在某些特殊需求下使用，详情查看FormHttpMessageConverter api;  </string,></li>
-</ul>
-<h4 id="SessionAttributes"><a href="#SessionAttributes" class="headerlink" title="@SessionAttributes"></a>@SessionAttributes</h4><ul>
-<li>绑定HttpSession中的attribute对象的值</li>
-</ul>
-<h4 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="@ModelAttribute"></a>@ModelAttribute</h4><p>该注解有两个用法，一个是用于方法上，一个是用于参数上；<br>用于方法上时：  通常用来在处理@RequestMapping之前，为请求绑定需要从后台查询的model；<br>用于参数上时： 用来通过名称对应，把相应名称的值绑定到注解的参数bean上；要绑定的值来源于：</p>
-<ul>
-<li>@SessionAttributes 启用的attribute 对象上；</li>
-<li>@ModelAttribute 用于方法上时指定的model对象；</li>
-<li>上述两种情况都没有时，new一个需要绑定的bean对象，然后把request中按名称对应的方式把值绑定到bean中。</li>
-</ul>
-<h3 id="HttpPutFormContentFilter"><a href="#HttpPutFormContentFilter" class="headerlink" title="HttpPutFormContentFilter"></a>HttpPutFormContentFilter</h3><p>支持PUT方法</p>
-<h3 id="InitBinder"><a href="#InitBinder" class="headerlink" title="@InitBinder"></a>@InitBinder</h3><p>在controller里面配置web数据绑定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@Controller</div><div class="line">public class MyFormController &#123;</div><div class="line"></div><div class="line">    @InitBinder</div><div class="line">    public void initBinder(WebDataBinder binder) &#123;</div><div class="line">        SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</div><div class="line">        dateFormat.setLenient(false);</div><div class="line">        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>最新的Spring 4.2 里面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">@Controller</div><div class="line">public class MyFormController &#123;</div><div class="line"></div><div class="line">    @InitBinder</div><div class="line">    public void initBinder(WebDataBinder binder) &#123;</div><div class="line">        binder.addCustomFormatter(new DateFormatter(&quot;yyyy-MM-dd&quot;));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="ControllerAdvice"><a href="#ControllerAdvice" class="headerlink" title="@ControllerAdvice"></a>@ControllerAdvice</h3><p>被注解的类可以搭配<code>@ExceptionHandler</code>, <code>@InitBinder</code>, and <code>@ModelAttribute</code>，全局处理</p>
-<h2 id="Resolving-views"><a href="#Resolving-views" class="headerlink" title="Resolving views"></a>Resolving views</h2><p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-viewresolver-resolver" target="_blank" rel="external">Spring Doc : Resolving views</a></p>
-<h2 id="Spring’s-multipart-file-upload-support"><a href="#Spring’s-multipart-file-upload-support" class="headerlink" title="Spring’s multipart (file upload) support"></a><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-multipart" target="_blank" rel="external">Spring’s multipart (file upload) support</a></h2><h2 id="Handling-exceptions"><a href="#Handling-exceptions" class="headerlink" title="Handling exceptions"></a>Handling exceptions</h2><ul>
-<li>HandlerExceptionResolver</li>
-<li>@ExceptionHandler</li>
-</ul>
-<p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#mvc-ann-rest-spring-mvc-exceptions" target="_blank" rel="external">Standard Spring MVC Exceptions</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/07/29/devEnv/ci/o-jenkins/" itemprop="url">jenkins集合</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-29T10:14:56+08:00">
-                2015-07-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/developEnv/" itemprop="url" rel="index">
-                    <span itemprop="name">developEnv</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/07/29/devEnv/ci/o-jenkins/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/07/29/devEnv/ci/o-jenkins/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions" target="_blank" rel="external">官方指南</a></p>
-<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>JDK1.7以上 安装</p>
-<h3 id="RedHat系-YUM安装"><a href="#RedHat系-YUM安装" class="headerlink" title="RedHat系 YUM安装"></a>RedHat系 YUM安装</h3><p>centOS 7 安装稳定版本如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo</div><div class="line">sudo rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</div><div class="line">sudo yum install jenkins</div></pre></td></tr></table></figure>
-<h3 id="安装结果"><a href="#安装结果" class="headerlink" title="安装结果"></a>安装结果</h3><ul>
-<li>daemon ： /etc/init.d/jenkins </li>
-<li>user ： jenkins （查看passwd，获得工作路径）</li>
-<li>Log file ： /var/log/jenkins/jenkins.log</li>
-<li>configuration ： /etc/sysconfig/jenkins  (建议修改JENKINS_HOME到空间较大的路径)</li>
-<li>初始密码 ：查看 /var/log/jenkins/jenkins.log</li>
-</ul>
-<h3 id="启动-停止"><a href="#启动-停止" class="headerlink" title="启动/停止"></a>启动/停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">systemctl start/stop/restart jenkins</div><div class="line">systemctl enable jenkins ##开机自动启动</div></pre></td></tr></table></figure>
-<p>ps: 别忘了关闭防火墙或者设置防火墙</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h3><p>一般yum安装的 JAVA_HOME 为 <code>/usr/lib/jvm/java</code></p>
-<h3 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h3><p>安装maven<br>yum安装的 M2_HOME 为 <code>/usr/share/maven</code></p>
-<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>这些必须安装：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Git plugin</div><div class="line">Git client plugin</div><div class="line">GitLab Plugin</div><div class="line">maven plugin</div></pre></td></tr></table></figure>
-<h3 id="Manage-Jenkins-–-gt-Configure-Global-Security"><a href="#Manage-Jenkins-–-gt-Configure-Global-Security" class="headerlink" title="Manage Jenkins –&gt; Configure Global Security"></a>Manage Jenkins –&gt; Configure Global Security</h3><h3 id="Manage-Jenkins-–-gt-Configure-System"><a href="#Manage-Jenkins-–-gt-Configure-System" class="headerlink" title="Manage Jenkins –&gt; Configure System"></a>Manage Jenkins –&gt; Configure System</h3><p>配置 JDK， Jenkins Location， Git plugin， Gitlab</p>
-<h3 id="ssh-key"><a href="#ssh-key" class="headerlink" title="ssh-key"></a>ssh-key</h3><p>如果连接 Source Code Management 采用 ssh 连接， 需要先生成 ssh-key</p>
-<pre><code>ssh-keygen -t rsa -C &quot;jenkins@jenkinsServer&quot;
-</code></pre><p>注意生成目录， jenkins ssh-key的默认目录为： <code>/var/lib/jenkins/.ssh/</code></p>
-<h2 id="New-Item"><a href="#New-Item" class="headerlink" title="New Item"></a>New Item</h2><p>mavne project</p>
-<h3 id="root-project"><a href="#root-project" class="headerlink" title="root project"></a>root project</h3><p>Maven project name<br>Description</p>
-<p>Discard Old Builds<br>Source Code Management</p>
-<p>Build<br>    Root POM：pom.xml<br>    Goals and options： clean deploy -N</p>
-<h3 id="sub-project"><a href="#sub-project" class="headerlink" title="sub project"></a>sub project</h3><p>其他 参照上方，<br>Post Steps –&gt; Excute shell (启动tomcat等Web server)<br>shell可能长的像下面这样<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/bin/bash -ex</span></div><div class="line">JAVA_OPTS=<span class="string">"-Xms768m -Xmx1000m -XX:PermSize=512m -XX:MaxPermSize=1024m"</span></div><div class="line"><span class="built_in">cd</span> /data/apache-tomcat/</div><div class="line">bin/catalina.sh stop 35 -force</div><div class="line">rm -rf /data/apache-tomcat/webapps/xxxxxxxx.war /data/apache-tomcat/webapps/xxxxxxxx</div><div class="line">cp <span class="variable">$WORKSPACE</span>/target/xxxxxxxx.war /data/apache-tomcat/webapps</div><div class="line"><span class="comment">## required, or tomcat will be killed by jenkins. The value can be set to anything.</span></div><div class="line">BUILD_ID=please_do_not_kill_me </div><div class="line">sleep 20s</div><div class="line">bin/catalina.sh start</div></pre></td></tr></table></figure></p>
-<h2 id="项目权限"><a href="#项目权限" class="headerlink" title="项目权限"></a>项目权限</h2><p><a href="/2017/03/03/devEnv/ci/jenkinsRole/">项目权限</a></p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="第一次ssh连接-gitServer"><a href="#第一次ssh连接-gitServer" class="headerlink" title="第一次ssh连接 gitServer"></a>第一次ssh连接 gitServer</h3><p>Source Code Management 中 git 第一次ssh连接， 会有 <code>host error</code><br>解决方法： </p>
-<ul>
-<li>jenkins 用户登录， <code>/etc/passwd</code> 中 jenkins用户的默认shell 需要修改成 <code>bin/bash</code></li>
-<li>执行命令 <code>ssh git@gitServerIP</code>, 接受yes</li>
-<li>还原 jenkins用户的默认shell为 <code>bin/false</code></li>
-</ul>
-<h3 id="网络导致日志疯狂增长"><a href="#网络导致日志疯狂增长" class="headerlink" title="网络导致日志疯狂增长"></a>网络导致日志疯狂增长</h3><p>一旦jenkins所在的服务器的网络出现问题， jenkins的日志文件（/var/log/jenkins/jenkins.log）大小会疯狂快速增长，直到撑爆硬盘<br>日志内容大概为</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.constants.DNSRecordClass classForIndex</div><div class="line">WARNING: Could not find record class <span class="keyword">for</span> index: -1</div><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.DNSIncoming<span class="variable">$MessageInputStream</span> <span class="built_in">read</span>Name</div><div class="line">SEVERE: bad domain name: possible circular name detected. Bad offset: 0xffffffff at 0xb6</div><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.constants.DNSRecordType <span class="built_in">type</span>ForIndex</div><div class="line">SEVERE: Could not find record <span class="built_in">type</span> <span class="keyword">for</span> index: -1</div><div class="line">Jul 29, 2015 5:04:59 AM javax.jmdns.impl.DNSIncoming <span class="built_in">read</span>Question</div><div class="line">SEVERE: Could not find record <span class="built_in">type</span>: dns[query,108.61.99.169:53227, length=184, id=0x5c78, flags=0x3030, questions=6</div><div class="line">questions:</div><div class="line">        [DNSQuestion@84075318 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: 0\x00\x01\x00\x00\x00\x00\x00\x00\x09\x5F\x73\x6.\x72\x76\x69\x63\x65\x73\x07\x5F\x64\x6E\x73\x2D\x73\.4\x04\x5F\x75\x64\x70\x05\x6C\x6F\x63\x61\x6C\x00\x00\.C\x00\x01ϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿ.]</div><div class="line">        [DNSQuestion@9629900 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@788455775 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@1602108435 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@1486500959 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        [DNSQuestion@1944352362 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]]</div><div class="line">        question:      [DNSQuestion@84075318 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: 0\x00\x01\x00\x00\x00\x00\x00\x00\x09\x5F\x73\x6.\x72\x76\x69\x63\x65\x73\x07\x5F\x64\x6E\x73\x2D\x73\.4\x04\x5F\x75\x64\x70\x05\x6C\x6F\x63\x61\x6C\x00\x00\.C\x00\x01ϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿϿ.]</div><div class="line">        question:      [DNSQuestion@9629900 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@788455775 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@1602108435 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@1486500959 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">        question:      [DNSQuestion@1944352362 <span class="built_in">type</span>: TYPE_IGNORE index 0, class: CLASS_UNKNOWN index 0, name: ]</div><div class="line">   0: 5c7830305c783030 5c7830305c783030 5c7830305c783031 5c7830305c783030     \x00\x00 \x00\x00 \x00\x01 \x00\x00</div><div class="line">  20: 5c7830305c783030 5c7830305c783030 5c7830395c783546 5c7837335c783635     \x00\x00 \x00\x00 \x09\x5F \x73\x65</div><div class="line">  40: 5c7837325c783736 5c7836395c783633 5c7836355c783733 5c7830375c783546     \x72\x76 \x69\x63 \x65\x73 \x07\x5F</div><div class="line">  60: 5c7836345c783645 5c7837335c783244 5c7837335c783634 5c7830345c783546     \x64\x6E \x73\x2D \x73\x64 \x04\x5F</div><div class="line">  80: 5c7837355c783634 5c7837305c783035 5c7836435c783646 5c7836335c783631     \x75\x64 \x70\x05 \x6C\x6F \x63\x61</div><div class="line">  a0: 5c7836435c783030 5c7830305c783043 5c7830305c783031                      \x6C\x00 \x00\x0C \x00\x01</div></pre></td></tr></table></figure>
-<p>jenkins官方的issue，目前尚未fixed<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">https://issues.jenkins-ci.org/browse/JENKINS-10160</div></pre></td></tr></table></figure></p>
-<p>临时解决方案：<br>修改jenkins的java启动参数，编辑 /etc/sysconfig/jenkins， 看看效果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">JENKINS_JAVA_OPTIONS=<span class="string">"-Djava.awt.headless=true -Dhudson.DNSMultiCast.disabled=true -Dhudson.udp=-1"</span></div></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1987,7 +1951,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-count">97</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1998,7 +1962,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2009,7 +1973,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">69</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

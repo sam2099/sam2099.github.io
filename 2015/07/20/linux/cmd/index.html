@@ -135,7 +135,7 @@ Netst">
 
 
 Netst">
-<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
+<meta property="og:updated_time" content="2017-07-31T01:31:50.066Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 常用规则， 酷～～～">
 <meta name="twitter:description" content="命令
@@ -543,7 +543,12 @@ Netst">
 </tbody>
 </table>
 <h2 id="调教-kaffeine-播放各类媒体格式"><a href="#调教-kaffeine-播放各类媒体格式" class="headerlink" title="调教 kaffeine 播放各类媒体格式"></a>调教 kaffeine 播放各类媒体格式</h2><p>kaffeine 是基于 <code>libxine2</code>, openSUSE 官方提供的 libxine2 缺少一些插件，那用户要怎么安装这些编解码器呢？ 我们先说安装 mkv, mp4, wmv, m4v, mov, 3gp, 3g2 等视频文件的编解码器，这些可以很方便的从 packman 安装。核心的包是 <code>libxine2-codecs</code> ，我以 openSUSE 13.2 为例进行讲解：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo zypper ar <span class="_">-f</span> http://packman.inode.at/suse/openSUSE_13.2/ packman</div><div class="line">sudo zypper update</div><div class="line">sudo zypper install libxine2-codecs</div></pre></td></tr></table></figure></p>
-<h2 id="安全相关"><a href="#安全相关" class="headerlink" title="安全相关"></a>安全相关</h2><p><code>last</code><br><code>lastb</code><br><code>lastlog</code><br><code>history</code><br><code>/var/log/secure</code> : 登录的ssh公钥签名可以通过 <code>ssh-keygen -l -f xxx.pub</code> 获得<br><code>远程日志服务</code></p>
+<h2 id="安全相关"><a href="#安全相关" class="headerlink" title="安全相关"></a>安全相关</h2><p><code>last</code><br><code>lastb</code><br><code>lastlog</code><br><code>history</code><br><code>/var/log/secure</code> : 登录的ssh公钥签名可以通过 <code>ssh-keygen -l -f xxx.pub</code> 获得 <code>远程日志服务</code></p>
+<h3 id="网络实时流量监测-iftop"><a href="#网络实时流量监测-iftop" class="headerlink" title="网络实时流量监测 iftop"></a>网络实时流量监测 iftop</h3><p>单服务器</p>
+<h3 id="网络流量监控与分析-Ntop-和-Ntopng"><a href="#网络流量监控与分析-Ntop-和-Ntopng" class="headerlink" title="网络流量监控与分析 Ntop 和 Ntopng"></a>网络流量监控与分析 Ntop 和 Ntopng</h3><h3 id="网络性能评估-iperf"><a href="#网络性能评估-iperf" class="headerlink" title="网络性能评估 iperf"></a>网络性能评估 iperf</h3><h3 id="rootkit-检测工具"><a href="#rootkit-检测工具" class="headerlink" title="rootkit 检测工具"></a>rootkit 检测工具</h3><ul>
+<li>chkrootkit</li>
+<li>RKHunter</li>
+</ul>
 
       
     </div>
@@ -677,7 +682,7 @@ Netst">
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-count">97</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -688,7 +693,7 @@ Netst">
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -699,7 +704,7 @@ Netst">
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">62</span>
+                <span class="site-state-item-count">69</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -741,7 +746,7 @@ Netst">
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用技巧"><span class="nav-number">2.</span> <span class="nav-text">常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊变量"><span class="nav-number">2.1.</span> <span class="nav-text">特殊变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用PATTERN："><span class="nav-number">2.2.</span> <span class="nav-text">常用PATTERN：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知乎"><span class="nav-number">3.</span> <span class="nav-text">知乎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础知识"><span class="nav-number">4.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最小存储单位"><span class="nav-number">4.1.</span> <span class="nav-text">最小存储单位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调教-kaffeine-播放各类媒体格式"><span class="nav-number">5.</span> <span class="nav-text">调教 kaffeine 播放各类媒体格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全相关"><span class="nav-number">6.</span> <span class="nav-text">安全相关</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#命令"><span class="nav-number">1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用技巧"><span class="nav-number">2.</span> <span class="nav-text">常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊变量"><span class="nav-number">2.1.</span> <span class="nav-text">特殊变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用PATTERN："><span class="nav-number">2.2.</span> <span class="nav-text">常用PATTERN：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#知乎"><span class="nav-number">3.</span> <span class="nav-text">知乎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础知识"><span class="nav-number">4.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#最小存储单位"><span class="nav-number">4.1.</span> <span class="nav-text">最小存储单位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调教-kaffeine-播放各类媒体格式"><span class="nav-number">5.</span> <span class="nav-text">调教 kaffeine 播放各类媒体格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全相关"><span class="nav-number">6.</span> <span class="nav-text">安全相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络实时流量监测-iftop"><span class="nav-number">6.1.</span> <span class="nav-text">网络实时流量监测 iftop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络流量监控与分析-Ntop-和-Ntopng"><span class="nav-number">6.2.</span> <span class="nav-text">网络流量监控与分析 Ntop 和 Ntopng</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络性能评估-iperf"><span class="nav-number">6.3.</span> <span class="nav-text">网络性能评估 iperf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rootkit-检测工具"><span class="nav-number">6.4.</span> <span class="nav-text">rootkit 检测工具</span></a></li></ol></li></ol></div>
             
 
           </div>

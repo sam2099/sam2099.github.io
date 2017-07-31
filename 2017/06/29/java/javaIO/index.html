@@ -1,0 +1,911 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,IO,NIO,NIO2," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="主要内容
+　　I/O 就是数据的输入/输出。 Java 平台提供了丰富的类库来满足可能的I/O操作需求。最初的java.io包， JDK 1.4 的 NIO， JDK 7 的 NIO.2。　　　　最早的java.io包把IO操作抽象成数据的流动，进而有了流(Stream)概念；Java NIO中把IO操作抽象成端到端的一个数据连接，进而有了通道(channel)概念。
+　　如果需要开发高性能网络应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java IO">
+<meta property="og:url" content="http://giveme5.cc/2017/06/29/java/javaIO/index.html">
+<meta property="og:site_name" content="Sam's Notes | Sam Blog">
+<meta property="og:description" content="主要内容
+　　I/O 就是数据的输入/输出。 Java 平台提供了丰富的类库来满足可能的I/O操作需求。最初的java.io包， JDK 1.4 的 NIO， JDK 7 的 NIO.2。　　　　最早的java.io包把IO操作抽象成数据的流动，进而有了流(Stream)概念；Java NIO中把IO操作抽象成端到端的一个数据连接，进而有了通道(channel)概念。
+　　如果需要开发高性能网络应">
+<meta property="og:updated_time" content="2017-07-31T01:49:19.351Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java IO">
+<meta name="twitter:description" content="主要内容
+　　I/O 就是数据的输入/输出。 Java 平台提供了丰富的类库来满足可能的I/O操作需求。最初的java.io包， JDK 1.4 的 NIO， JDK 7 的 NIO.2。　　　　最早的java.io包把IO操作抽象成数据的流动，进而有了流(Stream)概念；Java NIO中把IO操作抽象成端到端的一个数据连接，进而有了通道(channel)概念。
+　　如果需要开发高性能网络应">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://giveme5.cc/2017/06/29/java/javaIO/"/>
+
+
+
+
+
+  <title>Java IO | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/06/29/java/javaIO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java IO</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-29T22:08:03+08:00">
+                2017-06-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/29/java/javaIO/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/06/29/java/javaIO/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong><em>主要内容</em></strong></p>
+<p>　　I/O 就是数据的输入/输出。 Java 平台提供了丰富的类库来满足可能的I/O操作需求。最初的java.io包， JDK 1.4 的 NIO， JDK 7 的 NIO.2。<br>　　<br>　　最早的java.io包把IO操作抽象成数据的流动，进而有了流(Stream)概念；Java NIO中把IO操作抽象成端到端的一个数据连接，进而有了通道(channel)概念。</p>
+<p>　　如果需要开发高性能网络应用， Java提供的标准库所支持的抽象层次过低， 推荐Netty。</p>
+<p>　　JDK 7 后都建议用 try-with-resources来使用流和通道。</p>
+<a id="more"></a>
+<h2 id="流"><a href="#流" class="headerlink" title="流"></a>流</h2><p>java中 最基本的流就是在字节这个层次上处理的。</p>
+<h3 id="基本输入流-InputStream"><a href="#基本输入流-InputStream" class="headerlink" title="基本输入流 InputStream"></a>基本输入流 <code>InputStream</code></h3><h4 id="数据功能"><a href="#数据功能" class="headerlink" title="数据功能"></a>数据功能</h4><p><code>read</code>方法</p>
+<ul>
+<li>每次读一个字节</li>
+<li>字节数组缓冲区<br>最常用， 循环读取， 直到返回-1或异常</li>
+<li>字节数组缓冲区和起始位置和长度</li>
+</ul>
+<h4 id="控制功能"><a href="#控制功能" class="headerlink" title="控制功能"></a>控制功能</h4><ul>
+<li>close 关闭</li>
+<li>skip 跳过指定数目的字节</li>
+<li>mark 和 reset 标记和重置配合，实现流中部分内容的重复读取<br>不是所有流都支持mark， 需要用 <code>markSupperted()</code>检查</li>
+<li>available 非阻塞的获取可供读取的字节数</li>
+</ul>
+<h3 id="基本输出流-OutputStream"><a href="#基本输出流-OutputStream" class="headerlink" title="基本输出流 OutputStream"></a>基本输出流 <code>OutputStream</code></h3><h4 id="数据功能-1"><a href="#数据功能-1" class="headerlink" title="数据功能"></a>数据功能</h4><p><code>write</code> 方法， 类似 <code>read</code> 一样， 3种重载形式：每次写入一个字节, 也可写入一个字节数组的全部或部分内容。</p>
+<h4 id="控制功能-1"><a href="#控制功能-1" class="headerlink" title="控制功能"></a>控制功能</h4><ul>
+<li>close 关闭</li>
+<li>flush 强制保存在缓冲区的内容立即进行实际的写入操作。</li>
+</ul>
+<h3 id="输入流复用"><a href="#输入流复用" class="headerlink" title="输入流复用"></a>输入流复用</h3><p>两种方式：</p>
+<ul>
+<li>利用标记和重置<br>使用<code>BufferedInputStream</code></li>
+<li>输入流转换成数据<br>直接把流中所有数据读取到一个字节数组中</li>
+</ul>
+<p>这两种复用流的思路一致， 就是预先把需要复用的数据保存起来。</p>
+<h3 id="过滤输入输出流"><a href="#过滤输入输出流" class="headerlink" title="过滤输入输出流"></a>过滤输入输出流</h3><ul>
+<li>缓冲区<br>BufferedInputStream， BufferedOutputStream</li>
+<li>java基本类型支持<br>DataInputStream， DataOutputStream</li>
+<li>java 基本类型和对象支持<br>ObjectInputStream， ObjectOutputStream</li>
+<li>数据回流<br>PushbackInputStream， PushbackOutputStream</li>
+<li>文件流<br>FileInputStream， FileOutputStream</li>
+<li>管道流<br>PipedInputStream， PipedOutputStream</li>
+<li>顺序连接<br>SequenceInputStream， SequenceOutputStream</li>
+</ul>
+<h3 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h3><p>  以上所有都是字节流， 字节流更适合机器处理。对于人来说，我们更愿意看到直接可读的字符。在在 java.io 包中还有一组类用来处理字符流,即 java.io.Reader 类和 java.io.Writer<br>类及其子类。这些字符流处理的是字符类型,而不是字节类 型。字符流适合用于处理程序中包含的文本类型的内容。<br>  创建一个字符流的最常见做法是通过一个字节流 InputStream 类或 OutputStream 类 的对象进行创建,对应的是 InputStreamReader 类和 OutputStreamWriter 类。在从字节流转换成字符流时,需要指定字符的编码格式。如果编码格式错误,会产生包含乱码的字符串。</p>
+<ul>
+<li>字符<br>java.io.StringReader 类 和 java.io.StringWriter </li>
+<li>字符数组<br>java. io.CharArrayReader 类和 java.io.CharArrayWriter 类</li>
+<li>内部缓冲区<br>java.io.BufferedReader 类 和 java.io.BufferedWriter 类</li>
+</ul>
+<h2 id="缓冲区"><a href="#缓冲区" class="headerlink" title="缓冲区"></a>缓冲区</h2><p>  Java NIO 中的缓冲区在某些特性上类似于 Java 中的基本类型的数组(如字节数组 或整型数组等),比如缓冲区中的数据排列是线性的,缓冲区的空间也是有限的。<br>不过缓冲区所提供的功能远比数组丰富得多,而且也支持存储类型异构的数据。</p>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>容量(capacity)、读写限制(limit)和读写位置(position)</p>
+<ul>
+<li><p>容量<br>容量指的是缓冲区的额定大小。容量是在创建缓冲区时指定的,无法在创建后更改。在任何时候缓冲区中的数据总数都不可能超过容量。<br>只读</p>
+</li>
+<li><p>读写限制<br>在缓冲区中进行读写操作时的最大允许位置。<br>可读读写</p>
+</li>
+<li><p>读写位置<br>表示的是当前进行读写操作时的位置。<br>可读可写</p>
+</li>
+</ul>
+<p>缓冲区同样也支持标记 mark 和重置 reset 的特性。</p>
+<p>任何时候 <code>0 &lt;= 标记位置 &lt;= 读写位置 &lt;= 读写限制 &lt;= 容量</code></p>
+<p>java.nio.Buffer 类是所有不同数据类型的缓冲区的父类。</p>
+<ul>
+<li><p>clear方法<br>把读写限制设为缓冲区的容量,同时 把读写位置设为 0 </p>
+</li>
+<li><p>flip<br>读写限制设为当前的读写位置,再把读写位置设为 0,这样可以保证缓冲区中的全部 数据都可以被读取</p>
+</li>
+<li><p>rewind<br>不会改变读写限制,但是会把读写位置设为 0</p>
+</li>
+</ul>
+<p>读写操作分成两类 :一类是根据当前读写位置进行的相对读写操作, 另外一类是根据在缓冲区中的绝对位置进行的读写操作。两者的差别在于相对读写会改变当前读写位置,而绝对读写则不会。</p>
+<h3 id="字节缓冲区"><a href="#字节缓冲区" class="headerlink" title="字节缓冲区"></a>字节缓冲区</h3><p>java.nio.ByteBuffer 类</p>
+<p>　　只能通过其静态工厂方法 allocate 来分配新空间, 或者通过 wrap 方法来包装一个已有的字节数组。</p>
+<p>　　必须要考虑字节顺序，同样的字节序列按照不同的顺序去解释,所得到的结果是不同的。java.nio.ByteOrder 类中定义了两种最基本的字节顺序 :BIG_ENDIAN 对应的大端表示和 LITTLE_ENDIAN 对应的小端表示。</p>
+<p>　　大端表示的含义是字节序列中高位在前,而小端表示则正好相反。ByteOrder类中的静态方法 nativeOrder 可以获取到底层操作系统平台采用的字节顺序。ByteBuffer 类的对象默认使用的是大端表示。</p>
+<h3 id="缓冲区视图"><a href="#缓冲区视图" class="headerlink" title="缓冲区视图"></a>缓冲区视图</h3><p>ByteBuffer 类的另外一个常见的使用方式是在一个已有的 ByteBuffer 类的对象上创建出各种不同的视图。这些视图和它所基于的 ByteBuffer 类的对象共享同样的存储空间,但是提供额外的实用功能。在功能上,ByteBuffer 类的视图与它所基于的 ByteBuffer 类的对象之间的关系类似于过滤流和它所包装的流的关系。<br>CharBuffer、ShortBuffer、IntBuffer、LongBuffer、FloatBuffer 和 DoubleBuffer 。</p>
+<h2 id="通道"><a href="#通道" class="headerlink" title="通道"></a>通道</h2><p>通道是 Java NIO 对 I/O 操作提供的另外一种新的抽象方式。通道不是从 I/O 操作所处理的数据这个层次上去抽象,而是表示为一个已经建立好的到支持 I/O 操作的实体的连接。这个连接一旦建立,就可以在这个连接上进行各种 I/O 操作。通道在进行读写操作 时使用的都是上面介绍的新的缓冲区的实现,而不是字节数组。</p>
+<p>Java NIO 中 的 通 道 都 实 现 了 java.nio.channels.Channel 接 口， 本身很简单，只有关闭通道的 close 方法和判断通道是否被打开的 isOpen 方法。<br>由于 Channel 接口继承了 java.lang.AutoCloseable 接口,通道的所有实现对象都可以用 try-with-resources 。</p>
+<ul>
+<li>读 java.nio.channels.ReadableByte-Channel 接口 </li>
+<li>写 java.nio.channels. WritableByteChannel 接口</li>
+<li>移动读写操作的位置 java.nio.channels.SeekableByteChannel 接口</li>
+<li>多个 ByteBuffer 类数据 java.nio.channels.ScatteringByteChannel</li>
+</ul>
+<h3 id="文件通道FileChannel"><a href="#文件通道FileChannel" class="headerlink" title="文件通道FileChannel"></a>文件通道FileChannel</h3><h4 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h4><p>读取和写入模式 java.nio.file.StandardOpenOption</p>
+<p>打开方法：</p>
+<ul>
+<li>FileChannel.open(Path path)</li>
+<li>从已有的 FileInputStream 类、FileOutputStream 类和 RandomAccessFile 类的对象的getChannel 方法得到</li>
+</ul>
+<h4 id="文件数据传输"><a href="#文件数据传输" class="headerlink" title="文件数据传输"></a>文件数据传输</h4><p>transferFrom<br>transferTo</p>
+<h4 id="内存映射文件"><a href="#内存映射文件" class="headerlink" title="内存映射文件"></a>内存映射文件</h4><ul>
+<li>map 方法<br>FileChannel 类的 map 方法把一个文件的全部或部分内容映射到内存中,所 得到的是一个 ByteBuffer 类的子类 MappedByteBuffer 的对象,程序只需要对这个 MappedByteBuffer 类的对象进行操作即可。</li>
+<li>load 方法<br>MappedByteBuffer 类的 load 方法可以把该缓冲区所对应的文件内容 加载到物理内存中,以提高文件操作时的性能。</li>
+<li>force 方法<br>FileChannel 类的 force 方法来强制要求把这些更新同 步到底层文件中。</li>
+</ul>
+<h4 id="锁定文件"><a href="#锁定文件" class="headerlink" title="锁定文件"></a>锁定文件</h4><p>FileChannel 类的 lock 和 tryLock 方 法可以对当前文件通道所对应的文件进行加锁。<br>lock 方法是阻塞式的,而 tryLock 方法则不是</p>
+<h3 id="套接字通道"><a href="#套接字通道" class="headerlink" title="套接字通道"></a>套接字通道</h3><p>接口 java.nio.channels.NetworkChannel </p>
+<h4 id="阻塞式套接字通道"><a href="#阻塞式套接字通道" class="headerlink" title="阻塞式套接字通道"></a>阻塞式套接字通道</h4><p>客户端 SocketChannel.open<br>服务端 ServerSocketChannel.open</p>
+<h4 id="多路复用套接字通道"><a href="#多路复用套接字通道" class="headerlink" title="多路复用套接字通道"></a>多路复用套接字通道</h4><p>核心是选择器,即 java.nio.channels.Selector 类</p>
+<h2 id="NIO-2"><a href="#NIO-2" class="headerlink" title="NIO.2"></a>NIO.2</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>java.nio.file包， 提供的新功能包括文件路径的抽象、文件目录列表流、文件目录树遍历、文件 属性和文件变化监视服务等。<br>传统的是 <code>java.io.File</code> 类</p>
+<h4 id="文件路径"><a href="#文件路径" class="headerlink" title="文件路径"></a>文件路径</h4><p>java.nio.file.Path 接口</p>
+<h4 id="文件目录列表流"><a href="#文件目录列表流" class="headerlink" title="文件目录列表流"></a>文件目录列表流</h4><p>接口 java.nio.file.DirectoryStream<br>只能遍历当前目录下的直接子目录或文件， 不递归。</p>
+<h4 id="文件目录树遍历"><a href="#文件目录树遍历" class="headerlink" title="文件目录树遍历"></a>文件目录树遍历</h4><p>java.nio.file.FileVisitor 接口</p>
+<h4 id="文件属性"><a href="#文件属性" class="headerlink" title="文件属性"></a>文件属性</h4><p>java.nio.file.attribute 包</p>
+<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><p>java.nio.file.Files 类<br><a href="https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html" target="_blank" rel="external">jdk docs</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">long</span>	<span class="title">copy</span><span class="params">(InputStream in, Path target, CopyOption... options)</span></span></div><div class="line">Copies all bytes from an input stream to a file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">long</span>	<span class="title">copy</span><span class="params">(Path source, OutputStream out)</span></div><div class="line">Copies all bytes from a file to an output stream.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">copy</span><span class="params">(Path source, Path target, CopyOption... options)</span></div><div class="line">Copy a file to a target file.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createDirectories</span><span class="params">(Path dir, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a directory by creating all nonexistent parent directories first.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createDirectory</span><span class="params">(Path dir, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new directory.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createFile</span><span class="params">(Path path, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new and empty file, failing <span class="keyword">if</span> the file already exists.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createLink</span><span class="params">(Path link, Path existing)</span></div><div class="line">Creates a new <span class="title">link</span> <span class="params">(directory entry)</span> <span class="keyword">for</span> an existing <span class="title">file</span> <span class="params">(optional operation)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createSymbolicLink</span><span class="params">(Path link, Path target, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a symbolic link to a <span class="title">target</span> <span class="params">(optional operation)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempDirectory</span><span class="params">(Path dir, String prefix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new directory in the specified directory, using the given prefix to generate its name.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempDirectory</span><span class="params">(String prefix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new directory in the <span class="keyword">default</span> temporary-file directory, using the given prefix to generate its name.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempFile</span><span class="params">(Path dir, String prefix, String suffix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new empty file in the specified directory, using the given prefix and suffix strings to generate its name.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempFile</span><span class="params">(String prefix, String suffix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates an empty file in the <span class="keyword">default</span> temporary-file directory, using the given prefix and suffix to generate its name.</div><div class="line"><span class="keyword">static</span> <span class="keyword">void</span>	<span class="title">delete</span><span class="params">(Path path)</span></div><div class="line">Deletes a file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">deleteIfExists</span><span class="params">(Path path)</span></div><div class="line">Deletes a file <span class="keyword">if</span> it exists.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">exists</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether a file exists.</div><div class="line"><span class="keyword">static</span> Object	<span class="title">getAttribute</span><span class="params">(Path path, String attribute, LinkOption... options)</span></div><div class="line">Reads the value of a file attribute.</div><div class="line"><span class="keyword">static</span> &lt;V extends FileAttributeView&gt; </div><div class="line">V	<span class="title">getFileAttributeView</span><span class="params">(Path path, Class&lt;V&gt; type, LinkOption... options)</span></div><div class="line">Returns a file attribute view of a given type.</div><div class="line"><span class="keyword">static</span> FileStore	<span class="title">getFileStore</span><span class="params">(Path path)</span></div><div class="line">Returns the FileStore representing the file store where a file is located.</div><div class="line"><span class="keyword">static</span> FileTime	<span class="title">getLastModifiedTime</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Returns a file's last modified time.</div><div class="line"><span class="keyword">static</span> UserPrincipal	<span class="title">getOwner</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Returns the owner of a file.</div><div class="line"><span class="keyword">static</span> Set&lt;PosixFilePermission&gt;	<span class="title">getPosixFilePermissions</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Returns a file's POSIX file permissions.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isDirectory</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether a file is a directory.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isExecutable</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is executable.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isHidden</span><span class="params">(Path path)</span></div><div class="line">Tells whether or not a file is considered hidden.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isReadable</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is readable.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isRegularFile</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether a file is a regular file with opaque content.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isSameFile</span><span class="params">(Path path, Path path2)</span></div><div class="line">Tests <span class="keyword">if</span> two paths locate the same file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isSymbolicLink</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is a symbolic link.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isWritable</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is writable.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">move</span><span class="params">(Path source, Path target, CopyOption... options)</span></div><div class="line">Move or rename a file to a target file.</div><div class="line"><span class="keyword">static</span> BufferedReader	<span class="title">newBufferedReader</span><span class="params">(Path path, Charset cs)</span></div><div class="line">Opens a file <span class="keyword">for</span> reading, returning a BufferedReader that may be used to read text from the file in an efficient manner.</div><div class="line"><span class="keyword">static</span> BufferedWriter	<span class="title">newBufferedWriter</span><span class="params">(Path path, Charset cs, OpenOption... options)</span></div><div class="line">Opens or creates a file <span class="keyword">for</span> writing, returning a BufferedWriter that may be used to write text to the file in an efficient manner.</div><div class="line"><span class="keyword">static</span> SeekableByteChannel	<span class="title">newByteChannel</span><span class="params">(Path path, OpenOption... options)</span></div><div class="line">Opens or creates a file, returning a seekable <span class="keyword">byte</span> channel to access the file.</div><div class="line"><span class="keyword">static</span> SeekableByteChannel	<span class="title">newByteChannel</span><span class="params">(Path path, Set&lt;? extends OpenOption&gt; options, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Opens or creates a file, returning a seekable <span class="keyword">byte</span> channel to access the file.</div><div class="line"><span class="keyword">static</span> DirectoryStream&lt;Path&gt;	<span class="title">newDirectoryStream</span><span class="params">(Path dir)</span></div><div class="line">Opens a directory, returning a DirectoryStream to iterate over all entries in the directory.</div><div class="line"><span class="keyword">static</span> DirectoryStream&lt;Path&gt;	<span class="title">newDirectoryStream</span><span class="params">(Path dir, DirectoryStream.Filter&lt;? <span class="keyword">super</span> Path&gt; filter)</span></div><div class="line">Opens a directory, returning a DirectoryStream to iterate over the entries in the directory.</div><div class="line"><span class="keyword">static</span> DirectoryStream&lt;Path&gt;	<span class="title">newDirectoryStream</span><span class="params">(Path dir, String glob)</span></div><div class="line">Opens a directory, returning a DirectoryStream to iterate over the entries in the directory.</div><div class="line"><span class="keyword">static</span> InputStream	<span class="title">newInputStream</span><span class="params">(Path path, OpenOption... options)</span></div><div class="line">Opens a file, returning an input stream to read from the file.</div><div class="line"><span class="keyword">static</span> OutputStream	<span class="title">newOutputStream</span><span class="params">(Path path, OpenOption... options)</span></div><div class="line">Opens or creates a file, returning an output stream that may be used to write bytes to the file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">notExists</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether the file located by <span class="keyword">this</span> path does not exist.</div><div class="line"><span class="keyword">static</span> String	<span class="title">probeContentType</span><span class="params">(Path path)</span></div><div class="line">Probes the content type of a file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">byte</span>[]	<span class="title">readAllBytes</span><span class="params">(Path path)</span></div><div class="line">Reads all the bytes from a file.</div><div class="line"><span class="keyword">static</span> List&lt;String&gt;	<span class="title">readAllLines</span><span class="params">(Path path, Charset cs)</span></div><div class="line">Read all lines from a file.</div><div class="line"><span class="keyword">static</span> &lt;A extends BasicFileAttributes&gt; </div><div class="line">A	<span class="title">readAttributes</span><span class="params">(Path path, Class&lt;A&gt; type, LinkOption... options)</span></div><div class="line">Reads a file's attributes as a bulk operation.</div><div class="line"><span class="keyword">static</span> Map&lt;String,Object&gt;	<span class="title">readAttributes</span><span class="params">(Path path, String attributes, LinkOption... options)</span></div><div class="line">Reads a set of file attributes as a bulk operation.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">readSymbolicLink</span><span class="params">(Path link)</span></div><div class="line">Reads the target of a symbolic <span class="title">link</span> <span class="params">(optional operation)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setAttribute</span><span class="params">(Path path, String attribute, Object value, LinkOption... options)</span></div><div class="line">Sets the value of a file attribute.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setLastModifiedTime</span><span class="params">(Path path, FileTime time)</span></div><div class="line">Updates a file's last modified time attribute.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setOwner</span><span class="params">(Path path, UserPrincipal owner)</span></div><div class="line">Updates the file owner.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setPosixFilePermissions</span><span class="params">(Path path, Set&lt;PosixFilePermission&gt; perms)</span></div><div class="line">Sets a file's POSIX permissions.</div><div class="line"><span class="keyword">static</span> <span class="keyword">long</span>	<span class="title">size</span><span class="params">(Path path)</span></div><div class="line">Returns the size of a <span class="title">file</span> <span class="params">(in bytes)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">walkFileTree</span><span class="params">(Path start, FileVisitor&lt;? <span class="keyword">super</span> Path&gt; visitor)</span></div><div class="line">Walks a file tree.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">walkFileTree</span><span class="params">(Path start, Set&lt;FileVisitOption&gt; options, <span class="keyword">int</span> maxDepth, FileVisitor&lt;? <span class="keyword">super</span> Path&gt; visitor)</span></div><div class="line">Walks a file tree.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">write</span><span class="params">(Path path, <span class="keyword">byte</span>[] bytes, OpenOption... options)</span></div><div class="line">Writes bytes to a file.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">write</span><span class="params">(Path path, Iterable&lt;? extends CharSequence&gt; lines, Charset cs, OpenOption... options)</span></div><div class="line">Write lines of text to a file.</div></pre></td></tr></table></figure>
+<h2 id="异步-I-O-通道"><a href="#异步-I-O-通道" class="headerlink" title="异步 I/O 通道"></a>异步 I/O 通道</h2><p>java.nio.channels.AsynchronousFileChannel<br>通过 open 方法来完成的。 对文件通道的读取和写入也是通过对应的 read 和 write 方法来完成的。所不同的是 read 和 write 方法要么返回一个 Future 类的对象,要么要求传入一个 CompletionHandler 接口 的实现对象作为回调方法。</p>
+<p>异 步 套 接 字 通 道 AsynchronousSocketChannel 和 AsynchronousServerSocketChannel 类 分 别 对 应 一 般 的 SocketChannel 和 ServerSocketChannel 类。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/IO/" rel="tag"># IO</a>
+          
+            <a href="/tags/NIO/" rel="tag"># NIO</a>
+          
+            <a href="/tags/NIO2/" rel="tag"># NIO2</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/27/linux/linuxUsbGrub/" rel="next" title="U盘引导多个linux镜像">
+                <i class="fa fa-chevron-left"></i> U盘引导多个linux镜像
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/30/java/java8/" rel="prev" title="Java 8 新特性 概要">
+                Java 8 新特性 概要 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">69</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#流"><span class="nav-number">1.</span> <span class="nav-text">流</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本输入流-InputStream"><span class="nav-number">1.1.</span> <span class="nav-text">基本输入流 InputStream</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据功能"><span class="nav-number">1.1.1.</span> <span class="nav-text">数据功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制功能"><span class="nav-number">1.1.2.</span> <span class="nav-text">控制功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本输出流-OutputStream"><span class="nav-number">1.2.</span> <span class="nav-text">基本输出流 OutputStream</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据功能-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">数据功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#控制功能-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">控制功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入流复用"><span class="nav-number">1.3.</span> <span class="nav-text">输入流复用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤输入输出流"><span class="nav-number">1.4.</span> <span class="nav-text">过滤输入输出流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符流"><span class="nav-number">1.5.</span> <span class="nav-text">字符流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓冲区"><span class="nav-number">2.</span> <span class="nav-text">缓冲区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字节缓冲区"><span class="nav-number">2.2.</span> <span class="nav-text">字节缓冲区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲区视图"><span class="nav-number">2.3.</span> <span class="nav-text">缓冲区视图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通道"><span class="nav-number">3.</span> <span class="nav-text">通道</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件通道FileChannel"><span class="nav-number">3.1.</span> <span class="nav-text">文件通道FileChannel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基本"><span class="nav-number">3.1.1.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件数据传输"><span class="nav-number">3.1.2.</span> <span class="nav-text">文件数据传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存映射文件"><span class="nav-number">3.1.3.</span> <span class="nav-text">内存映射文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁定文件"><span class="nav-number">3.1.4.</span> <span class="nav-text">锁定文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#套接字通道"><span class="nav-number">3.2.</span> <span class="nav-text">套接字通道</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#阻塞式套接字通道"><span class="nav-number">3.2.1.</span> <span class="nav-text">阻塞式套接字通道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多路复用套接字通道"><span class="nav-number">3.2.2.</span> <span class="nav-text">多路复用套接字通道</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NIO-2"><span class="nav-number">4.</span> <span class="nav-text">NIO.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件系统"><span class="nav-number">4.1.</span> <span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件路径"><span class="nav-number">4.1.1.</span> <span class="nav-text">文件路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件目录列表流"><span class="nav-number">4.1.2.</span> <span class="nav-text">文件目录列表流</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件目录树遍历"><span class="nav-number">4.1.3.</span> <span class="nav-text">文件目录树遍历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件属性"><span class="nav-number">4.1.4.</span> <span class="nav-text">文件属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文件操作"><span class="nav-number">4.1.5.</span> <span class="nav-text">文件操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步-I-O-通道"><span class="nav-number">5.</span> <span class="nav-text">异步 I/O 通道</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://giveme5.cc/2017/06/29/java/javaIO/';
+          this.page.identifier = '2017/06/29/java/javaIO/';
+          this.page.title = 'Java IO';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://amadis.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
