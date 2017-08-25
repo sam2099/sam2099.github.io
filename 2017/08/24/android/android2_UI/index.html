@@ -1,0 +1,917 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,Android,UI,Material Design," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="主要内容
+Material Design
+
+更新历史">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android UI">
+<meta property="og:url" content="http://giveme5.cc/2017/08/24/android/android2_UI/index.html">
+<meta property="og:site_name" content="Sam's Notes | Sam Blog">
+<meta property="og:description" content="主要内容
+Material Design
+
+更新历史">
+<meta property="og:image" content="http://giveme5.cc/images/android_ThemeColors.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_Toolbar.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_moveMenu.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_fab.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_snackbar.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_cardview1.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_cardview2.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_Ctb1.png">
+<meta property="og:image" content="http://giveme5.cc/images/android_Ctb2.png">
+<meta property="og:updated_time" content="2017-08-25T08:17:36.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android UI">
+<meta name="twitter:description" content="主要内容
+Material Design
+
+更新历史">
+<meta name="twitter:image" content="http://giveme5.cc/images/android_ThemeColors.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://giveme5.cc/2017/08/24/android/android2_UI/"/>
+
+
+
+
+
+  <title>Android UI | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/08/24/android/android2_UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android UI</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T23:29:44+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/24/android/android2_UI/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/24/android/android2_UI/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><ul>
+<li>Material Design</li>
+</ul>
+<p><em>更新历史</em></p>
+<a id="more"></a>
+<h2 id="传统布局"><a href="#传统布局" class="headerlink" title="传统布局"></a>传统布局</h2><h3 id="线性布局"><a href="#线性布局" class="headerlink" title="线性布局"></a>线性布局</h3><p><code>LinearLayout</code>。</p>
+<h4 id="material-design"><a href="#material-design" class="headerlink" title="material design"></a><em>material design</em></h4><ul>
+<li><code>AppBarLayout</code> 实际上是一个垂直方向的LinearLayout， AppBarLayout接收到滚动事件的时候,它内部的子控件可以指定通过app:layout_scrollFlags 属性去影响这些事件的<br>如 scroll|enterAlways|snap 。其中,scroll 表示当向上滚动的时候,Toolbar会跟着一起向上滚动并实现隐藏;enterAlways 表示当向下滚动的时候,Toolbar会跟着一起向下滚动并重新显示。snap 表示当Toolbar还没有完全隐藏或显示的时候,会根据当前滚动的距离,自动选择是隐藏还是显示。</li>
+</ul>
+<h3 id="相对布局"><a href="#相对布局" class="headerlink" title="相对布局"></a>相对布局</h3><h3 id="帧布局"><a href="#帧布局" class="headerlink" title="帧布局"></a>帧布局</h3><p><code>FrameLayout</code>， 默认所有控件在不进行明确定位的情况下,都会摆放在布局的左上角。</p>
+<h4 id="material-design-1"><a href="#material-design-1" class="headerlink" title="material design"></a><em>material design</em></h4><ul>
+<li><code>CoordinatorLayout</code> 是一个增强型FrameLayout, 可以监听其所有子控件的各种事件,然后自动帮助我们做出最为合的响应。</li>
+<li><code>CardView</code> 也是一个FrameLayout, 只是额外提供了圆角和阴影等效果, 看上去会有立体的感觉。 </li>
+</ul>
+<h3 id="表格布局"><a href="#表格布局" class="headerlink" title="表格布局"></a>表格布局</h3><h3 id="绝对布局"><a href="#绝对布局" class="headerlink" title="绝对布局"></a>绝对布局</h3><h2 id="Material-Design"><a href="#Material-Design" class="headerlink" title="Material Design"></a>Material Design</h2><p>材料主题<br><img src="/images/android_ThemeColors.png" alt=""></p>
+<h3 id="Toolbar"><a href="#Toolbar" class="headerlink" title="Toolbar"></a>Toolbar</h3><p>Toolbar 继承了ActionBar的所有功能,而且灵活性很高,可以配合其控件来完成一些Material Design的效果<br><img src="/images/android_Toolbar.png" alt=""></p>
+<ul>
+<li><p>隐藏ActionBar<br><code>res/values/styles.xml</code> 中，修改 AppTheme的parent主题， 通常有Theme.AppCompat.NoActionBar 和Theme.AppCompat.Light.NoActionBar这两种主题可选</p>
+</li>
+<li><p>增加 Toolbar<br>在布局文件中增加 Toolbar</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line"><span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></div><div class="line"><span class="attr">android:id</span>=<span class="string">"@+id/toolbar"</span></div><div class="line"><span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line"><span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></div><div class="line"><span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span></div><div class="line"><span class="attr">android:theme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Dark.ActionBar"</span></div><div class="line"><span class="attr">app:popupTheme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Light"</span> /&gt;</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>在 activity增加 ActionBar 支持</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onCreateOptionsMenu(menu);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);</div><div class="line">        toolbar.setTitle(<span class="string">"Fruits"</span>); <span class="comment">//Toolbar 显示内容</span></div><div class="line">        setSupportActionBar(toolbar);</div><div class="line">        </div><div class="line">        ActionBar actionBar = getSupportActionBar();</div><div class="line">        <span class="keyword">if</span> (actionBar != <span class="keyword">null</span>) &#123;</div><div class="line">            actionBar.setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</div><div class="line">            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>增加菜单<br>右击res目录→New→Directory,创建一个menu文件夹。然后右击menu文件→New→Menu resource file,创建一个toolbar.xml文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/backup"</span></div><div class="line">        <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_backup"</span></div><div class="line">        <span class="attr">android:title</span>=<span class="string">"Backup"</span></div><div class="line">        <span class="attr">app:showAsAction</span>=<span class="string">"always"</span> /&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/delete"</span></div><div class="line">        <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_delete"</span></div><div class="line">        <span class="attr">android:title</span>=<span class="string">"Delete"</span></div><div class="line">        <span class="attr">app:showAsAction</span>=<span class="string">"ifRoom"</span> /&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/settings"</span></div><div class="line">        <span class="attr">android:icon</span>=<span class="string">"@drawable/ic_settings"</span></div><div class="line">        <span class="attr">android:title</span>=<span class="string">"Settings"</span></div><div class="line">        <span class="attr">app:showAsAction</span>=<span class="string">"never"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>  修改activity</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Activity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line">    ...</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</div><div class="line">        getMenuInflater().inflate(R.menu.toolbar, menu);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (item.getItemId()) &#123;</div><div class="line">            <span class="keyword">case</span> R.id.backup:</div><div class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"You clicked Backup"</span>,</div><div class="line">                        Toast.LENGTH_SHORT).</div><div class="line">                        show();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> R.id.delete:</div><div class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"You clicked Delete"</span>,</div><div class="line">                        Toast.LENGTH_SHORT).</div><div class="line">                        show();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> R.id.settings:</div><div class="line">                Toast.makeText(<span class="keyword">this</span>, <span class="string">"You clicked Settings"</span>,</div><div class="line">                        Toast.LENGTH_SHORT).</div><div class="line">                        show();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>设置导航按钮<br>activity 的 onCreate 中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ActionBar actionBar = getSupportActionBar();</div><div class="line"><span class="keyword">if</span> (actionBar != <span class="keyword">null</span>) &#123;</div><div class="line">    actionBar.setDisplayHomeAsUpEnabled(<span class="keyword">true</span>); <span class="comment">//导航按钮显示</span></div><div class="line">    actionBar.setHomeAsUpIndicator(R.drawable.ic_menu); <span class="comment">// 导航按钮 图标</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="滑动菜单"><a href="#滑动菜单" class="headerlink" title="滑动菜单"></a>滑动菜单</h3><p>滑动菜单就是将一些菜单选项隐藏起来,而不是放置在主屏幕上,然后可以通过滑动的方将菜单显示出来。<br>Google 提供 DrawerLayout， NavigationView 帮助我们简单就可实现滑动菜单的功能<br><img src="/images/android_moveMenu.png" alt=""></p>
+<h4 id="DrawerLayout"><a href="#DrawerLayout" class="headerlink" title="DrawerLayout"></a>DrawerLayout</h4><p>它是一个布局,在布局中允许放入两个直接子控件,第一个子控件是主屏幕中显示的内容,第二个子控件是滑动菜单中显示的内容。</p>
+<p>布局文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span> </span></div><div class="line"><span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line"><span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line"><span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line"><span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line"><span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"><span class="tag">&lt;<span class="name">FrameLayout</span> <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span> </span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    </div><div class="line">    <span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span> </span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/toolbar"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></div><div class="line">    <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span></div><div class="line">    <span class="attr">android:theme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Dark.ActionBar"</span></div><div class="line">    <span class="attr">app:popupTheme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Light"</span>/&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">FrameLayout</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">TextView</span> <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></div><div class="line">    <span class="attr">android:text</span>=<span class="string">"This is menu"</span></div><div class="line">    <span class="attr">android:textSize</span>=<span class="string">"30sp"</span></div><div class="line">    <span class="attr">android:background</span>=<span class="string">"#FFF"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>DrawerLayout中放置了两个直接子控件,第一个子控件是FrameLayout,用于作为主屏幕显示的内容,当然里面还有我们刚刚定义的Toolbar。第二个子控件这里使用了一个TextView,于作为滑动菜单中显示的内容,其实使用什么都可以,DrawerLayout并没有限制只能使用固定控件。<br>第二个子控件有一点需要注意,layout_gravity 这个属性是必须指定的,因为我们要告诉DrawerLayout滑动菜单是在屏幕的左边还是右边,指定left表示滑动菜单在左边,指定right表示滑动菜单在右边。这里我指定了start,表示会根据系统语言进行判断,如果系统语言从左往右的,比如英语、汉语,滑动菜单就在左边,如果系统语言是从右往左的,比如阿拉伯语滑动菜单就在右边。 </p>
+<h4 id="NavigationView"><a href="#NavigationView" class="headerlink" title="NavigationView"></a>NavigationView</h4><p>NavigationView是Design Support库中提供的一个控件,可以将滑动菜单页面的实现变得非常简单。</p>
+<ul>
+<li>menu<br>menu是用来在NavigationView中显示具体的菜单项的,右击menu文件夹→New→Menu resource file，创建一个nav_menu.xml文件<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">menu</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">group</span> <span class="attr">android:checkableBehavior</span>=<span class="string">"single"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_call"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/nav_call"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Call"</span> /&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_friends"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/nav_friends"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Friends"</span> /&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_location"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/nav_location"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Location"</span> /&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_mail"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/nav_mail"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Mail"</span> /&gt;</div><div class="line">        <span class="tag">&lt;<span class="name">item</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/nav_task"</span></div><div class="line">            <span class="attr">android:icon</span>=<span class="string">"@drawable/nav_task"</span></div><div class="line">            <span class="attr">android:title</span>=<span class="string">"Tasks"</span> /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">group</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">menu</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>group表示一个组，checkableBehavior 指定为single 表示组中的所有菜单项只能单选</p>
+<ul>
+<li><p>headerLayout<br>用来在NavigationView中显示头部布局的,可以随意定制布局.<br>右击layout文件夹→New→Layout resource file，创建一个nav_header.xml文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"180dp"</span></div><div class="line">    <span class="attr">android:padding</span>=<span class="string">"10dp"</span></div><div class="line">    <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">de.hdodenhof.circleimageview.CircleImageView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/icon_image"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"70dp"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"70dp"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@drawable/nav_icon"</span></div><div class="line">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/mail"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_alignParentBottom</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"tonygreendev@gmail.com"</span></div><div class="line">        <span class="attr">android:textColor</span>=<span class="string">"#FFF"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"14sp"</span> /&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/username"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_above</span>=<span class="string">"@id/mail"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"Tony Green"</span></div><div class="line">        <span class="attr">android:textColor</span>=<span class="string">"#FFF"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"14sp"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>NavigationView<br>修改布局文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">FrameLayout</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/toolbar"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></div><div class="line">            <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span></div><div class="line">            <span class="attr">android:theme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Dark.ActionBar"</span></div><div class="line">            <span class="attr">app:popupTheme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Light"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;/<span class="name">FrameLayout</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.NavigationView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/nav_view"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_gravity</span>=<span class="string">"start"</span></div><div class="line">        <span class="attr">app:menu</span>=<span class="string">"@menu/nav_menu"</span></div><div class="line">        <span class="attr">app:headerLayout</span>=<span class="string">"@layout/nav_header "</span>/&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>activity<br>修改activity， 增加点击事件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);</div><div class="line">        setSupportActionBar(toolbar);</div><div class="line">        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);</div><div class="line">        </div><div class="line">        ActionBar actionBar = getSupportActionBar();</div><div class="line">        <span class="keyword">if</span> (actionBar != <span class="keyword">null</span>) &#123;</div><div class="line">            actionBar.setDisplayHomeAsUpEnabled(<span class="keyword">true</span>);</div><div class="line">            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        NavigationView  navView = (NavigationView) findViewById(R.id.nav_view);</div><div class="line">        navView.setCheckedItem(R.id.nav_call); <span class="comment">//默认选中</span></div><div class="line"></div><div class="line">        navView.setNavigationItemSelectedListener(<span class="keyword">new</span> NavigationView.<span class="function">OnNavigation</span></div><div class="line">            <span class="title">ItemSelectedListener</span><span class="params">()</span> &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onNavigationItemSelected</span><span class="params">(MenuItem item)</span> </span>&#123;</div><div class="line">                mDrawerLayout.closeDrawers(); <span class="comment">//关闭</span></div><div class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="悬浮按钮和可交互提示"><a href="#悬浮按钮和可交互提示" class="headerlink" title="悬浮按钮和可交互提示"></a>悬浮按钮和可交互提示</h3><h4 id="悬浮按钮-FloatingActionButton"><a href="#悬浮按钮-FloatingActionButton" class="headerlink" title="悬浮按钮 FloatingActionButton"></a>悬浮按钮 FloatingActionButton</h4><p>实现悬浮按钮的效果<br><img src="/images/android_fab.png" alt=""></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.FloatingActionButton</span></span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/fab"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:layout_gravity</span>=<span class="string">"bottom|end"</span></div><div class="line">    <span class="attr">android:layout_margin</span>=<span class="string">"16dp"</span></div><div class="line">    <span class="attr">android:src</span>=<span class="string">"@drawable/ic_done"</span>/&gt;</div></pre></td></tr></table></figure>
+<p>app:elevation 属性来给FloatingActionButton指定一个高度值，高度值越大，投影范围也越大，但是投影效果越淡，高度值越小，投影范围也越小，但是投影效果越浓。<br>用默认值就可以</p>
+<h4 id="可交互提示-Snackbar"><a href="#可交互提示-Snackbar" class="headerlink" title="可交互提示 Snackbar"></a>可交互提示 Snackbar</h4><p><img src="/images/android_snackbar.png" alt=""></p>
+<p>可交互的Toast， 使用场景不同<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> DrawerLayout mDrawerLayout;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        ...</div><div class="line">        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);</div><div class="line">        fab.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">            <span class="meta">@Override</span></div><div class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">                Snackbar.make(view, <span class="string">"Data deleted"</span>, Snackbar.LENGTH_SHORT)</div><div class="line">                        .setAction(<span class="string">"Undo"</span>, <span class="keyword">new</span> View.OnClickListener() &#123;</div><div class="line">                            <span class="meta">@Override</span></div><div class="line">                            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View v)</span> </span>&#123;</div><div class="line">                                Toast.makeText(MainActivity.<span class="keyword">this</span>, <span class="string">"Data restored"</span>,</div><div class="line">                                    Toast.LENGTH_SHORT).show();</div><div class="line">                            &#125;</div><div class="line">                        &#125;)</div><div class="line">                        .show();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Snackbar可能将我们的悬浮按钮给遮挡住, 可以使用CoordinatorLayout包裹fab</p>
+<h4 id="CoordinatorLayout"><a href="#CoordinatorLayout" class="headerlink" title="CoordinatorLayout"></a>CoordinatorLayout</h4><p>加强版的 FrameLayout ， 可以监听其所有子控件的各种事件，然后自动帮助我们做出最为合理的响应。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.CoordinatorLayout</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/toolbar"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></div><div class="line">            <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span></div><div class="line">            <span class="attr">android:theme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Dark.ActionBar"</span></div><div class="line">            <span class="attr">app:popupTheme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Light"</span> /&gt;</div><div class="line"></div><div class="line">        <span class="tag">&lt;<span class="name">android.support.design.widget.FloatingActionButton</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/fab"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_gravity</span>=<span class="string">"bottom|end"</span></div><div class="line">            <span class="attr">android:layout_margin</span>=<span class="string">"16dp"</span></div><div class="line">            <span class="attr">android:src</span>=<span class="string">"@drawable/ic_done"</span> /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">android.support.design.widget.CoordinatorLayout</span>&gt;</span></div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="卡片式布局"><a href="#卡片式布局" class="headerlink" title="卡片式布局"></a>卡片式布局</h3><p>列表 内卡片式 布局 ， 涉及以下控件：</p>
+<ul>
+<li>CoordinatorLayout : 加强版的FrameLayout, 可以监听其所有子控件的各种事件，然后自动帮助我们做出最为合理的响应。</li>
+<li>AppBarLayout : 垂直方向的LinearLayout， 子控件可以指定通过app:layout_scrollFlags 属性去影响AppBarLayout接受到的滚动事件</li>
+<li>RecyclerView : 列表</li>
+<li>CardView : FrameLayout, 额外提供了圆角和阴影等效果, 看上去会有立体的感觉</li>
+</ul>
+<p><div style="float:left;border:solid 1px 000;margin:2px;"><br><img src="/images/android_cardview1.png" alt=""><br></div></p>
+<p><div style="float:left;border:solid 1px 000;margin:2px;"><br> <img src="/images/android_cardview2.png" alt=""><br></div></p>
+<p><div style="clear:both;"></div><br><br></p>
+<h4 id="主布局"><a href="#主布局" class="headerlink" title="主布局"></a>主布局</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span> </span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    </div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.CoordinatorLayout</span> </span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">android.support.design.widget.AppBarLayout</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>&gt;</div><div class="line">    </div><div class="line">            <span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/toolbar"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></div><div class="line">            <span class="attr">android:background</span>=<span class="string">"?attr/colorPrimary"</span></div><div class="line">            <span class="attr">android:theme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Dark.ActionBar"</span></div><div class="line">            <span class="attr">app:popupTheme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Light"</span></div><div class="line">            <span class="attr">app:layout_scrollFlags</span>=<span class="string">"scroll|enterAlways|snap"</span>/&gt;</div><div class="line">            </div><div class="line">        <span class="tag">&lt;/<span class="name">android.support.design.widget.AppBarLayout</span>&gt;</span></div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">android.support.v7.widget.RecyclerView</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/recycler_view"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">app:layout_behavior</span>=<span class="string">"@string/appbar_scrolling_view_behavior"</span> /&gt;</div><div class="line">            ...</div><div class="line">    <span class="tag">&lt;/<span class="name">android.support.design.widget.CoordinatorLayout</span>&gt;</span></div><div class="line">    ...</div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>Toolbar 放置在了AppBarLayout里面,然后在RecyclerView中使用app:layout_behavior 属性指定一个布局行为。其中appbar_scrolling_view_behavior 这个字符串也是由Design Support库提供的。 </li>
+<li>在Toolbar中添加了一个app:layout_scrollFlags 属性,并将这个属性的值指定成scroll|enterAlways|snap 。其中,scroll 表示当RecyclerView向上滚动的时候,Toolbar会跟着一起向上滚动并实现隐藏;enterAlways 表示当RecyclerView向下滚动的时候,Toolbar会跟着一起向下滚动并重新显示。snap 表示当Toolbar还没有完全隐藏或显示的时候,会根据当前滚动的距离,自动选择是隐藏还是显示。</li>
+</ul>
+<h4 id="RecyclerView的子项"><a href="#RecyclerView的子项" class="headerlink" title="RecyclerView的子项"></a>RecyclerView的子项</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v7.widget.CardView</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">    <span class="attr">android:layout_margin</span>=<span class="string">"5dp"</span></div><div class="line">    <span class="attr">app:cardCornerRadius</span>=<span class="string">"4dp"</span>&gt;</div><div class="line">    </div><div class="line">    <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">        <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span>&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/fruit_image"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"100dp"</span></div><div class="line">            <span class="attr">android:scaleType</span>=<span class="string">"centerCrop"</span> /&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/fruit_name"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_gravity</span>=<span class="string">"center_horizontal"</span></div><div class="line">            <span class="attr">android:layout_margin</span>=<span class="string">"5dp"</span></div><div class="line">            <span class="attr">android:textSize</span>=<span class="string">"16sp"</span> /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v7.widget.CardView</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>CardView来作为子项的最外层布局,从而使得RecyclerView中的每个元素都是在卡片当中的。CardView由于是一个FrameLayout,因此它没有什么方便的定位方式,这里我们只好CardView中再嵌套一个LinearLayout,然后在LinearLayout中放置具体的内容。</li>
+<li>过app:cardCornerRadius 属性指定卡片圆角的弧度,数值越大,圆角的弧度也越大。另外还可以通过app:elevation 属性指定卡片的高度</li>
+</ul>
+<h3 id="下拉刷新-SwipeRefreshLayout"><a href="#下拉刷新-SwipeRefreshLayout" class="headerlink" title="下拉刷新 SwipeRefreshLayout"></a>下拉刷新 SwipeRefreshLayout</h3><p>把想要实现下拉刷新功能的控件放置到SwipeRefreshLayout中,就可以迅速让这个控件支持下拉刷新。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.v4.widget.DrawerLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:id</span>=<span class="string">"@+id/drawer_layout"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    </div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.CoordinatorLayout</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">        ...</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">android.support.v4.widget.SwipeRefreshLayout</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/swipe_refresh"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">app:layout_behavior</span>=<span class="string">"@string/appbar_scrolling_view_behavior"</span>&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">android.support.v7.widget.RecyclerView</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/recycler_view"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span> /&gt;</div><div class="line">    <span class="tag">&lt;/<span class="name">android.support.v4.widget.SwipeRefreshLayout</span>&gt;</span></div><div class="line">    ...</div><div class="line">    <span class="tag">&lt;/<span class="name">android.support.design.widget.CoordinatorLayout</span>&gt;</span></div><div class="line">    ...</div><div class="line"><span class="tag">&lt;/<span class="name">android.support.v4.widget.DrawerLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="可折叠式标题栏-CollapsingToolbarLayout"><a href="#可折叠式标题栏-CollapsingToolbarLayout" class="headerlink" title="可折叠式标题栏  CollapsingToolbarLayout"></a>可折叠式标题栏  CollapsingToolbarLayout</h3><p>CollapsingToolbarLayout是一个作用于Toolbar基础之上的布局,可以让Toolbar的效果变得更加丰富,不仅仅是展一个标题栏,而是能够实现非常华丽的效果。 不能独立存在的,只能作AppBarLayout的直接子布局。而AppBarLayout又必须是CoordinatorLayout的子布局.<br><img src="/images/android_Ctb1.png" alt=""></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">android.support.design.widget.CoordinatorLayout</span></span></div><div class="line">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></div><div class="line">    <span class="attr">xmlns:app</span>=<span class="string">"http://schemas.android.com/apk/res-auto"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>&gt;</div><div class="line">    </div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.AppBarLayout</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/appBar"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"250dp"</span>&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">android.support.design.widget.CollapsingToolbarLayout</span></span></div><div class="line">            <span class="attr">android:id</span>=<span class="string">"@+id/collapsing_toolbar"</span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:theme</span>=<span class="string">"@style/ThemeOverlay.AppCompat.Dark.ActionBar"</span></div><div class="line">            <span class="attr">app:contentScrim</span>=<span class="string">"?attr/colorPrimary"</span></div><div class="line">            <span class="attr">app:layout_scrollFlags</span>=<span class="string">"scroll|exitUntilCollapsed"</span>&gt;</div><div class="line">        </div><div class="line">	        <span class="tag">&lt;<span class="name">ImageView</span></span></div><div class="line">	            <span class="attr">android:id</span>=<span class="string">"@+id/fruit_image_view"</span><span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">	            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">	            <span class="attr">android:scaleType</span>=<span class="string">"centerCrop"</span></div><div class="line">	            <span class="attr">app:layout_collapseMode</span>=<span class="string">"parallax"</span> /&gt;</div><div class="line">	        </div><div class="line">	        <span class="tag">&lt;<span class="name">android.support.v7.widget.Toolbar</span></span></div><div class="line">	            <span class="attr">android:id</span>=<span class="string">"@+id/toolbar"</span></div><div class="line">	            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">	            <span class="attr">android:layout_height</span>=<span class="string">"?attr/actionBarSize"</span></div><div class="line">	            <span class="attr">app:layout_collapseMode</span>=<span class="string">"pin"</span> /&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;/<span class="name">android.support.design.widget.CollapsingToolbarLayout</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">android.support.design.widget.AppBarLayout</span>&gt;</span></div><div class="line">    </div><div class="line">    <span class="tag">&lt;<span class="name">android.support.v4.widget.NestedScrollView</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">app:layout_behavior</span>=<span class="string">"@string/appbar_scrolling_view_behavior"</span>&gt;</div><div class="line">        </div><div class="line">        <span class="tag">&lt;<span class="name">LinearLayout</span></span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:orientation</span>=<span class="string">"vertical"</span>&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">android.support.v7.widget.CardView</span></span></div><div class="line">            <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">            <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">            <span class="attr">android:layout_marginBottom</span>=<span class="string">"15dp"</span></div><div class="line">            <span class="attr">android:layout_marginLeft</span>=<span class="string">"15dp"</span></div><div class="line">            <span class="attr">android:layout_marginRight</span>=<span class="string">"15dp"</span></div><div class="line">            <span class="attr">android:layout_marginTop</span>=<span class="string">"35dp"</span></div><div class="line">            <span class="attr">app:cardCornerRadius</span>=<span class="string">"4dp"</span>&gt;</div><div class="line">            </div><div class="line">            <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">                <span class="attr">android:id</span>=<span class="string">"@+id/fruit_content_text"</span></div><div class="line">                <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">                <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">                <span class="attr">android:layout_margin</span>=<span class="string">"10dp"</span> /&gt;</div><div class="line">            <span class="tag">&lt;/<span class="name">android.support.v7.widget.CardView</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">android.support.v4.widget.NestedScrollView</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">android.support.design.widget.FloatingActionButton</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_margin</span>=<span class="string">"16dp"</span></div><div class="line">        <span class="attr">android:src</span>=<span class="string">"@drawable/ic_comment"</span></div><div class="line">        <span class="attr">app:layout_anchor</span>=<span class="string">"@id/appBar"</span></div><div class="line">        <span class="attr">app:layout_anchorGravity</span>=<span class="string">"bottom|end"</span> /&gt;</div><div class="line"></div><div class="line"><span class="tag">&lt;/<span class="name">android.support.design.widget.CoordinatorLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>app:contentScrim 属性<br>用于指定CollapsingToolbarLayout在趋于折叠状态以及折叠之后的背景色,CollapsingToolbarLayout在折叠之后就是一个普通的Toolbar,那么背景色肯定应该是colorPrimary了。</li>
+<li>app:layout_scrollFlags 属性<br>scroll表示CollapsingToolbarLayout会随着水果内容详情的滚动一起滚动,exitUntilCollapsed 表示CollapsingToolbarLayout随着滚动完成折叠之后就保留在界面上,不再移出屏幕。</li>
+<li>app:layout_collapseMode<br>它用于指定当控件在CollapsingToolbarLayout折叠过程中的折叠模式,其中Toolbar指定成pin,表示在折叠过程中位置始终保持不变,ImageView指定成parallax,表示会在折叠的过程中产生一定的错位偏移,这种模式的视觉效果会非常好。 </li>
+<li>NestedScrollView<br>和AppBarLayout是平级, app:layout_behavior 属性指定了一个布局行为</li>
+<li>FloatingActionButton<br>app:layout_anchor 属性指定了一个锚点,我们将锚点设置为AppBarLayout,这样悬浮按钮就会出现在水果标题栏的区域内,接着又使app:layout_anchorGravity 属性将悬浮按钮定位在标题栏区域的右下角。</li>
+</ul>
+<h3 id="充分利用系统状态栏空间"><a href="#充分利用系统状态栏空间" class="headerlink" title="充分利用系统状态栏空间"></a>充分利用系统状态栏空间</h3><ul>
+<li>背景图和状态栏融合到一起， 借助android:fitsSystemWindows=true。</li>
+<li>嵌套结构的布局中,所有父布局都设上这个属性才可以;</li>
+<li>程序的主题将状态栏颜色指定成透明色。android:statusBarColor 属性的值指定成@android:color/transparent;</li>
+<li>AndroidManifest.xml中使用修改后的主题</li>
+</ul>
+<p><img src="/images/android_Ctb2.png" alt=""><br>title: Android入门 图谱</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+            <a href="/tags/UI/" rel="tag"># UI</a>
+          
+            <a href="/tags/Material-Design/" rel="tag"># Material Design</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/22/android/android0_index/" rel="next" title="Android入门 图谱">
+                <i class="fa fa-chevron-left"></i> Android入门 图谱
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传统布局"><span class="nav-number">2.</span> <span class="nav-text">传统布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性布局"><span class="nav-number">2.1.</span> <span class="nav-text">线性布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#material-design"><span class="nav-number">2.1.1.</span> <span class="nav-text">material design</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相对布局"><span class="nav-number">2.2.</span> <span class="nav-text">相对布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#帧布局"><span class="nav-number">2.3.</span> <span class="nav-text">帧布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#material-design-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">material design</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表格布局"><span class="nav-number">2.4.</span> <span class="nav-text">表格布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绝对布局"><span class="nav-number">2.5.</span> <span class="nav-text">绝对布局</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Material-Design"><span class="nav-number">3.</span> <span class="nav-text">Material Design</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Toolbar"><span class="nav-number">3.1.</span> <span class="nav-text">Toolbar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#滑动菜单"><span class="nav-number">3.2.</span> <span class="nav-text">滑动菜单</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DrawerLayout"><span class="nav-number">3.2.1.</span> <span class="nav-text">DrawerLayout</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NavigationView"><span class="nav-number">3.2.2.</span> <span class="nav-text">NavigationView</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#悬浮按钮和可交互提示"><span class="nav-number">3.3.</span> <span class="nav-text">悬浮按钮和可交互提示</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#悬浮按钮-FloatingActionButton"><span class="nav-number">3.3.1.</span> <span class="nav-text">悬浮按钮 FloatingActionButton</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#可交互提示-Snackbar"><span class="nav-number">3.3.2.</span> <span class="nav-text">可交互提示 Snackbar</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CoordinatorLayout"><span class="nav-number">3.3.3.</span> <span class="nav-text">CoordinatorLayout</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡片式布局"><span class="nav-number">3.4.</span> <span class="nav-text">卡片式布局</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主布局"><span class="nav-number">3.4.1.</span> <span class="nav-text">主布局</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RecyclerView的子项"><span class="nav-number">3.4.2.</span> <span class="nav-text">RecyclerView的子项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下拉刷新-SwipeRefreshLayout"><span class="nav-number">3.5.</span> <span class="nav-text">下拉刷新 SwipeRefreshLayout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可折叠式标题栏-CollapsingToolbarLayout"><span class="nav-number">3.6.</span> <span class="nav-text">可折叠式标题栏  CollapsingToolbarLayout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#充分利用系统状态栏空间"><span class="nav-number">3.7.</span> <span class="nav-text">充分利用系统状态栏空间</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://giveme5.cc/2017/08/24/android/android2_UI/';
+          this.page.identifier = '2017/08/24/android/android2_UI/';
+          this.page.title = 'Android UI';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://amadis.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

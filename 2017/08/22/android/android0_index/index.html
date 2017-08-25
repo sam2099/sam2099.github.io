@@ -1,0 +1,852 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android,Android," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="主要内容Android 相关一览
+
+log
+
+更新历史2017-8-22 logcat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android入门 图谱">
+<meta property="og:url" content="http://giveme5.cc/2017/08/22/android/android0_index/index.html">
+<meta property="og:site_name" content="Sam's Notes | Sam Blog">
+<meta property="og:description" content="主要内容Android 相关一览
+
+log
+
+更新历史2017-8-22 logcat">
+<meta property="og:updated_time" content="2017-08-22T08:19:44.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android入门 图谱">
+<meta name="twitter:description" content="主要内容Android 相关一览
+
+log
+
+更新历史2017-8-22 logcat">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://giveme5.cc/2017/08/22/android/android0_index/"/>
+
+
+
+
+
+  <title>Android入门 图谱 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/08/22/android/android0_index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android入门 图谱</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-22T19:29:44+08:00">
+                2017-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/22/android/android0_index/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/22/android/android0_index/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h1><p>Android 相关一览</p>
+<ul>
+<li>log</li>
+</ul>
+<p><em>更新历史</em><br>2017-8-22 logcat</p>
+<a id="more"></a>
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><h2 id="log"><a href="#log" class="headerlink" title="log"></a>log</h2><p>Android中的日志工具类是Log(android.util.Log),这个类中提供了如下5个方法来供我们打日志。 </p>
+<ul>
+<li>Log.v() 。用于打印那些最为琐碎的、意义最小的日志信息。对应级别verbose,Android日志里面级别最低的一种。 </li>
+<li>Log.d() 。用于打印一些调试信息,这些信息对你调试程序和分析问题应该是有帮助的对应级别debug,比verbose高一级。 </li>
+<li>Log.i() 。用于打印一些比较重要的数据,这些数据应该是你非常想看到的、可以帮你析用户行为数据。对应级别info,比debug高一级。 </li>
+<li>Log.w() 。用于打印一些警告信息,提示程序在这个地方可能会有潜在的风险,最好去复一下这些出现警告的地方。对应级别warn,比info高一级。 </li>
+<li>Log.e() 。用于打印程序中的错误信息,比如程序进入到了catch语句当中。当有错误息打印出来的时候,一般都代表你的程序出现严重问题了,必须尽快修复。对应级error,比warn高一级。 </li>
+</ul>
+<p>logcat 里面可以定制过滤器</p>
+<h3 id="定制日志工具"><a href="#定制日志工具" class="headerlink" title="定制日志工具"></a>定制日志工具</h3><p>用过<code>log4j</code>的同学一定知道日志等级，可以在配置文件中配置；郭霖大大的方案是自己定制下log</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">public class LogUtil &#123;</div><div class="line">    public static final int VERBOSE = 1;</div><div class="line">    public static final int DEBUG = 2;</div><div class="line">    public static final int INFO = 3;</div><div class="line">    public static final int WARN = 4;</div><div class="line">    public static final int ERROR = 5;</div><div class="line">    public static final int NOTHING = 6;</div><div class="line">    public static int level = VERBOSE;</div><div class="line">    public static void v(String tag, String msg) &#123;</div><div class="line">        if (level &lt;= VERBOSE) &#123;</div><div class="line">            Log.v(tag, msg);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    public static void d(String tag, String msg) &#123;</div><div class="line">        if (level &lt;= DEBUG) &#123;Log.d(tag, msg);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    public static void i(String tag, String msg) &#123;</div><div class="line">        if (level &lt;= INFO) &#123;</div><div class="line">            Log.i(tag, msg);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    public static void w(String tag, String msg) &#123;</div><div class="line">        if (level &lt;= WARN) &#123;</div><div class="line">            Log.w(tag, msg);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    public static void e(String tag, String msg) &#123;</div><div class="line">        if (level &lt;= ERROR) &#123;</div><div class="line">            Log.e(tag, msg);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后我们只需要修改level 变量的值,就可以自由地控制日志的打印行为了。比如让level=VERBOSE 就可以把所有的日志都打印出来,让level=WARN 就可以只打印警告以上级别的志,让level=NOTHING 就可以把所有日志都屏蔽掉。</p>
+<h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><h2 id="线性布局"><a href="#线性布局" class="headerlink" title="线性布局"></a>线性布局</h2><h2 id="相对布局"><a href="#相对布局" class="headerlink" title="相对布局"></a>相对布局</h2><h2 id="帧布局"><a href="#帧布局" class="headerlink" title="帧布局"></a>帧布局</h2><h2 id="表格布局"><a href="#表格布局" class="headerlink" title="表格布局"></a>表格布局</h2><h2 id="绝对布局"><a href="#绝对布局" class="headerlink" title="绝对布局"></a>绝对布局</h2><h1 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h1><h2 id="内部存储"><a href="#内部存储" class="headerlink" title="内部存储"></a>内部存储</h2><h2 id="SD卡"><a href="#SD卡" class="headerlink" title="SD卡"></a>SD卡</h2><h2 id="SharedPreference"><a href="#SharedPreference" class="headerlink" title="SharedPreference"></a>SharedPreference</h2><h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h1 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h1><h2 id="建库"><a href="#建库" class="headerlink" title="建库"></a>建库</h2><h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><h2 id="原生-CRUD"><a href="#原生-CRUD" class="headerlink" title="原生 CRUD"></a>原生 CRUD</h2><h2 id="API-CRUD"><a href="#API-CRUD" class="headerlink" title="API CRUD"></a>API CRUD</h2><h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h1 id="控件"><a href="#控件" class="headerlink" title="控件"></a>控件</h1><h2 id="Toast"><a href="#Toast" class="headerlink" title="Toast"></a>Toast</h2><h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><p>导入局部布局<br>条目点击监听 ： <code>setOnItemClickListener</code></p>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ul>
+<li>convertView</li>
+<li>ViewHolder</li>
+</ul>
+<h2 id="Dialog-对话框"><a href="#Dialog-对话框" class="headerlink" title="Dialog 对话框"></a>Dialog 对话框</h2><h3 id="确定取消Dialog"><a href="#确定取消Dialog" class="headerlink" title="确定取消Dialog"></a>确定取消Dialog</h3><h3 id="单选Dialog"><a href="#单选Dialog" class="headerlink" title="单选Dialog"></a>单选Dialog</h3><h3 id="多选Dialog"><a href="#多选Dialog" class="headerlink" title="多选Dialog"></a>多选Dialog</h3><h1 id="网络访问"><a href="#网络访问" class="headerlink" title="网络访问"></a>网络访问</h1><h2 id="堵塞"><a href="#堵塞" class="headerlink" title="堵塞"></a>堵塞</h2><h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><h1 id="四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器"><a href="#四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器" class="headerlink" title="四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器"></a>四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器</h1><h1 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h1><h2 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h2><p>显式效率高</p>
+<h3 id="显式跳转"><a href="#显式跳转" class="headerlink" title="显式跳转"></a>显式跳转</h3><h3 id="隐式跳转"><a href="#隐式跳转" class="headerlink" title="隐式跳转"></a>隐式跳转</h3><h2 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h2><h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><h3 id="返回"><a href="#返回" class="headerlink" title="返回"></a>返回</h3><ul>
+<li><p>子Activity</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Intent data = new Intent();</div><div class="line">data.putExtra(&quot;key&quot;, value);</div><div class="line">setRestult(resultCode, data) //set result vaule</div><div class="line">finish(); //销毁当前Activity, 返回父Activity</div></pre></td></tr></table></figure>
+</li>
+<li><p>父Activity<br>启动 ： <code>StartActivityForResult(Intent, requestCode)</code><br>接收 ： <code>OnActivityResult(int requestCode, int resultCode, Intent data)</code> 打开多个的情况可以采用requestCode和resultCode来区别每个子Activity及其返回数据的目的</p>
+</li>
+</ul>
+<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><h2 id="启动模式"><a href="#启动模式" class="headerlink" title="启动模式"></a>启动模式</h2><h3 id="launchMode"><a href="#launchMode" class="headerlink" title="launchMode"></a>launchMode</h3><ul>
+<li>standard</li>
+<li>singleTop : 栈顶已经有一个相同类型的Activity实例，Intent不会再创建一个Activity，而是通过onNewIntent()被发送到现有的Activity</li>
+<li>singleTask : singleTask模式的Activity只允许在一个APP栈中有一个实例。如果系统中已经有了一个实例，持有这个实例的任务将移动到顶部，（将其上方的所有Activity销毁）同时intent将被通过onNewIntent()发送。如果没有，则会创建一个新的Activity并置放在合适的任务中。</li>
+<li>singleInstance : 非常接近于singleTask，系统中只允许一个Activity的实例存在。每个singleInstance会有自己独立的栈。实际开发中只有平台型应用（qq，微信，微博），提供给其他应用使用的情况，才采用。</li>
+</ul>
+<h2 id="横竖切换"><a href="#横竖切换" class="headerlink" title="横竖切换"></a>横竖切换</h2><ul>
+<li><p>默认切换会调用生命周期方法；<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:configChanges=&quot;orientation|keyboardHidden&quot;</code> 时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法</p>
+</li>
+<li><p>锁定<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:orientation</code><br>或者 在 <code>OnCreate</code>方法中 增加 <code>setRequestOrientation(Activity.)</code></p>
+</li>
+</ul>
+<h1 id="BroadcastReceiver广播接收器"><a href="#BroadcastReceiver广播接收器" class="headerlink" title="BroadcastReceiver广播接收器"></a>BroadcastReceiver广播接收器</h1><h1 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h1>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/18/devEnv/git/git/" rel="next" title="git">
+                <i class="fa fa-chevron-left"></i> git
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/24/android/android2_UI/" rel="prev" title="Android UI">
+                Android UI <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">98</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">2.</span> <span class="nav-text">开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#log"><span class="nav-number">2.1.</span> <span class="nav-text">log</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定制日志工具"><span class="nav-number">2.1.1.</span> <span class="nav-text">定制日志工具</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#布局"><span class="nav-number">3.</span> <span class="nav-text">布局</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线性布局"><span class="nav-number">3.1.</span> <span class="nav-text">线性布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相对布局"><span class="nav-number">3.2.</span> <span class="nav-text">相对布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#帧布局"><span class="nav-number">3.3.</span> <span class="nav-text">帧布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表格布局"><span class="nav-number">3.4.</span> <span class="nav-text">表格布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绝对布局"><span class="nav-number">3.5.</span> <span class="nav-text">绝对布局</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#存储"><span class="nav-number">4.</span> <span class="nav-text">存储</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#内部存储"><span class="nav-number">4.1.</span> <span class="nav-text">内部存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SD卡"><span class="nav-number">4.2.</span> <span class="nav-text">SD卡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SharedPreference"><span class="nav-number">4.3.</span> <span class="nav-text">SharedPreference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XML"><span class="nav-number">4.4.</span> <span class="nav-text">XML</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQLite"><span class="nav-number">5.</span> <span class="nav-text">SQLite</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#建库"><span class="nav-number">5.1.</span> <span class="nav-text">建库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建表"><span class="nav-number">5.2.</span> <span class="nav-text">建表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原生-CRUD"><span class="nav-number">5.3.</span> <span class="nav-text">原生 CRUD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-CRUD"><span class="nav-number">5.4.</span> <span class="nav-text">API CRUD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">5.5.</span> <span class="nav-text">事务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#控件"><span class="nav-number">6.</span> <span class="nav-text">控件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Toast"><span class="nav-number">6.1.</span> <span class="nav-text">Toast</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ListView"><span class="nav-number">6.2.</span> <span class="nav-text">ListView</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓存"><span class="nav-number">6.2.1.</span> <span class="nav-text">缓存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dialog-对话框"><span class="nav-number">6.3.</span> <span class="nav-text">Dialog 对话框</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#确定取消Dialog"><span class="nav-number">6.3.1.</span> <span class="nav-text">确定取消Dialog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单选Dialog"><span class="nav-number">6.3.2.</span> <span class="nav-text">单选Dialog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多选Dialog"><span class="nav-number">6.3.3.</span> <span class="nav-text">多选Dialog</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网络访问"><span class="nav-number">7.</span> <span class="nav-text">网络访问</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#堵塞"><span class="nav-number">7.1.</span> <span class="nav-text">堵塞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息队列"><span class="nav-number">7.2.</span> <span class="nav-text">消息队列</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器"><span class="nav-number">8.</span> <span class="nav-text">四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity"><span class="nav-number">9.</span> <span class="nav-text">Activity</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#页面跳转"><span class="nav-number">9.1.</span> <span class="nav-text">页面跳转</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#显式跳转"><span class="nav-number">9.1.1.</span> <span class="nav-text">显式跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐式跳转"><span class="nav-number">9.1.2.</span> <span class="nav-text">隐式跳转</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传递数据"><span class="nav-number">9.2.</span> <span class="nav-text">传递数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#跳转"><span class="nav-number">9.2.1.</span> <span class="nav-text">跳转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#返回"><span class="nav-number">9.2.2.</span> <span class="nav-text">返回</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期"><span class="nav-number">9.3.</span> <span class="nav-text">生命周期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动模式"><span class="nav-number">9.4.</span> <span class="nav-text">启动模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#launchMode"><span class="nav-number">9.4.1.</span> <span class="nav-text">launchMode</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#横竖切换"><span class="nav-number">9.5.</span> <span class="nav-text">横竖切换</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#BroadcastReceiver广播接收器"><span class="nav-number">10.</span> <span class="nav-text">BroadcastReceiver广播接收器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务"><span class="nav-number">11.</span> <span class="nav-text">服务</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://giveme5.cc/2017/08/22/android/android0_index/';
+          this.page.identifier = '2017/08/22/android/android0_index/';
+          this.page.title = 'Android入门 图谱';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://amadis.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
