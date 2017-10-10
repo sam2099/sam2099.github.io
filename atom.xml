@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2017-08-25T08:17:36.831Z</updated>
+  <updated>2017-10-10T08:49:45.085Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,166 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>spring 多态 注入</title>
+    <link href="http://giveme5.cc/2017/10/10/spring/polymorphismDI/"/>
+    <id>http://giveme5.cc/2017/10/10/spring/polymorphismDI/</id>
+    <published>2017-10-10T11:44:58.000Z</published>
+    <updated>2017-10-10T08:49:45.085Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring 多态 注入<br>利用 <code>PropertySource</code> 实现 多态的动态注入。</p>
+<p><em>更新历史</em><br>无</p>
+<a id="more"></a>
+<hr>
+<p>环境：spring 4, JDK 1.8； 话不多说，看代码</p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>一个 service 接口， 有若干具体实现</p>
+<h3 id="接口-IPolyDiService-java"><a href="#接口-IPolyDiService-java" class="headerlink" title="接口 IPolyDiService.java"></a>接口 <code>IPolyDiService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现A-APolyDiServiceImpl"><a href="#实现A-APolyDiServiceImpl" class="headerlink" title="实现A APolyDiServiceImpl"></a>实现A <code>APolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"A_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">APolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is A PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现B-BPolyDiServiceImpl"><a href="#实现B-BPolyDiServiceImpl" class="headerlink" title="实现B BPolyDiServiceImpl"></a>实现B <code>BPolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"B_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BPolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is B PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="动态注入"><a href="#动态注入" class="headerlink" title="动态注入"></a>动态注入</h2><h3 id="配置文件-env-properties"><a href="#配置文件-env-properties" class="headerlink" title="配置文件 env.properties"></a>配置文件 <code>env.properties</code></h3><p>可以用其他外置配置替代， 如下， 改变 <code>service</code> 的值， 可以运行时动态注入不同的具体实现。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># service=B</span></div><div class="line">service=A</div></pre></td></tr></table></figure></p>
+<h3 id="Junit-PolyDiTest"><a href="#Junit-PolyDiTest" class="headerlink" title="Junit PolyDiTest"></a>Junit <code>PolyDiTest</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.PropertySource;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.support.AnnotationConfigContextLoader;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.annotation.Resource;</div><div class="line"><span class="keyword">import</span> java.text.ParseException;</div><div class="line"></div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(loader = AnnotationConfigContextLoader.class)</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PolyDiTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span>(name = <span class="string">"$&#123;service&#125;_service"</span>)</div><div class="line">    <span class="keyword">private</span> IPolyDiService service;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> ParseException </span>&#123;</div><div class="line">        service.printName();</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Configuration</span></div><div class="line">    <span class="meta">@PropertySource</span>(&#123; <span class="string">"classpath:conf/env.properties"</span>&#125;)</div><div class="line">    <span class="meta">@ComponentScan</span>(basePackages =&#123; <span class="string">"com.xxx.service.impl"</span>&#125;)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextConfiguration</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><code>service=A</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is A PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
+<p><code>service=B</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is B PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring 多态 注入&lt;br&gt;利用 &lt;code&gt;PropertySource&lt;/code&gt; 实现 多态的动态注入。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
+    
+    
+      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
+    
+      <category term="多态" scheme="http://giveme5.cc/tags/%E5%A4%9A%E6%80%81/"/>
+    
+      <category term="注入" scheme="http://giveme5.cc/tags/%E6%B3%A8%E5%85%A5/"/>
+    
+      <category term="DI" scheme="http://giveme5.cc/tags/DI/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker 入门 （未完）</title>
+    <link href="http://giveme5.cc/2017/10/10/docker/docker/"/>
+    <id>http://giveme5.cc/2017/10/10/docker/docker/</id>
+    <published>2017-10-10T11:44:58.000Z</published>
+    <updated>2017-10-10T08:52:20.625Z</updated>
+    
+    <content type="html"><![CDATA[<p>docker 入门 （未完）</p>
+<p><em>更新历史</em><br>无<br><a id="more"></a></p>
+<hr>
+<h1 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h1><h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>不要使用 dockercommit 定制镜像,定制行为应该使用 Dockerfile 来完成。<br>Dockerfile中每一个指令都会建立一层</p>
+<ul>
+<li><p>run<br>使用 <code>&amp;&amp;</code> 将各个所需命令串联起来</p>
+</li>
+<li><p>镜像构建上下文(Context)<br><code>docker build [选项] &lt;上下文路径/URL/-&gt;</code><br><code>docker build -t nginx:v3 .</code><br>最后有一个<code>.</code>。 <code>.</code>表示当前目录, 是在指定上下文路径。 即 docker 所能操作的根目录， 超出其路径， docker 是不能操作的<br><code>docker build</code>  命令得知这个路径后,会将路径下的所有内容打包,然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后,展开就会获得构建镜像所需的一切文件。<br>初学的错误是将<code>Dockerfile</code>放到硬盘根目录, 把上下文设置成硬盘根目录， 结果发现<code>docker build</code>执行后,在发送一个几十GB的东西。<br>一般来说,应该会将<code>Dockerfile</code>置于一个空目录下,或者项目根目录下。如果该目录下没有所需文件,那么应该把所需文件复制一份过来。<br>如果目录下有些东西确实不希望构建时传给 Docker 引擎,那么可以用<code>.gitignore</code>一样的语法写一个<code>.dockerignore</code>,该文件是用于剔除不需要作为上下文传递给Docker 引擎的。<br>那么为什么会有人误以为<code>.</code>是指定<code>Dockerfile</code>所在目录呢?这是因为在默认情况下,如果不额外指定<code>Dockerfile</code>的话,会将上下文目录下的名为 Dockerfile  的文件作为 Dockerfile。</p>
+</li>
+</ul>
+<h3 id="COPY复制文件"><a href="#COPY复制文件" class="headerlink" title="COPY复制文件"></a>COPY复制文件</h3><h3 id="ADD更高级的复制文件"><a href="#ADD更高级的复制文件" class="headerlink" title="ADD更高级的复制文件"></a>ADD更高级的复制文件</h3><h3 id="CMD容器启动命令"><a href="#CMD容器启动命令" class="headerlink" title="CMD容器启动命令"></a>CMD容器启动命令</h3><h3 id="ENTRYPOINT入口点"><a href="#ENTRYPOINT入口点" class="headerlink" title="ENTRYPOINT入口点"></a>ENTRYPOINT入口点</h3><h3 id="ENV设置环境变量"><a href="#ENV设置环境变量" class="headerlink" title="ENV设置环境变量"></a>ENV设置环境变量</h3><h3 id="ARG构建参数"><a href="#ARG构建参数" class="headerlink" title="ARG构建参数"></a>ARG构建参数</h3><h3 id="VOLUME定义匿名卷"><a href="#VOLUME定义匿名卷" class="headerlink" title="VOLUME定义匿名卷"></a>VOLUME定义匿名卷</h3><h3 id="EXPOSE声明端口"><a href="#EXPOSE声明端口" class="headerlink" title="EXPOSE声明端口"></a>EXPOSE声明端口</h3><h3 id="WORKDIR指定工作目录"><a href="#WORKDIR指定工作目录" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="WORKDIR指定工作目录-1"><a href="#WORKDIR指定工作目录-1" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="USER指定当前用户"><a href="#USER指定当前用户" class="headerlink" title="USER指定当前用户"></a>USER指定当前用户</h3><h3 id="HEALTHCHECK健康检查"><a href="#HEALTHCHECK健康检查" class="headerlink" title="HEALTHCHECK健康检查"></a>HEALTHCHECK健康检查</h3><h3 id="ONBUILD为他人做嫁衣裳"><a href="#ONBUILD为他人做嫁衣裳" class="headerlink" title="ONBUILD为他人做嫁衣裳"></a>ONBUILD为他人做嫁衣裳</h3><h2 id="删除本地镜像"><a href="#删除本地镜像" class="headerlink" title="删除本地镜像"></a>删除本地镜像</h2><p><code>dockerrmi[选项]&lt;镜像1&gt;[&lt;镜像2&gt;...]</code><br>其中, &lt;镜像&gt;可以是  镜像短ID、  镜像长ID、  镜像名或者  镜像摘要。<br>可以使用 <code>dockerimages-q</code>来配合使用<code>dockerrmi</code>,这样可以成批的删除希望删除的镜像。</p>
+<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><h2 id="新建并启动"><a href="#新建并启动" class="headerlink" title="新建并启动"></a>新建并启动</h2><p><code>docker    run</code><br><code>sudo    docker    run    -t    -i    ubuntu:14.04    /bin/bash</code></p>
+<p>检查本地是否存在指定的镜像,不存在就从公有仓库下载启动<br>利用镜像创建并启动一个容器<br>分配一个文件系统,并在只读的镜像层外面挂载一层可读写层<br>从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去<br>从地址池配置一个    ip    地址给容器<br>执行用户指定的应用程序<br>执行完毕后容器被终止</p>
+<h2 id="启动已终止容器"><a href="#启动已终止容器" class="headerlink" title="启动已终止容器"></a>启动已终止容器</h2><p><code>docker    start</code></p>
+<h2 id="后台-background-运行"><a href="#后台-background-运行" class="headerlink" title="后台(background)运行"></a>后台(background)运行</h2><p><code>sudo    docker    run    -d    ubuntu:14.04    /bin/sh    -c    &quot;while    true;    do    echo    hello    world;    sleep    1;    done</code><br>容器会在后台运行并不会把输出的结果(STDOUT)打印到宿主机上面(输出结果可以用docker    logs    查看)。<br><code>sudo    docker    logs    [container    ID    or    NAMES]</code></p>
+<h2 id="终止容器"><a href="#终止容器" class="headerlink" title="终止容器"></a>终止容器</h2><p><code>docker    stop</code></p>
+<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><ul>
+<li><code>nsenter</code>    命令</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">PID=$(docker	inspect	--format	<span class="string">"&#123;&#123;	.State.Pid	&#125;&#125;"</span>	&lt;container&gt;)</div><div class="line">nsenter	--target	<span class="variable">$PID</span>	--mount	--uts	--ipc	--net	--pid</div><div class="line">nsenter	--target	<span class="variable">$pid</span>	--mount	--uts	--ipc	--net	--pid		--	/usr/bin/env	\	--ignore-environment	HOME=/root	/bin/bash	--login</div></pre></td></tr></table></figure>
+<ul>
+<li><code>.bashrc_docker</code><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget	-P	~	https://github.com/yeasy/docker_practice/raw/master/_local/.bashrc_docker;</div><div class="line"><span class="built_in">echo</span>	<span class="string">"[	-f	~/.bashrc_docker	]	&amp;&amp;	.	~/.bashrc_docker"</span>	&gt;&gt;	~/.bashrc;	<span class="built_in">source</span>	~/.bashrc</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这个文件中定义了很多方便使用    Docker    的命令,例如         docker-pid        可以获取某<br>个容器的    PID;而         docker-enter        可以进入容器或直接在容器内执行命令。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span>	$(docker-pid	&lt;container&gt;)</div><div class="line">docker-enter	&lt;container&gt;	ls</div></pre></td></tr></table></figure>
+<h2 id="导出和导入容器-docker-export"><a href="#导出和导入容器-docker-export" class="headerlink" title="导出和导入容器 docker    export"></a>导出和导入容器 <code>docker    export</code></h2><h3 id="导出-docker-export"><a href="#导出-docker-export" class="headerlink" title="导出 docker    export"></a>导出 <code>docker    export</code></h3><h3 id="导入-docker-import"><a href="#导入-docker-import" class="headerlink" title="导入 docker    import"></a>导入 <code>docker    import</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cat	ubuntu.tar	|	sudo	docker	import	-	test/ubuntu:v1.0</div><div class="line">sudo	docker	import	http://example.com/exampleimage.tgz	example/imagerepo</div></pre></td></tr></table></figure>
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><p><code>sudo    docker    rm        trusting_newton</code><br>如果要删除一个运行中的容器,可以添加         -f        参数</p>
+<h3 id="清理所有处于终止状态的容器"><a href="#清理所有处于终止状态的容器" class="headerlink" title="清理所有处于终止状态的容器"></a>清理所有处于终止状态的容器</h3><p><code>docker    rm    $(docker    ps    -a    -q)</code>可以全部清理掉, 包括还在运行中的容器.</p>
+<h1 id="Docker-数据管理"><a href="#Docker-数据管理" class="headerlink" title="Docker    数据管理"></a>Docker    数据管理</h1><h2 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;docker 入门 （未完）&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;br&gt;
+    
+    </summary>
+    
+      <category term="docker" scheme="http://giveme5.cc/categories/docker/"/>
+    
+    
+      <category term="docker" scheme="http://giveme5.cc/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>linux wine 32 &amp; 64</title>
+    <link href="http://giveme5.cc/2017/09/26/linux/wine/"/>
+    <id>http://giveme5.cc/2017/09/26/linux/wine/</id>
+    <published>2017-09-26T05:00:10.000Z</published>
+    <updated>2017-09-26T07:53:03.161Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>  wine在linux中很常用，目前是32位和64位的软件都有；在此讨论在64位centos 7中安装32位和64位的wine。<br>还有wine的中文环境下一些乱码问题。</p>
+<p><em>更新历史</em><br>2017-09-26 增加 同时 wine 32和64 的应用</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="删除已有版本"><a href="#删除已有版本" class="headerlink" title="删除已有版本"></a>删除已有版本</h3><pre><code>yum erase wine wine-*
+#zsh中yum erase wine &quot;wine-*&quot;
+</code></pre><h3 id="编译环境"><a href="#编译环境" class="headerlink" title="编译环境"></a>编译环境</h3><pre><code>yum install samba-winbind-clients -y
+yum groupinstall &apos;Development Tools&apos; -y
+yum install libjpeg-turbo-devel libtiff-devel freetype-devel -y
+yum install libgcc.i686 libX11-devel.i686 freetype-devel.i686 gnutls-devel.i686 libxml2-devel.i686 libjpeg-turbo-devel.i686 libpng-devel.i686 libXrender-devel.i686 glibc-devel.i686 glibc-devel ibstdc++-devel.i686  -y 
+</code></pre><p><a href="http://www.cyberciti.biz/tips/compile-32bit-application-using-gcc-64-bit-linux.html" target="_blank" rel="external">参考</a></p>
+<h3 id="下载wine源码"><a href="#下载wine源码" class="headerlink" title="下载wine源码"></a>下载wine源码</h3><pre><code>ver=1.9.21
+cd /usr/src
+wget http://dl.winehq.org/wine/source/1.9/wine-${ver}.tar.bz2 -O wine-${ver}.tar.bz2
+tar xjf wine-${ver}.tar.bz2
+cd wine-${ver}/
+mkdir -p wine32 wine64
+</code></pre><h3 id="wine-64-编译安装"><a href="#wine-64-编译安装" class="headerlink" title="wine 64 编译安装"></a>wine 64 编译安装</h3><pre><code>cd wine64
+../configure --enable-win64
+make -j 4
+make install
+</code></pre><h3 id="wine-32-编译安装"><a href="#wine-32-编译安装" class="headerlink" title="wine 32 编译安装"></a>wine 32 编译安装</h3><pre><code>cd ../wine32
+../configure --with-wine64=../wine64
+make -j 4
+make install
+</code></pre><h3 id="校验"><a href="#校验" class="headerlink" title="校验"></a>校验</h3><pre><code>$ file `which wine`
+/usr/local/bin/wine: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32, BuildID[sha1]=a83b9f0916e6c0d5427e2c38a172c93bd8023d98, not stripped
+$ file `which wine64`
+/usr/local/bin/wine64: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.32, BuildID[sha1]=4d8e8468402bc63bd2a72c59c57fcad332235d41, not stripped
+</code></pre><h2 id="中文字体库"><a href="#中文字体库" class="headerlink" title="中文字体库"></a>中文字体库</h2><h3 id="安装字体管理工具"><a href="#安装字体管理工具" class="headerlink" title="安装字体管理工具"></a>安装字体管理工具</h3><pre><code>yum install fontconfig mkfontscale
+</code></pre><h3 id="字体库"><a href="#字体库" class="headerlink" title="字体库"></a>字体库</h3><pre><code>mkdir -pv /usr/share/fonts/chinese/TrueType
+</code></pre><p>从Windows字体目录C:\Windows\Fonts 拷贝需要的字体库到刚刚建立目录</p>
+<h3 id="建立字体缓存"><a href="#建立字体缓存" class="headerlink" title="建立字体缓存"></a>建立字体缓存</h3><pre><code>cd /usr/share/fonts/chinese/TrueType
+mkfontscale
+mkfontdir
+fc-cache -fv
+fc-list |grep SimSun
+</code></pre><h2 id="中文乱码"><a href="#中文乱码" class="headerlink" title="中文乱码"></a>中文乱码</h2><p><a href="www.oschina.net/question/12_2853">参考</a></p>
+<h2 id="wine-32和64-的应用"><a href="#wine-32和64-的应用" class="headerlink" title="wine 32和64 的应用"></a>wine 32和64 的应用</h2><p><a href="https://wiki.archlinux.org/index.php/Wine_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87" target="_blank" rel="external">WINEPREFIX 和 WINEARCH </a>#WINEPREFIX)</p>
+<h3 id="WINEPREFIX"><a href="#WINEPREFIX" class="headerlink" title="WINEPREFIX"></a>WINEPREFIX</h3><p>通过设置WINEPREFIX环境变量，可以更改Wine系统目录的位置。如果希望让不同的Windows程序使用不同的系统环境或配置，这一变量会非常有用。<br>比如同时需要wine 32位和64位的程序， 就需要设置32位和64位的Wine系统目录。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">env WINEPREFIX=~/.win-32  wine32  32A程序.exe</div><div class="line">env WINEPREFIX=~/.win-64  wine64  64B程序.exe</div></pre></td></tr></table></figure>
+<h3 id="WINEARCH"><a href="#WINEARCH" class="headerlink" title="WINEARCH"></a>WINEARCH</h3><p>对于64位用户，如果使用[multilib]仓库里的Wine，默认创建的系统目录是64位环境的。若想使用纯32位环境，修改WINEARCH 变量win32为即可<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">WINEARCH=win32 WINEPREFIX=~/win32 winecfg </div><div class="line">WINEPREFIX=~/win64 winecfg</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;  wine在linux中很常用，目前是32位和64位的软件都有；在此讨论在64位centos 7中安装32位和64位的wine。&lt;br&gt;还有wine的中文环境下一些乱码问题。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;2017-09-26 增加 同时 wine 32和64 的应用&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
+    
+      <category term="wine" scheme="http://giveme5.cc/tags/wine/"/>
+    
+  </entry>
   
   <entry>
     <title>Android UI</title>
@@ -257,9 +417,9 @@
     
       <category term="github" scheme="http://giveme5.cc/tags/github/"/>
     
-      <category term="git" scheme="http://giveme5.cc/tags/git/"/>
-    
       <category term="gitlab" scheme="http://giveme5.cc/tags/gitlab/"/>
+    
+      <category term="git" scheme="http://giveme5.cc/tags/git/"/>
     
   </entry>
   
@@ -1491,161 +1651,6 @@ firewall-cmd --zone=public --remove-port=8080/tcp --permanent
       <category term="hadoop" scheme="http://giveme5.cc/tags/hadoop/"/>
     
       <category term="全排序" scheme="http://giveme5.cc/tags/%E5%85%A8%E6%8E%92%E5%BA%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jenkins 管理项目权限</title>
-    <link href="http://giveme5.cc/2017/03/03/devEnv/ci/jenkinsRole/"/>
-    <id>http://giveme5.cc/2017/03/03/devEnv/ci/jenkinsRole/</id>
-    <published>2017-03-03T03:30:08.000Z</published>
-    <updated>2017-03-03T06:23:11.528Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<p>利用 插件<code>Role-based Authorization Strategy</code> 管理项目权限</p>
-<a id="more"></a>
-<h2 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h2><p>安装插件<code>Role-based Authorization Strategy</code></p>
-<p><img src="/images/jenkins_role_1.png" alt="Role-based Authorization Strategy"></p>
-<h2 id="授权策略"><a href="#授权策略" class="headerlink" title="授权策略"></a>授权策略</h2><p><code>Manage Jenkins</code> -&gt; <code>Configure Global Security</code> -&gt; <code>Access Control</code> -&gt; <code>Authorization</code> -&gt; 选择“Role-Based Strategy”</p>
-<p><img src="/images/jenkins_role_2.png" alt=""></p>
-<p>注意下拉到最后 <code>保存</code></p>
-<h2 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h2><p><code>Manage Jenkins</code> -&gt; <code>Manage Users</code> -&gt; <code>Create User</code>，<br>创建用户<code>productManager</code><br><img src="/images/jenkins_role_3.png" alt=""></p>
-<h2 id="管理角色"><a href="#管理角色" class="headerlink" title="管理角色"></a>管理角色</h2><h3 id="创建角色"><a href="#创建角色" class="headerlink" title="创建角色"></a>创建角色</h3><p><code>Manage Jenkins</code> -&gt; <code>Manage and Assign Roles</code> -&gt; <code>Manage Roles</code>，<br>需要分别在 <code>Global roles</code> 全局级别， <code>Project roles</code> 项目级别 操作</p>
-<p><img src="/images/jenkins_role_4.png" alt=""></p>
-<p>2个级别：</p>
-<ul>
-<li><code>Global roles</code> 全局级别<br>创建角色<code>member</code>，给<code>member</code>角色 赋予 <code>Overall.Read</code>  <code>Job.Create</code> 这2个全局权限。<code>Overall.Read</code> 必须要赋予。</li>
-</ul>
-<ul>
-<li><code>Project roles</code> 项目级别<br>创建角色<code>pm</code>，例如定义<code>pm</code>角色为该项目管理员，所以赋予其项目的全部权限， 看你们的实际情况。</li>
-</ul>
-<p>注意下拉到最后 <code>保存</code></p>
-<h3 id="赋予角色"><a href="#赋予角色" class="headerlink" title="赋予角色"></a>赋予角色</h3><p><code>Manage Jenkins</code> -&gt; <code>Manage and Assign Roles</code> -&gt; <code>Assign Roles</code>，<br>为上面创建的用户<code>productManager</code> 赋予角色， 这里也需要分别在 <code>Global roles</code> 全局级别， <code>Project roles</code> 项目级别 操作。<br><img src="/images/jenkins_role_5.png" alt=""></p>
-<p>2个级别：</p>
-<ul>
-<li><code>Global roles</code> 全局级别<br>用户<code>productManager</code> 赋予角色<code>member</code></li>
-</ul>
-<ul>
-<li><code>Project roles</code> 项目级别<br>用户<code>productManager</code> 赋予角色<code>pm</code>。</li>
-</ul>
-<p>注意下拉到最后 <code>保存</code></p>
-<h2 id="验证角色"><a href="#验证角色" class="headerlink" title="验证角色"></a>验证角色</h2><ul>
-<li>管理员视图：<br><img src="/images/jenkins_role_6.png" alt=""></li>
-</ul>
-<ul>
-<li>用户<code>productManager</code> 视图：<br><img src="/images/jenkins_role_7.png" alt=""></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;p&gt;利用 插件&lt;code&gt;Role-based Authorization Strategy&lt;/code&gt; 管理项目权限&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
-    
-    
-      <category term="jenkins" scheme="http://giveme5.cc/tags/jenkins/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hadoopHBase</title>
-    <link href="http://giveme5.cc/2017/03/01/hadoop/hadoopHBase/"/>
-    <id>http://giveme5.cc/2017/03/01/hadoop/hadoopHBase/</id>
-    <published>2017-03-01T07:32:24.000Z</published>
-    <updated>2017-03-07T07:44:45.303Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>概念</li>
-<li>API 和 命令</li>
-<li>整合 MapReduce</li>
-</ul>
-<p>HBase – Hadoop Database的简称，Google BigTable的另一种开源实现方式，就为了解决用大量廉价的机器高速存取海量数据、实现数据分布式存储提供可靠的方案。从功能上来讲，是一个种K/V类型的 NOSQL 数据库。</p>
-<p>适用于实时相应的场景。</p>
-<p>……</p>
-<a id="more"></a>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;概念&lt;/li&gt;
-&lt;li&gt;API 和 命令&lt;/li&gt;
-&lt;li&gt;整合 MapReduce&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;HBase – Hadoop Database的简称，Google BigTable的另一种开源实现方式，就为了解决用大量廉价的机器高速存取海量数据、实现数据分布式存储提供可靠的方案。从功能上来讲，是一个种K/V类型的 NOSQL 数据库。&lt;/p&gt;
-&lt;p&gt;适用于实时相应的场景。&lt;/p&gt;
-&lt;p&gt;……&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="hadoop" scheme="http://giveme5.cc/categories/hadoop/"/>
-    
-    
-      <category term="bigData" scheme="http://giveme5.cc/tags/bigData/"/>
-    
-      <category term="hadoop" scheme="http://giveme5.cc/tags/hadoop/"/>
-    
-      <category term="hbase" scheme="http://giveme5.cc/tags/hbase/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nginx + Tomcat + HTTPS</title>
-    <link href="http://giveme5.cc/2017/02/22/web%20server/nginxTomcatSSL/"/>
-    <id>http://giveme5.cc/2017/02/22/web server/nginxTomcatSSL/</id>
-    <published>2017-02-22T03:12:14.000Z</published>
-    <updated>2017-03-02T05:26:37.671Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>环境</li>
-<li>证书</li>
-<li>nginx</li>
-<li>tomcat</li>
-</ul>
-<p>……</p>
-<p>本文基本参照 <a href="https://www.oschina.net/question/12_213459" target="_blank" rel="external"> oschina 红薯 大大的文章 </a> 。<br>基本思路是 Nginx 上启用了 HTTPS，而 Nginx 和 Tomcat 之间走的却是普通的 HTTP 连接。</p>
-<p><img src="http://amadis.qiniudn.com/nginx_tomcat_ssl.png" alt=""></p>
-<a id="more"></a>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>主要以Centos为例。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># cat /etc/redhat-release</span></div><div class="line">CentOS release 5.4 (Final)</div></pre></td></tr></table></figure></p>
-<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>阿里云提供免费的<code>Symantec DV 证书</code>， 生成好后下载nginx的证书，包含 <code>xxxxxxx.pem</code> 和 <code>xxxxxxxxx.key</code></p>
-<h2 id="nginx配置"><a href="#nginx配置" class="headerlink" title="nginx配置"></a>nginx配置</h2><h3 id="证书上传"><a href="#证书上传" class="headerlink" title="证书上传"></a>证书上传</h3><p>将 <code>xxxxxxx.pem</code> 和 <code>xxxxxxxxx.key</code> 上传到 ngixn 的配置根目录 <code>/etc/nginx</code>。</p>
-<h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">server</div><div class="line">&#123;</div><div class="line">        listen       443 ssl;</div><div class="line">        listen       80 ;</div><div class="line">        server_name  ssl.test.com  ;                                                                                                                                                                    </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        proxy_intercept_errors on;                                                                                                                                                                                </div><div class="line">        charset utf-8;                                                                                                                                                                                            </div><div class="line">                                                                                                                                                                                                                  </div><div class="line">        # ssl                                                                                                                                                                                                     </div><div class="line">        ssl_certificate   xxxxxxxxx.pem;                                                                                                                                                                    </div><div class="line">        ssl_certificate_key  xxxxxxxxx.key;                                                                                                                                                                 </div><div class="line">        ssl_session_timeout 5m;                                                                                                                                                                                   </div><div class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">        ssl_ciphers AESGCM:ALL:!DH:!EXPORT:!RC4:+HIGH:!MEDIUM:!LOW:!aNULL:!eNULL;</div><div class="line">        ssl_prefer_server_ciphers on;</div><div class="line"></div><div class="line">        location /</div><div class="line">        &#123;</div><div class="line">                proxy_pass http://localhost:8080;</div><div class="line">                proxy_redirect off;</div><div class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</div><div class="line">                proxy_set_header X-Real-IP $remote_addr;</div><div class="line">                proxy_set_header Host $http_host;</div><div class="line">                proxy_set_header X-Forwarded-Proto https;</div><div class="line">        </div><div class="line">        &#125;</div><div class="line"></div><div class="line">        location /status</div><div class="line">        &#123;</div><div class="line">                stub_status on;</div><div class="line">                access_log   off;</div><div class="line">        &#125;</div><div class="line"></div><div class="line"></div><div class="line">        #  让http请求重定向到https请求   </div><div class="line">        error_page 497  https://$host$uri?$args;  </div><div class="line"></div><div class="line">        error_page  404              /404.html;</div><div class="line">        location = /404.html &#123;</div><div class="line">          root /usr/share/nginx/html;</div><div class="line">          internal;</div><div class="line">        &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>497</code> 是nginx 内置 http 状态。<br>可参考<a href="http://blog.csdn.net/vfush/article/details/51086274" target="_blank" rel="external">nginx强制使用https访问</a></p>
-<h2 id="tomcat配置"><a href="#tomcat配置" class="headerlink" title="tomcat配置"></a>tomcat配置</h2><p>主要配置 <code>server.xml</code></p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version='1.0' encoding='utf-8'?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">Server</span> <span class="attr">port</span>=<span class="string">"8005"</span> <span class="attr">shutdown</span>=<span class="string">"SHUTDOWN"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">Service</span> <span class="attr">name</span>=<span class="string">"Catalina"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">"8080"</span> <span class="attr">protocol</span>=<span class="string">"HTTP/1.1"</span></span></div><div class="line">               <span class="attr">connectionTimeout</span>=<span class="string">"20000"</span></div><div class="line">               <span class="attr">redirectPort</span>=<span class="string">"443"</span></div><div class="line">               <span class="attr">proxyPort</span>=<span class="string">"443"</span>/&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">Engine</span> <span class="attr">name</span>=<span class="string">"Catalina"</span> <span class="attr">defaultHost</span>=<span class="string">"localhost"</span>&gt;</span></div><div class="line"></div><div class="line">      <span class="tag">&lt;<span class="name">Host</span> <span class="attr">name</span>=<span class="string">"localhost"</span>  <span class="attr">appBase</span>=<span class="string">"webapps"</span></span></div><div class="line">            <span class="attr">unpackWARs</span>=<span class="string">"true"</span> <span class="attr">autoDeploy</span>=<span class="string">"true"</span>&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">"org.apache.catalina.valves.RemoteIpValve"</span></span></div><div class="line">                  <span class="attr">remoteIpHeader</span>=<span class="string">"x-forwarded-for"</span></div><div class="line">                  <span class="attr">remoteIpProxiesHeader</span>=<span class="string">"x-forwarded-by"</span></div><div class="line">                  <span class="attr">protocolHeader</span>=<span class="string">"x-forwarded-proto"</span></div><div class="line">            /&gt;</div><div class="line">            <span class="tag">&lt;<span class="name">Context</span> <span class="attr">path</span>=<span class="string">""</span> <span class="attr">docBase</span>=<span class="string">""</span> <span class="attr">reloadable</span>=<span class="string">"false"</span>/&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">Host</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">Engine</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">Service</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">Server</span>&gt;</span></div></pre></td></tr></table></figure>
-<p>特别特别注意的是必须有 <span style="color:red"> proxyPort=”443”  redirectPort=”443” </span>。<br>同时 <code>&lt;Value&gt;</code> 节点的配置也非常重要，否则你在 Tomcat 中的应用在读取 getScheme() 方法以及在 web.xml 中配置的一些安全策略会不起作用。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;环境&lt;/li&gt;
-&lt;li&gt;证书&lt;/li&gt;
-&lt;li&gt;nginx&lt;/li&gt;
-&lt;li&gt;tomcat&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;……&lt;/p&gt;
-&lt;p&gt;本文基本参照 &lt;a href=&quot;https://www.oschina.net/question/12_213459&quot;&gt; oschina 红薯 大大的文章 &lt;/a&gt; 。&lt;br&gt;基本思路是 Nginx 上启用了 HTTPS，而 Nginx 和 Tomcat 之间走的却是普通的 HTTP 连接。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;http://amadis.qiniudn.com/nginx_tomcat_ssl.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="server" scheme="http://giveme5.cc/categories/server/"/>
-    
-    
-      <category term="tomcat" scheme="http://giveme5.cc/tags/tomcat/"/>
-    
-      <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
-    
-      <category term="https" scheme="http://giveme5.cc/tags/https/"/>
     
   </entry>
   

@@ -1,0 +1,827 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="docker," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="docker 入门 （未完）
+更新历史无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker 入门 （未完）">
+<meta property="og:url" content="http://giveme5.cc/2017/10/10/docker/docker/index.html">
+<meta property="og:site_name" content="Sam's Notes | Sam Blog">
+<meta property="og:description" content="docker 入门 （未完）
+更新历史无">
+<meta property="og:updated_time" content="2017-10-10T08:52:20.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="docker 入门 （未完）">
+<meta name="twitter:description" content="docker 入门 （未完）
+更新历史无">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://giveme5.cc/2017/10/10/docker/docker/"/>
+
+
+
+
+
+  <title>docker 入门 （未完） | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/10/10/docker/docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">docker 入门 （未完）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T19:44:58+08:00">
+                2017-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/10/docker/docker/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/10/docker/docker/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>docker 入门 （未完）</p>
+<p><em>更新历史</em><br>无<br><a id="more"></a></p>
+<hr>
+<h1 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h1><h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>不要使用 dockercommit 定制镜像,定制行为应该使用 Dockerfile 来完成。<br>Dockerfile中每一个指令都会建立一层</p>
+<ul>
+<li><p>run<br>使用 <code>&amp;&amp;</code> 将各个所需命令串联起来</p>
+</li>
+<li><p>镜像构建上下文(Context)<br><code>docker build [选项] &lt;上下文路径/URL/-&gt;</code><br><code>docker build -t nginx:v3 .</code><br>最后有一个<code>.</code>。 <code>.</code>表示当前目录, 是在指定上下文路径。 即 docker 所能操作的根目录， 超出其路径， docker 是不能操作的<br><code>docker build</code>  命令得知这个路径后,会将路径下的所有内容打包,然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后,展开就会获得构建镜像所需的一切文件。<br>初学的错误是将<code>Dockerfile</code>放到硬盘根目录, 把上下文设置成硬盘根目录， 结果发现<code>docker build</code>执行后,在发送一个几十GB的东西。<br>一般来说,应该会将<code>Dockerfile</code>置于一个空目录下,或者项目根目录下。如果该目录下没有所需文件,那么应该把所需文件复制一份过来。<br>如果目录下有些东西确实不希望构建时传给 Docker 引擎,那么可以用<code>.gitignore</code>一样的语法写一个<code>.dockerignore</code>,该文件是用于剔除不需要作为上下文传递给Docker 引擎的。<br>那么为什么会有人误以为<code>.</code>是指定<code>Dockerfile</code>所在目录呢?这是因为在默认情况下,如果不额外指定<code>Dockerfile</code>的话,会将上下文目录下的名为 Dockerfile  的文件作为 Dockerfile。</p>
+</li>
+</ul>
+<h3 id="COPY复制文件"><a href="#COPY复制文件" class="headerlink" title="COPY复制文件"></a>COPY复制文件</h3><h3 id="ADD更高级的复制文件"><a href="#ADD更高级的复制文件" class="headerlink" title="ADD更高级的复制文件"></a>ADD更高级的复制文件</h3><h3 id="CMD容器启动命令"><a href="#CMD容器启动命令" class="headerlink" title="CMD容器启动命令"></a>CMD容器启动命令</h3><h3 id="ENTRYPOINT入口点"><a href="#ENTRYPOINT入口点" class="headerlink" title="ENTRYPOINT入口点"></a>ENTRYPOINT入口点</h3><h3 id="ENV设置环境变量"><a href="#ENV设置环境变量" class="headerlink" title="ENV设置环境变量"></a>ENV设置环境变量</h3><h3 id="ARG构建参数"><a href="#ARG构建参数" class="headerlink" title="ARG构建参数"></a>ARG构建参数</h3><h3 id="VOLUME定义匿名卷"><a href="#VOLUME定义匿名卷" class="headerlink" title="VOLUME定义匿名卷"></a>VOLUME定义匿名卷</h3><h3 id="EXPOSE声明端口"><a href="#EXPOSE声明端口" class="headerlink" title="EXPOSE声明端口"></a>EXPOSE声明端口</h3><h3 id="WORKDIR指定工作目录"><a href="#WORKDIR指定工作目录" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="WORKDIR指定工作目录-1"><a href="#WORKDIR指定工作目录-1" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="USER指定当前用户"><a href="#USER指定当前用户" class="headerlink" title="USER指定当前用户"></a>USER指定当前用户</h3><h3 id="HEALTHCHECK健康检查"><a href="#HEALTHCHECK健康检查" class="headerlink" title="HEALTHCHECK健康检查"></a>HEALTHCHECK健康检查</h3><h3 id="ONBUILD为他人做嫁衣裳"><a href="#ONBUILD为他人做嫁衣裳" class="headerlink" title="ONBUILD为他人做嫁衣裳"></a>ONBUILD为他人做嫁衣裳</h3><h2 id="删除本地镜像"><a href="#删除本地镜像" class="headerlink" title="删除本地镜像"></a>删除本地镜像</h2><p><code>dockerrmi[选项]&lt;镜像1&gt;[&lt;镜像2&gt;...]</code><br>其中, &lt;镜像&gt;可以是  镜像短ID、  镜像长ID、  镜像名或者  镜像摘要。<br>可以使用 <code>dockerimages-q</code>来配合使用<code>dockerrmi</code>,这样可以成批的删除希望删除的镜像。</p>
+<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><h2 id="新建并启动"><a href="#新建并启动" class="headerlink" title="新建并启动"></a>新建并启动</h2><p><code>docker    run</code><br><code>sudo    docker    run    -t    -i    ubuntu:14.04    /bin/bash</code></p>
+<p>检查本地是否存在指定的镜像,不存在就从公有仓库下载启动<br>利用镜像创建并启动一个容器<br>分配一个文件系统,并在只读的镜像层外面挂载一层可读写层<br>从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去<br>从地址池配置一个    ip    地址给容器<br>执行用户指定的应用程序<br>执行完毕后容器被终止</p>
+<h2 id="启动已终止容器"><a href="#启动已终止容器" class="headerlink" title="启动已终止容器"></a>启动已终止容器</h2><p><code>docker    start</code></p>
+<h2 id="后台-background-运行"><a href="#后台-background-运行" class="headerlink" title="后台(background)运行"></a>后台(background)运行</h2><p><code>sudo    docker    run    -d    ubuntu:14.04    /bin/sh    -c    &quot;while    true;    do    echo    hello    world;    sleep    1;    done</code><br>容器会在后台运行并不会把输出的结果(STDOUT)打印到宿主机上面(输出结果可以用docker    logs    查看)。<br><code>sudo    docker    logs    [container    ID    or    NAMES]</code></p>
+<h2 id="终止容器"><a href="#终止容器" class="headerlink" title="终止容器"></a>终止容器</h2><p><code>docker    stop</code></p>
+<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><ul>
+<li><code>nsenter</code>    命令</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">PID=$(docker	inspect	--format	<span class="string">"&#123;&#123;	.State.Pid	&#125;&#125;"</span>	&lt;container&gt;)</div><div class="line">nsenter	--target	<span class="variable">$PID</span>	--mount	--uts	--ipc	--net	--pid</div><div class="line">nsenter	--target	<span class="variable">$pid</span>	--mount	--uts	--ipc	--net	--pid		--	/usr/bin/env	\	--ignore-environment	HOME=/root	/bin/bash	--login</div></pre></td></tr></table></figure>
+<ul>
+<li><code>.bashrc_docker</code><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">wget	-P	~	https://github.com/yeasy/docker_practice/raw/master/_local/.bashrc_docker;</div><div class="line"><span class="built_in">echo</span>	<span class="string">"[	-f	~/.bashrc_docker	]	&amp;&amp;	.	~/.bashrc_docker"</span>	&gt;&gt;	~/.bashrc;	<span class="built_in">source</span>	~/.bashrc</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>这个文件中定义了很多方便使用    Docker    的命令,例如         docker-pid        可以获取某<br>个容器的    PID;而         docker-enter        可以进入容器或直接在容器内执行命令。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">echo</span>	$(docker-pid	&lt;container&gt;)</div><div class="line">docker-enter	&lt;container&gt;	ls</div></pre></td></tr></table></figure>
+<h2 id="导出和导入容器-docker-export"><a href="#导出和导入容器-docker-export" class="headerlink" title="导出和导入容器 docker    export"></a>导出和导入容器 <code>docker    export</code></h2><h3 id="导出-docker-export"><a href="#导出-docker-export" class="headerlink" title="导出 docker    export"></a>导出 <code>docker    export</code></h3><h3 id="导入-docker-import"><a href="#导入-docker-import" class="headerlink" title="导入 docker    import"></a>导入 <code>docker    import</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cat	ubuntu.tar	|	sudo	docker	import	-	test/ubuntu:v1.0</div><div class="line">sudo	docker	import	http://example.com/exampleimage.tgz	example/imagerepo</div></pre></td></tr></table></figure>
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><p><code>sudo    docker    rm        trusting_newton</code><br>如果要删除一个运行中的容器,可以添加         -f        参数</p>
+<h3 id="清理所有处于终止状态的容器"><a href="#清理所有处于终止状态的容器" class="headerlink" title="清理所有处于终止状态的容器"></a>清理所有处于终止状态的容器</h3><p><code>docker    rm    $(docker    ps    -a    -q)</code>可以全部清理掉, 包括还在运行中的容器.</p>
+<h1 id="Docker-数据管理"><a href="#Docker-数据管理" class="headerlink" title="Docker    数据管理"></a>Docker    数据管理</h1><h2 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker/" rel="tag"># docker</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/26/linux/wine/" rel="next" title="linux wine 32 & 64">
+                <i class="fa fa-chevron-left"></i> linux wine 32 & 64
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/10/spring/polymorphismDI/" rel="prev" title="spring 多态 注入">
+                spring 多态 注入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#镜像"><span class="nav-number">1.</span> <span class="nav-text">镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dockerfile"><span class="nav-number">1.1.</span> <span class="nav-text">Dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#COPY复制文件"><span class="nav-number">1.1.1.</span> <span class="nav-text">COPY复制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ADD更高级的复制文件"><span class="nav-number">1.1.2.</span> <span class="nav-text">ADD更高级的复制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMD容器启动命令"><span class="nav-number">1.1.3.</span> <span class="nav-text">CMD容器启动命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ENTRYPOINT入口点"><span class="nav-number">1.1.4.</span> <span class="nav-text">ENTRYPOINT入口点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ENV设置环境变量"><span class="nav-number">1.1.5.</span> <span class="nav-text">ENV设置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ARG构建参数"><span class="nav-number">1.1.6.</span> <span class="nav-text">ARG构建参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VOLUME定义匿名卷"><span class="nav-number">1.1.7.</span> <span class="nav-text">VOLUME定义匿名卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EXPOSE声明端口"><span class="nav-number">1.1.8.</span> <span class="nav-text">EXPOSE声明端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WORKDIR指定工作目录"><span class="nav-number">1.1.9.</span> <span class="nav-text">WORKDIR指定工作目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WORKDIR指定工作目录-1"><span class="nav-number">1.1.10.</span> <span class="nav-text">WORKDIR指定工作目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USER指定当前用户"><span class="nav-number">1.1.11.</span> <span class="nav-text">USER指定当前用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HEALTHCHECK健康检查"><span class="nav-number">1.1.12.</span> <span class="nav-text">HEALTHCHECK健康检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ONBUILD为他人做嫁衣裳"><span class="nav-number">1.1.13.</span> <span class="nav-text">ONBUILD为他人做嫁衣裳</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除本地镜像"><span class="nav-number">1.2.</span> <span class="nav-text">删除本地镜像</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#容器"><span class="nav-number">2.</span> <span class="nav-text">容器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建并启动"><span class="nav-number">2.1.</span> <span class="nav-text">新建并启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动已终止容器"><span class="nav-number">2.2.</span> <span class="nav-text">启动已终止容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后台-background-运行"><span class="nav-number">2.3.</span> <span class="nav-text">后台(background)运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终止容器"><span class="nav-number">2.4.</span> <span class="nav-text">终止容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入容器"><span class="nav-number">2.5.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出和导入容器-docker-export"><span class="nav-number">2.6.</span> <span class="nav-text">导出和导入容器 docker    export</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导出-docker-export"><span class="nav-number">2.6.1.</span> <span class="nav-text">导出 docker    export</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入-docker-import"><span class="nav-number">2.6.2.</span> <span class="nav-text">导入 docker    import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除容器"><span class="nav-number">2.6.3.</span> <span class="nav-text">删除容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清理所有处于终止状态的容器"><span class="nav-number">2.6.4.</span> <span class="nav-text">清理所有处于终止状态的容器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker-数据管理"><span class="nav-number">3.</span> <span class="nav-text">Docker    数据管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据卷"><span class="nav-number">3.1.</span> <span class="nav-text">数据卷</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://giveme5.cc/2017/10/10/docker/docker/';
+          this.page.identifier = '2017/10/10/docker/docker/';
+          this.page.title = 'docker 入门 （未完）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://amadis.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
