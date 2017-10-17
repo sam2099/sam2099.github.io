@@ -105,7 +105,7 @@
 <meta property="og:description" content="主要内容
 　　Java 8是Java自Java 5之后的最重要的版本。这个版本包含语言、编译器、库、工具和JVM等方面的十多个新特性。
 　　外面已经有很多资料， 我在这里仅仅做概要记录，提醒自己多使用新特性， 提高效率和性能， 详细内容参考附录。">
-<meta property="og:updated_time" content="2017-07-31T01:51:25.383Z">
+<meta property="og:updated_time" content="2017-10-12T03:12:50.854Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 8 新特性 概要">
 <meta name="twitter:description" content="主要内容
@@ -401,7 +401,7 @@
 <p>Maven 的使用<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">compilerArgument</span>&gt;</span>-parameters<span class="tag">&lt;/<span class="name">compilerArgument</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></div></pre></td></tr></table></figure></p>
 <h2 id="官方库"><a href="#官方库" class="headerlink" title="官方库"></a>官方库</h2><h3 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h3><p>Optional是一个容器：存放T类型的值或者null。它提供了一些有用的接口来避免显式的null检查</p>
 <h3 id="Streams"><a href="#Streams" class="headerlink" title="Streams"></a>Streams</h3><p>Stream API（java.util.stream）将函数式编程引入了Java库中。<br>这是目前为止最大的一次对Java库的完善！！！！<br>极大得简化了集合操作</p>
-<p><a href="http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#StreamOps" target="_blank" rel="external">java.util.stream</a><br><a href="https://wizardforcel.gitbooks.io/java8-tutorials/content/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E6%97%85%20%E4%BD%BF%E7%94%A8%20Stream%20API%20%E5%A4%84%E7%90%86%E9%9B%86%E5%90%88.html" target="_blank" rel="external">使用Stream API处理集合</a></p>
+<p><a href="/2017/10/12/java/Streams/">简要API</a><br><a href="http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#StreamOps" target="_blank" rel="external">java.util.stream</a><br><a href="https://wizardforcel.gitbooks.io/java8-tutorials/content/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E6%97%85%20%E4%BD%BF%E7%94%A8%20Stream%20API%20%E5%A4%84%E7%90%86%E9%9B%86%E5%90%88.html" target="_blank" rel="external">使用Stream API处理集合</a></p>
 <h3 id="Date-Time-API-JSR-310"><a href="#Date-Time-API-JSR-310" class="headerlink" title="Date/Time API(JSR 310)"></a>Date/Time API(JSR 310)</h3><p>新的时间和日期管理API<br><a href="http://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html" target="_blank" rel="external">java.time</a></p>
 <h3 id="Nashorn-JavaScript引擎"><a href="#Nashorn-JavaScript引擎" class="headerlink" title="Nashorn JavaScript引擎"></a>Nashorn JavaScript引擎</h3><h3 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a>Base64</h3><p><code>java.util.Base64</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Base64.getEncoder().encodeXxxxx()</div><div class="line">Base64.getDecoder().decode()</div><div class="line"></div><div class="line">Base64.getUrlEncoder()</div><div class="line">Base64.getUrlDecoder()</div><div class="line"></div><div class="line">Base64.getMimeEncoder()</div><div class="line">Base64.getMimeDecoder()</div></pre></td></tr></table></figure></p>
 <h3 id="并行数组"><a href="#并行数组" class="headerlink" title="并行数组"></a>并行数组</h3><p><code>parallelSort()</code><br>parallexXxx系列的方法</p>
@@ -544,7 +544,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-count">103</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -566,7 +566,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-count">80</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
