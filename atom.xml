@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2017-10-17T08:04:06.599Z</updated>
+  <updated>2017-11-03T08:52:30.212Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,99 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>spring Transaction 事务</title>
+    <link href="http://giveme5.cc/2017/11/03/spring/spring_transaction/"/>
+    <id>http://giveme5.cc/2017/11/03/spring/spring_transaction/</id>
+    <published>2017-11-03T11:44:58.000Z</published>
+    <updated>2017-11-03T08:52:30.212Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring Transaction 事务；Transaction 事务绑定事件</p>
+<p><em>更新历史</em><br>无</p>
+<p>环境：spring 4.2 以上</p>
+<p>spring 的 事务分为 <code>编程式事务</code> 和 <code>声明式事务</code> 。<br>对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 <code>编程式事务</code> ；否则都建议用 <code>声明式事务</code></p>
+<a id="more"></a>
+<hr>
+<h2 id="编程式事务"><a href="#编程式事务" class="headerlink" title="编程式事务"></a>编程式事务</h2><p>spring 提供2种方式：</p>
+<ul>
+<li><code>TransactionTemplate</code></li>
+<li>直接使用 <code>PlatformTransactionManager</code></li>
+</ul>
+<h3 id="TransactionTemplate"><a href="#TransactionTemplate" class="headerlink" title="TransactionTemplate"></a>TransactionTemplate</h3><h3 id="直接-PlatformTransactionManager"><a href="#直接-PlatformTransactionManager" class="headerlink" title="直接 PlatformTransactionManager"></a>直接 PlatformTransactionManager</h3><p>实例化 <code>PlatformTransactionManager</code> 的实现类(比如 <code>DataSourceTransactionManager</code>) 得到 <code>txManager</code> , 需要一个 datasource；<br>然后 <code>DefaultTransactionDefinition</code> 定义事务， <code>TransactionStatus</code> 操作具体SQL。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">DefaultTransactionDefinition def = <span class="keyword">new</span> DefaultTransactionDefinition();</div><div class="line"></div><div class="line"><span class="comment">// explicitly setting the transaction name is something that can only be done programmatically</span></div><div class="line">def.setName(<span class="string">"SomeTxName"</span>);</div><div class="line">def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);</div><div class="line"></div><div class="line">TransactionStatus status = txManager.getTransaction(def);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// execute your business logic here</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">catch</span> (MyException ex) &#123;</div><div class="line">        txManager.rollback(status);</div><div class="line">        <span class="keyword">throw</span> ex;</div><div class="line">&#125;</div><div class="line">txManager.commit(status);</div></pre></td></tr></table></figure>
+<h3 id="TransactionTemplate-1"><a href="#TransactionTemplate-1" class="headerlink" title="TransactionTemplate"></a>TransactionTemplate</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleService</span> <span class="keyword">implements</span> <span class="title">Service</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> TransactionTemplate transactionTemplate;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SimpleService</span><span class="params">(PlatformTransactionManager transactionManager)</span> </span>&#123;</div><div class="line">        Assert.notNull(transactionManager, <span class="string">"The 'transactionManager' argument must not be null."</span>);</div><div class="line">        <span class="keyword">this</span>.transactionTemplate = <span class="keyword">new</span> TransactionTemplate(transactionManager);</div><div class="line"></div><div class="line">        <span class="comment">// the transaction settings can be set here explicitly if so desired</span></div><div class="line">        <span class="keyword">this</span>.transactionTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_READ_UNCOMMITTED);</div><div class="line">        <span class="keyword">this</span>.transactionTemplate.setTimeout(<span class="number">30</span>); <span class="comment">// 30 seconds</span></div><div class="line">        <span class="comment">// and so forth...</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//有返回值</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">someServiceMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> transactionTemplate.execute(<span class="keyword">new</span> TransactionCallback() &#123;</div><div class="line">                <span class="comment">// the code in this method executes in a transactional context</span></div><div class="line">                <span class="function"><span class="keyword">public</span> Object <span class="title">doInTransaction</span><span class="params">(TransactionStatus status)</span> </span>&#123;</div><div class="line">                        updateOperation1();</div><div class="line">                        <span class="keyword">return</span> resultOfUpdateOperation2();</div><div class="line">                &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//无返回值</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">someServiceMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">        transactionTemplate.execute(<span class="keyword">new</span> TransactionCallbackWithoutResult() &#123;</div><div class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doInTransactionWithoutResult</span><span class="params">(TransactionStatus status)</span> </span>&#123;</div><div class="line">                        updateOperation1();</div><div class="line">                        updateOperation2();</div><div class="line">                &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="声明式事务"><a href="#声明式事务" class="headerlink" title="声明式事务"></a>声明式事务</h2><p>注解方式的 声明式事务 主要涉及 <code>@Transactional</code> 和 <code>@EnableTransactionManagement</code> (需要配合 <code>@Configuration</code>)。<br>声明式事务 主要通过 事务代理 来实现，如下图：</p>
+<p><img src="/images/spring_tx.png" alt=""></p>
+<blockquote>
+<p>Transaction Advisor 可由 Spring 提供默认实现；Custom Advisor(s) 可借 Spring 事务绑定事件<code>@TransactionalEventListener</code> 触发自定义。</p>
+</blockquote>
+<h3 id="Transactional"><a href="#Transactional" class="headerlink" title="Transactional"></a>Transactional</h3><ul>
+<li>属性</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>String</td>
+<td>Optional , 指定transaction manager</td>
+</tr>
+<tr>
+<td>propagation</td>
+<td>enum: Propagation</td>
+<td>Optional， 指定 传播propagation</td>
+</tr>
+<tr>
+<td>isolation</td>
+<td>enum: Isolation</td>
+<td>Optional 可选隔离级别</td>
+</tr>
+<tr>
+<td>readOnly</td>
+<td>boolean</td>
+<td>读/写与只读事务</td>
+</tr>
+<tr>
+<td>timeout</td>
+<td>int (in seconds granularity)</td>
+<td>事务超时</td>
+</tr>
+</tbody>
+</table>
+<h4 id="propagation-事务传播"><a href="#propagation-事务传播" class="headerlink" title="propagation 事务传播"></a>propagation 事务传播</h4><ul>
+<li><p>PROPAGATION_REQUIRED 默认设置<br>Support a current transaction, create a new one if none exists.<br><img src="/images/spring_tx_prop_required.png" alt=""></p>
+</li>
+<li><p>PROPAGATION_REQUIRES_NEW<br>Create a new transaction, and suspend the current transaction if one exists.<br><img src="/images/spring_tx_prop_requires_new.png" alt=""></p>
+</li>
+</ul>
+<h3 id="事务绑定事件"><a href="#事务绑定事件" class="headerlink" title="事务绑定事件"></a>事务绑定事件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyComponent</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@TransactionalEventListener</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleOrderCreatedEvent</span><span class="params">(CreationEvent&lt;Order&gt; creationEvent)</span> </span>&#123;</div><div class="line">                ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>@TransactionalEventListener</code> 有个属性 <code>phase</code> (BEFORE_COMMIT, AFTER_COMMIT (default), AFTER_ROLLBACK and AFTER_COMPLETION)</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring Transaction 事务；Transaction 事务绑定事件&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
+&lt;p&gt;环境：spring 4.2 以上&lt;/p&gt;
+&lt;p&gt;spring 的 事务分为 &lt;code&gt;编程式事务&lt;/code&gt; 和 &lt;code&gt;声明式事务&lt;/code&gt; 。&lt;br&gt;对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 &lt;code&gt;编程式事务&lt;/code&gt; ；否则都建议用 &lt;code&gt;声明式事务&lt;/code&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
+    
+    
+      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
+    
+      <category term="Transaction" scheme="http://giveme5.cc/tags/Transaction/"/>
+    
+  </entry>
   
   <entry>
     <title>Java 8 内置函数式接口</title>
@@ -499,6 +592,48 @@
   </entry>
   
   <entry>
+    <title>spring 多态 注入</title>
+    <link href="http://giveme5.cc/2017/10/10/spring/polymorphismDI/"/>
+    <id>http://giveme5.cc/2017/10/10/spring/polymorphismDI/</id>
+    <published>2017-10-10T11:44:58.000Z</published>
+    <updated>2017-10-10T08:49:45.085Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring 多态 注入<br>利用 <code>PropertySource</code> 实现 多态的动态注入。</p>
+<p><em>更新历史</em><br>无</p>
+<a id="more"></a>
+<hr>
+<p>环境：spring 4, JDK 1.8； 话不多说，看代码</p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>一个 service 接口， 有若干具体实现</p>
+<h3 id="接口-IPolyDiService-java"><a href="#接口-IPolyDiService-java" class="headerlink" title="接口 IPolyDiService.java"></a>接口 <code>IPolyDiService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现A-APolyDiServiceImpl"><a href="#实现A-APolyDiServiceImpl" class="headerlink" title="实现A APolyDiServiceImpl"></a>实现A <code>APolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"A_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">APolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is A PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现B-BPolyDiServiceImpl"><a href="#实现B-BPolyDiServiceImpl" class="headerlink" title="实现B BPolyDiServiceImpl"></a>实现B <code>BPolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"B_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BPolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is B PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="动态注入"><a href="#动态注入" class="headerlink" title="动态注入"></a>动态注入</h2><h3 id="配置文件-env-properties"><a href="#配置文件-env-properties" class="headerlink" title="配置文件 env.properties"></a>配置文件 <code>env.properties</code></h3><p>可以用其他外置配置替代， 如下， 改变 <code>service</code> 的值， 可以运行时动态注入不同的具体实现。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># service=B</span></div><div class="line">service=A</div></pre></td></tr></table></figure></p>
+<h3 id="Junit-PolyDiTest"><a href="#Junit-PolyDiTest" class="headerlink" title="Junit PolyDiTest"></a>Junit <code>PolyDiTest</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.PropertySource;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.support.AnnotationConfigContextLoader;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.annotation.Resource;</div><div class="line"><span class="keyword">import</span> java.text.ParseException;</div><div class="line"></div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(loader = AnnotationConfigContextLoader.class)</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PolyDiTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span>(name = <span class="string">"$&#123;service&#125;_service"</span>)</div><div class="line">    <span class="keyword">private</span> IPolyDiService service;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> ParseException </span>&#123;</div><div class="line">        service.printName();</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Configuration</span></div><div class="line">    <span class="meta">@PropertySource</span>(&#123; <span class="string">"classpath:conf/env.properties"</span>&#125;)</div><div class="line">    <span class="meta">@ComponentScan</span>(basePackages =&#123; <span class="string">"com.xxx.service.impl"</span>&#125;)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextConfiguration</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><code>service=A</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is A PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
+<p><code>service=B</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is B PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring 多态 注入&lt;br&gt;利用 &lt;code&gt;PropertySource&lt;/code&gt; 实现 多态的动态注入。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
+    
+    
+      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
+    
+      <category term="多态" scheme="http://giveme5.cc/tags/%E5%A4%9A%E6%80%81/"/>
+    
+      <category term="注入" scheme="http://giveme5.cc/tags/%E6%B3%A8%E5%85%A5/"/>
+    
+      <category term="DI" scheme="http://giveme5.cc/tags/DI/"/>
+    
+  </entry>
+  
+  <entry>
     <title>docker 入门 （未完）</title>
     <link href="http://giveme5.cc/2017/10/10/docker/docker/"/>
     <id>http://giveme5.cc/2017/10/10/docker/docker/</id>
@@ -547,48 +682,6 @@
     
     
       <category term="docker" scheme="http://giveme5.cc/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>spring 多态 注入</title>
-    <link href="http://giveme5.cc/2017/10/10/spring/polymorphismDI/"/>
-    <id>http://giveme5.cc/2017/10/10/spring/polymorphismDI/</id>
-    <published>2017-10-10T11:44:58.000Z</published>
-    <updated>2017-10-10T08:49:45.085Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring 多态 注入<br>利用 <code>PropertySource</code> 实现 多态的动态注入。</p>
-<p><em>更新历史</em><br>无</p>
-<a id="more"></a>
-<hr>
-<p>环境：spring 4, JDK 1.8； 话不多说，看代码</p>
-<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>一个 service 接口， 有若干具体实现</p>
-<h3 id="接口-IPolyDiService-java"><a href="#接口-IPolyDiService-java" class="headerlink" title="接口 IPolyDiService.java"></a>接口 <code>IPolyDiService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="实现A-APolyDiServiceImpl"><a href="#实现A-APolyDiServiceImpl" class="headerlink" title="实现A APolyDiServiceImpl"></a>实现A <code>APolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"A_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">APolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is A PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="实现B-BPolyDiServiceImpl"><a href="#实现B-BPolyDiServiceImpl" class="headerlink" title="实现B BPolyDiServiceImpl"></a>实现B <code>BPolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"B_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BPolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is B PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="动态注入"><a href="#动态注入" class="headerlink" title="动态注入"></a>动态注入</h2><h3 id="配置文件-env-properties"><a href="#配置文件-env-properties" class="headerlink" title="配置文件 env.properties"></a>配置文件 <code>env.properties</code></h3><p>可以用其他外置配置替代， 如下， 改变 <code>service</code> 的值， 可以运行时动态注入不同的具体实现。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># service=B</span></div><div class="line">service=A</div></pre></td></tr></table></figure></p>
-<h3 id="Junit-PolyDiTest"><a href="#Junit-PolyDiTest" class="headerlink" title="Junit PolyDiTest"></a>Junit <code>PolyDiTest</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.PropertySource;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.support.AnnotationConfigContextLoader;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.annotation.Resource;</div><div class="line"><span class="keyword">import</span> java.text.ParseException;</div><div class="line"></div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(loader = AnnotationConfigContextLoader.class)</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PolyDiTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span>(name = <span class="string">"$&#123;service&#125;_service"</span>)</div><div class="line">    <span class="keyword">private</span> IPolyDiService service;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> ParseException </span>&#123;</div><div class="line">        service.printName();</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Configuration</span></div><div class="line">    <span class="meta">@PropertySource</span>(&#123; <span class="string">"classpath:conf/env.properties"</span>&#125;)</div><div class="line">    <span class="meta">@ComponentScan</span>(basePackages =&#123; <span class="string">"com.xxx.service.impl"</span>&#125;)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextConfiguration</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><code>service=A</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is A PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
-<p><code>service=B</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is B PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring 多态 注入&lt;br&gt;利用 &lt;code&gt;PropertySource&lt;/code&gt; 实现 多态的动态注入。&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
-    
-    
-      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
-    
-      <category term="多态" scheme="http://giveme5.cc/tags/%E5%A4%9A%E6%80%81/"/>
-    
-      <category term="注入" scheme="http://giveme5.cc/tags/%E6%B3%A8%E5%85%A5/"/>
-    
-      <category term="DI" scheme="http://giveme5.cc/tags/DI/"/>
     
   </entry>
   
@@ -1821,72 +1914,6 @@ firewall-cmd --zone=public --remove-port=8080/tcp --permanent
 &lt;li&gt;具体规则&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;CentOS 7 之后改用 firewalld 以 zone 的区域分割来建立，并可动态设置方式执行避免中断的问题。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
-    
-      <category term="fail2ban" scheme="http://giveme5.cc/tags/fail2ban/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>fail2ban防御暴力破解攻击</title>
-    <link href="http://giveme5.cc/2017/03/28/linux/fail2ban-md/"/>
-    <id>http://giveme5.cc/2017/03/28/linux/fail2ban-md/</id>
-    <published>2017-03-28T09:30:41.000Z</published>
-    <updated>2017-03-28T10:10:22.180Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>安装</li>
-<li>配置</li>
-<li>使用</li>
-</ul>
-<p>使用 fail2ban 防御服务器的暴力破解攻击， ssh 服务为例。</p>
-<a id="more"></a>
-<p>实验环境<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># lsb_release -a</span></div><div class="line">LSB Version:    :core-4.1-amd64:core-4.1-noarch</div><div class="line">Distributor ID: CentOS</div><div class="line">Description:    CentOS Linux release 7.2.1511 (Core) </div><div class="line">Release:        7.2.1511</div><div class="line">Codename:       Core</div></pre></td></tr></table></figure></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="EPEL-源"><a href="#EPEL-源" class="headerlink" title="EPEL 源"></a>EPEL 源</h3><p>需要安装 EPEL 源， 国内可使用阿里云的镜像。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup</div><div class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</div></pre></td></tr></table></figure>
-<h3 id="fail2ban"><a href="#fail2ban" class="headerlink" title="fail2ban"></a>fail2ban</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install fail2ban-firewalld</div></pre></td></tr></table></figure>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置文件根路径 <code>/etc/fail2ban/</code>。 默认服务的配置文件 <code>jail.conf</code>。<br>自定义服务配置文件 存放路径 <code>jail.d</code>， 建议以 <code>jail_服务名.local</code> 命名。<br>各个服务的拦截条件 在 <code>filter.d</code> 。</p>
-<h2 id="ssh服务配置"><a href="#ssh服务配置" class="headerlink" title="ssh服务配置"></a>ssh服务配置</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># vim jail.d/jail_ssh.local</span></div></pre></td></tr></table></figure>
-<p>增加如下内容<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[sshd]</div><div class="line">enabled = <span class="literal">true</span></div><div class="line">maxretry = 3 <span class="comment"># 尝试次数</span></div><div class="line">bantime = 7200 <span class="comment"># 禁止访问时间（秒）</span></div></pre></td></tr></table></figure></p>
-<p>如果你使用用户密码登录，以上配置就可以了。</p>
-<p>如果你使用公钥登录， 在修改下 ssh 的拦截条件, 增加 <code>^%(__prefix_line)sConnection closed by &lt;HOST&gt; \[preauth\]$</code></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># vim filter.d/sshd.conf</span></div></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># PasswordAuthentication in sshd_config.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># "Connection from &lt;HOST&gt; port \d+" requires LogLevel VERBOSE in sshd_config</span></div><div class="line"><span class="comment">#</span></div><div class="line"></div><div class="line">[INCLUDES]</div><div class="line"></div><div class="line"><span class="comment"># Read common prefixes. If any customizations available -- read them from</span></div><div class="line"><span class="comment"># common.local</span></div><div class="line">before = common.conf</div><div class="line"></div><div class="line">[Definition]</div><div class="line"></div><div class="line">_daemon = sshd</div><div class="line"></div><div class="line">failregex = ^%(__prefix_line)s(?:error: PAM: )?[aA]uthentication (?:failure|error|failed) <span class="keyword">for</span> .* from &lt;HOST&gt;( via \S+)?\s*$</div><div class="line">            ^%(__prefix_line)s(?:error: PAM: )?User not known to the underlying authentication module <span class="keyword">for</span> .* from &lt;HOST&gt;\s*$</div><div class="line">            ^%(__prefix_line)sFailed \S+ <span class="keyword">for</span> (?P&lt;cond_inv&gt;invalid user )?(?P&lt;user&gt;(?P&lt;cond_user&gt;\S+)|(?(cond_inv)(?:(?! from ).)*?|[^:]+)) from &lt;HOST&gt;(?: port \d+)?(?: ssh\d*)?(?(cond_user):|(?:(?:(?! from ).)*)$)</div><div class="line">            ^%(__prefix_line)sROOT LOGIN REFUSED.* FROM &lt;HOST&gt;\s*$</div><div class="line">            ^%(__prefix_line)s[iI](?:llegal|nvalid) user .*? from &lt;HOST&gt;(?: port \d+)?\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because not listed <span class="keyword">in</span> AllowUsers\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because listed <span class="keyword">in</span> DenyUsers\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because not <span class="keyword">in</span> any group\s*$</div><div class="line">            ^%(__prefix_line)srefused connect from \S+ \(&lt;HOST&gt;\)\s*$</div><div class="line">            ^%(__prefix_line)s(?:error: )?Received disconnect from &lt;HOST&gt;: 3: .*: Auth fail(?: \[preauth\])?$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because a group is listed <span class="keyword">in</span> DenyGroups\s*$</div><div class="line">            ^%(__prefix_line)sUser .+ from &lt;HOST&gt; not allowed because none of user<span class="string">'s groups are listed in AllowGroups\s*$</span></div><div class="line">            ^(?P&lt;__prefix&gt;%(__prefix_line)s)User .+ not allowed because account is locked&lt;SKIPLINES&gt;(?P=__prefix)(?:error: )?Received disconnect from &lt;HOST&gt;: 11: .+ \[preauth\]$</div><div class="line">            ^(?P&lt;__prefix&gt;%(__prefix_line)s)Disconnecting: Too many authentication failures for .+? \[preauth\]&lt;SKIPLINES&gt;(?P=__prefix)(?:error: )?Connection closed by &lt;HOST&gt; \[preauth\]$</div><div class="line">            ^(?P&lt;__prefix&gt;%(__prefix_line)s)Connection from &lt;HOST&gt; port \d+(?: on \S+ port \d+)?&lt;SKIPLINES&gt;(?P=__prefix)Disconnecting: Too many authentication failures for .+? \[preauth\]$</div><div class="line">            ^%(__prefix_line)s(error: )?maximum authentication attempts exceeded for .* from &lt;HOST&gt;(?: port \d*)?(?: ssh\d*)? \[preauth\]$</div><div class="line">            ^%(__prefix_line)spam_unix\(sshd:auth\):\s+authentication failure;\s*logname=\S*\s*uid=\d*\s*euid=\d*\s*tty=\S*\s*ruser=\S*\s*rhost=&lt;HOST&gt;\s.*$</div><div class="line">            ^%(__prefix_line)sConnection closed by &lt;HOST&gt; \[preauth\]$  ##增加在这里</div><div class="line"></div><div class="line">ignoreregex =</div><div class="line"></div><div class="line">[Init]</div><div class="line"></div><div class="line"># "maxlines" is number of log lines to buffer for multi-line regex searches</div><div class="line">maxlines = 10</div><div class="line"></div><div class="line">journalmatch = _SYSTEMD_UNIT=sshd.service + _COMM=sshd</div><div class="line"></div><div class="line"># DEV Notes:</div><div class="line">#</div><div class="line">#   "Failed \S+ for .*? from &lt;HOST&gt;..." failregex uses non-greedy catch-all because</div><div class="line">#   it is coming before use of &lt;HOST&gt; which is not hard-anchored at the end as well,</div><div class="line">#   and later catch-all's could contain user-provided input, <span class="built_in">which</span> need to be greedily</div><div class="line"><span class="comment">#   matched away first.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Author: Cyril Jaquier, Yaroslav Halchenko, Petr Voralek, Daniel Black</span></div></pre></td></tr></table></figure>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul>
-<li><p>启动/重启 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─# systemctl restart fail2ban.service</div></pre></td></tr></table></figure>
-</li>
-<li><p>开机启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─# systemctl enable fail2ban.service</div></pre></td></tr></table></figure>
-</li>
-<li><p>检验fail2ban状态， 显示出当前活动的监狱列表</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># fail2ban-client status                                                                                                                                                                                  255 ↵</span></div><div class="line">Status</div><div class="line">|- Number of jail:      1</div><div class="line">`- Jail list:   sshd</div></pre></td></tr></table></figure>
-</li>
-<li><p>检验一个特定监狱的状态</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># fail2ban-client status sshd </span></div><div class="line">Status <span class="keyword">for</span> the jail: sshd</div><div class="line">|- Filter</div><div class="line">|  |- Currently failed: 1</div><div class="line">|  |- Total failed:     4</div><div class="line">|  `- Journal matches:  _SYSTEMD_UNIT=sshd.service + _COMM=sshd</div><div class="line">`- Actions</div><div class="line">   |- Currently banned: 1</div><div class="line">   |- Total banned:     2</div><div class="line">   `- Banned IP list:   140.205.201.42</div></pre></td></tr></table></figure>
-</li>
-<li><p>解锁特定的IP地址</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># fail2ban-client set 特定监狱 unbanip ip</span></div><div class="line">fail2ban-client <span class="built_in">set</span> sshd unbanip 192.168.1.8</div></pre></td></tr></table></figure>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;安装&lt;/li&gt;
-&lt;li&gt;配置&lt;/li&gt;
-&lt;li&gt;使用&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;使用 fail2ban 防御服务器的暴力破解攻击， ssh 服务为例。&lt;/p&gt;
     
     </summary>
     
