@@ -97,23 +97,20 @@
 
 <meta name="description" content="主要内容
 keepalived + nginx 爽活热备负载均衡
-系统安装CentOS 7.3记得安装开发工具， 如果忘记可以在终端执行 yum groupinstall &amp;quot;Development Tools&amp;quot;
-ip config设置静态IP， 主要根据实际情况设置最后6行。12345678910111213141516171819202122# vim /etc/syscon">
+更新历史无">
 <meta property="og:type" content="article">
 <meta property="og:title" content="keepalived + nginx 爽活热备负载均衡">
 <meta property="og:url" content="http://giveme5.cc/2018/02/27/web server/nginx/keepalivedNginx/index.html">
 <meta property="og:site_name" content="Sam's Notes | Sam Blog">
 <meta property="og:description" content="主要内容
 keepalived + nginx 爽活热备负载均衡
-系统安装CentOS 7.3记得安装开发工具， 如果忘记可以在终端执行 yum groupinstall &amp;quot;Development Tools&amp;quot;
-ip config设置静态IP， 主要根据实际情况设置最后6行。12345678910111213141516171819202122# vim /etc/syscon">
-<meta property="og:updated_time" content="2018-02-27T10:36:32.859Z">
+更新历史无">
+<meta property="og:updated_time" content="2018-02-28T02:39:16.792Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="keepalived + nginx 爽活热备负载均衡">
 <meta name="twitter:description" content="主要内容
 keepalived + nginx 爽活热备负载均衡
-系统安装CentOS 7.3记得安装开发工具， 如果忘记可以在终端执行 yum groupinstall &amp;quot;Development Tools&amp;quot;
-ip config设置静态IP， 主要根据实际情况设置最后6行。12345678910111213141516171819202122# vim /etc/syscon">
+更新历史无">
 
 
 
@@ -385,6 +382,8 @@ ip config设置静态IP， 主要根据实际情况设置最后6行。1234567891
       
         <p>主要内容</p>
 <p>keepalived + nginx 爽活热备负载均衡</p>
+<p>更新历史<br>无</p>
+<a id="more"></a>
 <h2 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h2><p>CentOS 7.3<br>记得安装开发工具， 如果忘记可以在终端执行 <code>yum groupinstall &quot;Development Tools&quot;</code></p>
 <h3 id="ip-config"><a href="#ip-config" class="headerlink" title="ip config"></a>ip config</h3><p>设置静态IP， 主要根据实际情况设置最后6行。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-enp2s0 # 具体文件看自己服务器情况</span></div><div class="line"></div><div class="line">TYPE=Ethernet</div><div class="line"></div><div class="line">DEFROUTE=yes</div><div class="line">IPV4_FAILURE_FATAL=no</div><div class="line">IPV6INIT=yes</div><div class="line">IPV6_AUTOCONF=yes</div><div class="line">IPV6_DEFROUTE=yes</div><div class="line">IPV6_FAILURE_FATAL=no</div><div class="line">IPV6_PEERDNS=yes</div><div class="line">IPV6_PEERROUTES=yes</div><div class="line">NAME=enp2s0</div><div class="line">UUID=d776619b-ac07-4367-b44c-40bd05aaea58</div><div class="line">DEVICE=enp2s0</div><div class="line"></div><div class="line">BOOTPROTO=static</div><div class="line">ONBOOT=yes</div><div class="line">DNS1=221.228.255.1</div><div class="line">IPADDR=192.168.11.102</div><div class="line">PREFIX=24</div><div class="line">GATEWAY=192.168.11.1</div></pre></td></tr></table></figure></p>
 <p>设置完毕重启网络 <code>systemctl restart network.service</code></p>
