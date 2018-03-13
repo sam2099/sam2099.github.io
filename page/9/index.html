@@ -1409,184 +1409,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/11/mq/activemq/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/09/11/mq/activemq/" itemprop="url">activemq (一) 简介</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-11T19:59:44+08:00">
-                2015-09-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mq/" itemprop="url" rel="index">
-                    <span itemprop="name">mq</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/09/11/mq/activemq/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/09/11/mq/activemq/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>以下全是linux系统上的操作，在opensuse 13.2 上实际操作。</p>
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
-<li>JDK 1.6 以上</li>
-<li>JAVA_HOME 配置好</li>
-<li><a href="http://activemq.apache.org/" target="_blank" rel="external">官网</a></li>
-</ul>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
-<li><p>1 下载 activemq gzip 文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget http://ftp.meisei-u.ac.jp/mirror/apache/dist/activemq/5.12.0/apache-activemq-5.12.0-bin.tar.gz</div></pre></td></tr></table></figure>
-</li>
-<li><p>2 解压缩</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar zxvf activemq-x.x.x.tar.gz</div></pre></td></tr></table></figure>
-</li>
-<li><p>3 确认权限<br>确认activemq 是否有执行权限</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd [activemq_install_dir]/bin</div><div class="line">$ chmod 755 activemq</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>进入安装目录的bin路径，启动activemq<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd [activemq_install_dir]/bin</div><div class="line">$ ./activemq start</div></pre></td></tr></table></figure></p>
-<p>正常输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">INFO: Loading &apos;[activemq_install_dir]/bin/env&apos;</div><div class="line">INFO: Using java &apos;/usr/lib64/jvm/java/bin/java&apos;</div><div class="line">INFO: Starting - inspect logfiles specified in logging.properties and log4j.properties to get details</div><div class="line">INFO: pidfile created : &apos;[activemq_install_dir]/data/activemq.pid&apos; (pid &apos;xxxx&apos;)</div></pre></td></tr></table></figure></p>
-<h2 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h2><p>网页监控 <a href="http://localhost:8161/admin" target="_blank" rel="external">http://localhost:8161/admin</a><br>默认用户密码 admin/admin</p>
-<p>可以在 conf/jetty-real.properties 中修改</p>
-<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2><ul>
-<li><p>网页监控<br>端口： 8161<br>配置： [activemq_install_dir]/conf/jetty.xml </p>
-</li>
-<li><p>activeMq 服务<br>openwire： 61616<br>amqp    ： 5672<br>stomp   ： 61613<br>mqtt    ： 1883<br>ws      ： 61614<br>配置： [activemq_install_dir]/conf/activemq.xml </p>
-</li>
-</ul>
-<h2 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd [activemq_install_dir]/bin</div><div class="line">$ ./activemq stop</div></pre></td></tr></table></figure>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>[activemq_install_dir]/conf/activemq.xml </p>
-<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p><a href="http://activemq.apache.org/clustering.html" target="_blank" rel="external">集群</a></p>
-<h2 id="web-demo"><a href="#web-demo" class="headerlink" title="web demo"></a>web demo</h2><p>官网说 启动 activemq 后， <a href="http://localhost:8161/demo" target="_blank" rel="external">http://localhost:8161/demo</a>直接能访问， 其实5.12.0版本是不行的，不行的，不行的。</p>
-<p>需要在 conf/jetty 中增加配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;bean class=&quot;org.eclipse.jetty.webapp.WebAppContext&quot;&gt;</div><div class="line">    &lt;property name=&quot;contextPath&quot; value=&quot;/admin&quot; /&gt;</div><div class="line">    &lt;property name=&quot;resourceBase&quot; value=&quot;$&#123;activemq.home&#125;/webapps/admin&quot; /&gt;</div><div class="line">    &lt;property name=&quot;logUrlOnStart&quot; value=&quot;true&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line"></div><div class="line">&lt;!-- 需要增加 --&gt;</div><div class="line">&lt;bean class=&quot;org.eclipse.jetty.webapp.WebAppContext&quot;&gt;</div><div class="line">    &lt;property name=&quot;contextPath&quot; value=&quot;/demo&quot; /&gt;</div><div class="line">    &lt;property name=&quot;resourceBase&quot; value=&quot;$&#123;activemq.home&#125;/webapps-demo/demo/&quot; /&gt;</div><div class="line">    &lt;property name=&quot;logUrlOnStart&quot; value=&quot;true&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
-<p>重启activemq， <a href="http://localhost:8161/demo" target="_blank" rel="external">http://localhost:8161/demo</a>可以访问了， enjoy it ！</p>
-<h2 id="activemq集合贴"><a href="#activemq集合贴" class="headerlink" title="activemq集合贴"></a><a href="http://giveme5.top/2015/09/11/mq/mq/#ActiveMQ" target="_blank" rel="external">activemq集合贴</a></h2>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/11/mq/mq/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1731,6 +1553,184 @@
 </ul>
 <p>Kafka是Apache下的一个子项目，是一个高性能跨语言分布式发布/订阅消息队列系统，而Jafka是在Kafka之上孵化而来的，即Kafka的一个升级版。具有以下特性：快速持久化，可以在O(1)的系统开销下进行消息持久化；高吞吐，在一台普通的服务器上既可以达到10W/s的吞吐速率；完全的分布式系统，Broker、Producer、Consumer都原生自动支持分布式，自动实现负载均衡；支持Hadoop数据并行加载，对于像Hadoop的一样的日志数据和离线分析系统，但又要求实时处理的限制，这是一个可行的解决方案。Kafka通过Hadoop的并行加载机制统一了在线和离线的消息处理。Apache Kafka相对于ActiveMQ是一个非常轻量级的消息系统，除了性能非常好之外，还是一个工作良好的分布式系统</p>
 
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/11/mq/activemq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/09/11/mq/activemq/" itemprop="url">activemq (一) 简介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-11T19:59:44+08:00">
+                2015-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mq/" itemprop="url" rel="index">
+                    <span itemprop="name">mq</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/09/11/mq/activemq/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/09/11/mq/activemq/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>以下全是linux系统上的操作，在opensuse 13.2 上实际操作。</p>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
+<li>JDK 1.6 以上</li>
+<li>JAVA_HOME 配置好</li>
+<li><a href="http://activemq.apache.org/" target="_blank" rel="external">官网</a></li>
+</ul>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><p>1 下载 activemq gzip 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ wget http://ftp.meisei-u.ac.jp/mirror/apache/dist/activemq/5.12.0/apache-activemq-5.12.0-bin.tar.gz</div></pre></td></tr></table></figure>
+</li>
+<li><p>2 解压缩</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ tar zxvf activemq-x.x.x.tar.gz</div></pre></td></tr></table></figure>
+</li>
+<li><p>3 确认权限<br>确认activemq 是否有执行权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd [activemq_install_dir]/bin</div><div class="line">$ chmod 755 activemq</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>进入安装目录的bin路径，启动activemq<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd [activemq_install_dir]/bin</div><div class="line">$ ./activemq start</div></pre></td></tr></table></figure></p>
+<p>正常输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">INFO: Loading &apos;[activemq_install_dir]/bin/env&apos;</div><div class="line">INFO: Using java &apos;/usr/lib64/jvm/java/bin/java&apos;</div><div class="line">INFO: Starting - inspect logfiles specified in logging.properties and log4j.properties to get details</div><div class="line">INFO: pidfile created : &apos;[activemq_install_dir]/data/activemq.pid&apos; (pid &apos;xxxx&apos;)</div></pre></td></tr></table></figure></p>
+<h2 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h2><p>网页监控 <a href="http://localhost:8161/admin" target="_blank" rel="external">http://localhost:8161/admin</a><br>默认用户密码 admin/admin</p>
+<p>可以在 conf/jetty-real.properties 中修改</p>
+<h2 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h2><ul>
+<li><p>网页监控<br>端口： 8161<br>配置： [activemq_install_dir]/conf/jetty.xml </p>
+</li>
+<li><p>activeMq 服务<br>openwire： 61616<br>amqp    ： 5672<br>stomp   ： 61613<br>mqtt    ： 1883<br>ws      ： 61614<br>配置： [activemq_install_dir]/conf/activemq.xml </p>
+</li>
+</ul>
+<h2 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd [activemq_install_dir]/bin</div><div class="line">$ ./activemq stop</div></pre></td></tr></table></figure>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>[activemq_install_dir]/conf/activemq.xml </p>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p><a href="http://activemq.apache.org/clustering.html" target="_blank" rel="external">集群</a></p>
+<h2 id="web-demo"><a href="#web-demo" class="headerlink" title="web demo"></a>web demo</h2><p>官网说 启动 activemq 后， <a href="http://localhost:8161/demo" target="_blank" rel="external">http://localhost:8161/demo</a>直接能访问， 其实5.12.0版本是不行的，不行的，不行的。</p>
+<p>需要在 conf/jetty 中增加配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;bean class=&quot;org.eclipse.jetty.webapp.WebAppContext&quot;&gt;</div><div class="line">    &lt;property name=&quot;contextPath&quot; value=&quot;/admin&quot; /&gt;</div><div class="line">    &lt;property name=&quot;resourceBase&quot; value=&quot;$&#123;activemq.home&#125;/webapps/admin&quot; /&gt;</div><div class="line">    &lt;property name=&quot;logUrlOnStart&quot; value=&quot;true&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line"></div><div class="line">&lt;!-- 需要增加 --&gt;</div><div class="line">&lt;bean class=&quot;org.eclipse.jetty.webapp.WebAppContext&quot;&gt;</div><div class="line">    &lt;property name=&quot;contextPath&quot; value=&quot;/demo&quot; /&gt;</div><div class="line">    &lt;property name=&quot;resourceBase&quot; value=&quot;$&#123;activemq.home&#125;/webapps-demo/demo/&quot; /&gt;</div><div class="line">    &lt;property name=&quot;logUrlOnStart&quot; value=&quot;true&quot; /&gt;</div><div class="line">&lt;/bean&gt;</div><div class="line"></div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
+<p>重启activemq， <a href="http://localhost:8161/demo" target="_blank" rel="external">http://localhost:8161/demo</a>可以访问了， enjoy it ！</p>
+<h2 id="activemq集合贴"><a href="#activemq集合贴" class="headerlink" title="activemq集合贴"></a><a href="http://giveme5.top/2015/09/11/mq/mq/#ActiveMQ" target="_blank" rel="external">activemq集合贴</a></h2>
           
         
       
