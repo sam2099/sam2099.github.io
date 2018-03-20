@@ -100,21 +100,48 @@
     <link href="http://giveme5.cc/2018/01/25/other/jwt1/"/>
     <id>http://giveme5.cc/2018/01/25/other/jwt1/</id>
     <published>2018-01-25T13:44:58.000Z</published>
-    <updated>2018-01-30T09:55:40.275Z</updated>
+    <updated>2018-03-20T07:02:54.996Z</updated>
     
-    <content type="html"><![CDATA[<ul>
+    <content type="html"><![CDATA[<p><strong>主要内容</strong></p>
+<ul>
 <li>JWT (Json Web Tokens) </li>
 <li>Shiro + JWT</li>
 </ul>
- <a id="more"></a>
+<p><em>更新历史</em><br>无</p>
+<p>JWT 是为分布式，微服务 而生。<br>这时Web应用是无状态的，即服务器端无状态，就是说服务器端不会存储像session这种东西，而是每次请求时access_token进行资源访问。<br>如一些REST风格的API， 大型tomcat集群（不做session同步）。<br>单体WEB应用还是推荐session-cookie机制。</p>
+<a id="more"></a>
+<hr>
+<h2 id="JWT-概念"><a href="#JWT-概念" class="headerlink" title="JWT 概念"></a>JWT 概念</h2><p><code>JWT</code> 详细说明参照 <a href="https://jwt.io/" target="_blank" rel="external">jwt</a>。</p>
+<p>下面仅仅罗列<code>JWT</code>标准定义的字段（Registered Claim）：</p>
+<h3 id="载荷（Payload）"><a href="#载荷（Payload）" class="headerlink" title="载荷（Payload）"></a>载荷（Payload）</h3><ul>
+<li>iss: 该JWT的签发者</li>
+<li>sub: 该JWT所面向的用户</li>
+<li>aud: 接收该JWT的一方</li>
+<li>exp(expires): 什么时候过期，这里是一个Unix时间戳</li>
+<li>iat(issued at): 在什么时候签发的</li>
+<li>jti(JWT ID)：该JWT的唯一标识</li>
+<li>nbf: 这个时间之前token不可用</li>
+</ul>
+<h3 id="头部（Header）"><a href="#头部（Header）" class="headerlink" title="头部（Header）"></a>头部（Header）</h3><ul>
+<li>typ: “JWT”,</li>
+<li>alg: 签名或摘要算法， (HS256,HS384,HS512,RS256,RS384,RS512,ES256,ES384,ES512)</li>
+</ul>
+<h3 id="信息会暴露"><a href="#信息会暴露" class="headerlink" title="信息会暴露"></a>信息会暴露</h3><p>在JWT中，不应该在载荷里面加入任何敏感的数据。</p>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Header//头信息</div><div class="line">&#123;</div><div class="line">    <span class="string">"alg"</span>: <span class="string">"HS256"</span>,//签名或摘要算法</div><div class="line">    <span class="string">"typ"</span>: <span class="string">"JWT"</span>//token类型</div><div class="line">&#125;</div><div class="line">Playload//荷载信息</div><div class="line">&#123;</div><div class="line">    <span class="string">"iss"</span>: <span class="string">"token-server"</span>,//签发者</div><div class="line">    <span class="string">"exp "</span>: <span class="string">"Mon Nov 13 15:28:41 CST 2017"</span>,//过期时间</div><div class="line">    <span class="string">"sub "</span>: <span class="string">"wangjie"</span>,//用户名</div><div class="line">    <span class="string">"aud"</span>: <span class="string">"web-server-1"</span>//接收方,</div><div class="line">    <span class="string">"nbf"</span>: <span class="string">"Mon Nov 13 15:40:12 CST 2017"</span>,//这个时间之前token不可用</div><div class="line">    <span class="string">"jat"</span>: <span class="string">"Mon Nov 13 15:20:41 CST 2017"</span>,//签发时间</div><div class="line">    <span class="string">"jti"</span>: <span class="string">"0023"</span>,//令牌id标识</div><div class="line">    <span class="string">"claim"</span>: &#123;“auth”:”ROLE_ADMIN”&#125;//访问主张</div><div class="line">&#125;</div><div class="line">Signature//签名信息</div><div class="line">签名或摘要算法（</div><div class="line">    base64urlencode（Header），</div><div class="line">    Base64urlencode（Playload），</div><div class="line">    secret-key</div><div class="line">）</div></pre></td></tr></table></figure>
+<p>按照JWT规范，对这个令牌定义进行如下操作：<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">base64urlencode（Header）</div><div class="line">+<span class="string">"."</span>+</div><div class="line">base64urlencode（Playload）</div><div class="line">+<span class="string">"."</span>+</div><div class="line">signature（</div><div class="line">    base64urlencode（Header）</div><div class="line">    +<span class="string">"."</span>+</div><div class="line">    base64urlencode（Playload）</div><div class="line">    ,secret-key</div><div class="line">）</div></pre></td></tr></table></figure></p>
+<h2 id="JWT-撤销（revoke）"><a href="#JWT-撤销（revoke）" class="headerlink" title="JWT 撤销（revoke）"></a>JWT 撤销（revoke）</h2><p><a href="https://auth0.com/blog/blacklist-json-web-token-api-keys/" target="_blank" rel="external">https://auth0.com/blog/blacklist-json-web-token-api-keys/</a></p>
+<h2 id="shiro-集成"><a href="#shiro-集成" class="headerlink" title="shiro 集成"></a>shiro 集成</h2><p><a href="http://www.bijishequ.com/detail/578914?p=" target="_blank" rel="external">http://www.bijishequ.com/detail/578914?p=</a></p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;ul&gt;
+      &lt;p&gt;&lt;strong&gt;主要内容&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
 &lt;li&gt;JWT (Json Web Tokens) &lt;/li&gt;
 &lt;li&gt;Shiro + JWT&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
+&lt;p&gt;JWT 是为分布式，微服务 而生。&lt;br&gt;这时Web应用是无状态的，即服务器端无状态，就是说服务器端不会存储像session这种东西，而是每次请求时access_token进行资源访问。&lt;br&gt;如一些REST风格的API， 大型tomcat集群（不做session同步）。&lt;br&gt;单体WEB应用还是推荐session-cookie机制。&lt;/p&gt;
     
     </summary>
     
