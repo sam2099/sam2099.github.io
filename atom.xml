@@ -1130,9 +1130,9 @@ fc-list |grep SimSun
     
       <category term="github" scheme="http://giveme5.cc/tags/github/"/>
     
-      <category term="git" scheme="http://giveme5.cc/tags/git/"/>
-    
       <category term="gitlab" scheme="http://giveme5.cc/tags/gitlab/"/>
+    
+      <category term="git" scheme="http://giveme5.cc/tags/git/"/>
     
   </entry>
   
@@ -1552,7 +1552,7 @@ fc-list |grep SimSun
     <link href="http://giveme5.cc/2017/04/22/linux/security2trouble/"/>
     <id>http://giveme5.cc/2017/04/22/linux/security2trouble/</id>
     <published>2017-04-22T08:34:57.000Z</published>
-    <updated>2017-07-31T01:31:50.066Z</updated>
+    <updated>2018-03-28T08:40:38.659Z</updated>
     
     <content type="html"><![CDATA[<p>Linux 服务器安全和故障排除， 读 高俊峰 之 【高性能Linux服务器构建实战】，记录思路和工具。</p>
 <p>主要内容<br>安全<br>故障排除</p>
@@ -1571,7 +1571,9 @@ fc-list |grep SimSun
     
       <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
     
-      <category term="安全， 故障" scheme="http://giveme5.cc/tags/%E5%AE%89%E5%85%A8%EF%BC%8C-%E6%95%85%E9%9A%9C/"/>
+      <category term="安全" scheme="http://giveme5.cc/tags/%E5%AE%89%E5%85%A8/"/>
+    
+      <category term="故障" scheme="http://giveme5.cc/tags/%E6%95%85%E9%9A%9C/"/>
     
   </entry>
   
