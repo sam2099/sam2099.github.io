@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2018-02-28T02:52:40.978Z</updated>
+  <updated>2018-04-10T05:27:00.385Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/"/>
     <id>http://giveme5.cc/2018/02/27/web server/nginx/keepalivedNginx/</id>
     <published>2018-02-27T02:48:42.000Z</published>
-    <updated>2018-02-28T02:52:40.978Z</updated>
+    <updated>2018-04-10T05:27:00.385Z</updated>
     
     <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>keepalived + nginx 爽活热备负载均衡</p>
 <p><em>更新历史</em><br>无</p>
@@ -86,6 +86,8 @@
     
     
       <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
+    
+      <category term="server" scheme="http://giveme5.cc/tags/server/"/>
     
       <category term="keepalived" scheme="http://giveme5.cc/tags/keepalived/"/>
     
@@ -157,7 +159,7 @@
     <link href="http://giveme5.cc/2017/11/03/spring/spring_transaction/"/>
     <id>http://giveme5.cc/2017/11/03/spring/spring_transaction/</id>
     <published>2017-11-03T11:44:58.000Z</published>
-    <updated>2017-11-03T08:52:30.212Z</updated>
+    <updated>2018-04-10T05:30:41.185Z</updated>
     
     <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring Transaction 事务；Transaction 事务绑定事件</p>
 <p><em>更新历史</em><br>无</p>
@@ -241,7 +243,7 @@
     
       <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
     
-      <category term="Transaction" scheme="http://giveme5.cc/tags/Transaction/"/>
+      <category term="transaction" scheme="http://giveme5.cc/tags/transaction/"/>
     
   </entry>
   
@@ -250,7 +252,7 @@
     <link href="http://giveme5.cc/2017/10/17/java/FunctionalInterface/"/>
     <id>http://giveme5.cc/2017/10/17/java/FunctionalInterface/</id>
     <published>2017-10-17T11:44:58.000Z</published>
-    <updated>2017-10-17T08:04:06.599Z</updated>
+    <updated>2018-04-10T05:28:16.185Z</updated>
     
     <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>函数式接口</p>
 <p><em>更新历史</em><br>无</p>
@@ -332,6 +334,8 @@
       <category term="FunctionalInterface" scheme="http://giveme5.cc/tags/FunctionalInterface/"/>
     
       <category term="内置函数式接口" scheme="http://giveme5.cc/tags/%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3/"/>
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
     
   </entry>
   
@@ -542,7 +546,7 @@
     <link href="http://giveme5.cc/2017/10/12/java/Streams/"/>
     <id>http://giveme5.cc/2017/10/12/java/Streams/</id>
     <published>2017-10-12T11:44:58.000Z</published>
-    <updated>2017-10-17T02:05:45.497Z</updated>
+    <updated>2018-04-10T05:28:36.405Z</updated>
     
     <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>Java 8 Streams 在集合和其他数据集上运行函数式操作。<br>所有流计算都有一种共同的结构：它们具有一个流来源、0 或多个中间操作，以及一个终止操作。</p>
 <p><em>更新历史</em><br>无</p>
@@ -725,6 +729,8 @@
       <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
     
       <category term="Streams" scheme="http://giveme5.cc/tags/Streams/"/>
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
     
   </entry>
   
@@ -1189,7 +1195,7 @@ fc-list |grep SimSun
     <link href="http://giveme5.cc/2017/06/30/java/java8/"/>
     <id>http://giveme5.cc/2017/06/30/java/java8/</id>
     <published>2017-06-30T14:18:03.000Z</published>
-    <updated>2017-10-12T03:12:50.854Z</updated>
+    <updated>2018-04-10T05:28:24.321Z</updated>
     
     <content type="html"><![CDATA[<p><strong><em>主要内容</em></strong></p>
 <p>　　Java 8是Java自Java 5之后的最重要的版本。这个版本包含语言、编译器、库、工具和JVM等方面的十多个新特性。</p>
@@ -1236,6 +1242,8 @@ fc-list |grep SimSun
       <category term="java 8" scheme="http://giveme5.cc/tags/java-8/"/>
     
       <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
     
   </entry>
   
