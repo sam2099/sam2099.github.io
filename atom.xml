@@ -327,6 +327,8 @@
       <category term="java" scheme="http://giveme5.cc/categories/java/"/>
     
     
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
       <category term="java 8" scheme="http://giveme5.cc/tags/java-8/"/>
     
       <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
@@ -335,8 +337,6 @@
     
       <category term="内置函数式接口" scheme="http://giveme5.cc/tags/%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3/"/>
     
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
-    
   </entry>
   
   <entry>
@@ -344,7 +344,7 @@
     <link href="http://giveme5.cc/2017/10/13/spring/spring%20aop/"/>
     <id>http://giveme5.cc/2017/10/13/spring/spring aop/</id>
     <published>2017-10-13T11:44:58.000Z</published>
-    <updated>2017-10-17T06:24:26.323Z</updated>
+    <updated>2018-04-18T07:49:28.187Z</updated>
     
     <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring aop 面向切面编程; 主要探索Spring框架对面向切面编程的支持，包括如何定义需要被切面(aspect)覆盖的类，如何使用注解创建切面。</p>
 <ul>
@@ -365,24 +365,25 @@
 <li>目标对象(Target Object)</li>
 <li>AOP代理(AOP Proxy)</li>
 <li>织入(Weaving)</li>
-<li>通知(Advice)<br>  通知类型：<ul>
+<li>通知(Advice)</li>
+</ul>
+<h3 id="切面-Aspect"><a href="#切面-Aspect" class="headerlink" title="切面(Aspect)"></a>切面(Aspect)</h3><p>一个关注点的模块化，这个关注点可能会横切多个对象。通常由 通知(advice)、切点(pointcuts)和连接点(join points)组成；<br>事务管理是J2EE应用中一个关于横切关注点的很好的例子。在Spring AOP中，切面可以使用基于模式)或者基于@Aspect注解的方式来实现。<br><img src="/images/aop2.png" alt=""></p>
+<blockquote>
+<blockquote>
+<p>切面的功能(advice)通过一个或者多个连接点织入到应用的执行流程</p>
+</blockquote>
+</blockquote>
+<h3 id="连接点-Joinpoint"><a href="#连接点-Joinpoint" class="headerlink" title="连接点(Joinpoint)"></a>连接点(Joinpoint)</h3><p>在程序执行过程中某个特定的点，可能是正在调用的方法、正在抛出的异常或者是正在被修改的属性, 比如某方法调用的时候或者处理异常的时候。<br>在Spring AOP中，一个连接点总是表示一个方法的执行。<br>通常是业务代码中的概念， 不在切面(Aspect)代码中体现。理论上可以做为切入点的集合。</p>
+<h3 id="切入点-Pointcut"><a href="#切入点-Pointcut" class="headerlink" title="切入点(Pointcut)"></a>切入点(Pointcut)</h3><p>匹配连接点的断言， 逻辑上是连接点的子集，就是当前切面(Aspect)所关心/处理的连接点。<br>在切面(Aspect)代码中通过 <code>@Pointcut</code> 定义。</p>
+<h3 id="通知-Advice"><a href="#通知-Advice" class="headerlink" title="通知(Advice)"></a>通知(Advice)</h3><p>在切面的某个特定的切入点上执行的动作， 就是切面的真正目的——它真正要做的工作。</p>
+<p>通知类型：</p>
+<ul>
 <li>前置通知(Before advice)：在某连接点之前执行的通知</li>
 <li>后置通知(After returning advice)：在某连接点正常完成后执行的通知</li>
 <li>异常通知(After throwing advice)：在方法抛出异常退出时执行的通知</li>
 <li>最终通知(After (finally) advice)当某连接点退出的时候执行的通知(不论是正常返回还是异常退出)</li>
 <li>环绕通知(Around Advice)：包围一个连接点的通知，如方法调用。这是最强大的一种通知类型。环绕通知可以在方法调用前后完成自定义的行为。它也会选择是否继续执行连接点或直接返回它自己的返回值或抛出异常来结束执行。</li>
 </ul>
-</li>
-</ul>
-<h3 id="切面-Aspect"><a href="#切面-Aspect" class="headerlink" title="切面(Aspect)"></a>切面(Aspect)</h3><p>一个关注点的模块化，这个关注点可能会横切多个对象。通常由 通知(advice)、切点(pointcuts)和织入点(join points)组成；<br>事务管理是J2EE应用中一个关于横切关注点的很好的例子。在Spring AOP中，切面可以使用基于模式)或者基于@Aspect注解的方式来实现。<br><img src="/images/aop2.png" alt=""></p>
-<blockquote>
-<blockquote>
-<p>切面的功能(advice)通过一个或者多个织入点织入到应用的执行流程</p>
-</blockquote>
-</blockquote>
-<h3 id="连接点-Joinpoint"><a href="#连接点-Joinpoint" class="headerlink" title="连接点(Joinpoint)"></a>连接点(Joinpoint)</h3><p>在程序执行过程中某个特定的点，可能是正在调用的方法、正在抛出的异常或者是正在被修改的属性, 比如某方法调用的时候或者处理异常的时候。<br>在Spring AOP中，一个连接点总是表示一个方法的执行。<br>通常是业务代码中的概念， 不在切面(Aspect)代码中体现。</p>
-<h3 id="切入点-Pointcut"><a href="#切入点-Pointcut" class="headerlink" title="切入点(Pointcut)"></a>切入点(Pointcut)</h3><p>匹配连接点的断言， 逻辑上是连接点的子集，就是当前切面(Aspect)所关心/处理的连接点。<br>在切面(Aspect)代码中通过 <code>@Pointcut</code> 定义。</p>
-<h3 id="通知-Advice"><a href="#通知-Advice" class="headerlink" title="通知(Advice)"></a>通知(Advice)</h3><p>在切面的某个特定的切入点上执行的动作， 就是切面的真正目的——它真正要做的工作。其中包括了“around”、“before”和“after”等不同类型的通知(通知的类型将在后面部分进行讨论)。许多AOP框架(包括Spring)都是以拦截器做通知模型，并维护一个以连接点为中心的拦截器链。<br>通知和一个切入点表达式关联，并在满足这个切入点的连接点上运行(例如，当执行某个特定名称的方法时)。切入点表达式如何和连接点匹配是AOP的核心：Spring缺省使用AspectJ切入点语法。</p>
 <h3 id="引入-Introduction"><a href="#引入-Introduction" class="headerlink" title="引入(Introduction)"></a>引入(Introduction)</h3><p>用来给一个类型声明额外的方法或属性(也被称为连接类型声明(inter-type declaration))。Spring允许引入新的接口(以及一个对应的实现)到任何被代理的对象。例如，你可以使用引入来使一个bean实现IsModified接口，以便简化缓存机制。</p>
 <h3 id="目标对象-Target-Object"><a href="#目标对象-Target-Object" class="headerlink" title="目标对象(Target Object)"></a>目标对象(Target Object)</h3><p>被一个或者多个切面所通知的对象。也被称做被通知(advised)对象。 既然Spring AOP是通过运行时代理实现的，这个对象永远是一个被代理(proxied)对象。</p>
 <h3 id="AOP代理-AOP-Proxy"><a href="#AOP代理-AOP-Proxy" class="headerlink" title="AOP代理(AOP Proxy)"></a>AOP代理(AOP Proxy)</h3><p>AOP框架创建的对象，用来实现切面契约(例如通知方法执行等等)。在Spring中，AOP代理可以是JDK动态代理或者CGLIB代理。</p>
@@ -397,58 +398,69 @@
 <p>前三种属于Spring自己的AOP实现：Spring AOP基于动态代理机制构建，也正是因为这个原因，Spring AOP仅仅支持函数调用级别的拦截。</p>
 <h3 id="启用-AspectJ支持"><a href="#启用-AspectJ支持" class="headerlink" title="启用@AspectJ支持"></a>启用@AspectJ支持</h3><p>java config： <code>@EnableAspectJAutoProxy</code><br>或<br>xml config： <code>&lt;aop:aspectj-autoproxy /&gt;</code></p>
 <h3 id="完整-经典-切面"><a href="#完整-经典-切面" class="headerlink" title="完整(经典)切面"></a>完整(经典)切面</h3><p>一个 完整(经典)切面 通常 由 切面， 切入点， 通知 3部分组成。</p>
-<h4 id="声明一个切面-Aspect"><a href="#声明一个切面-Aspect" class="headerlink" title="声明一个切面 @Aspect"></a>声明一个切面 <code>@Aspect</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Aspect</span> </span>&#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="声明一个切入点-pointcut-Pointcut"><a href="#声明一个切入点-pointcut-Pointcut" class="headerlink" title="声明一个切入点(pointcut) @Pointcut"></a>声明一个切入点(pointcut) <code>@Pointcut</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Pointcut</span>(<span class="string">"execution(* transfer(..))"</span>)<span class="comment">// the pointcut expression</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">anyOldTransfer</span><span class="params">()</span> </span>&#123;&#125;<span class="comment">// the pointcut signature</span></div></pre></td></tr></table></figure>
+<h4 id="切面-Aspect-1"><a href="#切面-Aspect-1" class="headerlink" title="切面 @Aspect"></a>切面 <code>@Aspect</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Aspect</span> </span>&#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="切入点-pointcut-Pointcut"><a href="#切入点-pointcut-Pointcut" class="headerlink" title="切入点(pointcut) @Pointcut"></a>切入点(pointcut) <code>@Pointcut</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Pointcut</span>(value=<span class="string">"execution(* transfer(..)) &amp;&amp; args(param)"</span>, argNames = <span class="string">"param"</span>)<span class="comment">// the pointcut expression</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pointcutName</span><span class="params">()</span> </span>&#123;&#125;<span class="comment">// the pointcut signature</span></div></pre></td></tr></table></figure>
+<ul>
+<li><code>value</code> : 指定切入点表达式, 如execution、args等</li>
+<li><code>argNames</code> : 指定该切入点方法参数列表,多个用,分隔,这些参数将传递给通知方法同名的参数;</li>
+<li><code>pointcutName</code> : 切入点名字，可以用该名字引用该切入点表达式</li>
+</ul>
 <p>切入点指示符(PCD)</p>
+<style>
+table th:first-of-type {
+    width: 20%;
+}
+</style>
+
 <table>
 <thead>
 <tr>
-<th>切入点指示符</th>
+<th style="text-align:center">切入点指示符</th>
 <th style="text-align:left">说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>execution</td>
-<td style="text-align:left">匹配方法执行的连接点，这是你将会用到的Spring的最主要的切入点指示符。</td>
+<td style="text-align:center">execution</td>
+<td style="text-align:left">匹配方法，这是你将会用到的Spring的最主要的切入点指示符。</td>
 </tr>
 <tr>
-<td>within</td>
-<td style="text-align:left">限定匹配特定类型的连接点(在使用Spring AOP的时候，在匹配的类型中定义的方法的执行)。</td>
+<td style="text-align:center">within</td>
+<td style="text-align:left">匹配特定类型之内的全部方法</td>
 </tr>
 <tr>
-<td>this</td>
-<td style="text-align:left">限定匹配特定的连接点(使用Spring AOP的时候方法的执行)，其中bean reference(Spring AOP 代理)是指定类型的实例。</td>
+<td style="text-align:center">target</td>
+<td style="text-align:left">用于匹配当前目标对象类型的连接点,不包括接口。</td>
 </tr>
 <tr>
-<td>target</td>
-<td style="text-align:left">限定匹配特定的连接点(使用Spring AOP的时候方法的执行)，其中目标对象(被代理的应用对象)是指定类型的实例。</td>
+<td style="text-align:center">args</td>
+<td style="text-align:left">用于匹配当前执行的方法传入的参数为指定类型的连接点</td>
 </tr>
 <tr>
-<td>args</td>
-<td style="text-align:left">限定匹配特定的连接点(使用Spring AOP的时候方法的执行)，其中参数是指定类型的实例。</td>
+<td style="text-align:center">this</td>
+<td style="text-align:left">用于匹配当前AOP代理对象类型的连接点,包括接口</td>
 </tr>
 <tr>
-<td>@target</td>
-<td style="text-align:left">限定匹配特定的连接点(使用Spring AOP的时候方法的执行)，其中正执行对象的类持有指定类型的注解。</td>
+<td style="text-align:center">@annotation</td>
+<td style="text-align:left">匹配持有指定注解的方法(注解在方法上)。</td>
 </tr>
 <tr>
-<td>@args</td>
-<td style="text-align:left">限定匹配特定的连接点(使用Spring AOP的时候方法的执行)，其中实际传入参数的运行时类型持有指定类型的注解。</td>
+<td style="text-align:center">@within</td>
+<td style="text-align:left">匹配持有指定注解的类型里面的所有方法(注解在类上)</td>
 </tr>
 <tr>
-<td>@within</td>
-<td style="text-align:left">限定匹配特定的连接点，其中连接点所在类型已指定注解(在使用Spring AOP的时候，所执行的方法所在类型已指定注解)。</td>
+<td style="text-align:center">@target</td>
+<td style="text-align:left">用于匹配当前目标对象类型的连接点，其中目标对象持有指定的注解</td>
 </tr>
 <tr>
-<td>@annotation</td>
-<td style="text-align:left">限定匹配特定的连接点(使用Spring AOP的时候方法的执行)，其中连接点的主题持有指定的注解。</td>
+<td style="text-align:center">@args</td>
+<td style="text-align:left">匹配当前执行的方法传入的参数持有指定的注解</td>
 </tr>
 </tbody>
 </table>
-<p>更多内容参考附录</p>
-<p>常用的切入点(pointcut)例子<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Pointcut;</div><div class="line"></div><div class="line"><span class="meta">@Aspect</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SystemArchitecture</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * A join point is in the web layer if the method is defined</div><div class="line">   * in a type in the com.xyz.someapp.web package or any sub-package</div><div class="line">   * under that.</div><div class="line">   */</div><div class="line">  <span class="meta">@Pointcut</span>(<span class="string">"within(com.xyz.someapp.web..*)"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inWebLayer</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * A join point is in the service layer if the method is defined</div><div class="line">   * in a type in the com.xyz.someapp.service package or any sub-package</div><div class="line">   * under that.</div><div class="line">   */</div><div class="line">  <span class="meta">@Pointcut</span>(<span class="string">"within(com.xyz.someapp.service..*)"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inServiceLayer</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * A join point is in the data access layer if the method is defined</div><div class="line">   * in a type in the com.xyz.someapp.dao package or any sub-package</div><div class="line">   * under that.</div><div class="line">   */</div><div class="line">  <span class="meta">@Pointcut</span>(<span class="string">"within(com.xyz.someapp.dao..*)"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inDataAccessLayer</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">  <span class="comment">/**</span></div><div class="line">   * A business service is the execution of any method defined on a service</div><div class="line">   * interface. This definition assumes that interfaces are placed in the</div><div class="line">   * "service" package, and that implementation types are in sub-packages.</div><div class="line">   * </div><div class="line">   * If you group service interfaces by functional area (for example, </div><div class="line">   * in packages com.xyz.someapp.abc.service and com.xyz.def.service) then</div><div class="line">   * the pointcut expression "execution(* com.xyz.someapp..service.*.*(..))"</div><div class="line">   * could be used instead.</div><div class="line">   *</div><div class="line">   * Alternatively, you can write the expression using the 'bean'</div><div class="line">   * PCD, like so "bean(*Service)". (This assumes that you have</div><div class="line">   * named your Spring service beans in a consistent fashion.)</div><div class="line">   */</div><div class="line">  <span class="meta">@Pointcut</span>(<span class="string">"execution(* com.xyz.someapp.service.*.*(..))"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">businessService</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">  </div><div class="line">  <span class="comment">/**</span></div><div class="line">   * A data access operation is the execution of any method defined on a </div><div class="line">   * dao interface. This definition assumes that interfaces are placed in the</div><div class="line">   * "dao" package, and that implementation types are in sub-packages.</div><div class="line">   */</div><div class="line">  <span class="meta">@Pointcut</span>(<span class="string">"execution(* com.xyz.someapp.dao.*.*(..))"</span>)</div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">dataAccessOperation</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h4 id="声明通知"><a href="#声明通知" class="headerlink" title="声明通知"></a>声明通知</h4><ul>
+<h4 id="声明通知"><a href="#声明通知" class="headerlink" title="声明通知"></a>声明通知</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Before</span>(value = <span class="string">"切入点表达式或命名切入点"</span>, argNames = <span class="string">"参数列表参数名"</span>)</div><div class="line"><span class="meta">@After</span>(value  = <span class="string">"切入点表达式或命名切入点"</span>, argNames = <span class="string">"参数列表参数名"</span>)</div><div class="line"><span class="meta">@Around</span>(value = <span class="string">"切入点表达式或命名切入点"</span>, argNames = <span class="string">"参数列表参数名"</span>)</div><div class="line"><span class="meta">@AfterReturning</span>(</div><div class="line">value = <span class="string">"切入点表达式或命名切入点"</span>,</div><div class="line">pointcut = <span class="string">"切入点表达式或命名切入点"</span>, <span class="comment">// 如果指定了将覆盖value属性指定的，pointcut具有高优先级</span></div><div class="line">argNames = <span class="string">"参数列表参数名"</span>,</div><div class="line">returning = <span class="string">"返回值对应参数名"</span>)</div><div class="line"><span class="meta">@AfterThrowing</span>(</div><div class="line">value = <span class="string">"切入点表达式或命名切入点"</span>,</div><div class="line">pointcut = <span class="string">"切入点表达式或命名切入点"</span>,</div><div class="line">argNames = <span class="string">"参数列表参数名"</span>,</div><div class="line">throwing = <span class="string">"异常对应参数名"</span>)</div></pre></td></tr></table></figure>
+<p>如果在同一个连接点上执行多个通知,可以使用<code>@Order</code>注解决定其执行顺序</p>
+<ul>
 <li><p>前置通知 <code>@Before</code><br>声明前置通知</p>
 </li>
 <li><p>后置通知 <code>@AfterReturning</code><br>在一个匹配的方法返回的时候执行</p>
@@ -465,14 +477,9 @@
 </li>
 </ul>
 <h4 id="通知参数-Advice-parameters"><a href="#通知参数-Advice-parameters" class="headerlink" title="通知参数(Advice parameters)"></a>通知参数(Advice parameters)</h4><p>可以在通知签名中声明所需的参数.</p>
-<h5 id="传递参数给通知"><a href="#传递参数给通知" class="headerlink" title="传递参数给通知"></a>传递参数给通知</h5><p>定义一个切入点,然后直接从通知中访问那个命名切入点。<br>如下的参数 <code>account</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Pointcut</span>(<span class="string">"com.xyz.myapp.SystemArchitecture.dataAccessOperation() &amp;&amp;"</span> + </div><div class="line">          <span class="string">"args(account,..)"</span>)</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">accountDataAccessOperation</span><span class="params">(Account account)</span> </span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="meta">@Before</span>(<span class="string">"accountDataAccessOperation(account)"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validateAccount</span><span class="params">(Account account)</span> </span>&#123;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h5 id="确定参数名"><a href="#确定参数名" class="headerlink" title="确定参数名"></a>确定参数名</h5><p>如果第一个参数是JoinPoint， ProceedingJoinPoint， 或者JoinPoint.StaticPart类型， 你可以在“argNames”属性的值中省去参数的名字。<br>其他使用 额外的”argNames”属性指定的参数名。<br>如下 参数 <code>bean</code>, <code>jp</code> 都可以使用。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Before</span>(</div><div class="line">   value=<span class="string">"com.xyz.lib.Pointcuts.anyPublicMethod() &amp;&amp; target(bean) &amp;&amp; @annotation(auditable)"</span>,</div><div class="line">   argNames=<span class="string">"bean,auditable"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">audit</span><span class="params">(JoinPoint jp, Object bean, Auditable auditable)</span> </span>&#123;</div><div class="line">  AuditCode code = auditable.value();</div><div class="line">  <span class="comment">// ... use code, bean, and jp</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h5 id="处理参数"><a href="#处理参数" class="headerlink" title="处理参数"></a>处理参数</h5><p>带参数的的proceed()调用</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Around</span>(<span class="string">"execution(List&lt;Account&gt; find*(..)) &amp;&amp;"</span> +</div><div class="line">        <span class="string">"args(accountHolderNamePattern)"</span>)		</div><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">preProcessQueryPattern</span><span class="params">(ProceedingJoinPoint pjp, String accountHolderNamePattern)</span></span></div><div class="line"><span class="keyword">throws</span> Throwable &#123;</div><div class="line">  String newPattern = preProcess(accountHolderNamePattern);</div><div class="line">  <span class="keyword">return</span> pjp.proceed(<span class="keyword">new</span> Object[] &#123;newPattern&#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果第一个参数是JoinPoint， ProceedingJoinPoint， 或者JoinPoint.StaticPart类型， 你可以在“argNames”属性的值中省去参数的名字,Spring会自动传入。<br>其他使用 额外的”argNames”属性指定的参数名。<br>如下 参数 <code>trackNumber</code>, <code>jp</code> 都可以使用。</p>
 <h4 id="完整切面例子"><a href="#完整切面例子" class="headerlink" title="完整切面例子"></a>完整切面例子</h4><p>上面章节分别说明了切面，切入点，通知， 下面结合整体例子说明， 注意 1,2,3 点。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Before;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Pointcut;</div><div class="line"><span class="keyword">import</span> java.util.HashMap;<span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="meta">@Aspect</span> <span class="comment">//1. 切面</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrackCounter</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Map&lt;Integer, Integer&gt; trackCounts = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();</div><div class="line"></div><div class="line">    <span class="meta">@Pointcut</span>( <span class="comment">//2. 切入点</span></div><div class="line">            <span class="string">"execution(* com.spring.sample.soundsystem.CompactDisc.playTrack( .. )) "</span> +</div><div class="line">            <span class="string">"&amp;&amp; args(trackNumber)"</span>)  </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trackPlayed</span><span class="params">(<span class="keyword">int</span> trackNumber)</span> </span>&#123;&#125; <span class="comment">//2.1 注意参数声明和上面切入点签名一致</span></div><div class="line"></div><div class="line">    <span class="meta">@Before</span>(<span class="string">"trackPlayed(trackNumber)"</span>)  <span class="comment">//3. 通知</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countTrack</span><span class="params">(<span class="keyword">int</span> trackNumber)</span> </span>&#123;  <span class="comment">//3.1 注意参数声明和上面通知签名一致</span></div><div class="line">        <span class="keyword">int</span> currentCount = getPlayCount(trackNumber);</div><div class="line">        trackCounts.put(trackNumber, currentCount + <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPlayCount</span><span class="params">(<span class="keyword">int</span> trackNumber)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> trackCounts.containsKey(trackNumber) ？ trackCounts.get(trackNumber) : <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Before;</div><div class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Pointcut;</div><div class="line"><span class="keyword">import</span> java.util.HashMap;<span class="keyword">import</span> java.util.Map;</div><div class="line"></div><div class="line"><span class="meta">@Aspect</span> <span class="comment">//1. 切面</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrackCounter</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Map&lt;Integer, Integer&gt; trackCounts = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();</div><div class="line"></div><div class="line">    <span class="meta">@Pointcut</span>( <span class="comment">//2. 切入点</span></div><div class="line">            <span class="string">"execution(* com.spring.sample.soundsystem.CompactDisc.playTrack( .. )) "</span> +</div><div class="line">            <span class="string">"&amp;&amp; args(trackNumber)"</span>)  </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trackPlayed</span><span class="params">(<span class="keyword">int</span> trackNumber)</span> </span>&#123;&#125; <span class="comment">//2.1 注意参数声明和上面切入点签名一致</span></div><div class="line"></div><div class="line">    <span class="meta">@Before</span>(<span class="string">"trackPlayed(trackNumber)"</span>)  <span class="comment">//3. 通知</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countTrack</span><span class="params">(JoinPoint jp, <span class="keyword">int</span> trackNumber)</span> </span>&#123;  <span class="comment">//3.1 注意参数声明和上面通知签名一致</span></div><div class="line">        <span class="keyword">int</span> currentCount = getPlayCount(trackNumber);</div><div class="line">        trackCounts.put(trackNumber, currentCount + <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPlayCount</span><span class="params">(<span class="keyword">int</span> trackNumber)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> trackCounts.containsKey(trackNumber) ？ trackCounts.get(trackNumber) : <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="引入-Introduction-1"><a href="#引入-Introduction-1" class="headerlink" title="引入(Introduction)"></a>引入(Introduction)</h2><p>在不修改原有类的基础上为该类添加新方法，即通过切面为Spring的beans增加新方法。<br>使用 <code>@DeclareParents</code> 注解</p>
 <p>假定现有一个来自Spring的接口 <code>SpringIntroduction</code>, 现在你需要给它增加 <code>Encode</code>功能，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Encode</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AopEncode</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>你暂时还不能修改Spring 的代码， 那你就可以使用Spring AOP。</p>
@@ -487,7 +494,11 @@
 </ul>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>junit 的使用例子</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">@RunWith(SpringJUnit4ClassRunner.class)</div><div class="line">@ContextConfiguration(loader = AnnotationConfigContextLoader.class)</div><div class="line">public class EncodeIntroducerTest &#123;</div><div class="line">    @Autowired</div><div class="line">    private SpringIntroduction springIntroduction;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public void testEncode() &#123;</div><div class="line">        Encode encode = (Encode) springIntroduction; //使用方法</div><div class="line">        Encode.aopEncode();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Bean</div><div class="line">    public EncodeIntroducer encodeIntroducer() &#123;</div><div class="line">        return  new EncodeIntroducer();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    @Configuration</div><div class="line">    @EnableAspectJAutoProxy</div><div class="line">    public static class EncdeIntroducerTest &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="附录-切入点表达式的例子"><a href="#附录-切入点表达式的例子" class="headerlink" title="附录 切入点表达式的例子"></a>附录 切入点表达式的例子</h2><ul>
+<h2 id="附录-切入点表达式"><a href="#附录-切入点表达式" class="headerlink" title="附录 切入点表达式"></a>附录 切入点表达式</h2><h3 id="类型匹配语句"><a href="#类型匹配语句" class="headerlink" title="类型匹配语句"></a>类型匹配语句</h3><p>类型匹配语句格式像下面这样(带?的属于可选,可以不写):</p>
+<p>对类的匹配: 注解<code>?</code> 类的全限定名字<br>对方法的匹配: 注解<code>?</code> 修饰符<code>?</code> 返回值类型 类型声明<code>?</code> 方法名(参数列表) 异常列表<code>？</code></p>
+<h3 id="类型匹配的通配符"><a href="#类型匹配的通配符" class="headerlink" title="类型匹配的通配符"></a>类型匹配的通配符</h3><p><code>*</code> : 匹配任何数量字符；<br><code>..</code> :(两个点)匹配任何数量字符的重复;如在类型模式中匹配任何数量子包,而在方法参数模式中匹配任何数量参数<br><code>+</code> : 匹配指定类型的子类型,仅能作为后缀放在类型模式后边</p>
+<h3 id="切入点表达式-例"><a href="#切入点表达式-例" class="headerlink" title="切入点表达式 例"></a>切入点表达式 例</h3><p>AspectJ使用 与(&amp;&amp;)、或(||)、非(!)来组合切入点表达式, 在xml文件中可使用and、or、not</p>
+<ul>
 <li><p>任意公共方法的执行：<br><code>execution(public * *(..))</code></p>
 </li>
 <li><p>任何一个名字以“set”开始的方法的执行：<br><code>execution(* set*(..))</code></p>
@@ -724,13 +735,55 @@
       <category term="java" scheme="http://giveme5.cc/categories/java/"/>
     
     
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
       <category term="java 8" scheme="http://giveme5.cc/tags/java-8/"/>
     
       <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
     
       <category term="Streams" scheme="http://giveme5.cc/tags/Streams/"/>
     
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+  </entry>
+  
+  <entry>
+    <title>spring 多态 注入</title>
+    <link href="http://giveme5.cc/2017/10/10/spring/polymorphismDI/"/>
+    <id>http://giveme5.cc/2017/10/10/spring/polymorphismDI/</id>
+    <published>2017-10-10T11:44:58.000Z</published>
+    <updated>2017-10-10T08:49:45.085Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring 多态 注入<br>利用 <code>PropertySource</code> 实现 多态的动态注入。</p>
+<p><em>更新历史</em><br>无</p>
+<a id="more"></a>
+<hr>
+<p>环境：spring 4, JDK 1.8； 话不多说，看代码</p>
+<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>一个 service 接口， 有若干具体实现</p>
+<h3 id="接口-IPolyDiService-java"><a href="#接口-IPolyDiService-java" class="headerlink" title="接口 IPolyDiService.java"></a>接口 <code>IPolyDiService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现A-APolyDiServiceImpl"><a href="#实现A-APolyDiServiceImpl" class="headerlink" title="实现A APolyDiServiceImpl"></a>实现A <code>APolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"A_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">APolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is A PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实现B-BPolyDiServiceImpl"><a href="#实现B-BPolyDiServiceImpl" class="headerlink" title="实现B BPolyDiServiceImpl"></a>实现B <code>BPolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"B_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BPolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is B PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="动态注入"><a href="#动态注入" class="headerlink" title="动态注入"></a>动态注入</h2><h3 id="配置文件-env-properties"><a href="#配置文件-env-properties" class="headerlink" title="配置文件 env.properties"></a>配置文件 <code>env.properties</code></h3><p>可以用其他外置配置替代， 如下， 改变 <code>service</code> 的值， 可以运行时动态注入不同的具体实现。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># service=B</span></div><div class="line">service=A</div></pre></td></tr></table></figure></p>
+<h3 id="Junit-PolyDiTest"><a href="#Junit-PolyDiTest" class="headerlink" title="Junit PolyDiTest"></a>Junit <code>PolyDiTest</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.PropertySource;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.support.AnnotationConfigContextLoader;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.annotation.Resource;</div><div class="line"><span class="keyword">import</span> java.text.ParseException;</div><div class="line"></div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(loader = AnnotationConfigContextLoader.class)</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PolyDiTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span>(name = <span class="string">"$&#123;service&#125;_service"</span>)</div><div class="line">    <span class="keyword">private</span> IPolyDiService service;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> ParseException </span>&#123;</div><div class="line">        service.printName();</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Configuration</span></div><div class="line">    <span class="meta">@PropertySource</span>(&#123; <span class="string">"classpath:conf/env.properties"</span>&#125;)</div><div class="line">    <span class="meta">@ComponentScan</span>(basePackages =&#123; <span class="string">"com.xxx.service.impl"</span>&#125;)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextConfiguration</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><code>service=A</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is A PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
+<p><code>service=B</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is B PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring 多态 注入&lt;br&gt;利用 &lt;code&gt;PropertySource&lt;/code&gt; 实现 多态的动态注入。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
+    
+    
+      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
+    
+      <category term="多态" scheme="http://giveme5.cc/tags/%E5%A4%9A%E6%80%81/"/>
+    
+      <category term="注入" scheme="http://giveme5.cc/tags/%E6%B3%A8%E5%85%A5/"/>
+    
+      <category term="DI" scheme="http://giveme5.cc/tags/DI/"/>
     
   </entry>
   
@@ -783,48 +836,6 @@
     
     
       <category term="docker" scheme="http://giveme5.cc/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>spring 多态 注入</title>
-    <link href="http://giveme5.cc/2017/10/10/spring/polymorphismDI/"/>
-    <id>http://giveme5.cc/2017/10/10/spring/polymorphismDI/</id>
-    <published>2017-10-10T11:44:58.000Z</published>
-    <updated>2017-10-10T08:49:45.085Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring 多态 注入<br>利用 <code>PropertySource</code> 实现 多态的动态注入。</p>
-<p><em>更新历史</em><br>无</p>
-<a id="more"></a>
-<hr>
-<p>环境：spring 4, JDK 1.8； 话不多说，看代码</p>
-<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>一个 service 接口， 有若干具体实现</p>
-<h3 id="接口-IPolyDiService-java"><a href="#接口-IPolyDiService-java" class="headerlink" title="接口 IPolyDiService.java"></a>接口 <code>IPolyDiService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="实现A-APolyDiServiceImpl"><a href="#实现A-APolyDiServiceImpl" class="headerlink" title="实现A APolyDiServiceImpl"></a>实现A <code>APolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"A_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">APolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is A PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="实现B-BPolyDiServiceImpl"><a href="#实现B-BPolyDiServiceImpl" class="headerlink" title="实现B BPolyDiServiceImpl"></a>实现B <code>BPolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service.impl;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span>(<span class="string">"B_service"</span>)</div><div class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BPolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"This is B PolyDiServiceImpl"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="动态注入"><a href="#动态注入" class="headerlink" title="动态注入"></a>动态注入</h2><h3 id="配置文件-env-properties"><a href="#配置文件-env-properties" class="headerlink" title="配置文件 env.properties"></a>配置文件 <code>env.properties</code></h3><p>可以用其他外置配置替代， 如下， 改变 <code>service</code> 的值， 可以运行时动态注入不同的具体实现。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># service=B</span></div><div class="line">service=A</div></pre></td></tr></table></figure></p>
-<h3 id="Junit-PolyDiTest"><a href="#Junit-PolyDiTest" class="headerlink" title="Junit PolyDiTest"></a>Junit <code>PolyDiTest</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> com.xxx.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</div><div class="line"><span class="keyword">import</span> org.springframework.context.annotation.PropertySource;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.support.AnnotationConfigContextLoader;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.annotation.Resource;</div><div class="line"><span class="keyword">import</span> java.text.ParseException;</div><div class="line"></div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@ContextConfiguration</span>(loader = AnnotationConfigContextLoader.class)</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PolyDiTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span>(name = <span class="string">"$&#123;service&#125;_service"</span>)</div><div class="line">    <span class="keyword">private</span> IPolyDiService service;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> ParseException </span>&#123;</div><div class="line">        service.printName();</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Configuration</span></div><div class="line">    <span class="meta">@PropertySource</span>(&#123; <span class="string">"classpath:conf/env.properties"</span>&#125;)</div><div class="line">    <span class="meta">@ComponentScan</span>(basePackages =&#123; <span class="string">"com.xxx.service.impl"</span>&#125;)</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextConfiguration</span> </span>&#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><code>service=A</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is A PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
-<p><code>service=B</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is B PolyDiServiceImpl</div></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring 多态 注入&lt;br&gt;利用 &lt;code&gt;PropertySource&lt;/code&gt; 实现 多态的动态注入。&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
-    
-    
-      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
-    
-      <category term="多态" scheme="http://giveme5.cc/tags/%E5%A4%9A%E6%80%81/"/>
-    
-      <category term="注入" scheme="http://giveme5.cc/tags/%E6%B3%A8%E5%85%A5/"/>
-    
-      <category term="DI" scheme="http://giveme5.cc/tags/DI/"/>
     
   </entry>
   
@@ -1136,9 +1147,9 @@ fc-list |grep SimSun
     
       <category term="github" scheme="http://giveme5.cc/tags/github/"/>
     
-      <category term="gitlab" scheme="http://giveme5.cc/tags/gitlab/"/>
-    
       <category term="git" scheme="http://giveme5.cc/tags/git/"/>
+    
+      <category term="gitlab" scheme="http://giveme5.cc/tags/gitlab/"/>
     
   </entry>
   
@@ -1239,11 +1250,11 @@ fc-list |grep SimSun
       <category term="java" scheme="http://giveme5.cc/categories/java/"/>
     
     
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
       <category term="java 8" scheme="http://giveme5.cc/tags/java-8/"/>
     
       <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
-    
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
     
   </entry>
   
