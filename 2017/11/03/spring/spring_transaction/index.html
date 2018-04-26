@@ -110,7 +110,7 @@ spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 
 <meta property="og:image" content="http://giveme5.cc/images/spring_tx.png">
 <meta property="og:image" content="http://giveme5.cc/images/spring_tx_prop_required.png">
 <meta property="og:image" content="http://giveme5.cc/images/spring_tx_prop_requires_new.png">
-<meta property="og:updated_time" content="2018-04-10T05:30:41.185Z">
+<meta property="og:updated_time" content="2018-04-18T10:02:39.005Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring Transaction 事务">
 <meta name="twitter:description" content="主要内容spring Transaction 事务；Transaction 事务绑定事件
@@ -409,6 +409,15 @@ spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 
 <h3 id="Transactional"><a href="#Transactional" class="headerlink" title="Transactional"></a>Transactional</h3><ul>
 <li>属性</li>
 </ul>
+<style>
+table th:first-of-type {
+    width: 20%;
+}
+table th:nth-of-type(2) {
+    width: 20%;
+}
+</style>
+
 <table>
 <thead>
 <tr>
@@ -443,16 +452,90 @@ spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 
 <td>int (in seconds granularity)</td>
 <td>事务超时</td>
 </tr>
+<tr>
+<td>rollbackFor</td>
+<td>Class</td>
+<td>触发事务回滚的类, Throwable 或 Throwable的子类，默认是对unchecked异常（ERORR和RuntimeException）起作用</td>
+</tr>
+<tr>
+<td>rollbackFor<br>ClassName</td>
+<td>String</td>
+<td>设置需要进行回滚的异常类名称数组，当方法中抛出指定异常名称数组中的异常时，则进行事务回滚</td>
+</tr>
+<tr>
+<td>noRollbackFor</td>
+<td>Class</td>
+<td>设置不需要进行回滚的异常类数组，当方法中抛出指定异常数组中的异常时，不进行事务回滚。Throwable 或 Throwable的子类</td>
+</tr>
+<tr>
+<td>noRollbackFor<br>ClassName</td>
+<td>String</td>
+<td>设置不需要进行回滚的异常类名称数组，当方法中抛出指定异常名称数组中的异常时，不进行事务回滚。</td>
+</tr>
 </tbody>
 </table>
 <h4 id="propagation-事务传播"><a href="#propagation-事务传播" class="headerlink" title="propagation 事务传播"></a>propagation 事务传播</h4><ul>
-<li><p>PROPAGATION_REQUIRED 默认设置<br>Support a current transaction, create a new one if none exists.<br><img src="/images/spring_tx_prop_required.png" alt=""></p>
+<li><p>PROPAGATION_REQUIRED 默认设置<br>如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。<br>Support a current transaction, create a new one if none exists.<br><img src="/images/spring_tx_prop_required.png" alt=""></p>
 </li>
-<li><p>PROPAGATION_REQUIRES_NEW<br>Create a new transaction, and suspend the current transaction if one exists.<br><img src="/images/spring_tx_prop_requires_new.png" alt=""></p>
+<li><p>PROPAGATION_REQUIRES_NEW<br>创建一个新的事务，如果当前存在事务，则把当前事务挂起。<br>Create a new transaction, and suspend the current transaction if one exists.<br><img src="/images/spring_tx_prop_requires_new.png" alt=""></p>
+</li>
+<li><p>PROPAGATION_SUPPORTS<br>如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。</p>
+</li>
+<li><p>PROPAGATION_NOT_SUPPORTED<br>以非事务方式运行，如果当前存在事务，则把当前事务挂起。</p>
+</li>
+<li><p>PROPAGATION_MANDATORY<br>如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。</p>
+</li>
+<li><p>PROPAGATION_NEVER<br>以非事务方式运行，如果当前存在事务，则抛出异常</p>
+</li>
+<li><p>PROPAGATION_NESTED<br>如果当前存在事务，则创建一个事务作为当前事务的嵌套事务（一个事务中可以包括多个保存点，每一个保存点嵌套子事务）来运行； 如果当前没有事务，则该取值等价于TransactionDefinition.PROPAGATION_REQUIRED。</p>
 </li>
 </ul>
-<h3 id="事务绑定事件"><a href="#事务绑定事件" class="headerlink" title="事务绑定事件"></a>事务绑定事件</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyComponent</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@TransactionalEventListener</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleOrderCreatedEvent</span><span class="params">(CreationEvent&lt;Order&gt; creationEvent)</span> </span>&#123;</div><div class="line">                ...</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><code>@TransactionalEventListener</code> 有个属性 <code>phase</code> (BEFORE_COMMIT, AFTER_COMMIT (default), AFTER_ROLLBACK and AFTER_COMPLETION)</p>
+<h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><ul>
+<li><p>ISOLATION_DEFAULT<br>这是默认值，表示使用底层数据库的默认隔离级别。对大部分数据库而言，通常这值就是READ_COMMITTED, MySQL是REPEATABLE_READ。</p>
+</li>
+<li><p>ISOLATION_READ_UNCOMMITTED<br>该隔离级别表示一个事务可以读取另一个事务修改但还没有提交的数据。该级别不能防止脏读和不可重复读，因此很少使用该隔离级别。</p>
+</li>
+<li><p>ISOLATION_READ_COMMITTED<br>该隔离级别表示一个事务只能读取另一个事务已经提交的数据。该级别可以防止脏读，这也是大多数情况下的推荐值。</p>
+</li>
+<li><p>ISOLATION_REPEATABLE_READ<br>该隔离级别表示一个事务在整个过程中可以多次重复执 行某个查询，并且每次返回的记录都相同。即使在多次查询之间有新增的数据满足该查询，这些新增的记录也会被忽略。该级别可以防止脏读和不可重复读。</p>
+</li>
+<li><p>ISOLATION_SERIALIZABLE<br>所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，该级别可以防止脏读、不可重复读以及幻读。但是这将严重影响程序的性能。通常情况下也不会用到该级别。</p>
+</li>
+</ul>
+<h3 id="Transactional注意点"><a href="#Transactional注意点" class="headerlink" title="Transactional注意点"></a>Transactional注意点</h3><p>特殊，单独提高等级来写</p>
+<h4 id="Transactional特性"><a href="#Transactional特性" class="headerlink" title="Transactional特性"></a>Transactional特性</h4><ul>
+<li><p>service实现类标签<br>在service实现类 类头(一般不建议在接口上)上添加@Transactional，可以将整个类纳入spring事务管理，在每个业务方法执行时都会开启一个事务，不过这些事务采用相同的管理方式。</p>
+</li>
+<li><p>可见度<br>@Transactional 注解只能应用到 public 可见度的方法上。 如果应用在protected、private或者 package可见度的方法上，也不会报错，不过事务设置不会起作用。</p>
+</li>
+<li><p>回滚<br>默认情况下，spring会对unchecked异常进行事务回滚；如果是checked异常则不回滚。<br>通俗一点：你写代码出现的空指针等异常，会被回滚，文件读写，网络出问题，spring就没法回滚了。</p>
+<blockquote>
+<p>java里面将派生于Error或者RuntimeException（比如空指针，1/0）的异常称为unchecked异常，其他继承自java.lang.Exception得异常统称为Checked Exception，如IOException、TimeoutException </p>
+</blockquote>
+</li>
+<li><p>只读事务<br>只读标志只在事务启动时应用，否则即使配置也会被忽略。<br>启动事务会增加线程开销，数据库因共享读取而锁定(具体跟数据库类型和事务隔离级别有关)。通常情况下，仅是读取数据时，不必设置只读事务而增加额外的系统开销。</p>
+</li>
+</ul>
+<h4 id="解决Transactional不回滚"><a href="#解决Transactional不回滚" class="headerlink" title="解决Transactional不回滚"></a>解决Transactional不回滚</h4><ul>
+<li>检查方法是否是<code>public</code>的。</li>
+<li><p>异常类型是否是<code>unchecked</code>异常。<br>如果想check异常也想回滚怎么办，注解上面写明异常类型即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Transactional</span>(rollbackFor=Exception.class)</div></pre></td></tr></table></figure>
+</li>
+<li><p><code>spring</code>是否开启对注解的解析<br><code>@EnableTransactionManagement</code><br>还有例如SpringDataJPA 事务容器声明：<br>transactionManager(JpaTransactionManager) -&gt; entityManagerFactory(EntityManagerFactory) -&gt; dataSource</p>
+</li>
+<li><p><code>spring</code>是否扫描到包</p>
+</li>
+<li><p>数据库引擎是否支持事务</p>
+</li>
+</ul>
+<h3 id="事务绑定事件"><a href="#事务绑定事件" class="headerlink" title="事务绑定事件"></a>事务绑定事件</h3><p><code>@TransactionalEventListener</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionEventTestService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span></div><div class="line">    <span class="keyword">private</span> TestMapper mapper;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span></div><div class="line">    <span class="keyword">private</span> ApplicationEventPublisher publisher;</div><div class="line"></div><div class="line">    <span class="meta">@Transactional</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTestModel</span><span class="params">()</span> </span>&#123;</div><div class="line">        TestModel model = <span class="keyword">new</span> TestModel();</div><div class="line">        model.setName(<span class="string">"haogrgr"</span>);</div><div class="line">        mapper.insert(model);</div><div class="line"></div><div class="line">        <span class="comment">//如果model没有继承ApplicationEvent, 则内部会包装为PayloadApplicationEvent</span></div><div class="line">        <span class="comment">//对于@TransactionalEventListener, 会在事务提交后才执行Listener处理逻辑.</span></div><div class="line">        </div><div class="line">        <span class="comment">//发布事件, 事务提交后, 记录日志, 或发送消息等操作</span></div><div class="line">        publisher.publishEvent(model);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//当事务提交后, 才会真正的执行@TransactionalEventListener配置的Listener, 如果Listener抛异常, 方法返回失败, 但事务不会回滚.</span></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionEventListener</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@TransactionalEventListener</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(PayloadApplicationEvent&lt;TestModel&gt; event)</span> </span>&#123;</div><div class="line">        System.out.println(event.getPayload().getName());</div><div class="line">        <span class="comment">//这里可以记录日志, 发送消息等操作.</span></div><div class="line">        <span class="comment">//这里抛出异常, 会导致addTestModel方法异常, 但不会回滚事务.</span></div><div class="line">        <span class="comment">//注意, ApplicationEventPublisher不能使用线程池, 否则不会执行到这里</span></div><div class="line">        <span class="comment">//因为, 包装类是通过ThreadLocal来判断当前是否有活动的事务信息.</span></div><div class="line">        <span class="comment">//TransactionalEventListener.fallbackExecution就是为了决定当当前线程没有事务上下文时,</span></div><div class="line">        <span class="comment">//是否还调用 handle 方法, 默认不调用.</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><ul>
+<li><p><code>phase</code><br>BEFORE_COMMIT, AFTER_COMMIT (default), AFTER_ROLLBACK and AFTER_COMPLETION</p>
+</li>
+<li><p>condition</p>
+</li>
+</ul>
 
       
     </div>
@@ -652,7 +735,7 @@ spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程式事务"><span class="nav-number">2.</span> <span class="nav-text">编程式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate"><span class="nav-number">2.1.</span> <span class="nav-text">TransactionTemplate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接-PlatformTransactionManager"><span class="nav-number">2.2.</span> <span class="nav-text">直接 PlatformTransactionManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate-1"><span class="nav-number">2.3.</span> <span class="nav-text">TransactionTemplate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明式事务"><span class="nav-number">3.</span> <span class="nav-text">声明式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Transactional"><span class="nav-number">3.1.</span> <span class="nav-text">Transactional</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#propagation-事务传播"><span class="nav-number">3.1.1.</span> <span class="nav-text">propagation 事务传播</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务绑定事件"><span class="nav-number">3.2.</span> <span class="nav-text">事务绑定事件</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程式事务"><span class="nav-number">2.</span> <span class="nav-text">编程式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate"><span class="nav-number">2.1.</span> <span class="nav-text">TransactionTemplate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接-PlatformTransactionManager"><span class="nav-number">2.2.</span> <span class="nav-text">直接 PlatformTransactionManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate-1"><span class="nav-number">2.3.</span> <span class="nav-text">TransactionTemplate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明式事务"><span class="nav-number">3.</span> <span class="nav-text">声明式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Transactional"><span class="nav-number">3.1.</span> <span class="nav-text">Transactional</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#propagation-事务传播"><span class="nav-number">3.1.1.</span> <span class="nav-text">propagation 事务传播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隔离级别"><span class="nav-number">3.1.2.</span> <span class="nav-text">隔离级别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transactional注意点"><span class="nav-number">3.2.</span> <span class="nav-text">Transactional注意点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Transactional特性"><span class="nav-number">3.2.1.</span> <span class="nav-text">Transactional特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决Transactional不回滚"><span class="nav-number">3.2.2.</span> <span class="nav-text">解决Transactional不回滚</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务绑定事件"><span class="nav-number">3.3.</span> <span class="nav-text">事务绑定事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#属性"><span class="nav-number">3.3.1.</span> <span class="nav-text">属性</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
