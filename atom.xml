@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2018-04-10T05:27:00.385Z</updated>
+  <updated>2018-05-31T07:33:51.860Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,67 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java 8 日期和时间</title>
+    <link href="http://giveme5.cc/2018/05/30/java/java8JSR310/"/>
+    <id>http://giveme5.cc/2018/05/30/java/java8JSR310/</id>
+    <published>2018-05-30T14:18:03.000Z</published>
+    <updated>2018-05-31T07:33:51.860Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong><em>主要内容</em></strong></p>
+<p>　　java8 新的日期和时间库， 新API全在java.time包中， 你值得拥有～～～</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="类概览-："><a href="#类概览-：" class="headerlink" title="类概览 ："></a>类概览 ：</h3><p><img src="/images/jsr310.png" alt=""></p>
+<p>与旧的API对应关系<br><img src="/images/jsr310.2.png" alt=""></p>
+<h3 id="方法概览"><a href="#方法概览" class="headerlink" title="方法概览"></a>方法概览</h3><p>该包的API提供了大量相关的方法，这些方法一般有一致的方法前缀：</p>
+<p><code>of</code>   ：静态工厂方法。<br><code>parse</code>：静态工厂方法，关注于解析, DateTimeFormatter 格式化。<br><code>get</code>  ：获取某些东西的值。<br><code>is</code>   ：检查某些东西的是否是true。<br><code>with</code> ：不可变的setter等价物。<br><code>plus</code> ：加一些量到某个对象。<br><code>minus</code>：从某个对象减去一些量。<br><code>to</code>   ：转换到另一个类型。<br><code>at</code>   ：把这个对象与另一个对象组合起来，例如： date.atTime(time)。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TimeIntroduction</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testClock</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        <span class="comment">//时钟提供给我们用于访问某个特定 时区的 瞬时时间、日期 和 时间的。  </span></div><div class="line">        Clock c1 = Clock.systemUTC(); <span class="comment">//系统默认UTC时钟（当前瞬时时间 System.currentTimeMillis()）  </span></div><div class="line">        System.out.println(c1.millis()); <span class="comment">//每次调用将返回当前瞬时时间（UTC）  </span></div><div class="line">        Clock c2 = Clock.systemDefaultZone(); <span class="comment">//系统默认时区时钟（当前瞬时时间）  </span></div><div class="line">        Clock c31 = Clock.system(ZoneId.of(<span class="string">"Europe/Paris"</span>)); <span class="comment">//巴黎时区  </span></div><div class="line">        System.out.println(c31.millis()); <span class="comment">//每次调用将返回当前瞬时时间（UTC）  </span></div><div class="line">        Clock c32 = Clock.system(ZoneId.of(<span class="string">"Asia/Shanghai"</span>));<span class="comment">//上海时区  </span></div><div class="line">        System.out.println(c32.millis());<span class="comment">//每次调用将返回当前瞬时时间（UTC）  </span></div><div class="line">        Clock c4 = Clock.fixed(Instant.now(), ZoneId.of(<span class="string">"Asia/Shanghai"</span>));<span class="comment">//固定上海时区时钟  </span></div><div class="line">        System.out.println(c4.millis());</div><div class="line">        Thread.sleep(<span class="number">1000</span>);</div><div class="line">        System.out.println(c4.millis()); <span class="comment">//不变 即时钟时钟在那一个点不动  </span></div><div class="line">        Clock c5 = Clock.offset(c1, Duration.ofSeconds(<span class="number">2</span>)); <span class="comment">//相对于系统默认时钟两秒的时钟  </span></div><div class="line">        System.out.println(c1.millis());</div><div class="line">        System.out.println(c5.millis());</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testInstant</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//瞬时时间 相当于以前的System.currentTimeMillis()  </span></div><div class="line">        Instant instant1 = Instant.now();</div><div class="line">        System.out.println(instant1.getEpochSecond());<span class="comment">//精确到秒 得到相对于1970-01-01 00:00:00 UTC的一个时间  </span></div><div class="line">        System.out.println(instant1.toEpochMilli()); <span class="comment">//精确到毫秒  </span></div><div class="line">        Clock clock1 = Clock.systemUTC(); <span class="comment">//获取系统UTC默认时钟  </span></div><div class="line">        Instant instant2 = Instant.now(clock1);<span class="comment">//得到时钟的瞬时时间  </span></div><div class="line">        System.out.println(instant2.toEpochMilli());</div><div class="line">        Clock clock2 = Clock.fixed(instant1, ZoneId.systemDefault()); <span class="comment">//固定瞬时时间时钟  </span></div><div class="line">        Instant instant3 = Instant.now(clock2);<span class="comment">//得到时钟的瞬时时间  </span></div><div class="line">        System.out.println(instant3.toEpochMilli());<span class="comment">//equals instant1  </span></div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testLocalDateTime</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//使用默认时区时钟瞬时时间创建 Clock.systemDefaultZone() --&gt;即相对于 ZoneId.systemDefault()默认时区  </span></div><div class="line">        LocalDateTime now = LocalDateTime.now();</div><div class="line">        System.out.println(now);</div><div class="line"><span class="comment">//自定义时区  </span></div><div class="line">        LocalDateTime now2 = LocalDateTime.now(ZoneId.of(<span class="string">"Europe/Paris"</span>));</div><div class="line">        System.out.println(now2);<span class="comment">//会以相应的时区显示日期  </span></div><div class="line"><span class="comment">//自定义时钟  </span></div><div class="line">        Clock clock = Clock.system(ZoneId.of(<span class="string">"Asia/Dhaka"</span>));</div><div class="line">        LocalDateTime now3 = LocalDateTime.now(clock);</div><div class="line">        System.out.println(now3);<span class="comment">//会以相应的时区显示日期  </span></div><div class="line"><span class="comment">//不需要写什么相对时间 如java.util.Date 年是相对于1900 月是从0开始  </span></div><div class="line"><span class="comment">//2018-12-31 23:59  </span></div><div class="line">        LocalDateTime d1 = LocalDateTime.of(<span class="number">2018</span>, <span class="number">12</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>);</div><div class="line"><span class="comment">//年月日 时分秒 纳秒  </span></div><div class="line">        LocalDateTime d2 = LocalDateTime.of(<span class="number">2018</span>, <span class="number">12</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>, <span class="number">11</span>);</div><div class="line"><span class="comment">//使用瞬时时间 + 时区  </span></div><div class="line">        Instant instant = Instant.now();</div><div class="line">        LocalDateTime d3 = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());</div><div class="line">        System.out.println(d3);</div><div class="line"><span class="comment">//解析String---&gt;LocalDateTime  </span></div><div class="line">        LocalDateTime d4 = LocalDateTime.parse(<span class="string">"2018-12-31T23:59"</span>);</div><div class="line">        System.out.println(d4);</div><div class="line">        LocalDateTime d5 = LocalDateTime.parse(<span class="string">"2018-12-31T23:59:59.999"</span>);<span class="comment">//999毫秒 等价于999000000纳秒  </span></div><div class="line">        System.out.println(d5);</div><div class="line"><span class="comment">//使用DateTimeFormatter API 解析 和 格式化  </span></div><div class="line">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(<span class="string">"yyyy/MM/dd HH:mm:ss"</span>);</div><div class="line">        LocalDateTime d6 = LocalDateTime.parse(<span class="string">"2018/12/31 23:59:59"</span>, formatter);</div><div class="line">        System.out.println(formatter.format(d6));</div><div class="line"><span class="comment">//时间获取  </span></div><div class="line">        System.out.println(d6.getYear());</div><div class="line">        System.out.println(d6.getMonth());</div><div class="line">        System.out.println(d6.getDayOfYear());</div><div class="line">        System.out.println(d6.getDayOfMonth());</div><div class="line">        System.out.println(d6.getDayOfWeek());</div><div class="line">        System.out.println(d6.getHour());</div><div class="line">        System.out.println(d6.getMinute());</div><div class="line">        System.out.println(d6.getSecond());</div><div class="line">        System.out.println(d6.getNano());</div><div class="line"><span class="comment">//时间增减  </span></div><div class="line">        LocalDateTime d7 = d6.minusDays(<span class="number">1</span>);</div><div class="line">        LocalDateTime d8 = d7.plus(<span class="number">1</span>, IsoFields.QUARTER_YEARS);</div><div class="line"><span class="comment">//LocalDate 即年月日 无时分秒  </span></div><div class="line"><span class="comment">//LocalTime即时分秒 无年月日  </span></div><div class="line"><span class="comment">//API和LocalDateTime类似就不演示了  </span></div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testZonedDateTime</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//即带有时区的date-time 存储纳秒、时区和时差（避免与本地date-time歧义）。  </span></div><div class="line"><span class="comment">//API和LocalDateTime类似，只是多了时差(如2018-12-20T10:35:50.711+08:00[Asia/Shanghai])  </span></div><div class="line">        ZonedDateTime now = ZonedDateTime.now();</div><div class="line">        System.out.println(now);</div><div class="line">        ZonedDateTime now2 = ZonedDateTime.now(ZoneId.of(<span class="string">"Europe/Paris"</span>));</div><div class="line">        System.out.println(now2);</div><div class="line"><span class="comment">//其他的用法也是类似的 就不介绍了  </span></div><div class="line">        ZonedDateTime z1 = ZonedDateTime.parse(<span class="string">"2018-12-31T23:59:59Z[Europe/Paris]"</span>);</div><div class="line">        System.out.println(z1);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testDuration</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//表示两个瞬时时间的时间段  </span></div><div class="line">        Duration d1 = Duration.between(Instant.ofEpochMilli(System.currentTimeMillis() - <span class="number">12323123</span>), Instant.now());</div><div class="line"><span class="comment">//得到相应的时差  </span></div><div class="line">        System.out.println(d1.toDays());</div><div class="line">        System.out.println(d1.toHours());</div><div class="line">        System.out.println(d1.toMinutes());</div><div class="line">        System.out.println(d1.toMillis());</div><div class="line">        System.out.println(d1.toNanos());</div><div class="line"><span class="comment">//1天时差 类似的还有如ofHours()  </span></div><div class="line">        Duration d2 = Duration.ofDays(<span class="number">1</span>);</div><div class="line">        System.out.println(d2.toDays());</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testChronology</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//提供对java.util.Calendar的替换，提供对年历系统的支持  </span></div><div class="line">        Chronology c = HijrahChronology.INSTANCE;</div><div class="line">        ChronoLocalDateTime d = c.localDateTime(LocalDateTime.now());</div><div class="line">        System.out.println(d);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 新旧日期转换</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testNewOldDateConversion</span><span class="params">()</span></span>&#123;</div><div class="line">        Instant instant=<span class="keyword">new</span> Date().toInstant();</div><div class="line">        Date date=Date.from(instant);</div><div class="line">        System.out.println(instant);</div><div class="line">        System.out.println(date);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        testClock();</div><div class="line">        testInstant();</div><div class="line">        testLocalDateTime();</div><div class="line">        testZonedDateTime();</div><div class="line">        testDuration();</div><div class="line">        testChronology();</div><div class="line">        testNewOldDateConversion();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th>Java.time</th>
+<th>java.util.Calendar以及Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>流畅的API</td>
+<td>不流畅的API</td>
+</tr>
+<tr>
+<td>实例不可变</td>
+<td>实例可变</td>
+</tr>
+<tr>
+<td>线程安全</td>
+<td>非线程安全</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;strong&gt;&lt;em&gt;主要内容&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;　　java8 新的日期和时间库， 新API全在java.time包中， 你值得拥有～～～&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="java 8" scheme="http://giveme5.cc/tags/java-8/"/>
+    
+      <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
+    
+      <category term="日期" scheme="http://giveme5.cc/tags/%E6%97%A5%E6%9C%9F/"/>
+    
+      <category term="时间" scheme="http://giveme5.cc/tags/%E6%97%B6%E9%97%B4/"/>
+    
+  </entry>
   
   <entry>
     <title>keepalived + nginx 爽活热备负载均衡</title>
@@ -1725,239 +1786,6 @@ fc-list |grep SimSun
       &lt;p&gt;概要&lt;/p&gt;
 &lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
 &lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。&lt;br&gt;本篇为第三篇， 主要包括高可用，读写分离， 分库分表&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="mysql" scheme="http://giveme5.cc/categories/mysql/"/>
-    
-    
-      <category term="mysql" scheme="http://giveme5.cc/tags/mysql/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【mysql 管理之道】读书笔记二</title>
-    <link href="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/"/>
-    <id>http://giveme5.cc/2017/04/16/mysql/mysqlManage2/</id>
-    <published>2017-04-16T04:53:57.000Z</published>
-    <updated>2017-04-19T08:15:41.445Z</updated>
-    
-    <content type="html"><![CDATA[<p>概要</p>
-<p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
-<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.<br>本篇为第二篇， 主要包括故障诊断，性能调优， 备份和恢复。</p>
-<a id="more"></a>
-<h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h3 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h3><p>Linux 性能监控工具 dstat</p>
-<h3 id="故障与处理"><a href="#故障与处理" class="headerlink" title="故障与处理"></a>故障与处理</h3><h4 id="连接数过多导致程序连接报错的原因"><a href="#连接数过多导致程序连接报错的原因" class="headerlink" title="连接数过多导致程序连接报错的原因"></a>连接数过多导致程序连接报错的原因</h4><p>keys：</p>
-<ul>
-<li>max_connections 通常 500 ~ 1000 比较合理， 一直增大不能治本</li>
-<li>wait_timeout (服务器关闭非交互连接之前等待活动的秒数) ， 一般设置为 100 就可， 默认是 28800 秒</li>
-<li>重启数据库导致早高峰连接数过多<br>  可使用 InnoDB Buffer Pool 预热</li>
-<li>磁盘高负荷拖垮MySQL<br>  加内存， InnoDB_Buffer_Pool 最大可调整成内存的 70%</li>
-</ul>
-<h4 id="binlog-format"><a href="#binlog-format" class="headerlink" title="binlog_format"></a>binlog_format</h4><p>binlog_format 有3种格式 ， statement， row 和 mixed</p>
-<ul>
-<li><p>statement 记录的是实际的SQL语句</p>
-</li>
-<li><p>row 记录的是实际行的变更</p>
-</li>
-<li><p>mixed 默认是 statement， 在如下情况会转换为 row。<br>  NDB引擎，表的DML； SQL语句包含UUID()函数； 自增字段被更新； 包含 INSERT DELAYED 语句； 使用用户定义函数 UDF； 使用临时表。</p>
-</li>
-</ul>
-<p>row格式 安全稳定，binlog 可能会很大， 性能较差；<br>statement格式 性能较好，可能会导致同步数据问题</p>
-<h4 id="未设置-swap-分区导致内存耗尽，死机"><a href="#未设置-swap-分区导致内存耗尽，死机" class="headerlink" title="未设置 swap 分区导致内存耗尽，死机"></a>未设置 swap 分区导致内存耗尽，死机</h4><p>swappiness 设置为 0， 只能减少使用 swap 的概率， 不能避免 Linux 使用 swap，所以内存被耗尽后， 主机仍旧会被Hang死。<br>增加 swap<br>监控内存， 达到一定量， 重启 MySQL</p>
-<h4 id="恢复-人工误删除-InnoDB-ibdata-数据文件"><a href="#恢复-人工误删除-InnoDB-ibdata-数据文件" class="headerlink" title="恢复 人工误删除 InnoDB ibdata 数据文件"></a>恢复 人工误删除 InnoDB ibdata 数据文件</h4><p>切记 千万千万不要杀死 mysql 进程！！！！！<br>page 130 ~ 132</p>
-<h4 id="闪回功能"><a href="#闪回功能" class="headerlink" title="闪回功能"></a>闪回功能</h4><p><strong> Binlog 必须是 row 格式！！！ </strong></p>
-<ul>
-<li><p>恢复update忘记where条件误操作<br>page 133</p>
-</li>
-<li><p>恢复delete忘记where条件误操作<br>page 141</p>
-</li>
-</ul>
-<h3 id="同步复制报错故障处理"><a href="#同步复制报错故障处理" class="headerlink" title="同步复制报错故障处理"></a>同步复制报错故障处理</h3><p>page 145</p>
-<h4 id="干净清除-slave-同步信息"><a href="#干净清除-slave-同步信息" class="headerlink" title="干净清除 slave 同步信息"></a>干净清除 slave 同步信息</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">reset</span> <span class="keyword">slave</span> all; <span class="comment">-- reset slave 会把 master.info 和 relay-log.info 文件删除， 但同步信息还在。</span></div><div class="line"><span class="keyword">show</span> <span class="keyword">slave</span> <span class="keyword">status</span>;</div></pre></td></tr></table></figure>
-<h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h3 id="三范式"><a href="#三范式" class="headerlink" title="三范式"></a>三范式</h3><p>设计数据库需要最大可能遵守三范式； 有时为了性能，我们需要有意违反三范式，适度做冗余，提高查询效率。注意，反范式是适度的，必须有充足的理由。</p>
-<h3 id="字段类型"><a href="#字段类型" class="headerlink" title="字段类型"></a>字段类型</h3><p>保小不保大，能用占用字节少的字段就不用大字段。</p>
-<h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><table>
-<thead>
-<tr>
-<th>类型</th>
-<th style="text-align:center">字节</th>
-<th>最小值</th>
-<th>最大值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>tinyint</td>
-<td style="text-align:center">1</td>
-<td>有符号 -128  <br> 无符号 0</td>
-<td>有符号 127  <br> 无符号 255</td>
-</tr>
-<tr>
-<td>smallint</td>
-<td style="text-align:center">2</td>
-<td>有符号 -32 768  <br> 无符号 0</td>
-<td>有符号 32 767  <br> 无符号 65 535</td>
-</tr>
-<tr>
-<td>mediumint</td>
-<td style="text-align:center">3</td>
-<td>有符号 -8 388 608  <br> 无符号 0</td>
-<td>有符号 8 388 607  <br> 无符号 16 777 215</td>
-</tr>
-<tr>
-<td>int</td>
-<td style="text-align:center">4</td>
-<td>有符号 -2 147 483 648  <br> 无符号 0</td>
-<td>有符号 2 147 483 647  <br> 无符号 4 294 967 295</td>
-</tr>
-<tr>
-<td>bigint</td>
-<td style="text-align:center">8</td>
-<td>有符号 -9 223 372 036 854 775 808  <br> 无符号 0</td>
-<td>有符号 9 223 372 036 854 775 807  <br> 无符号 18 446 744 073 709 551 615</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>手机号码可以用 bigint<br>字符集 utf8，utf8 占用3字节， char（11) 就是 11 * 3 = 33 字节； bigint(20) 占用8字节</p>
-</li>
-<li><p>ip地址可采用 无符号int<br>mysql 内置函数： inet_aton(), 它负责ip地址转换成数字； inet_ntoa()负责把数字转换为ip地址</p>
-</li>
-<li><p>根据需求选择最小整数类型</p>
-</li>
-</ul>
-<h4 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h4><p>char  varchar<br>char(N) 长度最大255， 超长会被截取， 比N 小会被空格填补；<br>varchar(N) 最大长度 65 535， 额外使用 1~2 个字节来存储值得长度， 如果N小于或等于255， 则占用1字节， 否则就是2字节；<br>char和varchar跟字符编码也有关， latin1占用1个字节， gbk占用2个字节， utf8占用3个字节。</p>
-<p>计算varchar(N)的最大长度</p>
-<ul>
-<li>GBK字符集<br>（65 535 -2 ） /2 = 32766</li>
-<li>UTF8字符集<br>（65 535 -2 ） /3 = 218 44</li>
-<li>一行总长度不能超过 65 535</li>
-</ul>
-<h4 id="时间类型"><a href="#时间类型" class="headerlink" title="时间类型"></a>时间类型</h4><table>
-<thead>
-<tr>
-<th>数据类型</th>
-<th>值</th>
-<th>存储字节</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>date</td>
-<td>‘0000-00-00’</td>
-<td>3字节</td>
-</tr>
-<tr>
-<td>time</td>
-<td>‘00:00:00’</td>
-<td>3字节</td>
-</tr>
-<tr>
-<td>datetime</td>
-<td>‘0000-00-00 00:00:00’</td>
-<td>8字节</td>
-</tr>
-<tr>
-<td>timestamp</td>
-<td>‘0000-00-00 00:00:00’</td>
-<td>4字节</td>
-</tr>
-<tr>
-<td>year</td>
-<td>0000</td>
-<td>1字节</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>timestamp 默认值 current_timestamp, 自动插入，更新时间</li>
-<li>MySQL 5.5之前， 一个表只允许一个字段timestamp， 自动插入，更新时间<br>  MySQL 5.6之后， datetime 有了timestamp功能， 自动插入，更新时间， 也可由多个自动插入，更新时间的字段</li>
-</ul>
-<h3 id="事务隔离"><a href="#事务隔离" class="headerlink" title="事务隔离"></a>事务隔离</h3><table>
-<thead>
-<tr>
-<th>隔离级别</th>
-<th>读数据一致性</th>
-<th>脏读</th>
-<th>不可重复读</th>
-<th>幻读</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>未提交读 read uncommitted</td>
-<td>最低级别， 只能保证不读取物理上损坏的数据</td>
-<td>是</td>
-<td>是</td>
-<td>是</td>
-</tr>
-<tr>
-<td>已提交读 read committed</td>
-<td>语句级</td>
-<td>否</td>
-<td>是</td>
-<td>是</td>
-</tr>
-<tr>
-<td>可重复读 repeatable read</td>
-<td>事务级</td>
-<td>否</td>
-<td>否</td>
-<td>是</td>
-</tr>
-<tr>
-<td>可序列化 serializable</td>
-<td>最高级别，事务级</td>
-<td>否</td>
-<td>否</td>
-<td>否</td>
-</tr>
-</tbody>
-</table>
-<p>oracle 和 SQL server 的默认隔离级别 是 read committed； MySQL 的默认隔离级别是 Repeatable read。</p>
-<h3 id="my-cnf-配置文件调优"><a href="#my-cnf-配置文件调优" class="headerlink" title="my.cnf 配置文件调优"></a>my.cnf 配置文件调优</h3><p>page231<br>per_thread_buffers + global_buffer 不能大于物理内存</p>
-<h4 id="per-thread-buffers"><a href="#per-thread-buffers" class="headerlink" title="per_thread_buffers"></a>per_thread_buffers</h4><p>可以理解为 oracle 的 PGA， 为每个连接到 MySQL 的用户分配的内存。<br>per_thread_buffers = (read_buffer_size + read_rnd_buffer_size + sort_buffer_size + thread_stack + join_buffer_size + binlog_cache_size) * max_connections</p>
-<ul>
-<li>read_buffer_size<br>用于表的顺序扫描，表示每个线程分配的缓冲区大小。默认128KB， 一般在128 ～ 256KB</li>
-<li>read_rnd_buffer_size<br>用于表的随机读取，表示每个线程分配的缓冲区大小。64位默认256KB， 一般在128 ～ 256KB</li>
-<li>sort_buffer_size<br>在表进行 order by 和 group by 排序操作时， 由于排序没有索引， 会出现 Using filesort， 可用此参数增加每个线程分配的缓冲区大小， 64位默认256KB，一般在128 ～ 256KB， 如果出现 filesort，可增加索引。</li>
-<li>thread_stack<br>表示每个线程的堆栈大小。64位默认256KB</li>
-<li>join_buffer_size<br>表进行join时，如果没有索引，会出现 Using join buffer， 可用此参数增加每个线程分配的缓冲区大小，64位默认256KB，一般在128 ～ 256KB， 如果出现 Using join buffer，可增加索引。</li>
-<li>binlog_cache_size<br>一般来说， 如果数据库没有特别大事务， 写入也不是特频繁，将其设置为1 ～ 2MB, 默认32KB</li>
-<li>max_connections<br>该参数设置最大连接数， 默认为100, 一般设置为 500 ～ 1000.</li>
-</ul>
-<h4 id="global-buffer"><a href="#global-buffer" class="headerlink" title="global_buffer"></a>global_buffer</h4><p>可以理解为 oracle 的 SGA， 用于在内存中缓存从数据文件检索出来的数据块。<br>global_buffer= innodb_buffer_pool_size + innodb_additional_mem_pool_size + innodb_log_buffer_size + key_buffer_size + query_cahce_size</p>
-<ul>
-<li><p>innodb_buffer_pool_size<br>InnoDB 存储引擎的核心数据， 默认128MB， 建议设置成物理内存的 60% ~ 70%</p>
-</li>
-<li><p>innodb_additional_mem_pool_size<br>设置存储数据字典信息和其他内部数据结构。表越多， 需要这里分配的内存越多， 单位是 byte，参数默认值为8M。如果 InnoDB 用完了内存池中的内存，就会从操作系统中分配内存，同时在 error log 中打入报警信息。<br>从 MySQL 5.7.4 中移除， InnoDB 实现的内存分配器相比操作系统的内存分配器并没有明显优势，所以在之后的版本，会移除 innodb_additional_mem_pool_size 和 innodb_use_sys_malloc 两个参数，统一使用操作系统的内存分配器。</p>
-</li>
-<li><p>innodb_log_buffer_size<br>事务日志所使用缓冲区。默认16M， 一般设置16M ～ 64MB</p>
-</li>
-<li><p>key_buffer_size<br>MyISAM 存储引擎的索引参数</p>
-</li>
-<li><p>query_cahce_size<br>缓存select 语句和结果集大小的参数。<br>如果写操作很少，读操作频繁， 那么打开 query_cahce_type=1, 并设置 query_cahce_size 16M， 看情况调试。<br>反之写操作很频繁，读操作少， 那么打开 query_cahce_type=0, query_cahce_size=0</p>
-</li>
-</ul>
-<h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2><h3 id="冷备份"><a href="#冷备份" class="headerlink" title="冷备份"></a>冷备份</h3><h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><ul>
-<li>关闭mysql</li>
-<li>复制 数据目录（包括 ibdata1） 和 日志目录 （包括 ib_logfile0, ib_logfile1, ib_logfile2)</li>
-</ul>
-<h4 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h4><ul>
-<li>拷贝上步的数据目录和日志目录</li>
-<li>启动mysql</li>
-</ul>
-<h3 id="逻辑备份"><a href="#逻辑备份" class="headerlink" title="逻辑备份"></a>逻辑备份</h3><p>mysqldump<br>mydumper </p>
-<p>全量，增量备份脚本 page262</p>
-<h3 id="热备份"><a href="#热备份" class="headerlink" title="热备份"></a>热备份</h3><p>xtrabackup - 相对完美的免费开源数据备份工具<br>page 263</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;概要&lt;/p&gt;
-&lt;p&gt;MySQL5.7新特性&lt;br&gt;故障处理&lt;br&gt;性能调优&lt;br&gt;备份和恢复&lt;br&gt;高可用架构&lt;/p&gt;
-&lt;p&gt;拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.&lt;br&gt;本篇为第二篇， 主要包括故障诊断，性能调优， 备份和恢复。&lt;/p&gt;
     
     </summary>
     

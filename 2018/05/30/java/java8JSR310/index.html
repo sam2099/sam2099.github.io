@@ -1,0 +1,835 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,java 8,jdk8,日期,时间," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="主要内容
+　　java8 新的日期和时间库， 新API全在java.time包中， 你值得拥有～～～">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 8 日期和时间">
+<meta property="og:url" content="http://giveme5.cc/2018/05/30/java/java8JSR310/index.html">
+<meta property="og:site_name" content="Sam's Notes | Sam Blog">
+<meta property="og:description" content="主要内容
+　　java8 新的日期和时间库， 新API全在java.time包中， 你值得拥有～～～">
+<meta property="og:image" content="http://giveme5.cc/images/jsr310.png">
+<meta property="og:image" content="http://giveme5.cc/images/jsr310.2.png">
+<meta property="og:updated_time" content="2018-05-31T07:33:51.860Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 8 日期和时间">
+<meta name="twitter:description" content="主要内容
+　　java8 新的日期和时间库， 新API全在java.time包中， 你值得拥有～～～">
+<meta name="twitter:image" content="http://giveme5.cc/images/jsr310.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://giveme5.cc/2018/05/30/java/java8JSR310/"/>
+
+
+
+
+
+  <title>Java 8 日期和时间 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2018/05/30/java/java8JSR310/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java 8 日期和时间</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T22:18:03+08:00">
+                2018-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/30/java/java8JSR310/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/30/java/java8JSR310/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong><em>主要内容</em></strong></p>
+<p>　　java8 新的日期和时间库， 新API全在java.time包中， 你值得拥有～～～</p>
+<a id="more"></a>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="类概览-："><a href="#类概览-：" class="headerlink" title="类概览 ："></a>类概览 ：</h3><p><img src="/images/jsr310.png" alt=""></p>
+<p>与旧的API对应关系<br><img src="/images/jsr310.2.png" alt=""></p>
+<h3 id="方法概览"><a href="#方法概览" class="headerlink" title="方法概览"></a>方法概览</h3><p>该包的API提供了大量相关的方法，这些方法一般有一致的方法前缀：</p>
+<p><code>of</code>   ：静态工厂方法。<br><code>parse</code>：静态工厂方法，关注于解析, DateTimeFormatter 格式化。<br><code>get</code>  ：获取某些东西的值。<br><code>is</code>   ：检查某些东西的是否是true。<br><code>with</code> ：不可变的setter等价物。<br><code>plus</code> ：加一些量到某个对象。<br><code>minus</code>：从某个对象减去一些量。<br><code>to</code>   ：转换到另一个类型。<br><code>at</code>   ：把这个对象与另一个对象组合起来，例如： date.atTime(time)。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TimeIntroduction</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testClock</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        <span class="comment">//时钟提供给我们用于访问某个特定 时区的 瞬时时间、日期 和 时间的。  </span></div><div class="line">        Clock c1 = Clock.systemUTC(); <span class="comment">//系统默认UTC时钟（当前瞬时时间 System.currentTimeMillis()）  </span></div><div class="line">        System.out.println(c1.millis()); <span class="comment">//每次调用将返回当前瞬时时间（UTC）  </span></div><div class="line">        Clock c2 = Clock.systemDefaultZone(); <span class="comment">//系统默认时区时钟（当前瞬时时间）  </span></div><div class="line">        Clock c31 = Clock.system(ZoneId.of(<span class="string">"Europe/Paris"</span>)); <span class="comment">//巴黎时区  </span></div><div class="line">        System.out.println(c31.millis()); <span class="comment">//每次调用将返回当前瞬时时间（UTC）  </span></div><div class="line">        Clock c32 = Clock.system(ZoneId.of(<span class="string">"Asia/Shanghai"</span>));<span class="comment">//上海时区  </span></div><div class="line">        System.out.println(c32.millis());<span class="comment">//每次调用将返回当前瞬时时间（UTC）  </span></div><div class="line">        Clock c4 = Clock.fixed(Instant.now(), ZoneId.of(<span class="string">"Asia/Shanghai"</span>));<span class="comment">//固定上海时区时钟  </span></div><div class="line">        System.out.println(c4.millis());</div><div class="line">        Thread.sleep(<span class="number">1000</span>);</div><div class="line">        System.out.println(c4.millis()); <span class="comment">//不变 即时钟时钟在那一个点不动  </span></div><div class="line">        Clock c5 = Clock.offset(c1, Duration.ofSeconds(<span class="number">2</span>)); <span class="comment">//相对于系统默认时钟两秒的时钟  </span></div><div class="line">        System.out.println(c1.millis());</div><div class="line">        System.out.println(c5.millis());</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testInstant</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//瞬时时间 相当于以前的System.currentTimeMillis()  </span></div><div class="line">        Instant instant1 = Instant.now();</div><div class="line">        System.out.println(instant1.getEpochSecond());<span class="comment">//精确到秒 得到相对于1970-01-01 00:00:00 UTC的一个时间  </span></div><div class="line">        System.out.println(instant1.toEpochMilli()); <span class="comment">//精确到毫秒  </span></div><div class="line">        Clock clock1 = Clock.systemUTC(); <span class="comment">//获取系统UTC默认时钟  </span></div><div class="line">        Instant instant2 = Instant.now(clock1);<span class="comment">//得到时钟的瞬时时间  </span></div><div class="line">        System.out.println(instant2.toEpochMilli());</div><div class="line">        Clock clock2 = Clock.fixed(instant1, ZoneId.systemDefault()); <span class="comment">//固定瞬时时间时钟  </span></div><div class="line">        Instant instant3 = Instant.now(clock2);<span class="comment">//得到时钟的瞬时时间  </span></div><div class="line">        System.out.println(instant3.toEpochMilli());<span class="comment">//equals instant1  </span></div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testLocalDateTime</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//使用默认时区时钟瞬时时间创建 Clock.systemDefaultZone() --&gt;即相对于 ZoneId.systemDefault()默认时区  </span></div><div class="line">        LocalDateTime now = LocalDateTime.now();</div><div class="line">        System.out.println(now);</div><div class="line"><span class="comment">//自定义时区  </span></div><div class="line">        LocalDateTime now2 = LocalDateTime.now(ZoneId.of(<span class="string">"Europe/Paris"</span>));</div><div class="line">        System.out.println(now2);<span class="comment">//会以相应的时区显示日期  </span></div><div class="line"><span class="comment">//自定义时钟  </span></div><div class="line">        Clock clock = Clock.system(ZoneId.of(<span class="string">"Asia/Dhaka"</span>));</div><div class="line">        LocalDateTime now3 = LocalDateTime.now(clock);</div><div class="line">        System.out.println(now3);<span class="comment">//会以相应的时区显示日期  </span></div><div class="line"><span class="comment">//不需要写什么相对时间 如java.util.Date 年是相对于1900 月是从0开始  </span></div><div class="line"><span class="comment">//2018-12-31 23:59  </span></div><div class="line">        LocalDateTime d1 = LocalDateTime.of(<span class="number">2018</span>, <span class="number">12</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>);</div><div class="line"><span class="comment">//年月日 时分秒 纳秒  </span></div><div class="line">        LocalDateTime d2 = LocalDateTime.of(<span class="number">2018</span>, <span class="number">12</span>, <span class="number">31</span>, <span class="number">23</span>, <span class="number">59</span>, <span class="number">59</span>, <span class="number">11</span>);</div><div class="line"><span class="comment">//使用瞬时时间 + 时区  </span></div><div class="line">        Instant instant = Instant.now();</div><div class="line">        LocalDateTime d3 = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());</div><div class="line">        System.out.println(d3);</div><div class="line"><span class="comment">//解析String---&gt;LocalDateTime  </span></div><div class="line">        LocalDateTime d4 = LocalDateTime.parse(<span class="string">"2018-12-31T23:59"</span>);</div><div class="line">        System.out.println(d4);</div><div class="line">        LocalDateTime d5 = LocalDateTime.parse(<span class="string">"2018-12-31T23:59:59.999"</span>);<span class="comment">//999毫秒 等价于999000000纳秒  </span></div><div class="line">        System.out.println(d5);</div><div class="line"><span class="comment">//使用DateTimeFormatter API 解析 和 格式化  </span></div><div class="line">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(<span class="string">"yyyy/MM/dd HH:mm:ss"</span>);</div><div class="line">        LocalDateTime d6 = LocalDateTime.parse(<span class="string">"2018/12/31 23:59:59"</span>, formatter);</div><div class="line">        System.out.println(formatter.format(d6));</div><div class="line"><span class="comment">//时间获取  </span></div><div class="line">        System.out.println(d6.getYear());</div><div class="line">        System.out.println(d6.getMonth());</div><div class="line">        System.out.println(d6.getDayOfYear());</div><div class="line">        System.out.println(d6.getDayOfMonth());</div><div class="line">        System.out.println(d6.getDayOfWeek());</div><div class="line">        System.out.println(d6.getHour());</div><div class="line">        System.out.println(d6.getMinute());</div><div class="line">        System.out.println(d6.getSecond());</div><div class="line">        System.out.println(d6.getNano());</div><div class="line"><span class="comment">//时间增减  </span></div><div class="line">        LocalDateTime d7 = d6.minusDays(<span class="number">1</span>);</div><div class="line">        LocalDateTime d8 = d7.plus(<span class="number">1</span>, IsoFields.QUARTER_YEARS);</div><div class="line"><span class="comment">//LocalDate 即年月日 无时分秒  </span></div><div class="line"><span class="comment">//LocalTime即时分秒 无年月日  </span></div><div class="line"><span class="comment">//API和LocalDateTime类似就不演示了  </span></div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testZonedDateTime</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//即带有时区的date-time 存储纳秒、时区和时差（避免与本地date-time歧义）。  </span></div><div class="line"><span class="comment">//API和LocalDateTime类似，只是多了时差(如2018-12-20T10:35:50.711+08:00[Asia/Shanghai])  </span></div><div class="line">        ZonedDateTime now = ZonedDateTime.now();</div><div class="line">        System.out.println(now);</div><div class="line">        ZonedDateTime now2 = ZonedDateTime.now(ZoneId.of(<span class="string">"Europe/Paris"</span>));</div><div class="line">        System.out.println(now2);</div><div class="line"><span class="comment">//其他的用法也是类似的 就不介绍了  </span></div><div class="line">        ZonedDateTime z1 = ZonedDateTime.parse(<span class="string">"2018-12-31T23:59:59Z[Europe/Paris]"</span>);</div><div class="line">        System.out.println(z1);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testDuration</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//表示两个瞬时时间的时间段  </span></div><div class="line">        Duration d1 = Duration.between(Instant.ofEpochMilli(System.currentTimeMillis() - <span class="number">12323123</span>), Instant.now());</div><div class="line"><span class="comment">//得到相应的时差  </span></div><div class="line">        System.out.println(d1.toDays());</div><div class="line">        System.out.println(d1.toHours());</div><div class="line">        System.out.println(d1.toMinutes());</div><div class="line">        System.out.println(d1.toMillis());</div><div class="line">        System.out.println(d1.toNanos());</div><div class="line"><span class="comment">//1天时差 类似的还有如ofHours()  </span></div><div class="line">        Duration d2 = Duration.ofDays(<span class="number">1</span>);</div><div class="line">        System.out.println(d2.toDays());</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testChronology</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//提供对java.util.Calendar的替换，提供对年历系统的支持  </span></div><div class="line">        Chronology c = HijrahChronology.INSTANCE;</div><div class="line">        ChronoLocalDateTime d = c.localDateTime(LocalDateTime.now());</div><div class="line">        System.out.println(d);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 新旧日期转换</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testNewOldDateConversion</span><span class="params">()</span></span>&#123;</div><div class="line">        Instant instant=<span class="keyword">new</span> Date().toInstant();</div><div class="line">        Date date=Date.from(instant);</div><div class="line">        System.out.println(instant);</div><div class="line">        System.out.println(date);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        testClock();</div><div class="line">        testInstant();</div><div class="line">        testLocalDateTime();</div><div class="line">        testZonedDateTime();</div><div class="line">        testDuration();</div><div class="line">        testChronology();</div><div class="line">        testNewOldDateConversion();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th>Java.time</th>
+<th>java.util.Calendar以及Date</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>流畅的API</td>
+<td>不流畅的API</td>
+</tr>
+<tr>
+<td>实例不可变</td>
+<td>实例可变</td>
+</tr>
+<tr>
+<td>线程安全</td>
+<td>非线程安全</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/java-8/" rel="tag"># java 8</a>
+          
+            <a href="/tags/jdk8/" rel="tag"># jdk8</a>
+          
+            <a href="/tags/日期/" rel="tag"># 日期</a>
+          
+            <a href="/tags/时间/" rel="tag"># 时间</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/27/web server/nginx/keepalivedNginx/" rel="next" title="keepalived + nginx 爽活热备负载均衡">
+                <i class="fa fa-chevron-left"></i> keepalived + nginx 爽活热备负载均衡
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/logo.png"
+               alt="sam chen" />
+          <p class="site-author-name" itemprop="name">sam chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">107</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类概览-："><span class="nav-number">1.1.</span> <span class="nav-text">类概览 ：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法概览"><span class="nav-number">1.2.</span> <span class="nav-text">方法概览</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://giveme5.cc/2018/05/30/java/java8JSR310/';
+          this.page.identifier = '2018/05/30/java/java8JSR310/';
+          this.page.title = 'Java 8 日期和时间';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://amadis.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
