@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/</loc>
+    <lastmod>2018-06-25T08:22:35.261Z</lastmod>
+    <data>
+        <display>
+        <title>keepalived + nginx 双活热备负载均衡</title>
+        <pubTime>2018-02-27T02:48:42.000Z</pubTime>
+        
+        <tag>nginx</tag>
+         
+        <tag>server</tag>
+         
+        <tag>keepalived</tag>
+         
+        <tag>高性能</tag>
+         
+        <tag>负载均衡</tag>
+         
+         
+           
+             
+              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2018/05/30/java/java8JSR310/</loc>
     <lastmod>2018-06-07T02:27:47.675Z</lastmod>
     <data>
@@ -486,34 +514,6 @@
         <tag>nginx</tag>
          
         <tag>server</tag>
-         
-         
-           
-             
-              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/</loc>
-    <lastmod>2018-04-10T05:27:00.385Z</lastmod>
-    <data>
-        <display>
-        <title>keepalived + nginx 爽活热备负载均衡</title>
-        <pubTime>2018-02-27T02:48:42.000Z</pubTime>
-        
-        <tag>nginx</tag>
-         
-        <tag>server</tag>
-         
-        <tag>keepalived</tag>
-         
-        <tag>高性能</tag>
-         
-        <tag>负载均衡</tag>
          
          
            

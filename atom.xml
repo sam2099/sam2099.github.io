@@ -77,13 +77,13 @@
   </entry>
   
   <entry>
-    <title>keepalived + nginx 爽活热备负载均衡</title>
+    <title>keepalived + nginx 双活热备负载均衡</title>
     <link href="http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/"/>
     <id>http://giveme5.cc/2018/02/27/web server/nginx/keepalivedNginx/</id>
     <published>2018-02-27T02:48:42.000Z</published>
-    <updated>2018-04-10T05:27:00.385Z</updated>
+    <updated>2018-06-25T08:22:35.261Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>keepalived + nginx 爽活热备负载均衡</p>
+    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>keepalived + nginx 双活热备负载均衡</p>
 <p><em>更新历史</em><br>无</p>
 <a id="more"></a>
 <h2 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h2><p>CentOS 7.3<br>记得安装开发工具， 如果忘记可以在终端执行 <code>yum groupinstall &quot;Development Tools&quot;</code></p>
@@ -138,7 +138,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;keepalived + nginx 爽活热备负载均衡&lt;/p&gt;
+      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;keepalived + nginx 双活热备负载均衡&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
     
     </summary>
