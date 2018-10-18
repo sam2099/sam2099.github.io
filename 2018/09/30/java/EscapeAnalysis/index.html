@@ -96,21 +96,18 @@
 
 
 <meta name="description" content="主要内容
-逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。
-如果">
+逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java 逃逸分析 (Escape Analysis)">
 <meta property="og:url" content="http://giveme5.cc/2018/09/30/java/EscapeAnalysis/index.html">
 <meta property="og:site_name" content="Sam's Notes | Sam Blog">
 <meta property="og:description" content="主要内容
-逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。
-如果">
-<meta property="og:updated_time" content="2018-10-18T08:07:01.767Z">
+逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
+<meta property="og:updated_time" content="2018-10-18T08:30:49.744Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java 逃逸分析 (Escape Analysis)">
 <meta name="twitter:description" content="主要内容
-逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。
-如果">
+逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
 
 
 
@@ -381,7 +378,7 @@
 
       
         <p><strong><em>主要内容</em></strong></p>
-<p>逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。<br>即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。</p>
+<p>逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。<br>即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。<br>逃逸分析 在 方法内联后才进行。</p>
 <p>如果对象没有逃逸，即时编译器对代码进行性能优化。</p>
 <a id="more"></a>
 <h2 id="逃逸方式"><a href="#逃逸方式" class="headerlink" title="逃逸方式"></a>逃逸方式</h2><p>show you code<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Escape</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object obj;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">globalVariableEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 给全局变量赋值，发生逃逸</span></div><div class="line">        obj = <span class="keyword">new</span> Object();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">methodEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 方法返回值，发生逃逸</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Object();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodNoEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 方法返回值，没有逃逸</span></div><div class="line">        Object obj = <span class="keyword">new</span> Object();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">instanceEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 实例引用发生逃逸</span></div><div class="line">        test(<span class="keyword">this</span>); </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -396,7 +393,7 @@
 </li>
 </ul>
 <p>注意 <code>volatile</code> 修饰的字段 不会被完全优化</p>
-<h3 id="字段存储优化"><a href="#字段存储优化" class="headerlink" title="字段存储优化"></a>字段存储优化</h3><p>编译器还将消除冗余的存储节点。如果一个字段先后被存储了两次，而且这两次存储之间没有对第一次存储内容的读取，那么即时编译器可以将第一个字段存储给消除掉。<br>当然，如果所存储的字段被标记为 volatile，那么即时编译器也不能将冗余的存储操作消除掉。<br>这种情况看似很蠢，但实际上并不少见，比如说两个存储之间隔着许多其他代码，或者因为方法内联的缘故，将两个存储操作（如构造器中字段的初始化以及随后的更新）纳入同一个编译单元里。</p>
+<h3 id="字段存储优化"><a href="#字段存储优化" class="headerlink" title="字段存储优化"></a>字段存储优化</h3><p>编译器还将消除冗余的存储节点。<br>如果一个字段先后被存储了两次，而且这两次存储之间没有对第一次存储内容的读取，那么即时编译器可以将第一个字段存储给消除掉。当然，如果所存储的字段被标记为 volatile，那么即时编译器也不能将冗余的存储操作消除掉。这种情况看似很蠢，但实际上并不少见，比如说两个存储之间隔着许多其他代码，或者因为方法内联的缘故，将两个存储操作（如构造器中字段的初始化以及随后的更新）纳入同一个编译单元里。</p>
 <h3 id="死代码消除"><a href="#死代码消除" class="headerlink" title="死代码消除"></a>死代码消除</h3><p>即删除无用字段<br>死存储还有一种变体，即在部分程序路径上有冗余存储。<br>另一种死代码消除则是不可达分支消除。不可达分支就是任何程序路径都不可到达的分支，我们之前已经多次接触过了。</p>
 <h3 id="循环无关代码外提"><a href="#循环无关代码外提" class="headerlink" title="循环无关代码外提"></a>循环无关代码外提</h3><p>所谓的循环无关代码（Loop-invariant Code），指的是循环中值不变的表达式。如果能够在不改变程序语义的情况下，将这些循环无关代码提出循环之外，那么程序便可以避免重复执行这些表达式，从而达到性能提升的效果。</p>
 <h2 id="逃逸分析并不成熟"><a href="#逃逸分析并不成熟" class="headerlink" title="逃逸分析并不成熟"></a>逃逸分析并不成熟</h2><p>无法保证逃逸分析的性能消耗一定能高于他的消耗。虽然经过逃逸分析可以做标量替换、栈上分配、和锁消除。但是逃逸分析自身也是需要进行一系列复杂的分析的，这其实也是一个相对耗时的过程。</p>
