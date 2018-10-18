@@ -278,6 +278,457 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/06/linux/base/godLinux1-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/06/linux/base/godLinux1-8/" itemprop="url">1-8-RHEL7软件包管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-06T15:29:44+08:00">
+                2015-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/06/linux/base/godLinux1-8/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/06/linux/base/godLinux1-8/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><ul>
+<li>rpm管理软件</li>
+<li>yun管理软件</li>
+<li>源码管理软件</li>
+</ul>
+<h2 id="rpm管理软件"><a href="#rpm管理软件" class="headerlink" title="rpm管理软件"></a>rpm管理软件</h2><p>rpm （Redhat   package  manager）</p>
+<ul>
+<li>作用：管理rpm包</li>
+<li>语法：rpm  【选项】  包名<br>参数<br>-i, –install                    install package(s)<br>-v, –verbose 详细             provide more detailed output<br>-h, –hash                     print hash marks as packageinstalls (good with -v) #安装时打印散列标记#号<br>-q， –query                   查询选项<br>-U, –upgrade=<packagefile>+      升级软件包<br>-e, –erase=<package>+            清除 (卸载) 软件包</package></packagefile></li>
+</ul>
+<h3 id="rpm包"><a href="#rpm包" class="headerlink" title="rpm包"></a>rpm包</h3><ul>
+<li>来源<br>独立下载或光盘镜像</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#挂载光盘：</span></div><div class="line">[root@localhost ~]<span class="comment"># umount /dev/sr0</span></div><div class="line">[root@localhost ~]<span class="comment"># mount /dev/sr0 /mnt/</span></div></pre></td></tr></table></figure>
+<ul>
+<li>包名意义<br>zsh-5.0.2-7.el7.x86_64.rpm</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>zsh</th>
+<th>-5</th>
+<th>.0</th>
+<th>.2</th>
+<th>-7</th>
+<th>x86</th>
+<th>64</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>软件名</td>
+<td>主版本号</td>
+<td>此版本号</td>
+<td>修订号</td>
+<td>release（第几次发布版本）</td>
+<td>CPU架构系统平台</td>
+<td>支持的系统位数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rpm安装"><a href="#rpm安装" class="headerlink" title="rpm安装"></a>rpm安装</h3><pre><code>[root@localhost ~]# rpm -ivh /mnt/Packages/lrzsz-0.12.20-36.el7.x86_64.rpm
+</code></pre><p>安装时，如果需要解决依赖关系。上rpm包相关的网站上找<br><a href="http://rpmfind.net/" target="_blank" rel="external">http://rpmfind.net/</a><br><a href="http://rpm.pbone.net/" target="_blank" rel="external">http://rpm.pbone.net/</a><br><a href="http://www.rpmseek.com/index.html" target="_blank" rel="external">http://www.rpmseek.com/index.html</a></p>
+<h3 id="rpm查询"><a href="#rpm查询" class="headerlink" title="rpm查询"></a>rpm查询</h3><ul>
+<li><p>查询zsh软件是否安装</p>
+<pre><code>[root@localhost ~]# rpm -q zsh
+zsh-5.0.2-7.el7.x86_64
+</code></pre></li>
+<li><p>查询系统所有安装过的rpm软件</p>
+<pre><code>[root@localhost ~]# rpm -qa
+
+[root@localhost ~]# rpm -qa | grep zsh
+zsh-5.0.2-7.el7.x86_64
+</code></pre></li>
+<li><p>查询zsh这个软件安装后，产生了那些文件和目录</p>
+<pre><code>[root@localhost ~]# rpm -ql zsh | more
+</code></pre></li>
+<li><p>zsh这个文件是那个软件安装的</p>
+<pre><code>[root@localhost ~]# rpm -qf  `which zsh` 
+zsh-5.0.2-7.el7.x86_64
+</code></pre></li>
+<li><p>在软件没有安装之前进行查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# rpm -qpl /mnt/Packages/lrzsz-0.12.20-36.el7.x86_64.rpm</div><div class="line">      warning:/mnt/Packages/lrzsz-0.12.20-36.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature,key ID fd431d51: NOKEY</div><div class="line">      /usr/bin/rb</div><div class="line">      /usr/bin/rx</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>查看一个包的作用，凡是加上p则表示查询的包未安装。若查询已安装的包则去掉p</p>
+<h3 id="rpm升级"><a href="#rpm升级" class="headerlink" title="rpm升级"></a>rpm升级</h3><pre><code>[root@localhost ~]# rpm-Uvh /mnt/Packages/lrzsz-0.12.20-36.el7.x86_64.rpm
+</code></pre><h3 id="rpm卸载"><a href="#rpm卸载" class="headerlink" title="rpm卸载"></a>rpm卸载</h3><pre><code>[root@localhost ~]# rpm -e zsh                      只写软件包的名字，不用写版本号
+</code></pre><h3 id="rpm签名验证"><a href="#rpm签名验证" class="headerlink" title="rpm签名验证"></a>rpm签名验证</h3><p>导入RPM-GPG-KEY安装rpm包时，对rpm的签名进行验证。验证的原理是：非对称加密。 导入公钥。验证rpm中的签名是否是对的。</p>
+<pre><code>[root@localhost ~]# rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release 
+</code></pre><h2 id="YUM管理软件"><a href="#YUM管理软件" class="headerlink" title="YUM管理软件"></a>YUM管理软件</h2><p>YUM，自动装软件包（软件包管理），解决依赖关系问题、自动下载软件包。基于C/S架构。</p>
+<h3 id="YUM源"><a href="#YUM源" class="headerlink" title="YUM源"></a>YUM源</h3><p>YUM 基于C/S架构， 软件需要来源，即 YUM源。 可以分为  <code>ftp    http   file（本地yum源）</code> 三类。</p>
+<p>例如 ： 配置本地yum源<br>在 <code>/etc/yum.repos.d/</code> 目录下新建 <code>xxxx.repo</code> 文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/yum.repos.d/rhel7.repo</span></div><div class="line">[rhel7-yum]                  <span class="comment">#yum源名称，唯一的，用来区分不同的yum源</span></div><div class="line">name=rhel7-source            <span class="comment">#对yum源描述信息</span></div><div class="line">baseurl=file:///mnt          <span class="comment">#yum源的路径（repodata目录所在的目录）</span></div><div class="line">enabled=1                    <span class="comment">#为1，表示启用yum源</span></div><div class="line">gpgcheck=0                   <span class="comment">#为1，使用公钥检验rpm的正确性</span></div></pre></td></tr></table></figure></p>
+<h3 id="YUM使用"><a href="#YUM使用" class="headerlink" title="YUM使用"></a>YUM使用</h3><ul>
+<li><p>yum安装</p>
+<pre><code>[root@localhost ~]# yum install zsh
+</code></pre><p>选项 ：-y  #回答yes  取消交互</p>
+<pre><code>[root@localhost ~]# yum -y install mariadb-server
+</code></pre></li>
+</ul>
+<ul>
+<li><p>yum安装一组软件包</p>
+<pre><code>[root@localhost ~]# yum group list
+[root@localhost ~]# yum group install &quot;Security Tools&quot;
+</code></pre></li>
+</ul>
+<ul>
+<li><p>yum查询</p>
+<pre><code>[root@localhost ~]# yum list z*
+[root@localhost ~]# yum search zsh
+</code></pre></li>
+<li><p>yum删除</p>
+<pre><code>[root@localhost ~]# yum remove  zsh
+</code></pre></li>
+<li><p>清空yum缓存</p>
+<pre><code>[root@localhost ~]# yum clean all
+</code></pre></li>
+<li><p>yum生成列表</p>
+<pre><code>[root@localhost ~]# yum list
+</code></pre></li>
+</ul>
+<h2 id="源码管理软件"><a href="#源码管理软件" class="headerlink" title="源码管理软件"></a>源码管理软件</h2><h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><p>前提：系统必须安装：开发工具、开发库</p>
+<p>步骤：</p>
+<ol>
+<li>获得源码包</li>
+<li>解压<br>tar</li>
+<li>配置，检测安装环境<br>./configure –prefix=path  #检查安装环境是否符合需求，如果没有问题，生成：Makefile文件，  –prefix 参数 指定安装路径。这样删除或备份时，直接对删除这个目录操作就可以了。</li>
+<li>编译<br>make -j n (编译时会读取Makefile文件) n 为电脑cpu核数 -2 ， 并发编译</li>
+<li><p>安装<br>make install</p>
+</li>
+<li><p>删除<br>make uninstall</p>
+</li>
+<li><p>再次编译<br>make clean</p>
+</li>
+</ol>
+<p>例：安装软件包extundelete-0.2.4.tar.bz2<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># tar jxvf extundelete-0.2.4.tar.bz2</span></div><div class="line">  </div><div class="line">[root@localhost ~]<span class="comment"># cd extundelete-0.2.4/</span></div><div class="line">  </div><div class="line"><span class="comment">#指定安装路径</span></div><div class="line">[root@localhostextundelete-0.2.4]<span class="comment"># ./configure --prefix=/usr/local/extundelet</span></div><div class="line">Configuring extundelete0.2.4</div><div class="line">configure: error: Can<span class="string">'tfind ext2fs library</span></div><div class="line">  </div><div class="line">[root@localhostextundelete-0.2.4]# yum -y install e2fsprogs-devel</div><div class="line">  </div><div class="line">[root@localhostextundelete-0.2.4]# ./configure --prefix=/usr/local/extundelet</div><div class="line">Configuring extundelete0.2.4</div><div class="line">Writing generated filesto disk</div><div class="line">  </div><div class="line">#编译安装</div><div class="line">[root@localhostextundelete-0.2.4]# make &amp;&amp; make install</div><div class="line">  </div><div class="line">[root@localhostextundelete-0.2.4]# make uninstall</div><div class="line">Making uninstall in src</div><div class="line"> ( cd '/usr/<span class="built_in">local</span>/bin<span class="string">' &amp;&amp; rm -fextundelete )</span></div><div class="line">  </div><div class="line">#删除时只需删除路径即可：</div><div class="line">[root@localhost local]#rm -rf extundelet-rm/</div></pre></td></tr></table></figure></p>
+<h3 id="安装-src-rpm源码包的方法"><a href="#安装-src-rpm源码包的方法" class="headerlink" title="安装.src.rpm源码包的方法"></a>安装.src.rpm源码包的方法</h3><ul>
+<li><p>编译<br>将src.rpm中源码文件编译成可执行的二进制文件。</p>
+<pre><code>rpmbuild --rebuild  lrzsz-0.12.20-27.1.el6.src.rpm
+</code></pre></li>
+</ul>
+<p>若顺利执行成功则会在root用户根目录下生成一个: rpmbuild目录。在/root/rpmbuild/RPMS/x86_64/目录下生成lrzsz-0.12.20-27.1.el6.x86_64.rpm这个rpm文件。</p>
+<ul>
+<li>安装</li>
+</ul>
+<p>接下来就是rpm的安装过程。</p>
+<pre><code>[root@localhostx86_64]# rpm  -e lrzsz
+[root@localhostx86_64]# rpm -vih lrzsz-0.12.20-27.1.el7.x86_64.rpm
+</code></pre><h2 id="软件安装方法比较"><a href="#软件安装方法比较" class="headerlink" title="软件安装方法比较"></a>软件安装方法比较</h2><p>rpm＋yum：方便，软件版本低。稳定性好、管理方便。性能稍差。<br>源码手动：麻烦，软件版本新。稳定性稍差、管理稍差。性能好。  LAMP，LNMP</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/05/linux/base/godLinux1-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/logo.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/12/05/linux/base/godLinux1-7/" itemprop="url">1-7 文件权限管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-05T18:29:44+08:00">
+                2015-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2015/12/05/linux/base/godLinux1-7/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2015/12/05/linux/base/godLinux1-7/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><ul>
+<li>文件基本权限</li>
+<li>文件高级权限</li>
+</ul>
+<h2 id="文件基本权限"><a href="#文件基本权限" class="headerlink" title="文件基本权限"></a>文件基本权限</h2><h3 id="查看文件权限"><a href="#查看文件权限" class="headerlink" title="查看文件权限"></a>查看文件权限</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ll <span class="variable">$filename</span></div></pre></td></tr></table></figure>
+<h3 id="基本权限构成"><a href="#基本权限构成" class="headerlink" title="基本权限构成"></a>基本权限构成</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ ll text </div><div class="line">-rw-r--r-- 1 sam users 0 12月  1 15:20 text</div></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>rw-</th>
+<th>　r–　　　</th>
+<th>　r–　　　</th>
+<th>　sam　</th>
+<th>users　</th>
+<th>　text(FILENAME)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>类型</td>
+<td>拥有者的权限</td>
+<td>所属组的权限</td>
+<td>其他人的权限</td>
+<td>拥有者</td>
+<td>属组</td>
+<td>对象</td>
+</tr>
+</tbody>
+</table>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2015/12/05/linux/base/godLinux1-7/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/04/linux/base/godLinux1-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1550,279 +2001,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/10/29/exception/tomcat-jdbc-hibernate/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/29/exception/tomcat-jdbc-hibernate/" itemprop="url">tomcat-jdbc hibernate 版本冲突</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-29T16:10:08+08:00">
-                2015-10-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/exception/" itemprop="url" rel="index">
-                    <span itemprop="name">exception</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/10/29/exception/tomcat-jdbc-hibernate/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/10/29/exception/tomcat-jdbc-hibernate/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>搭建了一套 Spring 核心的 web 服务基础框架。<br>涉及 Spring 4.2.1.RELEASE ， Spring MVC 4.2.1.RELEASE ，Spring Data JPA 1.9.0.RELEASE， Hibernate 5.0.2.Final， 数据库连接池 tomcat-jdbc 8.27， 容器 tomcat 8.21。</p>
-<p>坑人的异常：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">org.apache.tomcat.jdbc.pool.ConnectionPool abandon</div><div class="line">    WARNING: Connection has been abandoned PooledConnection[com.mysql.jdbc.JDBC4Connection@1ad2916]:java.lang.Exception</div><div class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.getThreadDump(ConnectionPool.java:967)</div><div class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.borrowConnection(ConnectionPool.java:721)</div><div class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.borrowConnection(ConnectionPool.java:579)</div><div class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.getConnection(ConnectionPool.java:174)</div><div class="line">        at org.apache.tomcat.jdbc.pool.DataSourceProxy.getConnection(DataSourceProxy.java:111)</div><div class="line">        at com.getsom.getConnection(DAO.java:1444)</div><div class="line">        at com.getsom.PreparedConnection.(PreparedConnection.java:48)</div><div class="line">        at com.getsom.Alarms.run(Alarms.java:492)</div></pre></td></tr></table></figure></p>
-<p>奇怪的异常， 折腾半天，把 tomcat-jdbc 的配置属性玩了个遍，没辙， 想起以前版本没问题， Hibernate 5.0.2.Final 降级成 Hibernate 4.3.11.Final;<br>然后就好了！！！！！！<br>似乎是 对 Hibernate 5 的支持还不够广泛。</p>
-<p>ps 推荐一个 <a href="http://wiki.jikexueyuan.com/project/tomcat/" target="_blank" rel="external">tomcat 8 中文文档</a>, 翻译的还可以。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/10/22/questions/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/logo.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015/10/22/questions/" itemprop="url">questions</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-22T16:18:38+08:00">
-                2015-10-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/10/22/questions/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/10/22/questions/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="部门权限控制"><a href="#部门权限控制" class="headerlink" title="部门权限控制"></a>部门权限控制</h2><ul>
-<li>认证 权限 由 shiro 控制， 部门范围由具体业务处理</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1872,7 +2050,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">107</span>
+                <span class="site-state-item-count">109</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1894,7 +2072,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

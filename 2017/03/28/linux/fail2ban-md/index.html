@@ -113,7 +113,7 @@
 使用
 
 使用 fail2ban 防御服务器的暴力破解攻击， ssh，nginx 服务为例。">
-<meta property="og:updated_time" content="2018-05-09T09:16:41.211Z">
+<meta property="og:updated_time" content="2018-10-18T06:15:05.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fail2ban防御暴力破解攻击">
 <meta name="twitter:description" content="主要内容
@@ -434,7 +434,8 @@
 </ul>
 <h3 id="action"><a href="#action" class="headerlink" title="action"></a>action</h3><p>使用现有的 <code>firewallcmd-ipset</code></p>
 <h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><p>路径 <code>/etc/fail2ban/filter.d</code> 新建 <code>nginx-err.conf</code></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[Definition]</div><div class="line"></div><div class="line">failregex = ^&lt;HOST&gt; -.*- .*HTTP/1.* (404|400|500) .*$</div><div class="line"></div><div class="line">ignoreregex =</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[Definition]</div><div class="line"></div><div class="line">failregex = ^&lt;HOST&gt; -.*- .*HTTP/1.* (404|400|500) \d+ .*$</div><div class="line"></div><div class="line">ignoreregex =</div></pre></td></tr></table></figure>
+<p>注意：<br>nginx log 格式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">log_format  main  &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos;</div><div class="line">                  &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos;</div><div class="line">                  &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;;</div></pre></td></tr></table></figure></p>
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul>
 <li><p>启动/重启 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">╰─# systemctl restart fail2ban.service</div></pre></td></tr></table></figure>
@@ -592,7 +593,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">107</span>
+                <span class="site-state-item-count">109</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -614,7 +615,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-count">95</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
