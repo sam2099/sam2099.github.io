@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2018-10-18T08:30:49.744Z</updated>
+  <updated>2018-11-06T09:46:52.182Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,488 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>JVM线上调优(三)  内存调优</title>
+    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-memory/"/>
+    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-memory/</id>
+    <published>2018-11-07T13:31:21.000Z</published>
+    <updated>2018-11-06T09:46:52.182Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。</p>
+<p>本章讨论java线上内存调优</p>
+<ul>
+<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
+</li>
+</ul>
+<p><em>更新历史</em></p>
+<a id="more"></a>
+<hr>
+<p>Java应用占用太多内存也有可能的确是内存硬件不足或JVM设置的太小，记得最后考虑下。</p>
+<p>本文主要讨论的是Java内存泄漏。</p>
+<h2 id="泄漏特征"><a href="#泄漏特征" class="headerlink" title="泄漏特征"></a>泄漏特征</h2><p>出现如下情况之一，就需要检查了</p>
+<ul>
+<li>OOM Out-of-Memory</li>
+<li>堆(老年代)/方法区 不停地增长，频繁FullGC</li>
+<li>不明的crash</li>
+<li>数据集越大，性能越低</li>
+</ul>
+<h2 id="泄漏原因"><a href="#泄漏原因" class="headerlink" title="泄漏原因"></a>泄漏原因</h2><ul>
+<li><p>File/Text buffers 等资源没关闭</p>
+</li>
+<li><p>静态集合类引用<br>静态变量的生命周期和应用程序一致，他们所引用的所有的对象也不能被释放。</p>
+</li>
+<li><p>监听器<br>只增加监听器，不删除</p>
+</li>
+<li><p>各种连接没有释放</p>
+</li>
+<li><p>单例模式<br>单例对象在被初始化后将在JVM的整个生命周期中存在，单例对象持有外部对象的引用，那么这个外部对象将不能被jvm正常回收</p>
+</li>
+<li><p>内部类和外部模块等的引用<br>非静态内部类的对象会隐式强引用其外围对象，所以在内部类未释放时，外围对象也不会被释放，从而造成内存泄漏。</p>
+</li>
+<li><p>集合中的可变对象修改<br>一般是HashSet, HashMap, 主键的key的hashCode变化以后，添加或者删除都是映射到不同的桶中。所以对于HashSet或者HashMap的Key，都应该是不可变类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</div><div class="line"></div><div class="line">    <span class="comment">// ** 改变了 key **</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> name.hashCode() + age;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.name = name;</div><div class="line">        <span class="keyword">this</span>.age = age;</div><div class="line">    &#125;</div><div class="line">...</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.age = age;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Set&lt;Person&gt; persons = <span class="keyword">new</span> HashSet&lt;&gt;();</div><div class="line">        Person p1 = <span class="keyword">new</span> Person(<span class="string">"AAAA"</span>,  <span class="number">1</span>);</div><div class="line">        Person p2 = <span class="keyword">new</span> Person(<span class="string">"BBBB"</span>,  <span class="number">2</span>);</div><div class="line">        Person p3 = <span class="keyword">new</span> Person(<span class="string">"CCCC"</span>, <span class="number">3</span>);</div><div class="line">        persons.add(p1);</div><div class="line">        persons.add(p2);</div><div class="line">        persons.add(p3);</div><div class="line">        System.out.println(<span class="string">"size:"</span> + persons.size()); <span class="comment">// 3</span></div><div class="line"></div><div class="line">        p3.setAge(<span class="number">31</span>); <span class="comment">// 修改属性。</span></div><div class="line">        persons.remove(p3); <span class="comment">// 移除不掉.</span></div><div class="line">        persons.add(p3); <span class="comment">// 添加成功.</span></div><div class="line"></div><div class="line">        System.out.println(<span class="string">"size:"</span> + persons.size()); <span class="comment">// 4</span></div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><h3 id="OOM"><a href="#OOM" class="headerlink" title="OOM"></a>OOM</h3><p>java启动加入<code>-XX:+HeapDumpOnOutOfMemoryError</code>，发生OOM时自动生成dump文件<br>    java … -XX:+HeapDumpOnOutOfMemoryError  -XX:HeapDumpPath=./oom.hprof</p>
+<p>发生OOM异常时需要对该文件进行分析。把oom.hprof 下载到开发环境，使用 <code>MAT</code> 分析。</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li><p><code>jps</code> 找到java进程ID[pid]</p>
+</li>
+<li><p>top -p [pid] 查看内存使用情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">╰─$ top -p 14986</div><div class="line">top - 17:27:51 up 29 days,  7:59,  6 users,  load average: 1.27, 0.76, 0.77</div><div class="line">Tasks:   1 total,   0 running,   1 sleeping,   0 stopped,   0 zombie</div><div class="line">%Cpu(s):  8.8 us,  7.3 sy,  0.0 ni, 83.4 id,  0.0 wa,  0.0 hi,  0.5 si,  0.0 st</div><div class="line">KiB Mem : 16287752 total,  5915300 free,  6235960 used,  4136492 buff/cache</div><div class="line">KiB Swap: 16784380 total, 16588028 free,   196352 used.  9302212 avail Mem </div><div class="line"></div><div class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                                                                                      </div><div class="line">14986 sam       20   0 5682796 2.078g  51756 S 2.000 13.38 451:02.04 java</div></pre></td></tr></table></figure>
+</li>
+<li><p>FullGC情况<br><code>jstat -gcutil [pid] 3s</code> 每3s的GC情况，主要看 FGC</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">╰─$ jstat -gcutil 14986 3s</div><div class="line">  S0     S1     E      O      M     CCS    YGC     YGCT    FGC    FGCT    CGC    CGCT     GCT   </div><div class="line">  0.00  51.09   9.93  61.42  93.53  90.33   2961   45.827   416  304.043     -        -  349.870</div><div class="line">  0.00  51.09   9.96  61.42  93.53  90.33   2961   45.827   416  304.043     -        -  349.870</div><div class="line">  0.00  51.09  10.18  61.42  93.53  90.33   2961   45.827   416  304.043     -        -  349.870</div><div class="line">  0.00  51.09  10.34  61.42  93.53  90.33   2961   45.827   416  304.043     -        -  349.870</div><div class="line">  0.00  51.09  11.28  61.42  93.53  90.33   2961   45.827   416  304.043     -        -  349.870</div><div class="line">  。。。</div></pre></td></tr></table></figure>
+</li>
+<li><p>jmap<br>查看目前的各种类型的对象创建数目和所占用内存</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">╰─$ jmap -histo:live 14986|more</div><div class="line"></div><div class="line"> num     <span class="comment">#instances         #bytes  class name</span></div><div class="line">----------------------------------------------</div><div class="line">   1:        514181       53559808  [C</div><div class="line">   2:         90742       48738768  [B</div><div class="line">   3:         76202       17773512  [I</div><div class="line">   4:        152743       13160544  [Ljava.lang.Object;</div><div class="line">   5:        509711       12233064  java.lang.String</div><div class="line">   6:         83468        9177120  java.lang.Class</div><div class="line">   7:        117955        3774560  java.util.HashMap<span class="variable">$Node</span></div><div class="line">   8:        100076        3202432  java.util.concurrent.ConcurrentHashMap<span class="variable">$Node</span></div><div class="line">   9:         11155        2562688  [J</div><div class="line">  10:         15235        2375912  [Ljava.util.HashMap<span class="variable">$Node</span>;</div><div class="line">  11:         73180        2341760  com.intellij.util.text.ByteArrayCharSequence</div><div class="line">。。。。</div></pre></td></tr></table></figure>
+<p>还可以生成JVM的内存dump文件，下载到本地使用 <code>MAT</code> 分析</p>
+<pre><code>jmap -dump:format=b,file=文件名 [pid]
+</code></pre></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;/p&gt;
+&lt;p&gt;本章讨论java线上内存调优&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="内存泄漏" scheme="http://giveme5.cc/tags/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
+    
+      <category term="内存调优" scheme="http://giveme5.cc/tags/%E5%86%85%E5%AD%98%E8%B0%83%E4%BC%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM线上调优(二)  CPU调优</title>
+    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/"/>
+    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/</id>
+    <published>2018-11-07T13:31:21.000Z</published>
+    <updated>2018-11-06T09:46:50.442Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。<br>本章解决java线上CPU调优</p>
+<ul>
+<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
+</li>
+</ul>
+<p><em>更新历史</em></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="定位线程"><a href="#定位线程" class="headerlink" title="定位线程"></a>定位线程</h2><ul>
+<li><p>TOP命令查看到CPU的占用情况<br>TOP –&gt; P : 按CPU使用率排序<br><img src="/images/jvm/ja_cpu_p.png" alt=""></p>
+</li>
+<li><p>具体线程<br>Java是一个多线程应用，进程是由多个线程构成的，上面看到的是这个进程的CPU占用率，导致这个进程CPU偏高的是其中某个或某几个线程，因而我们需要找到这些线程。<br>ps命令查看指定进程的线程情况</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -mp &lt;pid&gt; -o THREAD,tid,time</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/images/jvm/ja_cpu_thread.png" alt=""><br>线程tid为 9100 的线程，CPU占用率达到了99.8%， 就是这个线程的问题。</p>
+<h2 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h2><p>请出 <code>jstack</code> 分析具体线程。</p>
+<p><strong> 注意： 进制转换 </strong><br>ps命令查看到的线程ID 9100 是十进制，<code>jstack</code> 命令输出的线程ID可能是十六进制，使用如下命令转换<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">╰─$ <span class="built_in">printf</span> <span class="string">"%x\n"</span> 9100</div><div class="line">238c</div></pre></td></tr></table></figure></p>
+<p>然后使用 <code>jstack</code> 定位具体的问题</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">╰─$ jstack 9078|grep 238c -A 15</div><div class="line"><span class="string">"Thread-0"</span> <span class="comment">#10 prio=5 os_prio=0 tid=0x00007fbea0821800 nid=0x238c runnable [0x00007fbe8bbfa000]</span></div><div class="line">   java.lang.Thread.State: RUNNABLE</div><div class="line">        at com.xxx.xxx.MyClassLoader<span class="variable">$1</span>.run(MyClassLoader.java:19)</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
+<p><img src="/images/jvm/ja_cpu_source.png" alt=""></p>
+<p>最后结合源码检查就ok。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;br&gt;本章解决java线上CPU调优&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="CPU调优" scheme="http://giveme5.cc/tags/CPU%E8%B0%83%E4%BC%98/"/>
+    
+      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>JVM线上调优(一) 工具介绍</title>
+    <link href="http://giveme5.cc/2018/11/06/java/javaAnalyzer/"/>
+    <id>http://giveme5.cc/2018/11/06/java/javaAnalyzer/</id>
+    <published>2018-11-06T13:31:21.000Z</published>
+    <updated>2018-11-06T09:46:40.698Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。</p>
+<p>本章首先介绍各种倚天剑和屠龙刀<br>（致敬 金庸大大）</p>
+<ul>
+<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
+</li>
+</ul>
+<p><em>更新历史</em></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p>JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。</p>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><pre><code>jps [-q] [-mlvV] [&lt;hostid&gt;]
+</code></pre><p>参数都非必须</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><pre><code>-q : 只输出LVMID
+-l : 输出主类全名或jar路径
+-m : 输出JVM启动时传递给main()的参数
+-v : 输出JVM启动时显示指定的JVM参数
+</code></pre><h3 id="例"><a href="#例" class="headerlink" title="例"></a>例</h3><pre><code>╰─$ jps -l   
+15346 org.jetbrains.idea.maven.server.RemoteMavenServer
+15527 org.jetbrains.jps.cmdline.Launcher
+14986 com.intellij.idea.Main
+30074 jdk.jcmd/sun.tools.jps.Jps
+18941 org.jetbrains.jps.cmdline.Launcher
+</code></pre><h2 id="jstat-性能分析"><a href="#jstat-性能分析" class="headerlink" title="jstat 性能分析"></a>jstat 性能分析</h2><p>jstat(JVM statistics Monitoring)是用于监视虚拟机运行时状态信息的命令，类装载、内存、垃圾收集、JIT编译等数据</p>
+<h3 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h3><pre><code>jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]
+</code></pre><h3 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h3><pre><code>[option] : 操作参数
+vmid : 本地虚拟机进程ID
+[interval] : 连续输出的时间间隔
+[count] : 连续输出的次数
+</code></pre><h4 id="参数一览"><a href="#参数一览" class="headerlink" title="参数一览"></a>参数一览</h4><style>
+table th:first-of-type {
+    width: 20%;
+}
+</style>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gc</td>
+<td>垃圾回收堆的行为统计。Statistics of the behavior of the garbage collected heap.</td>
+</tr>
+<tr>
+<td>class</td>
+<td>class loader的行为统计。Statistics on the behavior of the class loader.</td>
+</tr>
+<tr>
+<td>compiler</td>
+<td>HotSpt JIT编译器行为统计。Statistics of the behavior of the HotSpot Just-in-Time compiler.</td>
+</tr>
+<tr>
+<td>gccapacity</td>
+<td>各个垃圾回收代容量(young,old,perm)和他们相应的空间统计。Statistics of the capacities of the generations and their corresponding spaces.</td>
+</tr>
+<tr>
+<td>gcutil</td>
+<td>垃圾回收统计概述。Summary of garbage collection statistics.</td>
+</tr>
+<tr>
+<td>gccause</td>
+<td>垃圾收集统计概述（同-gcutil），附加最近两次垃圾回收事件的原因。Summary of garbage collection statistics (same as -gcutil), with the cause of the last and</td>
+</tr>
+<tr>
+<td>gcnew</td>
+<td>新生代行为统计。Statistics of the behavior of the new generation.</td>
+</tr>
+<tr>
+<td>gcnewcapacity</td>
+<td>新生代与其相应的内存空间的统计。Statistics of the sizes of the new generations and its corresponding spaces.</td>
+</tr>
+<tr>
+<td>gcold</td>
+<td>年老代和永生代行为统计。Statistics of the behavior of the old and permanent generations.</td>
+</tr>
+<tr>
+<td>gcoldcapacity</td>
+<td>年老代行为统计。Statistics of the sizes of the old generation.</td>
+</tr>
+<tr>
+<td>gcpermcapacity</td>
+<td>永生代行为统计。Statistics of the sizes of the permanent generation.</td>
+</tr>
+<tr>
+<td>printcompilation</td>
+<td>HotSpot编译方法统计。HotSpot compilation method statistics.</td>
+</tr>
+</tbody>
+</table>
+<p><code>-gc</code><br>常用命令 垃圾回收堆的行为统计</p>
+<pre><code>╰─# jstat -gc 15490 3s
+S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT   
+8192.0 33792.0 8181.8  0.0   724992.0 592657.6  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+8192.0 33792.0 8181.8  0.0   724992.0 594107.5  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+8192.0 33792.0 8181.8  0.0   724992.0 594455.2  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+8192.0 33792.0 8181.8  0.0   724992.0 595905.2  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+</code></pre><p><strong>C即Capacity 总容量，U即Used 已使用的容量</strong></p>
+<ul>
+<li>S0C：第一个幸存区的大小</li>
+<li>S1C：第二个幸存区的大小</li>
+<li>S0U：第一个幸存区的使用大小</li>
+<li>S1U：第二个幸存区的使用大小</li>
+<li>EC：伊甸园区的大小</li>
+<li>EU：伊甸园区的使用大小</li>
+<li>OC：老年代大小</li>
+<li>OU：老年代使用大小</li>
+<li>MC：方法区大小</li>
+<li>MU：方法区使用大小</li>
+<li>CCSC:压缩类空间大小</li>
+<li>CCSU:压缩类空间使用大小</li>
+<li>YGC：年轻代垃圾回收次数</li>
+<li>YGCT：年轻代垃圾回收消耗时间</li>
+<li>FGC：老年代垃圾回收次数</li>
+<li>FGCT：老年代垃圾回收消耗时间</li>
+<li>GCT：垃圾回收消耗总时间</li>
+</ul>
+<p>更多可参考<a href="https://blog.csdn.net/maosijunzi/article/details/46049117" target="_blank" rel="external">java高分局之jstat命令使用</a></p>
+<h2 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h2><p>jinfo(JVM Configuration info)实时查看和调整虚拟机运行参数</p>
+<h3 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h3><pre><code>jinfo &lt;option&gt; &lt;pid&gt;
+</code></pre><h3 id="option"><a href="#option" class="headerlink" title="option"></a>option</h3><pre><code>-flag : 输出指定args参数的值
+-flags : 不需要args参数，输出所有JVM参数的值
+-sysprops : 输出系统属性，等同于System.getProperties()
+</code></pre><h2 id="jmap-查看内存"><a href="#jmap-查看内存" class="headerlink" title="jmap 查看内存"></a>jmap 查看内存</h2><p>jmap(JVM Memory Map)命令用于生成heap dump文件，如果不使用这个命令，还可以使用-XX:+HeapDumpOnOutOfMemoryError参数来让虚拟机出现OOM的时候自动生成dump文件。<br>又或者在Linux系统下通过Kill-3命令发送进程退出信号“吓唬”一下虚拟机，也能拿到dump文件。<br>jmap不仅能生成dump文件，还可以查询finalize执行队列、Java堆和永久代的详细信息，如当前使用率、当前使用的是哪种收集器等。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>openjdk 需要 安装 <code>debuginfo</code>，版本需要和openjdk 一致</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum update java-1.8.0-openjdk.x86_64</div><div class="line">yum --enablerepo=<span class="string">"*-debug*"</span> install java-1.8.0-openjdk-debuginfo</div></pre></td></tr></table></figure>
+<p>否则 异常<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">- unknown CollectedHeap type : class sun.jvm.hotspot.gc_interface.CollectedHeap</div></pre></td></tr></table></figure></p>
+<h3 id="命令-3"><a href="#命令-3" class="headerlink" title="命令"></a>命令</h3><pre><code>jmap [option] pid
+</code></pre><h3 id="option参数"><a href="#option参数" class="headerlink" title="option参数"></a>option参数</h3><pre><code>dump : 生成堆转储快照
+finalizerinfo : 显示在F-Queue队列等待Finalizer线程执行finalizer方法的对象
+heap : 显示Java堆详细信息
+histo : 显示堆中对象的统计信息
+clstats : 类加载的统计信息
+F : 当-dump没有响应时，强制生成dump快照
+</code></pre><h3 id="例-1"><a href="#例-1" class="headerlink" title="例"></a>例</h3><ul>
+<li>-dump<pre><code>jmap -dump:live,format=b,file=dump.hprof $pid
+</code></pre></li>
+</ul>
+<p>dump.hprof这个后缀是为了后续可以直接用MAT(Memory Anlysis Tool)打开。</p>
+<ul>
+<li><p>-finalizerinfo<br>打印等待回收对象的信息</p>
+</li>
+<li><p>-heap<br>打印heap的概要信息，GC使用的算法，heap的配置及wise heap的使用情况,可以用此来判断内存目前的使用情况以及垃圾回收情况</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># jmap -heap 15490</span></div><div class="line">Attaching to process ID 15490, please wait...</div><div class="line">Debugger attached successfully.</div><div class="line">Server compiler detected.</div><div class="line">JVM version is 25.191-b12</div><div class="line"></div><div class="line">using thread-local object allocation.</div><div class="line">Parallel GC with 2 thread(s) //GC 方式  </div><div class="line"></div><div class="line">Heap Configuration:</div><div class="line">    M<span class="keyword">in</span>HeapFreeRatio         = 0 //对应jvm启动参数-XX:M<span class="keyword">in</span>HeapFreeRatio设置JVM堆最小空闲比率(default 40)</div><div class="line">    MaxHeapFreeRatio         = 100 //对应jvm启动参数 -XX:MaxHeapFreeRatio设置JVM堆最大空闲比率(default 70)</div><div class="line">    MaxHeapSize              = 4164943872 (3972.0MB) //对应jvm启动参数-XX:MaxHeapSize=设置JVM堆的最大大小</div><div class="line">    NewSize                  = 87031808 (83.0MB) //对应jvm启动参数-XX:NewSize=设置JVM堆的‘新生代’的默认大小</div><div class="line">    MaxNewSize               = 1388314624 (1324.0MB) //对应jvm启动参数-XX:MaxNewSize=设置JVM堆的‘新生代’的最大大小</div><div class="line">    OldSize                  = 175112192 (167.0MB) //对应jvm启动参数-XX:OldSize=&lt;value&gt;:设置JVM堆的‘老生代’的大小</div><div class="line">    NewRatio                 = 2 //对应jvm启动参数-XX:NewRatio=:‘新生代’和‘老生代’的大小比率</div><div class="line">    SurvivorRatio            = 8 //对应jvm启动参数-XX:SurvivorRatio=设置年轻代中Eden区与Survivor区的大小比值 </div><div class="line">    MetaspaceSize            = 21807104 (20.796875MB) //对应jvm启动参数-XX:MetaspaceSize=&lt;value&gt;:设置JVM堆的‘方法区’的初始大小</div><div class="line">    CompressedClassSpaceSize = 1073741824 (1024.0MB)</div><div class="line">    MaxMetaspaceSize         = 17592186044415 MB //对应jvm启动参数-XX:MaxMetaspaceSize=&lt;value&gt;:设置JVM堆的‘方法区’的最大大小</div><div class="line">    G1HeapRegionSize         = 0 (0.0MB)</div><div class="line"></div><div class="line">Heap Usage: //堆内存使用情况</div><div class="line">PS Young Generation</div><div class="line">Eden Space: //Eden区内存分布</div><div class="line">    capacity = 742391808 (708.0MB) //Eden区总容量</div><div class="line">    used     = 626604800 (597.576904296875MB) //Eden区已使用</div><div class="line">    free     = 115787008 (110.423095703125MB) //Eden区剩余容量</div><div class="line">    84.40351755605579% used //Eden区使用比率</div><div class="line">From Space: //其中一个Survivor区的内存分布</div><div class="line">    capacity = 8388608 (8.0MB)</div><div class="line">    used     = 8378128 (7.9900054931640625MB)</div><div class="line">    free     = 10480 (0.0099945068359375MB)</div><div class="line">    99.87506866455078% used</div><div class="line">To Space: //另一个Survivor区的内存分布</div><div class="line">    capacity = 34603008 (33.0MB)</div><div class="line">    used     = 0 (0.0MB)</div><div class="line">    free     = 34603008 (33.0MB)</div><div class="line">    0.0% used</div><div class="line">PS Old Generation //当前的Old区内存分布</div><div class="line">    capacity = 220200960 (210.0MB)</div><div class="line">    used     = 83430072 (79.56511688232422MB)</div><div class="line">    free     = 136770888 (130.43488311767578MB)</div><div class="line">    37.88815089634487% used</div><div class="line"></div><div class="line">38773 interned Strings occupying 4270344 bytes.</div></pre></td></tr></table></figure>
+</li>
+<li><p>-histo<br>打印堆的对象统计，包括对象数、内存大小等等 （因为在dump:live前会进行full gc，如果带上live则只统计活对象，因此不加live的堆大小要大于加live堆的大小 ）</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ jmap -histo:live 15490 | more</div><div class="line"></div><div class="line"> num     <span class="comment">#instances         #bytes  class name</span></div><div class="line">----------------------------------------------</div><div class="line">   1:        137190       15505768  [C</div><div class="line">   2:         10772        8598936  [B</div><div class="line">   3:        131166        3147984  java.lang.String</div><div class="line">   4:         29783        2620904  java.lang.reflect.Method</div><div class="line">   5:         36792        2354688  com.mysql.jdbc.ConnectionPropertiesImpl<span class="variable">$BooleanConnectionProperty</span></div><div class="line">   6:         72596        2323072  java.util.concurrent.ConcurrentHashMap<span class="variable">$Node</span></div><div class="line">   7:         17598        1948272  java.lang.Class</div><div class="line">   8:         14682        1766000  [Ljava.util.HashMap<span class="variable">$Node</span>;</div><div class="line">   9:         55163        1765216  java.util.Hashtable<span class="variable">$Entry</span></div><div class="line">  10:         13793        1732072  [I</div><div class="line">  ....</div></pre></td></tr></table></figure>
+<p>  xml class name是对象类型，说明如下：</p>
+<pre><code>B  byte
+C  char
+D  double
+F  float
+I  int
+J  long
+Z  boolean
+[  数组，如[I表示int[]
+[L+类名 其他对象
+</code></pre></li>
+</ul>
+<ul>
+<li><p>-clstats<br>打印Java堆内存的类加载器的统计信息。对于每个类加载器而言，它的名称、活跃度、地址、父类加载器、它所加载的类的数量和大小都会被打印。此外，包含的字符串数量和大小也会被打印。</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jmap -clstats 15490</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="jhat"><a href="#jhat" class="headerlink" title="jhat"></a>jhat</h2><p>jhat(JVM Heap Analysis Tool)命令是与jmap搭配使用，用来分析jmap生成的dump。<br>千万下载dump文件到开发环境进行分析。<br>推荐使用 Eclipse Memory Analyzer(MAT)</p>
+<h2 id="jstack-查看线程"><a href="#jstack-查看线程" class="headerlink" title="jstack 查看线程"></a>jstack 查看线程</h2><p>jstack（Stack Trace for Java）用于生成虚拟机当前时刻的线程快照（一般称为threaddump或者javacore文件）。<br>线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是<strong>定位线程出现长时间停顿</strong>的原因，如<strong>线程间死锁、死循环、请求外部资源</strong>等。<br>如果现在运行的java程序呈现停顿状态，jstack是非常有用的。</p>
+<h3 id="命令-4"><a href="#命令-4" class="headerlink" title="命令"></a>命令</h3><pre><code>jstack [-l][-e] &lt;pid&gt;
+</code></pre><h3 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h3><pre><code>-l  long listing. Prints additional information about locks
+-e  extended listing. Prints additional information about threads
+</code></pre><h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>参考 <a href="http://www.hollischuang.com/archives/110" target="_blank" rel="external">jstack</a></p>
+<hr>
+<p>以下都是可视化的工具</p>
+<h2 id="JConsole"><a href="#JConsole" class="headerlink" title="JConsole"></a>JConsole</h2><p>JConsole（Java Monitoring and Management Console）是一种基于JMX的可视化监视、 管理工具</p>
+<h2 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h2><p>大名鼎鼎的 VisualVM， 基于NetBeans平台开发，通过插件扩展支持，VisualVM可以做到</p>
+<ul>
+<li>显示虚拟机进程以及进程的配置、 环境信息（jps、 jinfo）。</li>
+<li>监视应用程序的CPU、 GC、 堆、 方法区以及线程的信息（jstat、 jstack）。</li>
+<li>dump以及分析堆转储快照（jmap、 jhat）。</li>
+<li>方法级的程序运行性能分析，找出被调用最多、 运行时间最长的方法。</li>
+<li>离线程序快照：收集程序的运行时配置、线程dump、内存dump等信息建立一个快照，可以将快照发送开发者处进行Bug反馈。</li>
+</ul>
+<p><img src="/images/jvm/ja_visualvm.jpg" alt=""></p>
+<h2 id="Eclipse-Memory-Analyzer-MAT"><a href="#Eclipse-Memory-Analyzer-MAT" class="headerlink" title="Eclipse Memory Analyzer(MAT)"></a><a href="https://www.eclipse.org/mat/" target="_blank" rel="external">Eclipse Memory Analyzer(MAT)</a></h2><p>Eclipse 出品，MAT可以对堆dump的文件进行分析，可以去detail页看线程各个对象的使用数目等情况。</p>
+<ul>
+<li>内存泄露报表，自动检查可能存在内存泄露的对象，通过报表展示存活的对象以及为什么他们没有被垃圾收集；</li>
+<li>对象报表，对可颖对象的分析，如字符串是否定义重了，空的collection、finalizer以及弱引用等。</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;/p&gt;
+&lt;p&gt;本章首先介绍各种倚天剑和屠龙刀&lt;br&gt;（致敬 金庸大大）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="jvm" scheme="http://giveme5.cc/tags/jvm/"/>
+    
+      <category term="jps" scheme="http://giveme5.cc/tags/jps/"/>
+    
+      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
+    
+      <category term="jstat" scheme="http://giveme5.cc/tags/jstat/"/>
+    
+      <category term="jmap" scheme="http://giveme5.cc/tags/jmap/"/>
+    
+      <category term="jhat" scheme="http://giveme5.cc/tags/jhat/"/>
+    
+      <category term="jinfo" scheme="http://giveme5.cc/tags/jinfo/"/>
+    
+      <category term="JConsole" scheme="http://giveme5.cc/tags/JConsole/"/>
+    
+      <category term="VisualVM" scheme="http://giveme5.cc/tags/VisualVM/"/>
+    
+      <category term="MAT" scheme="http://giveme5.cc/tags/MAT/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>swagger springfox rest接口文档</title>
+    <link href="http://giveme5.cc/2018/11/04/spring/springfox-md/"/>
+    <id>http://giveme5.cc/2018/11/04/spring/springfox-md/</id>
+    <published>2018-11-04T10:31:21.000Z</published>
+    <updated>2018-11-05T08:03:44.579Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p><code>swagger</code>(<code>springfox</code>) 可帮助开发人员设计，构建，记录和使用RESTful Web服务, 使后台开发人员与移动端开发人员更好的对接.<br>大多数用户通过Swagger UI工具可很简单识别和使用Swagger。</p>
+<p>最大优点： 接口开发人员不用另外写接口文档，代码注释中写上swagger相关的注释就可以自动生成接口文档；<br>最大缺点： 对源代码侵入比较严重。</p>
+<p>本文以 <code>springfox-swagger2</code> V2.9.2 版本为例说明。</p>
+<p>末了，还有个稍重量级竞品 <a href="https://github.com/thx/rap2-delos" target="_blank" rel="external">RAP(阿里妈妈出品) </a> ， 感兴趣的可以去玩玩。</p>
+<p><em>更新历史</em><br>+2018-11-04: 增加swagger注解具体说明</p>
+<a id="more"></a>
+<h2 id="Maven-依赖"><a href="#Maven-依赖" class="headerlink" title="Maven 依赖"></a>Maven 依赖</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.springfox<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>springfox-swagger-ui<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="swagger2-配置文件"><a href="#swagger2-配置文件" class="headerlink" title="swagger2 配置文件"></a>swagger2 配置文件</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@EnableSwagger</span>2</div><div class="line"><span class="meta">@ConditionalOnExpression</span>(<span class="string">"$&#123;giveme5.swagger.enable:true&#125;"</span>) <span class="comment">//是否启用Swagger的判断</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SwaggerConfig</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 模拟接口的认证授权</div><div class="line">     * 配合 <span class="doctag">@ApiOperation</span>(authorizations = &#123; <span class="doctag">@Authorization</span>(value="apiKey") &#125;)</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">private</span> ApiKey <span class="title">apiKey</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiKey(<span class="string">"apiKey"</span>, <span class="string">"Authorization"</span>, <span class="string">"header"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</div><div class="line">                .apiInfo(apiInfo())</div><div class="line">                .securitySchemes(Arrays.asList(apiKey()))</div><div class="line">                .select()</div><div class="line">                    .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))</div><div class="line">                    .paths(PathSelectors.ant(<span class="string">"/app/**"</span>)) <span class="comment">// 只对 url 匹配 /app/** 的生效</span></div><div class="line">                    .build()</div><div class="line"></div><div class="line"></div><div class="line">                ;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</div><div class="line">                .title(<span class="string">"springfox 大标题"</span>)</div><div class="line">                .termsOfServiceUrl(<span class="string">"http://giveme5.cc/"</span>)</div><div class="line">                .description(<span class="string">"springmvc swagger2"</span>)</div><div class="line">                .contact(<span class="keyword">new</span> Contact(<span class="string">"sam"</span>, <span class="string">"http://giveme5.cc/"</span>, <span class="string">"xxxxxxxxxxxx@163.com"</span>))</div><div class="line">                .build();</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Spring-配置"><a href="#Spring-配置" class="headerlink" title="Spring 配置"></a>Spring 配置</h2><h3 id="SpringBoot"><a href="#SpringBoot" class="headerlink" title="SpringBoot"></a>SpringBoot</h3><p>Springboot 可以直接使用</p>
+<h3 id="SpringMvc-配置"><a href="#SpringMvc-配置" class="headerlink" title="SpringMvc 配置"></a>SpringMvc 配置</h3><ul>
+<li><p>java based config</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@EnableWebMvc</span></div><div class="line"><span class="meta">@EnableSpringDataWebSupport</span></div><div class="line"><span class="meta">@Import</span>(</div><div class="line">&#123; SwaggerConfig.class&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ApplicationConfiguration</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span></span></div><div class="line">&#123;</div><div class="line">...</div><div class="line"></div><div class="line">    <span class="comment">// Maps resources path to webapp/resources</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addResourceHandlers</span><span class="params">(ResourceHandlerRegistry registry)</span></span></div><div class="line">    &#123;</div><div class="line">        registry.addResourceHandler(<span class="string">"swagger-ui.html"</span>).addResourceLocations(</div><div class="line">                <span class="string">"classpath:/META-INF/resources/"</span>);</div><div class="line"></div><div class="line">        registry.addResourceHandler(<span class="string">"/webjars/**"</span>).addResourceLocations(<span class="string">"classpath:/META"</span> +</div><div class="line">                <span class="string">"-INF/resources/webjars/"</span>);</div><div class="line"></div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>xml based config</p>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!--&lt;bean class="com.springfox.config.SwaggerConfig" /&gt; 使用bean申明可以去掉@configuration--&gt;</span></div><div class="line"><span class="comment">&lt;!--扫描@configuration注解--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">"com.springfox.config"</span>/&gt;</span></div><div class="line"><span class="comment">&lt;!--配置静态资源访问--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mvc:resources</span> <span class="attr">mapping</span>=<span class="string">"swagger-ui.html"</span> <span class="attr">location</span>=<span class="string">"classpath:/META-INF/resources/"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mvc:resources</span> <span class="attr">mapping</span>=<span class="string">"/webjars/**"</span> <span class="attr">location</span>=<span class="string">"classpath:/META-INF/resources/webjars/"</span>/&gt;</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="接口举例"><a href="#接口举例" class="headerlink" title="接口举例"></a>接口举例</h2><ul>
+<li><p>controller</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div></pre></td><td class="code"><pre><div class="line">    </div><div class="line"><span class="comment">/**</span></div><div class="line"> * 类功能说明：注册用户 controller</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/app"</span>)</div><div class="line"><span class="meta">@Api</span>(tags = &#123;<span class="string">"用户接口"</span>&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomerAppController</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 第三方登录 - 刷新</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> token     QQ授权后的access_token 或 微信的 refresh_token 或 微博的 refresh_token</div><div class="line">     * <span class="doctag">@param</span> loginType 1: QQ； 2: 微信； 3：微博</div><div class="line">     * <span class="doctag">@param</span> phone 手机号码</div><div class="line">     * <span class="doctag">@param</span> valid 校验码</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@PostMapping</span>(value = <span class="string">"/s/login/refresh"</span>)</div><div class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"第三方登录 - 刷新"</span>, response = ThirdLoginToken.class,</div><div class="line">            notes = <span class="string">"刷新成功后 返回 Map &#123;jwt: jwt token, accessToken, refreshToken&#125; \n 成功后 在http header中添加 域: Authorization=jwt的值 "</span>)</div><div class="line">    <span class="meta">@ApiImplicitParams</span>(&#123;</div><div class="line">        <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"token"</span>,  required = <span class="keyword">true</span>, value = <span class="string">"授权后 QQ的 或 微信的 或 微博的 refresh_token"</span>),</div><div class="line">        <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"loginType"</span>, allowableValues = <span class="string">"1,2,3"</span>, dataType = <span class="string">"int"</span>, required = <span class="keyword">true</span>, value = <span class="string">"第三方登陆类型  1: QQ； 2: 微信； 3：微博"</span>),</div><div class="line">        <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"phone"</span>, dataType = <span class="string">"int"</span>, value = <span class="string">"初次授权，需要绑定的 手机"</span>),</div><div class="line">        <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"valid"</span>, dataType = <span class="string">"int"</span>, value = <span class="string">"初次授权，需要绑定的 手机校验码"</span>)</div><div class="line">    &#125;)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;ThirdLoginToken&gt; <span class="title">refresh</span><span class="params">(</span></span></div><div class="line">            @RequestParam String token,</div><div class="line">            @RequestParam <span class="keyword">int</span> loginType,</div><div class="line">            @RequestParam(required = <span class="keyword">false</span>) String phone,</div><div class="line">            @<span class="title">RequestParam</span><span class="params">(required = <span class="keyword">false</span>)</span> String valid</div><div class="line">        ) <span class="keyword">throws</span> IOException &#123;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> thirdLogin(token, loginType, LOGIN_REFRESH.REFRESH.ordinal(), phone, valid);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 获取用户信息</div><div class="line">     *</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@GetMapping</span>(value = <span class="string">"/customer"</span>)</div><div class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"获取用户信息"</span>, authorizations = &#123; <span class="meta">@Authorization</span>(value=<span class="string">"apiKey"</span>) &#125;, response = CustomerEntity.class)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity&lt;CustomerEntity&gt; <span class="title">getCustomer</span><span class="params">()</span></span>&#123;</div><div class="line">        。。。</div><div class="line"></div><div class="line">        <span class="keyword">return</span> ResponseEntity.ok(customer);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * 绑定 qq, 微信，微博等</div><div class="line">     *</div><div class="line">     * <span class="doctag">@param</span> token</div><div class="line">     * <span class="doctag">@param</span> loginType</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="meta">@PutMapping</span>(value = <span class="string">"/customer/third"</span>)</div><div class="line">    <span class="meta">@ApiOperation</span>(value = <span class="string">"绑定 qq, 微信，微博等 "</span>, response = ThirdLoginToken.class, authorizations = &#123; <span class="meta">@Authorization</span>(value=<span class="string">"apiKey"</span>) &#125;)</div><div class="line">    <span class="meta">@ApiImplicitParams</span>(&#123;</div><div class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"token"</span>,  required = <span class="keyword">true</span>, value = <span class="string">"QQ授权后的access_token 或 微信的 authorization_code 或 微博的 authorization_code"</span>),</div><div class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"loginType"</span>, allowableValues = <span class="string">"1,2,3"</span>, dataType = <span class="string">"int"</span>, required = <span class="keyword">true</span>, value = <span class="string">"第三方登陆类型  1: QQ； 2: 微信； 3：微博"</span>)</div><div class="line">    &#125;)</div><div class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">updateCustomerThirdLogin</span><span class="params">(@RequestParam String token, @RequestParam <span class="keyword">int</span> loginType)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">        ThirdLoginToken loginToken = <span class="keyword">new</span> ThirdLoginToken();</div><div class="line">        ...</div><div class="line"></div><div class="line"></div><div class="line">        <span class="keyword">return</span> ResponseEntity.ok(loginToken);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>entity</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 第三方登陆返回 VO</div><div class="line"> */</div><div class="line"><span class="meta">@ApiModel</span></div><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">ThirdLoginToken</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"jwt token, 获取后 在http header中添加 域: Authorization=jwt的值"</span>)</div><div class="line">    <span class="keyword">public</span> String jwt;</div><div class="line"></div><div class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"第三方授权的 access token"</span>)</div><div class="line">    <span class="keyword">public</span> String accessToken;</div><div class="line"></div><div class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"第三方授权的 refresh token"</span>)</div><div class="line">    <span class="keyword">public</span> String refreshToken;</div><div class="line"></div><div class="line">    <span class="meta">@ApiModelProperty</span>(value = <span class="string">"第三方授权的 openId"</span>)</div><div class="line">    <span class="keyword">public</span> String openId;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThirdLoginToken</span><span class="params">(String jwt, String accessToken, String refreshToken, String openId)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.jwt = jwt;</div><div class="line">        <span class="keyword">this</span>.accessToken = accessToken;</div><div class="line">        <span class="keyword">this</span>.refreshToken = refreshToken;</div><div class="line">        <span class="keyword">this</span>.openId = openId;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>@Api:标志这个类为Swagger资源，根据config， 没标注的不会生成 swagger 的接口文档</p>
+</li>
+<li>@ApiImplicitParams，@ApiImplicitParam: 对参数进行说明, 其中dataType一定为小写； allowableValues 可限制 合法值得列表； required 指定该参数是否必须</li>
+<li>@ApiOperation:描述了一种操作或通常针对特定的路径的HTTP方法。 response 指定返回值类型；authorizations 指定改接口的认证条件， apiKey 需要和 config的一致；</li>
+<li>@ApiModel: 描述一个实体</li>
+<li>@ApiModelProperty：描述一个字段</li>
+</ul>
+<blockquote>
+<p><a href="https://github.com/swagger-api/swagger-core/wiki/Annotations-1.5.X" target="_blank" rel="external">更多注解 官方说明</a></p>
+</blockquote>
+<h3 id="泛型返回值-response"><a href="#泛型返回值-response" class="headerlink" title="泛型返回值 response"></a>泛型返回值 response</h3><p><code>ComResultVo&lt;UserEntity&gt;</code> 这种带泛型的返回值，想要正常完全显示，需要注意如下：</p>
+<ul>
+<li><code>ComResultVo</code> 内需要正确的 <code>get/set</code> 方法</li>
+<li>controller 返回值 <code>ComResultVo&lt;UserEntity&gt;</code> 一定要 标明泛型的具体值 <code>UserEntity</code></li>
+</ul>
+<p>达到如下效果<br><img src="/images/swagger_model.png" alt=""><br><img src="/images/swagger_model2.png" alt=""></p>
+<h3 id="接口认证"><a href="#接口认证" class="headerlink" title="接口认证"></a>接口认证</h3><p><code>Authorize</code> 按钮， 填入合法的认证值，模拟授权。</p>
+<h2 id="最终结果"><a href="#最终结果" class="headerlink" title="最终结果"></a>最终结果</h2><p>打开 <a href="http://localhost:8080/swagger-ui.html#" target="_blank" rel="external">http://localhost:8080/project_name/swagger-ui.html</a> ,project_name表示你启动项目的名称,如果你以根目录启动则没有project_name,当你看到如下界面就表示配置成功了<br><img src="/images/swagger.png" alt=""></p>
+<p>点开具体接口， 有惊喜 哈哈。<br><code>Try it out！</code> 可以实时测试接口</p>
+<blockquote>
+<p><a href="https://springfox.github.io/springfox/docs/snapshot/#getting-started" target="_blank" rel="external">完整官方文档</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;swagger&lt;/code&gt;(&lt;code&gt;springfox&lt;/code&gt;) 可帮助开发人员设计，构建，记录和使用RESTful Web服务, 使后台开发人员与移动端开发人员更好的对接.&lt;br&gt;大多数用户通过Swagger UI工具可很简单识别和使用Swagger。&lt;/p&gt;
+&lt;p&gt;最大优点： 接口开发人员不用另外写接口文档，代码注释中写上swagger相关的注释就可以自动生成接口文档；&lt;br&gt;最大缺点： 对源代码侵入比较严重。&lt;/p&gt;
+&lt;p&gt;本文以 &lt;code&gt;springfox-swagger2&lt;/code&gt; V2.9.2 版本为例说明。&lt;/p&gt;
+&lt;p&gt;末了，还有个稍重量级竞品 &lt;a href=&quot;https://github.com/thx/rap2-delos&quot;&gt;RAP(阿里妈妈出品) &lt;/a&gt; ， 感兴趣的可以去玩玩。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;+2018-11-04: 增加swagger注解具体说明&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
+    
+    
+      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
+    
+      <category term="springfox" scheme="http://giveme5.cc/tags/springfox/"/>
+    
+      <category term="swagger" scheme="http://giveme5.cc/tags/swagger/"/>
+    
+  </entry>
   
   <entry>
     <title>Java 逃逸分析 (Escape Analysis)</title>
@@ -1422,371 +1904,6 @@ fc-list |grep SimSun
       <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
     
       <category term="vnc" scheme="http://giveme5.cc/tags/vnc/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java 8 新特性 概要</title>
-    <link href="http://giveme5.cc/2017/06/30/java/java8/"/>
-    <id>http://giveme5.cc/2017/06/30/java/java8/</id>
-    <published>2017-06-30T14:18:03.000Z</published>
-    <updated>2018-04-10T05:28:24.321Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong><em>主要内容</em></strong></p>
-<p>　　Java 8是Java自Java 5之后的最重要的版本。这个版本包含语言、编译器、库、工具和JVM等方面的十多个新特性。</p>
-<p>　　外面已经有很多资料， 我在这里仅仅做概要记录，提醒自己多使用新特性， 提高效率和性能， 详细内容参考附录。</p>
-<a id="more"></a>
-<h2 id="语言的新特性"><a href="#语言的新特性" class="headerlink" title="语言的新特性"></a>语言的新特性</h2><h3 id="接口的默认方法和静态方法"><a href="#接口的默认方法和静态方法" class="headerlink" title="接口的默认方法和静态方法"></a>接口的默认方法和静态方法</h3><p>java 8 的 接口， 不再是 老程序员 脑海中的接口了， java 8 允许在接口中有具体的实现： <code>默认方法</code>和<code>静态方法</code></p>
-<ul>
-<li>默认方法<br>使用关键字 <code>default</code> 定义, 已经是具体的实现， 不需要实现类去现象， 可以被继承或者覆写</li>
-</ul>
-<h3 id="Lambda表达式和函数式接口"><a href="#Lambda表达式和函数式接口" class="headerlink" title="Lambda表达式和函数式接口"></a>Lambda表达式和函数式接口</h3><p>java 的 Lambda 表达式借助<code>函数接口</code>实现，可以替换以前的匿名内部类。</p>
-<ul>
-<li><p>函数接口<br><code>@FunctionalInterface</code> 注解 <code>函数接口</code>， 函数接口指的是只有一个函数的接口，这样的接口可以隐式转换为Lambda表达式。<br>默认方法和静态方法不会破坏函数式接口的定义。</p>
-</li>
-<li><p>Lambda<br>有了 Lambda， 你就可以把一段代码(函数) 当做参数 传给 另一个函数。<br>可以去掉以前大量的匿名内部类。</p>
-</li>
-</ul>
-<h3 id="重复注解"><a href="#重复注解" class="headerlink" title="重复注解"></a>重复注解</h3><p>同一个地方多次使用同一个注解。</p>
-<p>注解几乎可以使用在任何元素上：局部变量、接口类型、超类和接口实现类，甚至可以用在函数的异常定义上。</p>
-<h2 id="编译器"><a href="#编译器" class="headerlink" title="编译器"></a>编译器</h2><h3 id="参数名称"><a href="#参数名称" class="headerlink" title="参数名称"></a>参数名称</h3><p>默认关闭， 需要带 <code>-parameters</code> 参数编译</p>
-<p>Maven 的使用<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">compilerArgument</span>&gt;</span>-parameters<span class="tag">&lt;/<span class="name">compilerArgument</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">source</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">source</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">target</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">target</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h2 id="官方库"><a href="#官方库" class="headerlink" title="官方库"></a>官方库</h2><h3 id="Optional"><a href="#Optional" class="headerlink" title="Optional"></a>Optional</h3><p>Optional是一个容器：存放T类型的值或者null。它提供了一些有用的接口来避免显式的null检查</p>
-<h3 id="Streams"><a href="#Streams" class="headerlink" title="Streams"></a>Streams</h3><p>Stream API（java.util.stream）将函数式编程引入了Java库中。<br>这是目前为止最大的一次对Java库的完善！！！！<br>极大得简化了集合操作</p>
-<p><a href="/2017/10/12/java/Streams/">简要API</a><br><a href="http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#StreamOps" target="_blank" rel="external">java.util.stream</a><br><a href="https://wizardforcel.gitbooks.io/java8-tutorials/content/Java%208%20%E6%96%B0%E7%89%B9%E6%80%A7%E4%B9%8B%E6%97%85%20%E4%BD%BF%E7%94%A8%20Stream%20API%20%E5%A4%84%E7%90%86%E9%9B%86%E5%90%88.html" target="_blank" rel="external">使用Stream API处理集合</a></p>
-<h3 id="Date-Time-API-JSR-310"><a href="#Date-Time-API-JSR-310" class="headerlink" title="Date/Time API(JSR 310)"></a>Date/Time API(JSR 310)</h3><p>新的时间和日期管理API<br><a href="http://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html" target="_blank" rel="external">java.time</a></p>
-<h3 id="Nashorn-JavaScript引擎"><a href="#Nashorn-JavaScript引擎" class="headerlink" title="Nashorn JavaScript引擎"></a>Nashorn JavaScript引擎</h3><h3 id="Base64"><a href="#Base64" class="headerlink" title="Base64"></a>Base64</h3><p><code>java.util.Base64</code><br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Base64.getEncoder().encodeXxxxx()</div><div class="line">Base64.getDecoder().decode()</div><div class="line"></div><div class="line">Base64.getUrlEncoder()</div><div class="line">Base64.getUrlDecoder()</div><div class="line"></div><div class="line">Base64.getMimeEncoder()</div><div class="line">Base64.getMimeDecoder()</div></pre></td></tr></table></figure></p>
-<h3 id="并行数组"><a href="#并行数组" class="headerlink" title="并行数组"></a>并行数组</h3><p><code>parallelSort()</code><br>parallexXxx系列的方法</p>
-<h2 id="新的Java工具"><a href="#新的Java工具" class="headerlink" title="新的Java工具"></a>新的Java工具</h2><h3 id="Nashorn引擎：jjs"><a href="#Nashorn引擎：jjs" class="headerlink" title="Nashorn引擎：jjs"></a>Nashorn引擎：jjs</h3><p>jjs是一个基于标准Nashorn引擎的命令行工具，可以接受js源码并执行。</p>
-<h3 id="类依赖分析器：jdeps"><a href="#类依赖分析器：jdeps" class="headerlink" title="类依赖分析器：jdeps"></a>类依赖分析器：jdeps</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">jdeps org.springframework.core-3.0.5.RELEASE.jar</div><div class="line"></div><div class="line">org.springframework.core-3.0.5.RELEASE.jar -&gt; C:\Program Files\Java\jdk1.8.0\jre\lib\rt.jar</div><div class="line">   org.springframework.core (org.springframework.core-3.0.5.RELEASE.jar)</div><div class="line">      -&gt; java.io                                            </div><div class="line">      -&gt; java.lang                                          </div><div class="line">      -&gt; java.lang.annotation                               </div><div class="line">      -&gt; java.lang.ref                                      </div><div class="line">      -&gt; java.lang.reflect                                  </div><div class="line">      -&gt; java.util                                          </div><div class="line">      -&gt; java.util.concurrent                               </div><div class="line">      -&gt; org.apache.commons.logging                         not found</div><div class="line">      -&gt; org.springframework.asm                            not found</div><div class="line">      -&gt; org.springframework.asm.commons                    not found</div><div class="line">   org.springframework.core.annotation (org.springframework.core-3.0.5.RELEASE.jar)</div><div class="line">      -&gt; java.lang                                          </div><div class="line">      -&gt; java.lang.annotation                               </div><div class="line">      -&gt; java.lang.reflect                                  </div><div class="line">      -&gt; java.util</div></pre></td></tr></table></figure>
-<h2 id="JVM的新特性"><a href="#JVM的新特性" class="headerlink" title="JVM的新特性"></a>JVM的新特性</h2><p>使用Metaspace（JEP 122）代替持久代（PermGen space）。<br>在JVM参数方面，使用 -XX:MetaSpaceSize和-XX:MaxMetaspaceSize代替原来的-XX:PermSize和-XX:MaxPermSize</p>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><a href="http://www.oracle.com/technetwork/java/javase/documentation/jdk8-doc-downloads-2133158.html" target="_blank" rel="external">Java SE Development Kit 8 Documentation</a><br><a href="https://wizardforcel.gitbooks.io/java8-tutorials/content/index.html" target="_blank" rel="external">Java 8 教程汇总</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;&lt;em&gt;主要内容&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;　　Java 8是Java自Java 5之后的最重要的版本。这个版本包含语言、编译器、库、工具和JVM等方面的十多个新特性。&lt;/p&gt;
-&lt;p&gt;　　外面已经有很多资料， 我在这里仅仅做概要记录，提醒自己多使用新特性， 提高效率和性能， 详细内容参考附录。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
-    
-    
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
-    
-      <category term="java 8" scheme="http://giveme5.cc/tags/java-8/"/>
-    
-      <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java IO</title>
-    <link href="http://giveme5.cc/2017/06/29/java/javaIO/"/>
-    <id>http://giveme5.cc/2017/06/29/java/javaIO/</id>
-    <published>2017-06-29T14:08:03.000Z</published>
-    <updated>2017-07-31T01:49:19.351Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong><em>主要内容</em></strong></p>
-<p>　　I/O 就是数据的输入/输出。 Java 平台提供了丰富的类库来满足可能的I/O操作需求。最初的java.io包， JDK 1.4 的 NIO， JDK 7 的 NIO.2。<br>　　<br>　　最早的java.io包把IO操作抽象成数据的流动，进而有了流(Stream)概念；Java NIO中把IO操作抽象成端到端的一个数据连接，进而有了通道(channel)概念。</p>
-<p>　　如果需要开发高性能网络应用， Java提供的标准库所支持的抽象层次过低， 推荐Netty。</p>
-<p>　　JDK 7 后都建议用 try-with-resources来使用流和通道。</p>
-<a id="more"></a>
-<h2 id="流"><a href="#流" class="headerlink" title="流"></a>流</h2><p>java中 最基本的流就是在字节这个层次上处理的。</p>
-<h3 id="基本输入流-InputStream"><a href="#基本输入流-InputStream" class="headerlink" title="基本输入流 InputStream"></a>基本输入流 <code>InputStream</code></h3><h4 id="数据功能"><a href="#数据功能" class="headerlink" title="数据功能"></a>数据功能</h4><p><code>read</code>方法</p>
-<ul>
-<li>每次读一个字节</li>
-<li>字节数组缓冲区<br>最常用， 循环读取， 直到返回-1或异常</li>
-<li>字节数组缓冲区和起始位置和长度</li>
-</ul>
-<h4 id="控制功能"><a href="#控制功能" class="headerlink" title="控制功能"></a>控制功能</h4><ul>
-<li>close 关闭</li>
-<li>skip 跳过指定数目的字节</li>
-<li>mark 和 reset 标记和重置配合，实现流中部分内容的重复读取<br>不是所有流都支持mark， 需要用 <code>markSupperted()</code>检查</li>
-<li>available 非阻塞的获取可供读取的字节数</li>
-</ul>
-<h3 id="基本输出流-OutputStream"><a href="#基本输出流-OutputStream" class="headerlink" title="基本输出流 OutputStream"></a>基本输出流 <code>OutputStream</code></h3><h4 id="数据功能-1"><a href="#数据功能-1" class="headerlink" title="数据功能"></a>数据功能</h4><p><code>write</code> 方法， 类似 <code>read</code> 一样， 3种重载形式：每次写入一个字节, 也可写入一个字节数组的全部或部分内容。</p>
-<h4 id="控制功能-1"><a href="#控制功能-1" class="headerlink" title="控制功能"></a>控制功能</h4><ul>
-<li>close 关闭</li>
-<li>flush 强制保存在缓冲区的内容立即进行实际的写入操作。</li>
-</ul>
-<h3 id="输入流复用"><a href="#输入流复用" class="headerlink" title="输入流复用"></a>输入流复用</h3><p>两种方式：</p>
-<ul>
-<li>利用标记和重置<br>使用<code>BufferedInputStream</code></li>
-<li>输入流转换成数据<br>直接把流中所有数据读取到一个字节数组中</li>
-</ul>
-<p>这两种复用流的思路一致， 就是预先把需要复用的数据保存起来。</p>
-<h3 id="过滤输入输出流"><a href="#过滤输入输出流" class="headerlink" title="过滤输入输出流"></a>过滤输入输出流</h3><ul>
-<li>缓冲区<br>BufferedInputStream， BufferedOutputStream</li>
-<li>java基本类型支持<br>DataInputStream， DataOutputStream</li>
-<li>java 基本类型和对象支持<br>ObjectInputStream， ObjectOutputStream</li>
-<li>数据回流<br>PushbackInputStream， PushbackOutputStream</li>
-<li>文件流<br>FileInputStream， FileOutputStream</li>
-<li>管道流<br>PipedInputStream， PipedOutputStream</li>
-<li>顺序连接<br>SequenceInputStream， SequenceOutputStream</li>
-</ul>
-<h3 id="字符流"><a href="#字符流" class="headerlink" title="字符流"></a>字符流</h3><p>  以上所有都是字节流， 字节流更适合机器处理。对于人来说，我们更愿意看到直接可读的字符。在在 java.io 包中还有一组类用来处理字符流,即 java.io.Reader 类和 java.io.Writer<br>类及其子类。这些字符流处理的是字符类型,而不是字节类 型。字符流适合用于处理程序中包含的文本类型的内容。<br>  创建一个字符流的最常见做法是通过一个字节流 InputStream 类或 OutputStream 类 的对象进行创建,对应的是 InputStreamReader 类和 OutputStreamWriter 类。在从字节流转换成字符流时,需要指定字符的编码格式。如果编码格式错误,会产生包含乱码的字符串。</p>
-<ul>
-<li>字符<br>java.io.StringReader 类 和 java.io.StringWriter </li>
-<li>字符数组<br>java. io.CharArrayReader 类和 java.io.CharArrayWriter 类</li>
-<li>内部缓冲区<br>java.io.BufferedReader 类 和 java.io.BufferedWriter 类</li>
-</ul>
-<h2 id="缓冲区"><a href="#缓冲区" class="headerlink" title="缓冲区"></a>缓冲区</h2><p>  Java NIO 中的缓冲区在某些特性上类似于 Java 中的基本类型的数组(如字节数组 或整型数组等),比如缓冲区中的数据排列是线性的,缓冲区的空间也是有限的。<br>不过缓冲区所提供的功能远比数组丰富得多,而且也支持存储类型异构的数据。</p>
-<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>容量(capacity)、读写限制(limit)和读写位置(position)</p>
-<ul>
-<li><p>容量<br>容量指的是缓冲区的额定大小。容量是在创建缓冲区时指定的,无法在创建后更改。在任何时候缓冲区中的数据总数都不可能超过容量。<br>只读</p>
-</li>
-<li><p>读写限制<br>在缓冲区中进行读写操作时的最大允许位置。<br>可读读写</p>
-</li>
-<li><p>读写位置<br>表示的是当前进行读写操作时的位置。<br>可读可写</p>
-</li>
-</ul>
-<p>缓冲区同样也支持标记 mark 和重置 reset 的特性。</p>
-<p>任何时候 <code>0 &lt;= 标记位置 &lt;= 读写位置 &lt;= 读写限制 &lt;= 容量</code></p>
-<p>java.nio.Buffer 类是所有不同数据类型的缓冲区的父类。</p>
-<ul>
-<li><p>clear方法<br>把读写限制设为缓冲区的容量,同时 把读写位置设为 0 </p>
-</li>
-<li><p>flip<br>读写限制设为当前的读写位置,再把读写位置设为 0,这样可以保证缓冲区中的全部 数据都可以被读取</p>
-</li>
-<li><p>rewind<br>不会改变读写限制,但是会把读写位置设为 0</p>
-</li>
-</ul>
-<p>读写操作分成两类 :一类是根据当前读写位置进行的相对读写操作, 另外一类是根据在缓冲区中的绝对位置进行的读写操作。两者的差别在于相对读写会改变当前读写位置,而绝对读写则不会。</p>
-<h3 id="字节缓冲区"><a href="#字节缓冲区" class="headerlink" title="字节缓冲区"></a>字节缓冲区</h3><p>java.nio.ByteBuffer 类</p>
-<p>　　只能通过其静态工厂方法 allocate 来分配新空间, 或者通过 wrap 方法来包装一个已有的字节数组。</p>
-<p>　　必须要考虑字节顺序，同样的字节序列按照不同的顺序去解释,所得到的结果是不同的。java.nio.ByteOrder 类中定义了两种最基本的字节顺序 :BIG_ENDIAN 对应的大端表示和 LITTLE_ENDIAN 对应的小端表示。</p>
-<p>　　大端表示的含义是字节序列中高位在前,而小端表示则正好相反。ByteOrder类中的静态方法 nativeOrder 可以获取到底层操作系统平台采用的字节顺序。ByteBuffer 类的对象默认使用的是大端表示。</p>
-<h3 id="缓冲区视图"><a href="#缓冲区视图" class="headerlink" title="缓冲区视图"></a>缓冲区视图</h3><p>ByteBuffer 类的另外一个常见的使用方式是在一个已有的 ByteBuffer 类的对象上创建出各种不同的视图。这些视图和它所基于的 ByteBuffer 类的对象共享同样的存储空间,但是提供额外的实用功能。在功能上,ByteBuffer 类的视图与它所基于的 ByteBuffer 类的对象之间的关系类似于过滤流和它所包装的流的关系。<br>CharBuffer、ShortBuffer、IntBuffer、LongBuffer、FloatBuffer 和 DoubleBuffer 。</p>
-<h2 id="通道"><a href="#通道" class="headerlink" title="通道"></a>通道</h2><p>通道是 Java NIO 对 I/O 操作提供的另外一种新的抽象方式。通道不是从 I/O 操作所处理的数据这个层次上去抽象,而是表示为一个已经建立好的到支持 I/O 操作的实体的连接。这个连接一旦建立,就可以在这个连接上进行各种 I/O 操作。通道在进行读写操作 时使用的都是上面介绍的新的缓冲区的实现,而不是字节数组。</p>
-<p>Java NIO 中 的 通 道 都 实 现 了 java.nio.channels.Channel 接 口， 本身很简单，只有关闭通道的 close 方法和判断通道是否被打开的 isOpen 方法。<br>由于 Channel 接口继承了 java.lang.AutoCloseable 接口,通道的所有实现对象都可以用 try-with-resources 。</p>
-<ul>
-<li>读 java.nio.channels.ReadableByte-Channel 接口 </li>
-<li>写 java.nio.channels. WritableByteChannel 接口</li>
-<li>移动读写操作的位置 java.nio.channels.SeekableByteChannel 接口</li>
-<li>多个 ByteBuffer 类数据 java.nio.channels.ScatteringByteChannel</li>
-</ul>
-<h3 id="文件通道FileChannel"><a href="#文件通道FileChannel" class="headerlink" title="文件通道FileChannel"></a>文件通道FileChannel</h3><h4 id="基本"><a href="#基本" class="headerlink" title="基本"></a>基本</h4><p>读取和写入模式 java.nio.file.StandardOpenOption</p>
-<p>打开方法：</p>
-<ul>
-<li>FileChannel.open(Path path)</li>
-<li>从已有的 FileInputStream 类、FileOutputStream 类和 RandomAccessFile 类的对象的getChannel 方法得到</li>
-</ul>
-<h4 id="文件数据传输"><a href="#文件数据传输" class="headerlink" title="文件数据传输"></a>文件数据传输</h4><p>transferFrom<br>transferTo</p>
-<h4 id="内存映射文件"><a href="#内存映射文件" class="headerlink" title="内存映射文件"></a>内存映射文件</h4><ul>
-<li>map 方法<br>FileChannel 类的 map 方法把一个文件的全部或部分内容映射到内存中,所 得到的是一个 ByteBuffer 类的子类 MappedByteBuffer 的对象,程序只需要对这个 MappedByteBuffer 类的对象进行操作即可。</li>
-<li>load 方法<br>MappedByteBuffer 类的 load 方法可以把该缓冲区所对应的文件内容 加载到物理内存中,以提高文件操作时的性能。</li>
-<li>force 方法<br>FileChannel 类的 force 方法来强制要求把这些更新同 步到底层文件中。</li>
-</ul>
-<h4 id="锁定文件"><a href="#锁定文件" class="headerlink" title="锁定文件"></a>锁定文件</h4><p>FileChannel 类的 lock 和 tryLock 方 法可以对当前文件通道所对应的文件进行加锁。<br>lock 方法是阻塞式的,而 tryLock 方法则不是</p>
-<h3 id="套接字通道"><a href="#套接字通道" class="headerlink" title="套接字通道"></a>套接字通道</h3><p>接口 java.nio.channels.NetworkChannel </p>
-<h4 id="阻塞式套接字通道"><a href="#阻塞式套接字通道" class="headerlink" title="阻塞式套接字通道"></a>阻塞式套接字通道</h4><p>客户端 SocketChannel.open<br>服务端 ServerSocketChannel.open</p>
-<h4 id="多路复用套接字通道"><a href="#多路复用套接字通道" class="headerlink" title="多路复用套接字通道"></a>多路复用套接字通道</h4><p>核心是选择器,即 java.nio.channels.Selector 类</p>
-<h2 id="NIO-2"><a href="#NIO-2" class="headerlink" title="NIO.2"></a>NIO.2</h2><h3 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h3><p>java.nio.file包， 提供的新功能包括文件路径的抽象、文件目录列表流、文件目录树遍历、文件 属性和文件变化监视服务等。<br>传统的是 <code>java.io.File</code> 类</p>
-<h4 id="文件路径"><a href="#文件路径" class="headerlink" title="文件路径"></a>文件路径</h4><p>java.nio.file.Path 接口</p>
-<h4 id="文件目录列表流"><a href="#文件目录列表流" class="headerlink" title="文件目录列表流"></a>文件目录列表流</h4><p>接口 java.nio.file.DirectoryStream<br>只能遍历当前目录下的直接子目录或文件， 不递归。</p>
-<h4 id="文件目录树遍历"><a href="#文件目录树遍历" class="headerlink" title="文件目录树遍历"></a>文件目录树遍历</h4><p>java.nio.file.FileVisitor 接口</p>
-<h4 id="文件属性"><a href="#文件属性" class="headerlink" title="文件属性"></a>文件属性</h4><p>java.nio.file.attribute 包</p>
-<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><p>java.nio.file.Files 类<br><a href="https://docs.oracle.com/javase/7/docs/api/java/nio/file/Files.html" target="_blank" rel="external">jdk docs</a></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">long</span>	<span class="title">copy</span><span class="params">(InputStream in, Path target, CopyOption... options)</span></span></div><div class="line">Copies all bytes from an input stream to a file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">long</span>	<span class="title">copy</span><span class="params">(Path source, OutputStream out)</span></div><div class="line">Copies all bytes from a file to an output stream.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">copy</span><span class="params">(Path source, Path target, CopyOption... options)</span></div><div class="line">Copy a file to a target file.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createDirectories</span><span class="params">(Path dir, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a directory by creating all nonexistent parent directories first.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createDirectory</span><span class="params">(Path dir, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new directory.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createFile</span><span class="params">(Path path, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new and empty file, failing <span class="keyword">if</span> the file already exists.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createLink</span><span class="params">(Path link, Path existing)</span></div><div class="line">Creates a new <span class="title">link</span> <span class="params">(directory entry)</span> <span class="keyword">for</span> an existing <span class="title">file</span> <span class="params">(optional operation)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createSymbolicLink</span><span class="params">(Path link, Path target, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a symbolic link to a <span class="title">target</span> <span class="params">(optional operation)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempDirectory</span><span class="params">(Path dir, String prefix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new directory in the specified directory, using the given prefix to generate its name.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempDirectory</span><span class="params">(String prefix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new directory in the <span class="keyword">default</span> temporary-file directory, using the given prefix to generate its name.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempFile</span><span class="params">(Path dir, String prefix, String suffix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates a new empty file in the specified directory, using the given prefix and suffix strings to generate its name.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">createTempFile</span><span class="params">(String prefix, String suffix, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Creates an empty file in the <span class="keyword">default</span> temporary-file directory, using the given prefix and suffix to generate its name.</div><div class="line"><span class="keyword">static</span> <span class="keyword">void</span>	<span class="title">delete</span><span class="params">(Path path)</span></div><div class="line">Deletes a file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">deleteIfExists</span><span class="params">(Path path)</span></div><div class="line">Deletes a file <span class="keyword">if</span> it exists.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">exists</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether a file exists.</div><div class="line"><span class="keyword">static</span> Object	<span class="title">getAttribute</span><span class="params">(Path path, String attribute, LinkOption... options)</span></div><div class="line">Reads the value of a file attribute.</div><div class="line"><span class="keyword">static</span> &lt;V extends FileAttributeView&gt; </div><div class="line">V	<span class="title">getFileAttributeView</span><span class="params">(Path path, Class&lt;V&gt; type, LinkOption... options)</span></div><div class="line">Returns a file attribute view of a given type.</div><div class="line"><span class="keyword">static</span> FileStore	<span class="title">getFileStore</span><span class="params">(Path path)</span></div><div class="line">Returns the FileStore representing the file store where a file is located.</div><div class="line"><span class="keyword">static</span> FileTime	<span class="title">getLastModifiedTime</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Returns a file's last modified time.</div><div class="line"><span class="keyword">static</span> UserPrincipal	<span class="title">getOwner</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Returns the owner of a file.</div><div class="line"><span class="keyword">static</span> Set&lt;PosixFilePermission&gt;	<span class="title">getPosixFilePermissions</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Returns a file's POSIX file permissions.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isDirectory</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether a file is a directory.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isExecutable</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is executable.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isHidden</span><span class="params">(Path path)</span></div><div class="line">Tells whether or not a file is considered hidden.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isReadable</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is readable.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isRegularFile</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether a file is a regular file with opaque content.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isSameFile</span><span class="params">(Path path, Path path2)</span></div><div class="line">Tests <span class="keyword">if</span> two paths locate the same file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isSymbolicLink</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is a symbolic link.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">isWritable</span><span class="params">(Path path)</span></div><div class="line">Tests whether a file is writable.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">move</span><span class="params">(Path source, Path target, CopyOption... options)</span></div><div class="line">Move or rename a file to a target file.</div><div class="line"><span class="keyword">static</span> BufferedReader	<span class="title">newBufferedReader</span><span class="params">(Path path, Charset cs)</span></div><div class="line">Opens a file <span class="keyword">for</span> reading, returning a BufferedReader that may be used to read text from the file in an efficient manner.</div><div class="line"><span class="keyword">static</span> BufferedWriter	<span class="title">newBufferedWriter</span><span class="params">(Path path, Charset cs, OpenOption... options)</span></div><div class="line">Opens or creates a file <span class="keyword">for</span> writing, returning a BufferedWriter that may be used to write text to the file in an efficient manner.</div><div class="line"><span class="keyword">static</span> SeekableByteChannel	<span class="title">newByteChannel</span><span class="params">(Path path, OpenOption... options)</span></div><div class="line">Opens or creates a file, returning a seekable <span class="keyword">byte</span> channel to access the file.</div><div class="line"><span class="keyword">static</span> SeekableByteChannel	<span class="title">newByteChannel</span><span class="params">(Path path, Set&lt;? extends OpenOption&gt; options, FileAttribute&lt;?&gt;... attrs)</span></div><div class="line">Opens or creates a file, returning a seekable <span class="keyword">byte</span> channel to access the file.</div><div class="line"><span class="keyword">static</span> DirectoryStream&lt;Path&gt;	<span class="title">newDirectoryStream</span><span class="params">(Path dir)</span></div><div class="line">Opens a directory, returning a DirectoryStream to iterate over all entries in the directory.</div><div class="line"><span class="keyword">static</span> DirectoryStream&lt;Path&gt;	<span class="title">newDirectoryStream</span><span class="params">(Path dir, DirectoryStream.Filter&lt;? <span class="keyword">super</span> Path&gt; filter)</span></div><div class="line">Opens a directory, returning a DirectoryStream to iterate over the entries in the directory.</div><div class="line"><span class="keyword">static</span> DirectoryStream&lt;Path&gt;	<span class="title">newDirectoryStream</span><span class="params">(Path dir, String glob)</span></div><div class="line">Opens a directory, returning a DirectoryStream to iterate over the entries in the directory.</div><div class="line"><span class="keyword">static</span> InputStream	<span class="title">newInputStream</span><span class="params">(Path path, OpenOption... options)</span></div><div class="line">Opens a file, returning an input stream to read from the file.</div><div class="line"><span class="keyword">static</span> OutputStream	<span class="title">newOutputStream</span><span class="params">(Path path, OpenOption... options)</span></div><div class="line">Opens or creates a file, returning an output stream that may be used to write bytes to the file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">boolean</span>	<span class="title">notExists</span><span class="params">(Path path, LinkOption... options)</span></div><div class="line">Tests whether the file located by <span class="keyword">this</span> path does not exist.</div><div class="line"><span class="keyword">static</span> String	<span class="title">probeContentType</span><span class="params">(Path path)</span></div><div class="line">Probes the content type of a file.</div><div class="line"><span class="keyword">static</span> <span class="keyword">byte</span>[]	<span class="title">readAllBytes</span><span class="params">(Path path)</span></div><div class="line">Reads all the bytes from a file.</div><div class="line"><span class="keyword">static</span> List&lt;String&gt;	<span class="title">readAllLines</span><span class="params">(Path path, Charset cs)</span></div><div class="line">Read all lines from a file.</div><div class="line"><span class="keyword">static</span> &lt;A extends BasicFileAttributes&gt; </div><div class="line">A	<span class="title">readAttributes</span><span class="params">(Path path, Class&lt;A&gt; type, LinkOption... options)</span></div><div class="line">Reads a file's attributes as a bulk operation.</div><div class="line"><span class="keyword">static</span> Map&lt;String,Object&gt;	<span class="title">readAttributes</span><span class="params">(Path path, String attributes, LinkOption... options)</span></div><div class="line">Reads a set of file attributes as a bulk operation.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">readSymbolicLink</span><span class="params">(Path link)</span></div><div class="line">Reads the target of a symbolic <span class="title">link</span> <span class="params">(optional operation)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setAttribute</span><span class="params">(Path path, String attribute, Object value, LinkOption... options)</span></div><div class="line">Sets the value of a file attribute.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setLastModifiedTime</span><span class="params">(Path path, FileTime time)</span></div><div class="line">Updates a file's last modified time attribute.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setOwner</span><span class="params">(Path path, UserPrincipal owner)</span></div><div class="line">Updates the file owner.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">setPosixFilePermissions</span><span class="params">(Path path, Set&lt;PosixFilePermission&gt; perms)</span></div><div class="line">Sets a file's POSIX permissions.</div><div class="line"><span class="keyword">static</span> <span class="keyword">long</span>	<span class="title">size</span><span class="params">(Path path)</span></div><div class="line">Returns the size of a <span class="title">file</span> <span class="params">(in bytes)</span>.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">walkFileTree</span><span class="params">(Path start, FileVisitor&lt;? <span class="keyword">super</span> Path&gt; visitor)</span></div><div class="line">Walks a file tree.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">walkFileTree</span><span class="params">(Path start, Set&lt;FileVisitOption&gt; options, <span class="keyword">int</span> maxDepth, FileVisitor&lt;? <span class="keyword">super</span> Path&gt; visitor)</span></div><div class="line">Walks a file tree.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">write</span><span class="params">(Path path, <span class="keyword">byte</span>[] bytes, OpenOption... options)</span></div><div class="line">Writes bytes to a file.</div><div class="line"><span class="keyword">static</span> Path	<span class="title">write</span><span class="params">(Path path, Iterable&lt;? extends CharSequence&gt; lines, Charset cs, OpenOption... options)</span></div><div class="line">Write lines of text to a file.</div></pre></td></tr></table></figure>
-<h2 id="异步-I-O-通道"><a href="#异步-I-O-通道" class="headerlink" title="异步 I/O 通道"></a>异步 I/O 通道</h2><p>java.nio.channels.AsynchronousFileChannel<br>通过 open 方法来完成的。 对文件通道的读取和写入也是通过对应的 read 和 write 方法来完成的。所不同的是 read 和 write 方法要么返回一个 Future 类的对象,要么要求传入一个 CompletionHandler 接口 的实现对象作为回调方法。</p>
-<p>异 步 套 接 字 通 道 AsynchronousSocketChannel 和 AsynchronousServerSocketChannel 类 分 别 对 应 一 般 的 SocketChannel 和 ServerSocketChannel 类。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;&lt;em&gt;主要内容&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;　　I/O 就是数据的输入/输出。 Java 平台提供了丰富的类库来满足可能的I/O操作需求。最初的java.io包， JDK 1.4 的 NIO， JDK 7 的 NIO.2。&lt;br&gt;　　&lt;br&gt;　　最早的java.io包把IO操作抽象成数据的流动，进而有了流(Stream)概念；Java NIO中把IO操作抽象成端到端的一个数据连接，进而有了通道(channel)概念。&lt;/p&gt;
-&lt;p&gt;　　如果需要开发高性能网络应用， Java提供的标准库所支持的抽象层次过低， 推荐Netty。&lt;/p&gt;
-&lt;p&gt;　　JDK 7 后都建议用 try-with-resources来使用流和通道。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
-    
-    
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
-    
-      <category term="IO" scheme="http://giveme5.cc/tags/IO/"/>
-    
-      <category term="NIO" scheme="http://giveme5.cc/tags/NIO/"/>
-    
-      <category term="NIO2" scheme="http://giveme5.cc/tags/NIO2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>U盘引导多个linux镜像</title>
-    <link href="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/"/>
-    <id>http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/</id>
-    <published>2017-06-27T11:08:03.000Z</published>
-    <updated>2017-07-06T02:17:43.990Z</updated>
-    
-    <content type="html"><![CDATA[<p><strong><em>主要内容</em></strong></p>
-<p>一个U盘在手，走遍天下都不怕。<br>关键就是这个U盘，<br>它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。</p>
-<p>话说我一个开发，怎么会研究这个玩意。</p>
-<a id="more"></a>
-<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
-<li><p>U盘<br>最好16G以上，不然装不了几个系统的。</p>
-</li>
-<li><p>预备知识<br>在此特别感谢<a href="https://my.oschina.net/abcfy2/blog/491140?nocache=1497879527986" target="_blank" rel="external">Feng_Yu</a> 的帮助， 把他的内容读通，基本步骤就参照他的。<br>最大的区别是我把U盘分了多个区，除了<code>GPT分区(EF00)</code>和<code>bios_grub分区(EF02)</code>，其他的分区平常都可以当普通U盘使用。</p>
-</li>
-</ul>
-<h2 id="格式化U盘"><a href="#格式化U盘" class="headerlink" title="格式化U盘"></a>格式化U盘</h2><p>我在 <code>Opensuse 42.1</code> 系统操作的。</p>
-<h3 id="U盘格式化为GPT分区"><a href="#U盘格式化为GPT分区" class="headerlink" title="U盘格式化为GPT分区"></a>U盘格式化为GPT分区</h3><p>工具: <code>parted</code>, <code>gdisk</code>。</p>
-<h4 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h4><p>使用图像化工具 <code>parted</code> 将U盘格式化并建立分区。</p>
-<ul>
-<li>分区一： GPT分区，256Mb， 安装 <code>Grub</code></li>
-<li>分区二： ext4分区，5G，数据盘</li>
-<li>分区三： NTFS分区，剩下空间-1M，数据盘</li>
-<li>分区四： 剩余最后1M，不要格式化！！！！！！！<br>分区二和分区三平常都可当一般U盘使用， 分区三 为兼容 <code>windows</code>系统， 分区二为安装 <code>centos</code> 等不支持 <code>ntfs</code>的系统。</li>
-</ul>
-<h4 id="bios-grub"><a href="#bios-grub" class="headerlink" title="bios_grub"></a>bios_grub</h4><p>使用<code>gdisk</code> 将最后一个分区标记为 <code>EF02</code>， 即<code>bios_grub分区</code><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># gdisk /dev/sdb</span></div><div class="line">GPT fdisk (gdisk) version 0.8.8</div><div class="line"></div><div class="line">Partition table scan:</div><div class="line">  MBR: protective</div><div class="line">  BSD: not present</div><div class="line">  APM: not present</div><div class="line">  GPT: present</div><div class="line"></div><div class="line">Found valid GPT with protective MBR; using GPT.</div><div class="line"></div><div class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): n</div><div class="line">Partition number (3-128, default 3): </div><div class="line">First sector (34-31266782, default = 31264768) or &#123;+-&#125;size&#123;KMGTP&#125;: </div><div class="line">Last sector (31264768-31266782, default = 31266782) or &#123;+-&#125;size&#123;KMGTP&#125;: </div><div class="line">Current <span class="built_in">type</span> is <span class="string">'Linux filesystem'</span></div><div class="line">Hex code or GUID (L to show codes, Enter = 8300): EF02</div><div class="line">Changed <span class="built_in">type</span> of partition to <span class="string">'BIOS boot partition'</span></div><div class="line"></div><div class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): p</div><div class="line">Disk /dev/sdb: 31266816 sectors, 14.9 GiB</div><div class="line">Logical sector size: 512 bytes</div><div class="line">Disk identifier (GUID): 42BF9B08-57CA-4F18-8CB5-C3B06668B141</div><div class="line">Partition table holds up to 128 entries</div><div class="line">First usable sector is 34, last usable sector is 31266782</div><div class="line">Partitions will be aligned on 2048-sector boundaries</div><div class="line">Total free space is 2014 sectors (1007.0 KiB)</div><div class="line"></div><div class="line">Number  Start (sector)    End (sector)  Size       Code  Name</div><div class="line">   1            2048          526335   256.0 MiB   EF00  </div><div class="line">   2          526336        31264767   14.7 GiB    0700  </div><div class="line">   3        31264768        31266782   1007.5 KiB  EF02  BIOS boot partition</div><div class="line"></div><div class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): w</div><div class="line"></div><div class="line">Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING</div><div class="line">PARTITIONS!!</div><div class="line"></div><div class="line">Do you want to proceed? (Y/N): y</div><div class="line">OK; writing new GUID partition table (GPT) to /dev/sdb.</div><div class="line">The operation has completed successfully.</div></pre></td></tr></table></figure></p>
-<h2 id="安装grub到U盘"><a href="#安装grub到U盘" class="headerlink" title="安装grub到U盘"></a>安装grub到U盘</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ sudo mount /dev/sdb1 /mnt -o uid=<span class="variable">$USER</span>,gid=<span class="variable">$USER</span>  <span class="comment"># 没什么好说的，挂载U盘使用，加上uid和gid参数只是为了编辑文件不需要sudo而已</span></div><div class="line"></div><div class="line"><span class="comment"># grub安装到MBR</span></div><div class="line">$  sudo grub2-install --target=i386-pc --recheck --boot-directory=/mnt/boot /dev/sdb</div><div class="line">Installing <span class="keyword">for</span> i386-pc platform.</div><div class="line">Installation finished. No error reported.</div><div class="line"></div><div class="line"><span class="comment"># grub安装到ESP,特别注意--removable参数，安装到移动设备上一定要用这个参数</span></div><div class="line">$ sudo grub2-install --target x86_64-efi --efi-directory /mnt --boot-directory=/mnt/boot --removable</div><div class="line">Installing <span class="keyword">for</span> x86_64-efi platform.</div><div class="line">Installation finished. No error reported.</div></pre></td></tr></table></figure>
-<p><code>grub2-install</code> 命令根据你的系统决定， 也可能是 <code>grub-install</code></p>
-<h2 id="添加grub菜单"><a href="#添加grub菜单" class="headerlink" title="添加grub菜单"></a>添加grub菜单</h2><p>在<code>/mnt/boot/grub2</code>这个目录下，新建<code>grub.cfg</code>配置文件<br>例如： </p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># path to the partition holding ISO images (using UUID)</span></div><div class="line">probe -u <span class="variable">$root</span> --set=rootuuid</div><div class="line"><span class="built_in">set</span> imgdevpath=<span class="string">"/dev/disk/by-uuid/<span class="variable">$rootuuid</span>"</span></div><div class="line"></div><div class="line"><span class="comment"># lsblk -f to find your UUID for data device</span></div><div class="line"><span class="built_in">set</span> ntfs_data_uuid=<span class="string">"71E161DA3EB70972"</span></div><div class="line"><span class="built_in">set</span> ext4_data_uuid=<span class="string">"50a92fdb-4e11-47b8-889c-02f430d3a780"</span></div><div class="line"></div><div class="line"><span class="comment"># define globally (i.e outside any menuentry)</span></div><div class="line">insmod search_fs_uuid</div><div class="line">search --no-floppy --set=isopart --fs-uuid <span class="variable">$ntfs_data_uuid</span></div><div class="line">search --no-floppy --set=centos_iso_part --fs-uuid <span class="variable">$ext4_data_uuid</span>   <span class="comment"># centos no ntfs</span></div><div class="line"><span class="built_in">set</span> isopath=/iso  <span class="comment"># 定义iso文件存放的路径</span></div><div class="line"></div><div class="line"><span class="comment"># 定义各种要启动的iso镜像名</span></div><div class="line"><span class="built_in">set</span> ubuntu=ubuntu-16.04.1-desktop-amd64.iso                  <span class="comment"># ubuntu桌面版镜像,支持12.04-16.04</span></div><div class="line"><span class="built_in">set</span> ubuntuserver=ubuntu-16.04.1-server-amd64.iso             <span class="comment"># ubuntu服务器版镜像,支持14.04-16.04</span></div><div class="line"><span class="built_in">set</span> debianlive=debian-live-8.6.0-amd64-gnome-desktop.iso     <span class="comment"># debian livecd镜像,支持debian8</span></div><div class="line"><span class="built_in">set</span> deepin15=deepin-15.3-amd64.iso                           <span class="comment"># deepin15镜像</span></div><div class="line"><span class="built_in">set</span> linuxmint=linuxmint-18.1-kde-64bit.iso                   <span class="comment"># linuxmint镜像,支持17-18</span></div><div class="line"><span class="built_in">set</span> ubuntukylin=ubuntukylin-16.04.1-desktop-amd64.iso        <span class="comment"># ubuntukylin镜像,支持14.04-16.04</span></div><div class="line"><span class="built_in">set</span> centosdvd=CentOS-7-x86_64-DVD-1511.iso                   <span class="comment"># centos DVD版镜像,包括DVD/Everything/Minimal/Netinstall镜像,支持6-7</span></div><div class="line"><span class="built_in">set</span> centoslive=CentOS-7-x86_64-LiveGNOME-1511.iso            <span class="comment"># centos livecd镜像,包括livecd/livedvd，支持7(6似乎不支持直接引导ISO,期待PR解决)</span></div><div class="line"><span class="built_in">set</span> opensuse=openSUSE-Leap-42.1-DVD-x86_64.iso               <span class="comment"># opensuse DVD安装镜像</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># grub模块配置</span></div><div class="line">loadfont unicode</div><div class="line"><span class="built_in">set</span> lang=zh_CN</div><div class="line">insmod all_video</div><div class="line">insmod gfxterm</div><div class="line">insmod gettext</div><div class="line">insmod gfxmenu</div><div class="line">insmod png</div><div class="line">insmod ext2</div><div class="line">insmod part_msdos</div><div class="line">insmod xfs</div><div class="line">insmod ntfs</div><div class="line">insmod loopback</div><div class="line">insmod iso9660</div><div class="line">terminal_output gfxterm</div><div class="line"><span class="built_in">set</span> menu_color_normal=cyan/blue</div><div class="line"><span class="built_in">set</span> menu_color_highlight=white/blue</div><div class="line">gfxmode keep</div><div class="line"><span class="built_in">set</span> vt_handoff=vt.handoff=7</div><div class="line"></div><div class="line"><span class="comment"># 主题配置</span></div><div class="line"><span class="built_in">set</span> gfxmode=auto</div><div class="line"><span class="built_in">set</span> timeout_style=menu</div><div class="line"><span class="built_in">set</span> timeout=10</div><div class="line"><span class="built_in">set</span> theme=<span class="variable">$prefix</span>/themes/Tuxkiller2/theme.txt</div><div class="line"><span class="built_in">export</span> theme</div><div class="line"></div><div class="line">menuentry <span class="string">'从本地硬盘启动'</span> --class harddrive &#123;</div><div class="line">  <span class="built_in">set</span> root=(hd1)</div><div class="line">  chainloader +1</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$linuxmint</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"linuxmint-18.1-kde-64"</span> --class linuxmint --class gnu-linux --class gnu --class os &#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$linuxmint</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Linux Mint ...'</span></div><div class="line">    linux (loop)/casper/vmlinuz file=/cdrom/preseed/linuxmint.seed boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/casper/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntu</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Ubuntu Desktop ISO"</span> --class ubuntu --class gnu-linux --class gnu --class os &#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntu</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Ubuntu Desktop ...'</span></div><div class="line">    linux (loop)/casper/vmlinuz.efi file=/cdrom/preseed/ubuntu.seed boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/casper/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntukylin</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"UbuntuKylin Desktop ISO"</span> --class ubuntukylin --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntukylin</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入UbuntuKylin Desktop ...'</span></div><div class="line">    linux (loop)/casper/vmlinuz.efi boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/casper/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># 特别注意: Ubuntu Server会出现安装的时候检测不到光驱的现象</span></div><div class="line"><span class="comment"># 此时手工进入shell下，将iso镜像挂载在/cdrom继续即可</span></div><div class="line"><span class="comment"># mount /dev/sdb1 /media</span></div><div class="line"><span class="comment"># mount -o loop /media/boot/iso/ubuntu-*-server-*.iso /cdrom</span></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntuserver</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Ubuntu Server ISO"</span> --class ubuntu --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntuserver</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">set</span> gfxpayload=keep</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Ubuntu Server ...'</span></div><div class="line">    linux (loop)/install/vmlinuz file=/cdrom/preseed/ubuntu-server.seed iso-scan/filename=<span class="variable">$isofile</span> quiet ---</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/install/initrd.gz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$deepin15</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Deepin 15 ISO"</span> --class deepin --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$deepin15</span>"</span> </div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Deepin ...'</span></div><div class="line">    linux (loop)/live/vmlinuz.efi boot=live config findiso=<span class="variable">$isofile</span> noeject noprompt locales=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/live/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$debianlive</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Debian LiveCD ISO"</span> --class debian --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$debianlive</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Debian LiveCD ...'</span></div><div class="line">    linux (loop)/live/vmlinuz boot=live config findiso=<span class="variable">$isofile</span> noeject noprompt locales=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/live/initrd.img</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$centos_iso_part</span>)<span class="variable">$isopath</span>/<span class="variable">$centosdvd</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"CentOS-7-x86_64-DVD-1511"</span> --class centos --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$centosdvd</span>"</span></div><div class="line">    loopback loop (<span class="variable">$centos_iso_part</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入CentOS DVD ...'</span></div><div class="line">    linux (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=<span class="variable">$ext4_data_uuid</span>:/<span class="variable">$isofile</span> inst.lang=zh_CN.UTF-8 rhgb</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/isolinux/initrd.img</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$opensuse</span>"</span> ]; <span class="keyword">then</span></div><div class="line">menuentry <span class="string">'openSUSE-42.1-DVD-x86_64'</span> --class opensuse --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$opensuse</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    linux (loop)/boot/x86_64/loader/linux install=hd:<span class="variable">$isofile</span></div><div class="line">    initrd (loop)/boot/x86_64/loader/initrd</div><div class="line">&#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$centoslive</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"CentOS LiveCD ISO"</span> --class centos --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$centoslive</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入CentOS LiveCD ...'</span></div><div class="line">    probe <span class="_">-l</span> <span class="_">-s</span> isolable (loop)</div><div class="line">    linux (loop)/isolinux/vmlinuz0 boot=isolinux root=live:LABEL=<span class="string">"<span class="variable">$isolable</span>"</span> iso-scan/filename=<span class="variable">$isofile</span> rd.live.image LANG=zh_CN rd.locale.LANG=zh_CN rhgb</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/isolinux/initrd0.img</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">menuentry <span class="string">'关闭系统'</span> --class halt &#123;</div><div class="line">  <span class="built_in">echo</span> <span class="string">'关机中 ...'</span></div><div class="line">  halt</div><div class="line">&#125;</div><div class="line"></div><div class="line">menuentry <span class="string">'重启系统'</span> --class reboot &#123;</div><div class="line">  <span class="built_in">echo</span> <span class="string">'重启系统中 ...'</span></div><div class="line">  reboot</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="美化"><a href="#美化" class="headerlink" title="美化"></a>美化</h2><p> 美化启动<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对应的把下面的/dev/sdb1替换成你的U盘的ESP分区</span></div><div class="line">sudo mount /dev/sdb1 /mnt/  -o uid=<span class="variable">$USER</span>,gid=<span class="variable">$USER</span>,utf8=1</div><div class="line">cp -R themes/ /mnt/boot/grub2/</div></pre></td></tr></table></figure></p>
-<p><code>themes</code> 请参考 <a href="http://git.oschina.net/abcfy2/grub-cfg" target="_blank" rel="external">Feng_Yu的</a></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://wiki.archlinux.org/index.php/Multiboot_USB_drive" target="_blank" rel="external">Multiboot USB drive</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;strong&gt;&lt;em&gt;主要内容&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;一个U盘在手，走遍天下都不怕。&lt;br&gt;关键就是这个U盘，&lt;br&gt;它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。&lt;/p&gt;
-&lt;p&gt;话说我一个开发，怎么会研究这个玩意。&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="linux" scheme="http://giveme5.cc/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="http://giveme5.cc/tags/linux/"/>
-    
-      <category term="usb" scheme="http://giveme5.cc/tags/usb/"/>
-    
-      <category term="grub" scheme="http://giveme5.cc/tags/grub/"/>
-    
-      <category term="BIOS" scheme="http://giveme5.cc/tags/BIOS/"/>
-    
-      <category term="UEFI" scheme="http://giveme5.cc/tags/UEFI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Opencv3.2 python2.7 的CentOS7安装</title>
-    <link href="http://giveme5.cc/2017/06/01/computerVision/opencv-python/"/>
-    <id>http://giveme5.cc/2017/06/01/computerVision/opencv-python/</id>
-    <published>2017-06-01T10:48:06.000Z</published>
-    <updated>2017-06-28T03:29:31.753Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<ul>
-<li>系统环境</li>
-<li>软件源</li>
-<li>软件环境</li>
-<li>源码安装</li>
-</ul>
-<p>Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。</p>
-<p>……</p>
-<a id="more"></a>
-<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">╭─root@localhost ~  </div><div class="line">╰─<span class="comment"># uname -a                                                                1 ↵</span></div><div class="line">Linux localhost.localdomain 3.10.0-514.21.1.el7.x86_64 <span class="comment">#1 SMP Thu May 25 17:04:51 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span></div><div class="line">╭─root@localhost ~  </div><div class="line">╰─<span class="comment"># cat /etc/redhat-release </span></div><div class="line">CentOS Linux release 7.3.1611 (Core)</div></pre></td></tr></table></figure>
-<h2 id="软件源"><a href="#软件源" class="headerlink" title="软件源"></a>软件源</h2><ul>
-<li><a href="">epel</a><br>epel 源， 阿里的镜像</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</div></pre></td></tr></table></figure>
-<ul>
-<li><a href="http://li.nux.ro/repos.html" target="_blank" rel="external">Nux Dextop</a><br>vlc 播放器 和 视频解码器 等</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release &amp;&amp; rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm</div></pre></td></tr></table></figure>
-<h2 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h2><p>编译opencv需要的软件包</p>
-<ul>
-<li>GCC 4.4.x or later</li>
-<li>CMake 2.8.7 or higher</li>
-<li>Git</li>
-<li>GTK+2.x or higher</li>
-<li>pkg-config</li>
-<li>Python 2.6 or later and Numpy 1.5 or later with developer packages (python-dev, python-numpy)</li>
-<li>ffmpeg and development packages</li>
-<li>[optional] libtbb2 libtbb-dev</li>
-<li>[optional] libdc1394 2.x</li>
-<li>[optional] libdc1394-devel libv4l-devel gstreamer-plugins-base-devel</li>
-<li>[optional] CUDA Toolkit 6.5 or higher</li>
-</ul>
-<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y update</div></pre></td></tr></table></figure>
-<h3 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum groupinstall <span class="string">'Development Tools'</span></div></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install cmake cmake-gui git pkgconfig autoconf automake  freetype-devel gcc gcc-c++  libtool make mercurial nasm pkgconfig zlib-devel</div></pre></td></tr></table></figure>
-<h3 id="视频和图像格式"><a href="#视频和图像格式" class="headerlink" title="视频和图像格式"></a>视频和图像格式</h3><p>#图像<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install libpng-devel libjpeg-turbo-devel jasper-devel openexr-devel libtiff-devel libwebp-devel</div></pre></td></tr></table></figure></p>
-<p>#视频<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install libdc1394-devel libv4l-devel gstreamer-plugins-base-devel ffmpeg ffmpeg-devel</div></pre></td></tr></table></figure></p>
-<h3 id="GUI特征"><a href="#GUI特征" class="headerlink" title="GUI特征"></a>GUI特征</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install gtk2-devel</div></pre></td></tr></table></figure>
-<h3 id="Threading-Building-Blocks-TBB"><a href="#Threading-Building-Blocks-TBB" class="headerlink" title="Threading Building Blocks (TBB)"></a>Threading Building Blocks (TBB)</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install tbb-devel eigen3-devel</div></pre></td></tr></table></figure>
-<h3 id="cuda安装"><a href="#cuda安装" class="headerlink" title="cuda安装"></a>cuda安装</h3><p>//TODO</p>
-<h3 id="vlc"><a href="#vlc" class="headerlink" title="vlc"></a>vlc</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install vlc</div></pre></td></tr></table></figure>
-<h3 id="python"><a href="#python" class="headerlink" title="python"></a>python</h3><p>centos 7 默认安装的是 python 2.7</p>
-<h4 id="pip-python-package-manager"><a href="#pip-python-package-manager" class="headerlink" title="pip (python package manager)"></a>pip (python package manager)</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl <span class="string">"https://bootstrap.pypa.io/get-pip.py"</span> -o <span class="string">"get-pip.py"</span></div><div class="line">python get-pip.py</div></pre></td></tr></table></figure>
-<p>或者yum安装，然后升级<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y python-pip</div><div class="line">pip install --upgrade pip</div></pre></td></tr></table></figure></p>
-<h4 id="python-2-7-development-tools"><a href="#python-2-7-development-tools" class="headerlink" title="python 2.7 development tools"></a>python 2.7 development tools</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-devel</div></pre></td></tr></table></figure>
-<h4 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">pip install numpy</div><div class="line"></div><div class="line">pip install matplotlib </div><div class="line">yum install tkinter</div><div class="line">pip install scipy</div></pre></td></tr></table></figure>
-<p><code>matplotlib</code> <code>scipy</code> 是非必须的，但使用opencv python 肯定用的着，所以建议一起安装好。 <code>tkinter</code> 是 <code>matplotlib</code> 的依赖</p>
-<h2 id="Opencv3-2-源码安装"><a href="#Opencv3-2-源码安装" class="headerlink" title="Opencv3.2 源码安装"></a>Opencv3.2 源码安装</h2><p>工作目录为 <code>～</code>， 按照你的喜爱调整，记得下面的目录都要调整</p>
-<h3 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h3><ul>
-<li>opencv</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv.git</div><div class="line"><span class="built_in">cd</span> opencv</div><div class="line">git checkout 3.2.0</div></pre></td></tr></table></figure>
-<ul>
-<li>opencv_contrib<br>从 opencv 3.0 开始， opencv_contrib 单独发布， 这里有很多有意思的功能</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv_contrib.git</div><div class="line"><span class="built_in">cd</span> opencv_contrib</div><div class="line">git checkout 3.2.0</div></pre></td></tr></table></figure>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><h4 id="编译目录"><a href="#编译目录" class="headerlink" title="编译目录"></a>编译目录</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~/opencv</div><div class="line">mkdir build</div><div class="line"><span class="built_in">cd</span> build</div></pre></td></tr></table></figure>
-<h4 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cmake -D CMAKE_BUILD_TYPE=RELEASE \</div><div class="line">    -D CMAKE_INSTALL_PREFIX=/usr/local \</div><div class="line">    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \</div><div class="line">    -D INSTALL_C_EXAMPLES=OFF \</div><div class="line">    -D INSTALL_PYTHON_EXAMPLES=ON \</div><div class="line">    -D BUILD_EXAMPLES=ON \</div><div class="line">    -D BUILD_OPENCV_PYTHON2=ON ..</div></pre></td></tr></table></figure>
-<p>特保注意：</p>
-<ul>
-<li><p>ippicv<br>cmake 会停留在 如下类似位置：</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-- checking <span class="keyword">for</span> module <span class="string">'libgphoto2'</span></div><div class="line">--   package <span class="string">'libgphoto2'</span> not found</div><div class="line">-- ICV: Downloading ippicv_linux_2017xxxx.tgz...</div></pre></td></tr></table></figure>
-<p>  cmake 需要下载 <code>ippicv</code>， 会持续一段时间，耐心等待下。<br>  如果超时或者你想手动下载， 参照你 <code>build</code> 目录下 <code>CMakeDownloadLog.txt</code> 文件</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; cat CMakeDownloadLog.txt </div><div class="line">use_cache <span class="string">"/home/alalek/projects/opencv/dev/.cache"</span></div><div class="line">do_unpack <span class="string">"ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"87cbdeb627415d8e4bc811156289fa3a"</span> <span class="string">"https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"/home/alalek/projects/opencv/build/opencv/3rdparty/ippicv"</span></div><div class="line"><span class="comment">#cmake_download "/home/alalek/projects/opencv/dev/.cache/ippicv/87cbdeb627415d8e4bc811156289fa3a-ippicv_2017u2_lnx_intel64_20170418.tgz" "https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>python<br>检查 python相关环境是否一致， 类似如下</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">--   Python 2:</div><div class="line">--     Interpreter:                 /usr/bin/python2.7 (ver 2.7.5)</div><div class="line">--     Libraries:                   /lib64/libpython2.7.so (ver 2.7.5)</div><div class="line">--     numpy:                       /usr/lib64/python2.7/site-packages/numpy/core/include (ver 1.12.1)</div><div class="line">--     packages path:               lib/python2.7/site-packages</div></pre></td></tr></table></figure>
-<p>  可以通过 图像工具 <code>cmake-gui</code> 来调整</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cmake-gui ..</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="make"><a href="#make" class="headerlink" title="make"></a>make</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make -j4 <span class="comment"># 4是你的电脑cpu线程</span></div></pre></td></tr></table></figure>
-<p>查看输出日志<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Linking CXX shared module ../../lib/cv2.so</div><div class="line">。。。</div><div class="line">Built target opencv_python2</div></pre></td></tr></table></figure></p>
-<p>基本代表 opencv python <code>make</code> 成功， 如果没有， 使用 <code>cmake-gui ..</code> 重新 <code>make</code> 一次</p>
-<h4 id="make-install"><a href="#make-install" class="headerlink" title="make install"></a>make install</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">make install</div><div class="line">ldconfig</div></pre></td></tr></table></figure>
-<p>检查 <code>/usr/local/lib/python2.7/site-packages</code> 目录下 是否已经成功安装 <code>cv2.so</code></p>
-<h4 id="链接给python"><a href="#链接给python" class="headerlink" title="链接给python"></a>链接给python</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/lib64/python2.7/site-packages </div><div class="line">ln <span class="_">-s</span> /usr/<span class="built_in">local</span>/lib/python2.7/site-packages/cv2.so cv2.so</div></pre></td></tr></table></figure>
-<h3 id="测试opencv-python"><a href="#测试opencv-python" class="headerlink" title="测试opencv-python"></a>测试opencv-python</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">python</div><div class="line">&gt;&gt;&gt;import cv2</div><div class="line">&gt;&gt;&gt;cv2.__version__</div><div class="line">3.2.0<span class="string">'</span></div></pre></td></tr></table></figure>
-<p>congratulation！！！</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;系统环境&lt;/li&gt;
-&lt;li&gt;软件源&lt;/li&gt;
-&lt;li&gt;软件环境&lt;/li&gt;
-&lt;li&gt;源码安装&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。&lt;/p&gt;
-&lt;p&gt;……&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="机器视觉" scheme="http://giveme5.cc/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/"/>
-    
-    
-      <category term="opencv" scheme="http://giveme5.cc/tags/opencv/"/>
-    
-      <category term="centos" scheme="http://giveme5.cc/tags/centos/"/>
-    
-      <category term="python" scheme="http://giveme5.cc/tags/python/"/>
     
   </entry>
   
