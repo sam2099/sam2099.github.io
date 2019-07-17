@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://giveme5.cc/2016/11/23/mysql/mysql/</loc>
+    
+    <lastmod>2019-07-17T05:33:00.904Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2017/03/28/linux/fail2ban-md/</loc>
     
     <lastmod>2019-07-16T05:18:03.931Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>http://giveme5.cc/2018/11/21/spring/springBoot-war/</loc>
     
     <lastmod>2018-11-21T08:40:03.140Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2016/11/23/mysql/mysql/</loc>
-    
-    <lastmod>2018-11-09T06:49:02.020Z</lastmod>
     
   </url>
   
