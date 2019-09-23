@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2018-11-21T08:40:03.140Z</updated>
+  <updated>2019-09-23T05:35:40.602Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,236 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>idea 和 eclipse 快捷键</title>
+    <link href="http://giveme5.cc/2019/09/23/devEnv/ide/"/>
+    <id>http://giveme5.cc/2019/09/23/devEnv/ide/</id>
+    <published>2019-09-23T04:44:58.000Z</published>
+    <updated>2019-09-23T05:35:40.602Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>idea</p>
+<p><em>更新历史</em><br>2019-09-23 增加 idea 远程 debug</p>
+<a id="more"></a>
+<hr>
+<p>eclipse 和 idea 常用快捷键 对比 (转载)</p>
+<table>
+<thead>
+<tr>
+<th>Eclipse</th>
+<th style="text-align:center">IntelliJ IDEA</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F4</td>
+<td style="text-align:center">ctrl+h</td>
+<td style="text-align:left">show the type hierarchy</td>
+</tr>
+<tr>
+<td>ctrl+alt+g</td>
+<td style="text-align:center">ctrl+alt+F7</td>
+<td style="text-align:left">find usages</td>
+</tr>
+<tr>
+<td>ctrl+shift+u</td>
+<td style="text-align:center">ctrl+f7</td>
+<td style="text-align:left">finds the usages in the same file</td>
+</tr>
+<tr>
+<td>alt+shift+r</td>
+<td style="text-align:center">shift+F6</td>
+<td style="text-align:left">rename</td>
+</tr>
+<tr>
+<td>ctrl+shift+r</td>
+<td style="text-align:center">ctrl+shift+N</td>
+<td style="text-align:left">find file / open resource</td>
+</tr>
+<tr>
+<td>ctrl+shift+x, j</td>
+<td style="text-align:center">ctrl+shift+F10</td>
+<td style="text-align:left">run (java program)</td>
+</tr>
+<tr>
+<td>ctrl+shift+o</td>
+<td style="text-align:center">ctrl+alt+o</td>
+<td style="text-align:left">organize imports</td>
+</tr>
+<tr>
+<td>ctrl+o</td>
+<td style="text-align:center">ctrl+F12</td>
+<td style="text-align:left">show current file structure / outline</td>
+</tr>
+<tr>
+<td>ctrl+shift+m</td>
+<td style="text-align:center">ctrl+alt+V</td>
+<td style="text-align:left">create local variable refactoring</td>
+</tr>
+<tr>
+<td>syso ctrl+space</td>
+<td style="text-align:center">sout ctrl+j</td>
+<td style="text-align:left">System.out.println(“”)</td>
+</tr>
+<tr>
+<td>alt + up/down</td>
+<td style="text-align:center">ctrl + shift + up/down</td>
+<td style="text-align:left">move lines</td>
+</tr>
+<tr>
+<td>ctrl + d</td>
+<td style="text-align:center">ctrl + y</td>
+<td style="text-align:left">delete current line</td>
+</tr>
+<tr>
+<td>???</td>
+<td style="text-align:center">alt + h</td>
+<td style="text-align:left">show subversion history</td>
+</tr>
+<tr>
+<td>ctrl + h</td>
+<td style="text-align:center">ctrl + shift + f</td>
+<td style="text-align:left">search (find in path)</td>
+</tr>
+<tr>
+<td>“semi” set in window-&gt; preferences</td>
+<td style="text-align:center">ctrl + shift + enter</td>
+<td style="text-align:left">if I want to add the semi-colon at the end of a statement</td>
+</tr>
+<tr>
+<td>ctrl + 1 or ctrl + shift + l</td>
+<td style="text-align:center">ctrl + alt + v</td>
+<td style="text-align:left">introduce local variable</td>
+</tr>
+<tr>
+<td>alt + shift + s</td>
+<td style="text-align:center">alt + insert</td>
+<td style="text-align:left">generate getters / setters</td>
+</tr>
+<tr>
+<td>ctrl + shift + f</td>
+<td style="text-align:center">ctrl + alt + l</td>
+<td style="text-align:left">format code</td>
+</tr>
+<tr>
+<td>ctrl + y</td>
+<td style="text-align:center">ctrl + shift + z</td>
+<td style="text-align:left">redo</td>
+</tr>
+<tr>
+<td>ctrl + shift + c</td>
+<td style="text-align:center">ctrl + /</td>
+<td style="text-align:left">comment out lines</td>
+</tr>
+<tr>
+<td>ctrl + alt + h</td>
+<td style="text-align:center">ctrl + alt + h (same!)</td>
+<td style="text-align:left">show call hierarchy</td>
+</tr>
+<tr>
+<td>none ?</td>
+<td style="text-align:center">ctrl + alt + f7</td>
+<td style="text-align:left">to jump to one of the callers of a method</td>
+</tr>
+<tr>
+<td>ctrl + shift + i</td>
+<td style="text-align:center">alt + f8</td>
+<td style="text-align:left">evaluate expression (in debugger)</td>
+</tr>
+<tr>
+<td>F3</td>
+<td style="text-align:center">ctrl + b</td>
+<td style="text-align:left">go to declaration (e.g. go to method)</td>
+</tr>
+<tr>
+<td>ctrl + l</td>
+<td style="text-align:center">ctrl + g</td>
+<td style="text-align:left">go to line</td>
+</tr>
+<tr>
+<td>alt + /</td>
+<td style="text-align:center">ctrl + space</td>
+<td style="text-align:left">eclipse:Content Assist ; idea:completion 跟输入法冲突，自己改</td>
+</tr>
+<tr>
+<td>？？？</td>
+<td style="text-align:center">ctrl + shift + a</td>
+<td style="text-align:left">查找所有Intellij的命令</td>
+</tr>
+<tr>
+<td>？？？</td>
+<td style="text-align:center">ctrl + shift + alt + t</td>
+<td style="text-align:left">重构所有</td>
+</tr>
+</tbody>
+</table>
+<p>Shortcut Translator插件， 安装后，按Ctrl+Shift+K调出快捷键翻译对话框，选定你惯用的IDE keymap和需要学习的keymap，按下惯用keymap的快捷键，即可看到学习keymap上的对应快捷键。</p>
+<h2 id="IDEA-初始化"><a href="#IDEA-初始化" class="headerlink" title="IDEA 初始化"></a>IDEA 初始化</h2><h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><ul>
+<li>JReble</li>
+<li>IdeaVim<br>默认开启/关闭快捷是 Ctrl+Alt+v， 有冲突，可以改成Shift+Alt+v</li>
+</ul>
+<h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><ul>
+<li>修改 completion ： shift + space</li>
+<li>增加 close all 和 close other</li>
+<li>修改自动完成大小写敏感<br>setting–&gt;Editor–&gt;General–&gt;Code completion : Case sensitive completion 修改为 none</li>
+</ul>
+<h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><p>新建好server， before launch ： Maven Goal -》 clean package</p>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ul>
+<li><p>Live templates<br>增加 java method comment<br>jmc ： /**</p>
+</li>
+<li><p>File and Code templates<br>Includs 可以修改成如下内容：</p>
+<pre><code>/**
+* Created with ${PRODUCT_NAME}.
+* User: ${USER}
+* Date: ${DATE}
+* Time: ${TIME}
+* description: 
+*/ 
+</code></pre></li>
+</ul>
+<h3 id="文件配置"><a href="#文件配置" class="headerlink" title="文件配置"></a>文件配置</h3><ul>
+<li><p>编辑 .properties 文件<br>settting –》  File Encodings –》 Transparent native-to-ascii conversion 打勾</p>
+</li>
+<li><p>限制一行代码的宽度<br>File-&gt;settings-&gt;Code Style-&gt;General中，修改“Right margin (columns)”的值即可改变代码行宽度的限制。<br>自动将代码换行:<br>第一种，在上述的“Right margin (columns)”的下方，有“Wrap when typing reaches right margin”选项，选中它，是什么效果呢？如下图所示，随着输入的字符的增加，当代码宽度到达界线时，IDEA会自动将代码换行。<br>第二种，在File-&gt;settings-&gt;Code Style-&gt;Java中，选中“Wrapping and Braces”选项卡，在“Keep when reformatting”中有一个“Ensure rigth margin is not exceeded”，选中</p>
+</li>
+<li><p>quick doc<br>eclipse 光标放类或方法上， 默认有javaDoc 等 doc 显示；<br>idea 默认没有， 可以用 <code>CTRL + Q</code> 手动显示，或者 <code>setting -&gt; editor -&gt; general</code> 页面， other 部分， 将 <code>show quick documentation</code> 打上勾</p>
+</li>
+</ul>
+<h2 id="远程调试"><a href="#远程调试" class="headerlink" title="远程调试"></a>远程调试</h2><h3 id="idea"><a href="#idea" class="headerlink" title="idea"></a>idea</h3><ul>
+<li>点击主窗口菜单 Run / Edit Configurations，打开“Run/Debug Configurations”窗口；</li>
+<li>点击工具栏上的“+”按钮，下拉菜单中选择“Remote”；</li>
+<li>设置 Host 为远程服务器的域名或IP，Port为端口；</li>
+<li>复制命令行参数，<br><code>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8006</code></li>
+</ul>
+<p><img src="/images/ideaRemote1.png" alt=""></p>
+<h3 id="远程服务器"><a href="#远程服务器" class="headerlink" title="远程服务器"></a>远程服务器</h3><ul>
+<li><p>SpringBoot</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8006 -jar test-center.jar</div></pre></td></tr></table></figure>
+</li>
+<li><p>Tomcat<br>修改启动脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">JAVA_OPTS=&quot;$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8006&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ul>
+<li>本地和远程代码一致</li>
+<li>远程端口开放</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;idea&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;2019-09-23 增加 idea 远程 debug&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
+    
+    
+      <category term="idea eclipse 快捷键" scheme="http://giveme5.cc/tags/idea-eclipse-%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    
+  </entry>
   
   <entry>
     <title>spring boot war包</title>
@@ -57,68 +287,6 @@
       <category term="spring boot" scheme="http://giveme5.cc/tags/spring-boot/"/>
     
       <category term="war" scheme="http://giveme5.cc/tags/war/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JVM线上调优(二)  CPU调优</title>
-    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/"/>
-    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/</id>
-    <published>2018-11-07T13:31:21.000Z</published>
-    <updated>2018-11-06T09:46:50.442Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。<br>本章解决java线上CPU调优</p>
-<ul>
-<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
-</li>
-<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
-</li>
-<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
-</li>
-</ul>
-<p><em>更新历史</em></p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="定位线程"><a href="#定位线程" class="headerlink" title="定位线程"></a>定位线程</h2><ul>
-<li><p>TOP命令查看到CPU的占用情况<br>TOP –&gt; P : 按CPU使用率排序<br><img src="/images/jvm/ja_cpu_p.png" alt=""></p>
-</li>
-<li><p>具体线程<br>Java是一个多线程应用，进程是由多个线程构成的，上面看到的是这个进程的CPU占用率，导致这个进程CPU偏高的是其中某个或某几个线程，因而我们需要找到这些线程。<br>ps命令查看指定进程的线程情况</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -mp &lt;pid&gt; -o THREAD,tid,time</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="/images/jvm/ja_cpu_thread.png" alt=""><br>线程tid为 9100 的线程，CPU占用率达到了99.8%， 就是这个线程的问题。</p>
-<h2 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h2><p>请出 <code>jstack</code> 分析具体线程。</p>
-<p><strong> 注意： 进制转换 </strong><br>ps命令查看到的线程ID 9100 是十进制，<code>jstack</code> 命令输出的线程ID可能是十六进制，使用如下命令转换<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">╰─$ <span class="built_in">printf</span> <span class="string">"%x\n"</span> 9100</div><div class="line">238c</div></pre></td></tr></table></figure></p>
-<p>然后使用 <code>jstack</code> 定位具体的问题</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">╰─$ jstack 9078|grep 238c -A 15</div><div class="line"><span class="string">"Thread-0"</span> <span class="comment">#10 prio=5 os_prio=0 tid=0x00007fbea0821800 nid=0x238c runnable [0x00007fbe8bbfa000]</span></div><div class="line">   java.lang.Thread.State: RUNNABLE</div><div class="line">        at com.xxx.xxx.MyClassLoader<span class="variable">$1</span>.run(MyClassLoader.java:19)</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
-<p><img src="/images/jvm/ja_cpu_source.png" alt=""></p>
-<p>最后结合源码检查就ok。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;br&gt;本章解决java线上CPU调优&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
-&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;
-    
-    </summary>
-    
-      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
-    
-    
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
-    
-      <category term="CPU调优" scheme="http://giveme5.cc/tags/CPU%E8%B0%83%E4%BC%98/"/>
-    
-      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
     
   </entry>
   
@@ -217,11 +385,73 @@
   </entry>
   
   <entry>
+    <title>JVM线上调优(二)  CPU调优</title>
+    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/"/>
+    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/</id>
+    <published>2018-11-07T13:31:21.000Z</published>
+    <updated>2018-11-06T09:46:50.442Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。<br>本章解决java线上CPU调优</p>
+<ul>
+<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
+</li>
+</ul>
+<p><em>更新历史</em></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="定位线程"><a href="#定位线程" class="headerlink" title="定位线程"></a>定位线程</h2><ul>
+<li><p>TOP命令查看到CPU的占用情况<br>TOP –&gt; P : 按CPU使用率排序<br><img src="/images/jvm/ja_cpu_p.png" alt=""></p>
+</li>
+<li><p>具体线程<br>Java是一个多线程应用，进程是由多个线程构成的，上面看到的是这个进程的CPU占用率，导致这个进程CPU偏高的是其中某个或某几个线程，因而我们需要找到这些线程。<br>ps命令查看指定进程的线程情况</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -mp &lt;pid&gt; -o THREAD,tid,time</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/images/jvm/ja_cpu_thread.png" alt=""><br>线程tid为 9100 的线程，CPU占用率达到了99.8%， 就是这个线程的问题。</p>
+<h2 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h2><p>请出 <code>jstack</code> 分析具体线程。</p>
+<p><strong> 注意： 进制转换 </strong><br>ps命令查看到的线程ID 9100 是十进制，<code>jstack</code> 命令输出的线程ID可能是十六进制，使用如下命令转换<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">╰─$ <span class="built_in">printf</span> <span class="string">"%x\n"</span> 9100</div><div class="line">238c</div></pre></td></tr></table></figure></p>
+<p>然后使用 <code>jstack</code> 定位具体的问题</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">╰─$ jstack 9078|grep 238c -A 15</div><div class="line"><span class="string">"Thread-0"</span> <span class="comment">#10 prio=5 os_prio=0 tid=0x00007fbea0821800 nid=0x238c runnable [0x00007fbe8bbfa000]</span></div><div class="line">   java.lang.Thread.State: RUNNABLE</div><div class="line">        at com.xxx.xxx.MyClassLoader<span class="variable">$1</span>.run(MyClassLoader.java:19)</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
+<p><img src="/images/jvm/ja_cpu_source.png" alt=""></p>
+<p>最后结合源码检查就ok。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;br&gt;本章解决java线上CPU调优&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;headerlink&quot; title=&quot;&quot;&gt;&lt;/a&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="CPU调优" scheme="http://giveme5.cc/tags/CPU%E8%B0%83%E4%BC%98/"/>
+    
+      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
+    
+  </entry>
+  
+  <entry>
     <title>JVM线上调优(一) 工具介绍</title>
     <link href="http://giveme5.cc/2018/11/06/java/javaAnalyzer/"/>
     <id>http://giveme5.cc/2018/11/06/java/javaAnalyzer/</id>
     <published>2018-11-06T13:31:21.000Z</published>
-    <updated>2018-11-06T09:46:40.698Z</updated>
+    <updated>2019-09-11T01:01:06.457Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。</p>
@@ -235,7 +465,8 @@
 </li>
 </ul>
 <p><em>更新历史</em></p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p>JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>TIPs： 以下命令都尽量在启动JVM的用户环境下使用</p>
+<h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p>JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。</p>
 <h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><pre><code>jps [-q] [-mlvV] [&lt;hostid&gt;]
 </code></pre><p>参数都非必须</p>
 <h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><pre><code>-q : 只输出LVMID
@@ -345,7 +576,7 @@ S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU  
 <li>FGCT：老年代垃圾回收消耗时间</li>
 <li>GCT：垃圾回收消耗总时间</li>
 </ul>
-<p>更多可参考<a href="https://blog.csdn.net/maosijunzi/article/details/46049117" target="_blank" rel="external">java高分局之jstat命令使用</a></p>
+<p>更多可参考<a href="https://app.yinxiang.com/shard/s70/nl/17973191/9a8fdbd4-6a6b-46fb-8c70-babd70a02fcb" target="_blank" rel="external">jstat</a> <a href="https://blog.csdn.net/maosijunzi/article/details/46049117" target="_blank" rel="external">java高分局之jstat命令使用</a></p>
 <h2 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h2><p>jinfo(JVM Configuration info)实时查看和调整虚拟机运行参数</p>
 <h3 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h3><pre><code>jinfo &lt;option&gt; &lt;pid&gt;
 </code></pre><h3 id="option"><a href="#option" class="headerlink" title="option"></a>option</h3><pre><code>-flag : 输出指定args参数的值
@@ -440,11 +671,11 @@ Z  boolean
     
       <category term="java" scheme="http://giveme5.cc/tags/java/"/>
     
+      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
+    
       <category term="jvm" scheme="http://giveme5.cc/tags/jvm/"/>
     
       <category term="jps" scheme="http://giveme5.cc/tags/jps/"/>
-    
-      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
     
       <category term="jstat" scheme="http://giveme5.cc/tags/jstat/"/>
     
@@ -1856,51 +2087,6 @@ fc-list |grep SimSun
       <category term="android" scheme="http://giveme5.cc/tags/android/"/>
     
       <category term="Android" scheme="http://giveme5.cc/tags/Android/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>git</title>
-    <link href="http://giveme5.cc/2017/08/18/devEnv/git/git/"/>
-    <id>http://giveme5.cc/2017/08/18/devEnv/git/git/</id>
-    <published>2017-08-18T08:44:58.000Z</published>
-    <updated>2017-08-18T07:48:59.709Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>git , github, gitlab 相关</p>
-<ul>
-<li>git 的后悔药</li>
-</ul>
-<p><em>更新历史</em><br>2017-08-18 增加 删除/回滚 多次远程提交</p>
-<a id="more"></a>
-<h2 id="git-的后悔药"><a href="#git-的后悔药" class="headerlink" title="git 的后悔药"></a>git 的后悔药</h2><h3 id="场景1：直接丢弃工作区的修改（还没有add）"><a href="#场景1：直接丢弃工作区的修改（还没有add）" class="headerlink" title="场景1：直接丢弃工作区的修改（还没有add）"></a>场景1：直接丢弃工作区的修改（还没有add）</h3><p><code>git checkout -- file</code></p>
-<h3 id="场景2：-丢弃暂存区（已经add，未commit）"><a href="#场景2：-丢弃暂存区（已经add，未commit）" class="headerlink" title="场景2： 丢弃暂存区（已经add，未commit）"></a>场景2： 丢弃暂存区（已经add，未commit）</h3><p>分两步，第一步用命令 <code>git reset HEAD file</code> ，就回到了场景1，第二步按场景1操作。</p>
-<h3 id="场景3：已经提交了不合适的修改到版本库（已经commit，-未push）"><a href="#场景3：已经提交了不合适的修改到版本库（已经commit，-未push）" class="headerlink" title="场景3：已经提交了不合适的修改到版本库（已经commit， 未push）"></a>场景3：已经提交了不合适的修改到版本库（已经commit， 未push）</h3><p><code>git reset --hard HEAD^ #还原到上个</code><br><code>git reset --hard commitId</code></p>
-<h3 id="场景4：已经推送到远程（已经push）"><a href="#场景4：已经推送到远程（已经push）" class="headerlink" title="场景4：已经推送到远程（已经push）"></a>场景4：已经推送到远程（已经push）</h3><ul>
-<li><p>删除某一次远程提交<br><code>git revert commitId</code><br><code>git push origin master</code></p>
-</li>
-<li><p>删除/回滚 多次远程提交<br><code>git rebase -i &quot;commit id&quot;^</code><br><img src="/images/git1.jpg" alt=""><br>在编辑框中删除相关commit，如pick 5b3ba7a test2，然后保存退出（如果遇到冲突需要先解决冲突）！<br><code>git push origin master -f</code><br>这里需要强制推送， 如果是保护branch， 需要临时解除保护。</p>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;git , github, gitlab 相关&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;git 的后悔药&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;2017-08-18 增加 删除/回滚 多次远程提交&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="developEnv" scheme="http://giveme5.cc/categories/developEnv/"/>
-    
-    
-      <category term="github" scheme="http://giveme5.cc/tags/github/"/>
-    
-      <category term="git" scheme="http://giveme5.cc/tags/git/"/>
-    
-      <category term="gitlab" scheme="http://giveme5.cc/tags/gitlab/"/>
     
   </entry>
   

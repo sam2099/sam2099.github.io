@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java,jvm,jps,jstack,jstat,jmap,jhat,jinfo,JConsole,VisualVM,MAT," />
+  <meta name="keywords" content="java,jstack,jvm,jps,jstat,jmap,jhat,jinfo,JConsole,VisualVM,MAT," />
 
 
 
@@ -124,7 +124,7 @@ Memory调优吃我的吐出来
 
 更">
 <meta property="og:image" content="http://giveme5.cc/images/jvm/ja_visualvm.jpg">
-<meta property="og:updated_time" content="2018-11-06T09:46:40.698Z">
+<meta property="og:updated_time" content="2019-09-11T01:01:06.457Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM线上调优(一) 工具介绍">
 <meta name="twitter:description" content="主要内容
@@ -421,7 +421,8 @@ Memory调优吃我的吐出来
 </li>
 </ul>
 <p><em>更新历史</em></p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p>JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h2><p>TIPs： 以下命令都尽量在启动JVM的用户环境下使用</p>
+<h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p>JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。</p>
 <h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><pre><code>jps [-q] [-mlvV] [&lt;hostid&gt;]
 </code></pre><p>参数都非必须</p>
 <h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><pre><code>-q : 只输出LVMID
@@ -531,7 +532,7 @@ S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU  
 <li>FGCT：老年代垃圾回收消耗时间</li>
 <li>GCT：垃圾回收消耗总时间</li>
 </ul>
-<p>更多可参考<a href="https://blog.csdn.net/maosijunzi/article/details/46049117" target="_blank" rel="external">java高分局之jstat命令使用</a></p>
+<p>更多可参考<a href="https://app.yinxiang.com/shard/s70/nl/17973191/9a8fdbd4-6a6b-46fb-8c70-babd70a02fcb" target="_blank" rel="external">jstat</a> <a href="https://blog.csdn.net/maosijunzi/article/details/46049117" target="_blank" rel="external">java高分局之jstat命令使用</a></p>
 <h2 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h2><p>jinfo(JVM Configuration info)实时查看和调整虚拟机运行参数</p>
 <h3 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h3><pre><code>jinfo &lt;option&gt; &lt;pid&gt;
 </code></pre><h3 id="option"><a href="#option" class="headerlink" title="option"></a>option</h3><pre><code>-flag : 输出指定args参数的值
@@ -632,11 +633,11 @@ Z  boolean
           
             <a href="/tags/java/" rel="tag"># java</a>
           
+            <a href="/tags/jstack/" rel="tag"># jstack</a>
+          
             <a href="/tags/jvm/" rel="tag"># jvm</a>
           
             <a href="/tags/jps/" rel="tag"># jps</a>
-          
-            <a href="/tags/jstack/" rel="tag"># jstack</a>
           
             <a href="/tags/jstat/" rel="tag"># jstat</a>
           
@@ -673,8 +674,8 @@ Z  boolean
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/11/07/java/javaAnalyzer-memory/" rel="prev" title="JVM线上调优(三)  内存调优">
-                JVM线上调优(三)  内存调优 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/07/java/javaAnalyzer-cpu/" rel="prev" title="JVM线上调优(二)  CPU调优">
+                JVM线上调优(二)  CPU调优 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
