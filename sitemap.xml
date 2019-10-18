@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
+    
+    <lastmod>2019-10-18T06:46:09.151Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2019/09/23/devEnv/ide/</loc>
     
     <lastmod>2019-09-23T05:35:40.602Z</lastmod>
@@ -208,13 +215,6 @@
     <loc>http://giveme5.cc/2017/10/17/java/FunctionalInterface/</loc>
     
     <lastmod>2018-04-10T05:28:16.185Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
-    
-    <lastmod>2018-04-10T05:27:12.737Z</lastmod>
     
   </url>
   
