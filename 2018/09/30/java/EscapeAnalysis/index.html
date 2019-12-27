@@ -1,145 +1,77 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="java,Escape Analysis," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="主要内容
-逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java 逃逸分析 (Escape Analysis)">
-<meta property="og:url" content="http://giveme5.cc/2018/09/30/java/EscapeAnalysis/index.html">
-<meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="主要内容
-逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
-<meta property="og:updated_time" content="2018-10-18T08:30:49.744Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java 逃逸分析 (Escape Analysis)">
-<meta name="twitter:description" content="主要内容
-逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
+  <meta name="description" content="主要内容 逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
+<meta name="keywords" content="java,Escape Analysis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 逃逸分析 (Escape Analysis)">
+<meta property="og:url" content="http://giveme5.cc/2018/09/30/java/EscapeAnalysis/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-18T08:30:49.744Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java 逃逸分析 (Escape Analysis)">
+<meta name="twitter:description" content="主要内容 逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。逃逸分">
+
+<link rel="canonical" href="http://giveme5.cc/2018/09/30/java/EscapeAnalysis/">
 
 
-  <link rel="canonical" href="http://giveme5.cc/2018/09/30/java/EscapeAnalysis/"/>
-
-
-
-
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
 
   <title>Java 逃逸分析 (Escape Analysis) | Sam's Notes | Sam Blog</title>
   
@@ -149,239 +81,187 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-
-
-
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
-      
   </div>
 
   <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            站点地图
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
 
-  
+  </li>
+  </ul>
+
 </nav>
-
-
-
- </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2018/09/30/java/EscapeAnalysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Sam's Notes | Sam Blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Java 逃逸分析 (Escape Analysis)</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          Java 逃逸分析 (Escape Analysis)
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-30T22:18:03+08:00">
-                2018-09-30
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2018-09-30 22:18:03" itemprop="dateCreated datePublished" datetime="2018-09-30T22:18:03+08:00">2018-09-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-10-18 16:30:49" itemprop="dateModified" datetime="2018-10-18T16:30:49+08:00">2018-10-18</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/java/" itemprop="url" rel="index">
                     <span itemprop="name">java</span>
                   </a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/09/30/java/EscapeAnalysis/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2018/09/30/java/EscapeAnalysis/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/09/30/java/EscapeAnalysis/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/30/java/EscapeAnalysis/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
+
     
-
+    
+    
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <p><strong><em>主要内容</em></strong></p>
 <p>逃逸分析的基本行为就是分析对象动态作用域：当一个对象在方法中被定义后，它可能被外部方法所引用，称为方法逃逸。甚至还有可能被外部线程访问到，譬如赋值给类变量或可以在其他线程中访问的实例变量，称为线程逃逸。<br>即时编译器（Just-in-time Compilation，JIT）判断对象是否逃逸的依据，一是对象是否被存入堆中（静态字段或者堆中对象的实例字段），二是对象是否被传入未知代码中。<br>逃逸分析 在 方法内联后才进行。</p>
 <p>如果对象没有逃逸，即时编译器对代码进行性能优化。</p>
 <a id="more"></a>
-<h2 id="逃逸方式"><a href="#逃逸方式" class="headerlink" title="逃逸方式"></a>逃逸方式</h2><p>show you code<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Escape</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object obj;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">globalVariableEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 给全局变量赋值，发生逃逸</span></div><div class="line">        obj = <span class="keyword">new</span> Object();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">methodEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 方法返回值，发生逃逸</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Object();</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodNoEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 方法返回值，没有逃逸</span></div><div class="line">        Object obj = <span class="keyword">new</span> Object();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">instanceEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 实例引用发生逃逸</span></div><div class="line">        test(<span class="keyword">this</span>); </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="逃逸方式"><a href="#逃逸方式" class="headerlink" title="逃逸方式"></a>逃逸方式</h2><p>show you code<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Escape</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Object obj;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">globalVariableEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 给全局变量赋值，发生逃逸</span></span><br><span class="line">        obj = <span class="keyword">new</span> Object();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">methodEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 方法返回值，发生逃逸</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Object();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">methodNoEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 方法返回值，没有逃逸</span></span><br><span class="line">        Object obj = <span class="keyword">new</span> Object();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">instanceEscape</span><span class="params">()</span> </span>&#123;  <span class="comment">// 实例引用发生逃逸</span></span><br><span class="line">        test(<span class="keyword">this</span>); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="基于逃逸分析的优化"><a href="#基于逃逸分析的优化" class="headerlink" title="基于逃逸分析的优化"></a>基于逃逸分析的优化</h2><p>一旦对象没有逃逸，那么可能做如下优化： 字段访问优化（锁消除、栈上分配以及标量替换）， 字段存储优化， 死代码消除， 循环优化</p>
 <h3 id="字段访问优化"><a href="#字段访问优化" class="headerlink" title="字段访问优化"></a>字段访问优化</h3><ul>
 <li><p>锁消除<br>线程同步本身比较耗，如果确定一个对象不会逃逸出线程，无法被其它线程访问到，那该对象的读写就不会存在竞争，对这个变量的同步措施就可以消除掉。单线程中是没有锁竞争。（锁和锁块内的对象不会逃逸出线程就可以把这个同步块取消）</p>
@@ -389,7 +269,7 @@
 <li><p>栈上分配<br>如果一个对象仅在某线程中被分配，要使指向该对象的指针永远不会逃逸，对象可能是栈分配的候选，而不是堆分配。<br>一旦对象分配到栈上，方法执行完后自动销毁，而不需要垃圾回收的介入，从而提高系统性能。</p>
 </li>
 <li><p>标量替换<br>将原本连续分配的对象拆散为一个个单独的字段，分布在栈上或者寄存器中。我的理解就是 将对象拆解为局部变量。<br>减少对 对象以及对象内属性 的访问，  因为他们都涉及到访问内存，而局部变量 访问 栈和控制计数器， 不需要垃圾回收的介入。<br><br>比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bar</span><span class="params">(Foo o, <span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> y = o.a + x;</div><div class="line">    <span class="keyword">return</span> o.a + y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//在上面这段代码中，实例字段将被读取两次。即时编译器会将第一次读取的值缓存起来，并且替换第二次字段读取操作，以节省一次内存访问。</span></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bar</span><span class="params">(Foo o, <span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line"><span class="keyword">int</span> t = o.a; </div><div class="line"><span class="keyword">int</span> y = t + x;</div><div class="line"><span class="keyword">return</span> t + y;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bar</span><span class="params">(Foo o, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> y = o.a + x;</span><br><span class="line">    <span class="keyword">return</span> o.a + y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在上面这段代码中，实例字段将被读取两次。即时编译器会将第一次读取的值缓存起来，并且替换第二次字段读取操作，以节省一次内存访问。</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bar</span><span class="params">(Foo o, <span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line"><span class="keyword">int</span> t = o.a; </span><br><span class="line"><span class="keyword">int</span> y = t + x;</span><br><span class="line"><span class="keyword">return</span> t + y;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>注意 <code>volatile</code> 修饰的字段 不会被完全优化</p>
@@ -399,275 +279,164 @@
 <h2 id="逃逸分析并不成熟"><a href="#逃逸分析并不成熟" class="headerlink" title="逃逸分析并不成熟"></a>逃逸分析并不成熟</h2><p>无法保证逃逸分析的性能消耗一定能高于他的消耗。虽然经过逃逸分析可以做标量替换、栈上分配、和锁消除。但是逃逸分析自身也是需要进行一系列复杂的分析的，这其实也是一个相对耗时的过程。</p>
 <p>一个极端的例子，就是经过逃逸分析之后，发现没有一个对象是不逃逸的。那这个逃逸分析的过程就白白浪费掉了。</p>
 
-      
     </div>
 
-    <div>
-      
-        
+    
+    
+    
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/java/" rel="tag"># java</a>
-          
-            <a href="/tags/Escape-Analysis/" rel="tag"># Escape Analysis</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/07/03/spring/spring_file/" rel="next" title="spring 流服务">
-                <i class="fa fa-chevron-left"></i> spring 流服务
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/Escape-Analysis/" rel="tag"># Escape Analysis</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/04/spring/springfox-md/" rel="prev" title="swagger springfox rest接口文档">
-                swagger springfox rest接口文档 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/03/spring/spring_file/" rel="prev" title="spring 流服务">
+      <i class="fa fa-chevron-left"></i> spring 流服务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/04/spring/springfox-md/" rel="next" title="swagger springfox rest接口文档">
+      swagger springfox rest接口文档 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
           </div>
           
-
-
-          
+    
   <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
   </div>
-
+  
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/logo.png"
-               alt="sam chen" />
-          <p class="site-author-name" itemprop="name">sam chen</p>
-           
-              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">111</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逃逸方式"><span class="nav-number">1.</span> <span class="nav-text">逃逸方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于逃逸分析的优化"><span class="nav-number">2.</span> <span class="nav-text">基于逃逸分析的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字段访问优化"><span class="nav-number">2.1.</span> <span class="nav-text">字段访问优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字段存储优化"><span class="nav-number">2.2.</span> <span class="nav-text">字段存储优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#死代码消除"><span class="nav-number">2.3.</span> <span class="nav-text">死代码消除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环无关代码外提"><span class="nav-number">2.4.</span> <span class="nav-text">循环无关代码外提</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逃逸分析并不成熟"><span class="nav-number">3.</span> <span class="nav-text">逃逸分析并不成熟</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#逃逸方式"><span class="nav-number">1.</span> <span class="nav-text">逃逸方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于逃逸分析的优化"><span class="nav-number">2.</span> <span class="nav-text">基于逃逸分析的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字段访问优化"><span class="nav-number">2.1.</span> <span class="nav-text">字段访问优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字段存储优化"><span class="nav-number">2.2.</span> <span class="nav-text">字段存储优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#死代码消除"><span class="nav-number">2.3.</span> <span class="nav-text">死代码消除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#循环无关代码外提"><span class="nav-number">2.4.</span> <span class="nav-text">循环无关代码外提</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逃逸分析并不成熟"><span class="nav-number">3.</span> <span class="nav-text">逃逸分析并不成熟</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright">
   
-  &copy;  2016 - 
+  &copy; 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">sam chen</span>
 </div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
 
         
+
+
+
+
+
+
+
 
         
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -684,108 +453,6 @@
 
 
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://giveme5.cc/2018/09/30/java/EscapeAnalysis/';
-          this.page.identifier = '2018/09/30/java/EscapeAnalysis/';
-          this.page.title = 'Java 逃逸分析 (Escape Analysis)';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://amadis.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
 
 
 
@@ -793,29 +460,38 @@
   
 
   
+
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
 </script>
-
-
-  
-
-  
-
-  
-
-  
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2018/09/30/java/EscapeAnalysis/",
+            identifier: "2018/09/30/java/EscapeAnalysis/",
+            title: "Java 逃逸分析 (Escape Analysis)"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
 
 </body>
 </html>

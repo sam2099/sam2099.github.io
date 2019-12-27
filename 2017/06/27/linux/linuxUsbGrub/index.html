@@ -1,148 +1,77 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="linux,usb,grub,BIOS,UEFI," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="主要内容
-一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。
-话说我一个开发，怎么会研究这个玩意。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="U盘引导多个linux镜像">
-<meta property="og:url" content="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/index.html">
-<meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="主要内容
-一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。
-话说我一个开发，怎么会研究这个玩意。">
-<meta property="og:updated_time" content="2017-07-06T02:17:43.990Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="U盘引导多个linux镜像">
-<meta name="twitter:description" content="主要内容
-一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。
-话说我一个开发，怎么会研究这个玩意。">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
+  <meta name="description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。">
+<meta name="keywords" content="linux,usb,grub,BIOS,UEFI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="U盘引导多个linux镜像">
+<meta property="og:url" content="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-07-06T02:17:43.990Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="U盘引导多个linux镜像">
+<meta name="twitter:description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。">
+
+<link rel="canonical" href="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/">
 
 
-  <link rel="canonical" href="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/"/>
-
-
-
-
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
 
   <title>U盘引导多个linux镜像 | Sam's Notes | Sam Blog</title>
   
@@ -152,232 +81,180 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-
-
-
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
-      
   </div>
 
   <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            站点地图
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
 
-  
+  </li>
+  </ul>
+
 </nav>
-
-
-
- </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Sam's Notes | Sam Blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">U盘引导多个linux镜像</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          U盘引导多个linux镜像
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-27T19:08:03+08:00">
-                2017-06-27
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2017-06-27 19:08:03" itemprop="dateCreated datePublished" datetime="2017-06-27T19:08:03+08:00">2017-06-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-07-06 10:17:43" itemprop="dateModified" datetime="2017-07-06T10:17:43+08:00">2017-07-06</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/linux/" itemprop="url" rel="index">
                     <span itemprop="name">linux</span>
                   </a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/27/linux/linuxUsbGrub/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/27/linux/linuxUsbGrub/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/06/27/linux/linuxUsbGrub/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/27/linux/linuxUsbGrub/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
+
     
-
+    
+    
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <p><strong><em>主要内容</em></strong></p>
@@ -387,7 +264,7 @@
 <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
 <li><p>U盘<br>最好16G以上，不然装不了几个系统的。</p>
 </li>
-<li><p>预备知识<br>在此特别感谢<a href="https://my.oschina.net/abcfy2/blog/491140?nocache=1497879527986" target="_blank" rel="external">Feng_Yu</a> 的帮助， 把他的内容读通，基本步骤就参照他的。<br>最大的区别是我把U盘分了多个区，除了<code>GPT分区(EF00)</code>和<code>bios_grub分区(EF02)</code>，其他的分区平常都可以当普通U盘使用。</p>
+<li><p>预备知识<br>在此特别感谢<a href="https://my.oschina.net/abcfy2/blog/491140?nocache=1497879527986" target="_blank" rel="noopener">Feng_Yu</a> 的帮助， 把他的内容读通，基本步骤就参照他的。<br>最大的区别是我把U盘分了多个区，除了<code>GPT分区(EF00)</code>和<code>bios_grub分区(EF02)</code>，其他的分区平常都可以当普通U盘使用。</p>
 </li>
 </ul>
 <h2 id="格式化U盘"><a href="#格式化U盘" class="headerlink" title="格式化U盘"></a>格式化U盘</h2><p>我在 <code>Opensuse 42.1</code> 系统操作的。</p>
@@ -399,290 +276,176 @@
 <li>分区三： NTFS分区，剩下空间-1M，数据盘</li>
 <li>分区四： 剩余最后1M，不要格式化！！！！！！！<br>分区二和分区三平常都可当一般U盘使用， 分区三 为兼容 <code>windows</code>系统， 分区二为安装 <code>centos</code> 等不支持 <code>ntfs</code>的系统。</li>
 </ul>
-<h4 id="bios-grub"><a href="#bios-grub" class="headerlink" title="bios_grub"></a>bios_grub</h4><p>使用<code>gdisk</code> 将最后一个分区标记为 <code>EF02</code>， 即<code>bios_grub分区</code><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">╰─<span class="comment"># gdisk /dev/sdb</span></div><div class="line">GPT fdisk (gdisk) version 0.8.8</div><div class="line"></div><div class="line">Partition table scan:</div><div class="line">  MBR: protective</div><div class="line">  BSD: not present</div><div class="line">  APM: not present</div><div class="line">  GPT: present</div><div class="line"></div><div class="line">Found valid GPT with protective MBR; using GPT.</div><div class="line"></div><div class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): n</div><div class="line">Partition number (3-128, default 3): </div><div class="line">First sector (34-31266782, default = 31264768) or &#123;+-&#125;size&#123;KMGTP&#125;: </div><div class="line">Last sector (31264768-31266782, default = 31266782) or &#123;+-&#125;size&#123;KMGTP&#125;: </div><div class="line">Current <span class="built_in">type</span> is <span class="string">'Linux filesystem'</span></div><div class="line">Hex code or GUID (L to show codes, Enter = 8300): EF02</div><div class="line">Changed <span class="built_in">type</span> of partition to <span class="string">'BIOS boot partition'</span></div><div class="line"></div><div class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): p</div><div class="line">Disk /dev/sdb: 31266816 sectors, 14.9 GiB</div><div class="line">Logical sector size: 512 bytes</div><div class="line">Disk identifier (GUID): 42BF9B08-57CA-4F18-8CB5-C3B06668B141</div><div class="line">Partition table holds up to 128 entries</div><div class="line">First usable sector is 34, last usable sector is 31266782</div><div class="line">Partitions will be aligned on 2048-sector boundaries</div><div class="line">Total free space is 2014 sectors (1007.0 KiB)</div><div class="line"></div><div class="line">Number  Start (sector)    End (sector)  Size       Code  Name</div><div class="line">   1            2048          526335   256.0 MiB   EF00  </div><div class="line">   2          526336        31264767   14.7 GiB    0700  </div><div class="line">   3        31264768        31266782   1007.5 KiB  EF02  BIOS boot partition</div><div class="line"></div><div class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): w</div><div class="line"></div><div class="line">Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING</div><div class="line">PARTITIONS!!</div><div class="line"></div><div class="line">Do you want to proceed? (Y/N): y</div><div class="line">OK; writing new GUID partition table (GPT) to /dev/sdb.</div><div class="line">The operation has completed successfully.</div></pre></td></tr></table></figure></p>
-<h2 id="安装grub到U盘"><a href="#安装grub到U盘" class="headerlink" title="安装grub到U盘"></a>安装grub到U盘</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ sudo mount /dev/sdb1 /mnt -o uid=<span class="variable">$USER</span>,gid=<span class="variable">$USER</span>  <span class="comment"># 没什么好说的，挂载U盘使用，加上uid和gid参数只是为了编辑文件不需要sudo而已</span></div><div class="line"></div><div class="line"><span class="comment"># grub安装到MBR</span></div><div class="line">$  sudo grub2-install --target=i386-pc --recheck --boot-directory=/mnt/boot /dev/sdb</div><div class="line">Installing <span class="keyword">for</span> i386-pc platform.</div><div class="line">Installation finished. No error reported.</div><div class="line"></div><div class="line"><span class="comment"># grub安装到ESP,特别注意--removable参数，安装到移动设备上一定要用这个参数</span></div><div class="line">$ sudo grub2-install --target x86_64-efi --efi-directory /mnt --boot-directory=/mnt/boot --removable</div><div class="line">Installing <span class="keyword">for</span> x86_64-efi platform.</div><div class="line">Installation finished. No error reported.</div></pre></td></tr></table></figure>
+<h4 id="bios-grub"><a href="#bios-grub" class="headerlink" title="bios_grub"></a>bios_grub</h4><p>使用<code>gdisk</code> 将最后一个分区标记为 <code>EF02</code>， 即<code>bios_grub分区</code><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># gdisk /dev/sdb</span></span><br><span class="line">GPT fdisk (gdisk) version 0.8.8</span><br><span class="line"></span><br><span class="line">Partition table scan:</span><br><span class="line">  MBR: protective</span><br><span class="line">  BSD: not present</span><br><span class="line">  APM: not present</span><br><span class="line">  GPT: present</span><br><span class="line"></span><br><span class="line">Found valid GPT with protective MBR; using GPT.</span><br><span class="line"></span><br><span class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): n</span><br><span class="line">Partition number (3-128, default 3): </span><br><span class="line">First sector (34-31266782, default = 31264768) or &#123;+-&#125;size&#123;KMGTP&#125;: </span><br><span class="line">Last sector (31264768-31266782, default = 31266782) or &#123;+-&#125;size&#123;KMGTP&#125;: </span><br><span class="line">Current <span class="built_in">type</span> is <span class="string">'Linux filesystem'</span></span><br><span class="line">Hex code or GUID (L to show codes, Enter = 8300): EF02</span><br><span class="line">Changed <span class="built_in">type</span> of partition to <span class="string">'BIOS boot partition'</span></span><br><span class="line"></span><br><span class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): p</span><br><span class="line">Disk /dev/sdb: 31266816 sectors, 14.9 GiB</span><br><span class="line">Logical sector size: 512 bytes</span><br><span class="line">Disk identifier (GUID): 42BF9B08-57CA-4F18-8CB5-C3B06668B141</span><br><span class="line">Partition table holds up to 128 entries</span><br><span class="line">First usable sector is 34, last usable sector is 31266782</span><br><span class="line">Partitions will be aligned on 2048-sector boundaries</span><br><span class="line">Total free space is 2014 sectors (1007.0 KiB)</span><br><span class="line"></span><br><span class="line">Number  Start (sector)    End (sector)  Size       Code  Name</span><br><span class="line">   1            2048          526335   256.0 MiB   EF00  </span><br><span class="line">   2          526336        31264767   14.7 GiB    0700  </span><br><span class="line">   3        31264768        31266782   1007.5 KiB  EF02  BIOS boot partition</span><br><span class="line"></span><br><span class="line">Command (? <span class="keyword">for</span> <span class="built_in">help</span>): w</span><br><span class="line"></span><br><span class="line">Final checks complete. About to write GPT data. THIS WILL OVERWRITE EXISTING</span><br><span class="line">PARTITIONS!!</span><br><span class="line"></span><br><span class="line">Do you want to proceed? (Y/N): y</span><br><span class="line">OK; writing new GUID partition table (GPT) to /dev/sdb.</span><br><span class="line">The operation has completed successfully.</span><br></pre></td></tr></table></figure></p>
+<h2 id="安装grub到U盘"><a href="#安装grub到U盘" class="headerlink" title="安装grub到U盘"></a>安装grub到U盘</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mount /dev/sdb1 /mnt -o uid=<span class="variable">$USER</span>,gid=<span class="variable">$USER</span>  <span class="comment"># 没什么好说的，挂载U盘使用，加上uid和gid参数只是为了编辑文件不需要sudo而已</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># grub安装到MBR</span></span><br><span class="line">$  sudo grub2-install --target=i386-pc --recheck --boot-directory=/mnt/boot /dev/sdb</span><br><span class="line">Installing <span class="keyword">for</span> i386-pc platform.</span><br><span class="line">Installation finished. No error reported.</span><br><span class="line"></span><br><span class="line"><span class="comment"># grub安装到ESP,特别注意--removable参数，安装到移动设备上一定要用这个参数</span></span><br><span class="line">$ sudo grub2-install --target x86_64-efi --efi-directory /mnt --boot-directory=/mnt/boot --removable</span><br><span class="line">Installing <span class="keyword">for</span> x86_64-efi platform.</span><br><span class="line">Installation finished. No error reported.</span><br></pre></td></tr></table></figure>
 <p><code>grub2-install</code> 命令根据你的系统决定， 也可能是 <code>grub-install</code></p>
 <h2 id="添加grub菜单"><a href="#添加grub菜单" class="headerlink" title="添加grub菜单"></a>添加grub菜单</h2><p>在<code>/mnt/boot/grub2</code>这个目录下，新建<code>grub.cfg</code>配置文件<br>例如： </p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># path to the partition holding ISO images (using UUID)</span></div><div class="line">probe -u <span class="variable">$root</span> --set=rootuuid</div><div class="line"><span class="built_in">set</span> imgdevpath=<span class="string">"/dev/disk/by-uuid/<span class="variable">$rootuuid</span>"</span></div><div class="line"></div><div class="line"><span class="comment"># lsblk -f to find your UUID for data device</span></div><div class="line"><span class="built_in">set</span> ntfs_data_uuid=<span class="string">"71E161DA3EB70972"</span></div><div class="line"><span class="built_in">set</span> ext4_data_uuid=<span class="string">"50a92fdb-4e11-47b8-889c-02f430d3a780"</span></div><div class="line"></div><div class="line"><span class="comment"># define globally (i.e outside any menuentry)</span></div><div class="line">insmod search_fs_uuid</div><div class="line">search --no-floppy --set=isopart --fs-uuid <span class="variable">$ntfs_data_uuid</span></div><div class="line">search --no-floppy --set=centos_iso_part --fs-uuid <span class="variable">$ext4_data_uuid</span>   <span class="comment"># centos no ntfs</span></div><div class="line"><span class="built_in">set</span> isopath=/iso  <span class="comment"># 定义iso文件存放的路径</span></div><div class="line"></div><div class="line"><span class="comment"># 定义各种要启动的iso镜像名</span></div><div class="line"><span class="built_in">set</span> ubuntu=ubuntu-16.04.1-desktop-amd64.iso                  <span class="comment"># ubuntu桌面版镜像,支持12.04-16.04</span></div><div class="line"><span class="built_in">set</span> ubuntuserver=ubuntu-16.04.1-server-amd64.iso             <span class="comment"># ubuntu服务器版镜像,支持14.04-16.04</span></div><div class="line"><span class="built_in">set</span> debianlive=debian-live-8.6.0-amd64-gnome-desktop.iso     <span class="comment"># debian livecd镜像,支持debian8</span></div><div class="line"><span class="built_in">set</span> deepin15=deepin-15.3-amd64.iso                           <span class="comment"># deepin15镜像</span></div><div class="line"><span class="built_in">set</span> linuxmint=linuxmint-18.1-kde-64bit.iso                   <span class="comment"># linuxmint镜像,支持17-18</span></div><div class="line"><span class="built_in">set</span> ubuntukylin=ubuntukylin-16.04.1-desktop-amd64.iso        <span class="comment"># ubuntukylin镜像,支持14.04-16.04</span></div><div class="line"><span class="built_in">set</span> centosdvd=CentOS-7-x86_64-DVD-1511.iso                   <span class="comment"># centos DVD版镜像,包括DVD/Everything/Minimal/Netinstall镜像,支持6-7</span></div><div class="line"><span class="built_in">set</span> centoslive=CentOS-7-x86_64-LiveGNOME-1511.iso            <span class="comment"># centos livecd镜像,包括livecd/livedvd，支持7(6似乎不支持直接引导ISO,期待PR解决)</span></div><div class="line"><span class="built_in">set</span> opensuse=openSUSE-Leap-42.1-DVD-x86_64.iso               <span class="comment"># opensuse DVD安装镜像</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># grub模块配置</span></div><div class="line">loadfont unicode</div><div class="line"><span class="built_in">set</span> lang=zh_CN</div><div class="line">insmod all_video</div><div class="line">insmod gfxterm</div><div class="line">insmod gettext</div><div class="line">insmod gfxmenu</div><div class="line">insmod png</div><div class="line">insmod ext2</div><div class="line">insmod part_msdos</div><div class="line">insmod xfs</div><div class="line">insmod ntfs</div><div class="line">insmod loopback</div><div class="line">insmod iso9660</div><div class="line">terminal_output gfxterm</div><div class="line"><span class="built_in">set</span> menu_color_normal=cyan/blue</div><div class="line"><span class="built_in">set</span> menu_color_highlight=white/blue</div><div class="line">gfxmode keep</div><div class="line"><span class="built_in">set</span> vt_handoff=vt.handoff=7</div><div class="line"></div><div class="line"><span class="comment"># 主题配置</span></div><div class="line"><span class="built_in">set</span> gfxmode=auto</div><div class="line"><span class="built_in">set</span> timeout_style=menu</div><div class="line"><span class="built_in">set</span> timeout=10</div><div class="line"><span class="built_in">set</span> theme=<span class="variable">$prefix</span>/themes/Tuxkiller2/theme.txt</div><div class="line"><span class="built_in">export</span> theme</div><div class="line"></div><div class="line">menuentry <span class="string">'从本地硬盘启动'</span> --class harddrive &#123;</div><div class="line">  <span class="built_in">set</span> root=(hd1)</div><div class="line">  chainloader +1</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$linuxmint</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"linuxmint-18.1-kde-64"</span> --class linuxmint --class gnu-linux --class gnu --class os &#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$linuxmint</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Linux Mint ...'</span></div><div class="line">    linux (loop)/casper/vmlinuz file=/cdrom/preseed/linuxmint.seed boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/casper/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntu</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Ubuntu Desktop ISO"</span> --class ubuntu --class gnu-linux --class gnu --class os &#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntu</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Ubuntu Desktop ...'</span></div><div class="line">    linux (loop)/casper/vmlinuz.efi file=/cdrom/preseed/ubuntu.seed boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/casper/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntukylin</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"UbuntuKylin Desktop ISO"</span> --class ubuntukylin --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntukylin</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入UbuntuKylin Desktop ...'</span></div><div class="line">    linux (loop)/casper/vmlinuz.efi boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/casper/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="comment"># 特别注意: Ubuntu Server会出现安装的时候检测不到光驱的现象</span></div><div class="line"><span class="comment"># 此时手工进入shell下，将iso镜像挂载在/cdrom继续即可</span></div><div class="line"><span class="comment"># mount /dev/sdb1 /media</span></div><div class="line"><span class="comment"># mount -o loop /media/boot/iso/ubuntu-*-server-*.iso /cdrom</span></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntuserver</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Ubuntu Server ISO"</span> --class ubuntu --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntuserver</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">set</span> gfxpayload=keep</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Ubuntu Server ...'</span></div><div class="line">    linux (loop)/install/vmlinuz file=/cdrom/preseed/ubuntu-server.seed iso-scan/filename=<span class="variable">$isofile</span> quiet ---</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/install/initrd.gz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$deepin15</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Deepin 15 ISO"</span> --class deepin --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$deepin15</span>"</span> </div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Deepin ...'</span></div><div class="line">    linux (loop)/live/vmlinuz.efi boot=live config findiso=<span class="variable">$isofile</span> noeject noprompt locales=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/live/initrd.lz</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$debianlive</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"Debian LiveCD ISO"</span> --class debian --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$debianlive</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入Debian LiveCD ...'</span></div><div class="line">    linux (loop)/live/vmlinuz boot=live config findiso=<span class="variable">$isofile</span> noeject noprompt locales=zh_CN.UTF-8 --</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/live/initrd.img</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$centos_iso_part</span>)<span class="variable">$isopath</span>/<span class="variable">$centosdvd</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"CentOS-7-x86_64-DVD-1511"</span> --class centos --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$centosdvd</span>"</span></div><div class="line">    loopback loop (<span class="variable">$centos_iso_part</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入CentOS DVD ...'</span></div><div class="line">    linux (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=<span class="variable">$ext4_data_uuid</span>:/<span class="variable">$isofile</span> inst.lang=zh_CN.UTF-8 rhgb</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/isolinux/initrd.img</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$opensuse</span>"</span> ]; <span class="keyword">then</span></div><div class="line">menuentry <span class="string">'openSUSE-42.1-DVD-x86_64'</span> --class opensuse --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$opensuse</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    linux (loop)/boot/x86_64/loader/linux install=hd:<span class="variable">$isofile</span></div><div class="line">    initrd (loop)/boot/x86_64/loader/initrd</div><div class="line">&#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ <span class="_">-f</span> <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$centoslive</span>"</span> ]; <span class="keyword">then</span></div><div class="line">  menuentry <span class="string">"CentOS LiveCD ISO"</span> --class centos --class gnu-linux --class gnu --class os&#123;</div><div class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$centoslive</span>"</span></div><div class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入CentOS LiveCD ...'</span></div><div class="line">    probe <span class="_">-l</span> <span class="_">-s</span> isolable (loop)</div><div class="line">    linux (loop)/isolinux/vmlinuz0 boot=isolinux root=live:LABEL=<span class="string">"<span class="variable">$isolable</span>"</span> iso-scan/filename=<span class="variable">$isofile</span> rd.live.image LANG=zh_CN rd.locale.LANG=zh_CN rhgb</div><div class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></div><div class="line">    initrd (loop)/isolinux/initrd0.img</div><div class="line">  &#125;</div><div class="line"><span class="keyword">fi</span></div><div class="line"></div><div class="line">menuentry <span class="string">'关闭系统'</span> --class halt &#123;</div><div class="line">  <span class="built_in">echo</span> <span class="string">'关机中 ...'</span></div><div class="line">  halt</div><div class="line">&#125;</div><div class="line"></div><div class="line">menuentry <span class="string">'重启系统'</span> --class reboot &#123;</div><div class="line">  <span class="built_in">echo</span> <span class="string">'重启系统中 ...'</span></div><div class="line">  reboot</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="美化"><a href="#美化" class="headerlink" title="美化"></a>美化</h2><p> 美化启动<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对应的把下面的/dev/sdb1替换成你的U盘的ESP分区</span></div><div class="line">sudo mount /dev/sdb1 /mnt/  -o uid=<span class="variable">$USER</span>,gid=<span class="variable">$USER</span>,utf8=1</div><div class="line">cp -R themes/ /mnt/boot/grub2/</div></pre></td></tr></table></figure></p>
-<p><code>themes</code> 请参考 <a href="http://git.oschina.net/abcfy2/grub-cfg" target="_blank" rel="external">Feng_Yu的</a></p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://wiki.archlinux.org/index.php/Multiboot_USB_drive" target="_blank" rel="external">Multiboot USB drive</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># path to the partition holding ISO images (using UUID)</span></span><br><span class="line">probe -u <span class="variable">$root</span> --<span class="built_in">set</span>=rootuuid</span><br><span class="line"><span class="built_in">set</span> imgdevpath=<span class="string">"/dev/disk/by-uuid/<span class="variable">$rootuuid</span>"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># lsblk -f to find your UUID for data device</span></span><br><span class="line"><span class="built_in">set</span> ntfs_data_uuid=<span class="string">"71E161DA3EB70972"</span></span><br><span class="line"><span class="built_in">set</span> ext4_data_uuid=<span class="string">"50a92fdb-4e11-47b8-889c-02f430d3a780"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define globally (i.e outside any menuentry)</span></span><br><span class="line">insmod search_fs_uuid</span><br><span class="line">search --no-floppy --<span class="built_in">set</span>=isopart --fs-uuid <span class="variable">$ntfs_data_uuid</span></span><br><span class="line">search --no-floppy --<span class="built_in">set</span>=centos_iso_part --fs-uuid <span class="variable">$ext4_data_uuid</span>   <span class="comment"># centos no ntfs</span></span><br><span class="line"><span class="built_in">set</span> isopath=/iso  <span class="comment"># 定义iso文件存放的路径</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义各种要启动的iso镜像名</span></span><br><span class="line"><span class="built_in">set</span> ubuntu=ubuntu-16.04.1-desktop-amd64.iso                  <span class="comment"># ubuntu桌面版镜像,支持12.04-16.04</span></span><br><span class="line"><span class="built_in">set</span> ubuntuserver=ubuntu-16.04.1-server-amd64.iso             <span class="comment"># ubuntu服务器版镜像,支持14.04-16.04</span></span><br><span class="line"><span class="built_in">set</span> debianlive=debian-live-8.6.0-amd64-gnome-desktop.iso     <span class="comment"># debian livecd镜像,支持debian8</span></span><br><span class="line"><span class="built_in">set</span> deepin15=deepin-15.3-amd64.iso                           <span class="comment"># deepin15镜像</span></span><br><span class="line"><span class="built_in">set</span> linuxmint=linuxmint-18.1-kde-64bit.iso                   <span class="comment"># linuxmint镜像,支持17-18</span></span><br><span class="line"><span class="built_in">set</span> ubuntukylin=ubuntukylin-16.04.1-desktop-amd64.iso        <span class="comment"># ubuntukylin镜像,支持14.04-16.04</span></span><br><span class="line"><span class="built_in">set</span> centosdvd=CentOS-7-x86_64-DVD-1511.iso                   <span class="comment"># centos DVD版镜像,包括DVD/Everything/Minimal/Netinstall镜像,支持6-7</span></span><br><span class="line"><span class="built_in">set</span> centoslive=CentOS-7-x86_64-LiveGNOME-1511.iso            <span class="comment"># centos livecd镜像,包括livecd/livedvd，支持7(6似乎不支持直接引导ISO,期待PR解决)</span></span><br><span class="line"><span class="built_in">set</span> opensuse=openSUSE-Leap-42.1-DVD-x86_64.iso               <span class="comment"># opensuse DVD安装镜像</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># grub模块配置</span></span><br><span class="line">loadfont unicode</span><br><span class="line"><span class="built_in">set</span> lang=zh_CN</span><br><span class="line">insmod all_video</span><br><span class="line">insmod gfxterm</span><br><span class="line">insmod gettext</span><br><span class="line">insmod gfxmenu</span><br><span class="line">insmod png</span><br><span class="line">insmod ext2</span><br><span class="line">insmod part_msdos</span><br><span class="line">insmod xfs</span><br><span class="line">insmod ntfs</span><br><span class="line">insmod loopback</span><br><span class="line">insmod iso9660</span><br><span class="line">terminal_output gfxterm</span><br><span class="line"><span class="built_in">set</span> menu_color_normal=cyan/blue</span><br><span class="line"><span class="built_in">set</span> menu_color_highlight=white/blue</span><br><span class="line">gfxmode keep</span><br><span class="line"><span class="built_in">set</span> vt_handoff=vt.handoff=7</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主题配置</span></span><br><span class="line"><span class="built_in">set</span> gfxmode=auto</span><br><span class="line"><span class="built_in">set</span> timeout_style=menu</span><br><span class="line"><span class="built_in">set</span> timeout=10</span><br><span class="line"><span class="built_in">set</span> theme=<span class="variable">$prefix</span>/themes/Tuxkiller2/theme.txt</span><br><span class="line"><span class="built_in">export</span> theme</span><br><span class="line"></span><br><span class="line">menuentry <span class="string">'从本地硬盘启动'</span> --class harddrive &#123;</span><br><span class="line">  <span class="built_in">set</span> root=(hd1)</span><br><span class="line">  chainloader +1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$linuxmint</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"linuxmint-18.1-kde-64"</span> --class linuxmint --class gnu-linux --class gnu --class os &#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$linuxmint</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入Linux Mint ...'</span></span><br><span class="line">    linux (loop)/casper/vmlinuz file=/cdrom/preseed/linuxmint.seed boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/casper/initrd.lz</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntu</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"Ubuntu Desktop ISO"</span> --class ubuntu --class gnu-linux --class gnu --class os &#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntu</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入Ubuntu Desktop ...'</span></span><br><span class="line">    linux (loop)/casper/vmlinuz.efi file=/cdrom/preseed/ubuntu.seed boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/casper/initrd.lz</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntukylin</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"UbuntuKylin Desktop ISO"</span> --class ubuntukylin --class gnu-linux --class gnu --class os&#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntukylin</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入UbuntuKylin Desktop ...'</span></span><br><span class="line">    linux (loop)/casper/vmlinuz.efi boot=casper iso-scan/filename=<span class="variable">$isofile</span> noeject noprompt splash locale=zh_CN.UTF-8 --</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/casper/initrd.lz</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 特别注意: Ubuntu Server会出现安装的时候检测不到光驱的现象</span></span><br><span class="line"><span class="comment"># 此时手工进入shell下，将iso镜像挂载在/cdrom继续即可</span></span><br><span class="line"><span class="comment"># mount /dev/sdb1 /media</span></span><br><span class="line"><span class="comment"># mount -o loop /media/boot/iso/ubuntu-*-server-*.iso /cdrom</span></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$ubuntuserver</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"Ubuntu Server ISO"</span> --class ubuntu --class gnu-linux --class gnu --class os&#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$ubuntuserver</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">set</span> gfxpayload=keep</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入Ubuntu Server ...'</span></span><br><span class="line">    linux (loop)/install/vmlinuz file=/cdrom/preseed/ubuntu-server.seed iso-scan/filename=<span class="variable">$isofile</span> quiet ---</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/install/initrd.gz</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$deepin15</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"Deepin 15 ISO"</span> --class deepin --class gnu-linux --class gnu --class os&#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$deepin15</span>"</span> </span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入Deepin ...'</span></span><br><span class="line">    linux (loop)/live/vmlinuz.efi boot=live config findiso=<span class="variable">$isofile</span> noeject noprompt locales=zh_CN.UTF-8 --</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/live/initrd.lz</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$debianlive</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"Debian LiveCD ISO"</span> --class debian --class gnu-linux --class gnu --class os&#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$debianlive</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入Debian LiveCD ...'</span></span><br><span class="line">    linux (loop)/live/vmlinuz boot=live config findiso=<span class="variable">$isofile</span> noeject noprompt locales=zh_CN.UTF-8 --</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/live/initrd.img</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$centos_iso_part</span>)<span class="variable">$isopath</span>/<span class="variable">$centosdvd</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"CentOS-7-x86_64-DVD-1511"</span> --class centos --class gnu-linux --class gnu --class os&#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$centosdvd</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$centos_iso_part</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入CentOS DVD ...'</span></span><br><span class="line">    linux (loop)/isolinux/vmlinuz inst.stage2=hd:UUID=<span class="variable">$ext4_data_uuid</span>:/<span class="variable">$isofile</span> inst.lang=zh_CN.UTF-8 rhgb</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/isolinux/initrd.img</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$opensuse</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">menuentry <span class="string">'openSUSE-42.1-DVD-x86_64'</span> --class opensuse --class gnu-linux --class gnu --class os&#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$opensuse</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    linux (loop)/boot/x86_64/loader/linux install=hd:<span class="variable">$isofile</span></span><br><span class="line">    initrd (loop)/boot/x86_64/loader/initrd</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="string">"(<span class="variable">$isopart</span>)<span class="variable">$isopath</span>/<span class="variable">$centoslive</span>"</span> ]; <span class="keyword">then</span></span><br><span class="line">  menuentry <span class="string">"CentOS LiveCD ISO"</span> --class centos --class gnu-linux --class gnu --class os&#123;</span><br><span class="line">    <span class="built_in">set</span> isofile=<span class="string">"<span class="variable">$isopath</span>/<span class="variable">$centoslive</span>"</span></span><br><span class="line">    loopback loop (<span class="variable">$isopart</span>)<span class="variable">$isofile</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入CentOS LiveCD ...'</span></span><br><span class="line">    probe -l -s isolable (loop)</span><br><span class="line">    linux (loop)/isolinux/vmlinuz0 boot=isolinux root=live:LABEL=<span class="string">"<span class="variable">$isolable</span>"</span> iso-scan/filename=<span class="variable">$isofile</span> rd.live.image LANG=zh_CN rd.locale.LANG=zh_CN rhgb</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">'载入初始化内存盘 ...'</span></span><br><span class="line">    initrd (loop)/isolinux/initrd0.img</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">menuentry <span class="string">'关闭系统'</span> --class halt &#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">'关机中 ...'</span></span><br><span class="line">  halt</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">menuentry <span class="string">'重启系统'</span> --class reboot &#123;</span><br><span class="line">  <span class="built_in">echo</span> <span class="string">'重启系统中 ...'</span></span><br><span class="line">  reboot</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="美化"><a href="#美化" class="headerlink" title="美化"></a>美化</h2><p> 美化启动<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对应的把下面的/dev/sdb1替换成你的U盘的ESP分区</span></span><br><span class="line">sudo mount /dev/sdb1 /mnt/  -o uid=<span class="variable">$USER</span>,gid=<span class="variable">$USER</span>,utf8=1</span><br><span class="line">cp -R themes/ /mnt/boot/grub2/</span><br></pre></td></tr></table></figure></p>
+<p><code>themes</code> 请参考 <a href="http://git.oschina.net/abcfy2/grub-cfg" target="_blank" rel="noopener">Feng_Yu的</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://wiki.archlinux.org/index.php/Multiboot_USB_drive" target="_blank" rel="noopener">Multiboot USB drive</a></p>
 
-      
     </div>
 
-    <div>
-      
-        
+    
+    
+    
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/linux/" rel="tag"># linux</a>
-          
-            <a href="/tags/usb/" rel="tag"># usb</a>
-          
-            <a href="/tags/grub/" rel="tag"># grub</a>
-          
-            <a href="/tags/BIOS/" rel="tag"># BIOS</a>
-          
-            <a href="/tags/UEFI/" rel="tag"># UEFI</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/06/01/computerVision/opencv-python/" rel="next" title="Opencv3.2 python2.7 的CentOS7安装">
-                <i class="fa fa-chevron-left"></i> Opencv3.2 python2.7 的CentOS7安装
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/usb/" rel="tag"># usb</a>
+              <a href="/tags/grub/" rel="tag"># grub</a>
+              <a href="/tags/BIOS/" rel="tag"># BIOS</a>
+              <a href="/tags/UEFI/" rel="tag"># UEFI</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/29/java/javaIO/" rel="prev" title="Java IO">
-                Java IO <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/01/computerVision/opencv-python/" rel="prev" title="Opencv3.2 python2.7 的CentOS7安装">
+      <i class="fa fa-chevron-left"></i> Opencv3.2 python2.7 的CentOS7安装
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/29/java/javaIO/" rel="next" title="Java IO">
+      Java IO <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
           </div>
           
-
-
-          
+    
   <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
   </div>
-
+  
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/logo.png"
-               alt="sam chen" />
-          <p class="site-author-name" itemprop="name">sam chen</p>
-           
-              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">111</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化U盘"><span class="nav-number">2.</span> <span class="nav-text">格式化U盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘格式化为GPT分区"><span class="nav-number">2.1.</span> <span class="nav-text">U盘格式化为GPT分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分区"><span class="nav-number">2.1.1.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bios-grub"><span class="nav-number">2.1.2.</span> <span class="nav-text">bios_grub</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装grub到U盘"><span class="nav-number">3.</span> <span class="nav-text">安装grub到U盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加grub菜单"><span class="nav-number">4.</span> <span class="nav-text">添加grub菜单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#美化"><span class="nav-number">5.</span> <span class="nav-text">美化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化U盘"><span class="nav-number">2.</span> <span class="nav-text">格式化U盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘格式化为GPT分区"><span class="nav-number">2.1.</span> <span class="nav-text">U盘格式化为GPT分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分区"><span class="nav-number">2.1.1.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bios-grub"><span class="nav-number">2.1.2.</span> <span class="nav-text">bios_grub</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装grub到U盘"><span class="nav-number">3.</span> <span class="nav-text">安装grub到U盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加grub菜单"><span class="nav-number">4.</span> <span class="nav-text">添加grub菜单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#美化"><span class="nav-number">5.</span> <span class="nav-text">美化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright">
   
-  &copy;  2016 - 
+  &copy; 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">sam chen</span>
 </div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
 
         
+
+
+
+
+
+
+
 
         
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -699,108 +462,6 @@
 
 
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/';
-          this.page.identifier = '2017/06/27/linux/linuxUsbGrub/';
-          this.page.title = 'U盘引导多个linux镜像';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://amadis.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
 
 
 
@@ -808,29 +469,38 @@
   
 
   
+
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
 </script>
-
-
-  
-
-  
-
-  
-
-  
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/",
+            identifier: "2017/06/27/linux/linuxUsbGrub/",
+            title: "U盘引导多个linux镜像"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
 
 </body>
 </html>

@@ -1,151 +1,77 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="junit,spring,test," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="Annotations
-Spring Testing Annotations
-@ContextConfiguration类级别注解，用来声明如何加载和配置ApplicationContext。可以使用XML配置文件和被@Configuration注解的类。例如：
-1234567891011121314151617181920212223// 1） xml@ContextConfiguration(">
-<meta property="og:type" content="article">
-<meta property="og:title" content="SpringTesting （一） Annotations">
-<meta property="og:url" content="http://giveme5.cc/2015/08/11/spring/s-SpringTest1/index.html">
-<meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="Annotations
-Spring Testing Annotations
-@ContextConfiguration类级别注解，用来声明如何加载和配置ApplicationContext。可以使用XML配置文件和被@Configuration注解的类。例如：
-1234567891011121314151617181920212223// 1） xml@ContextConfiguration(">
-<meta property="og:updated_time" content="2018-04-10T05:32:30.669Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SpringTesting （一） Annotations">
-<meta name="twitter:description" content="Annotations
-Spring Testing Annotations
-@ContextConfiguration类级别注解，用来声明如何加载和配置ApplicationContext。可以使用XML配置文件和被@Configuration注解的类。例如：
-1234567891011121314151617181920212223// 1） xml@ContextConfiguration(">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
+  <meta name="description" content="Annotations Spring Testing Annotations @ContextConfiguration类级别注解，用来声明如何加载和配置ApplicationContext。可以使用XML配置文件和被@Configuration注解的类。例如： 1234567891011121314151617181920212223// 1） xml@ContextConfiguration(">
+<meta name="keywords" content="junit,spring,test">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringTesting （一） Annotations">
+<meta property="og:url" content="http://giveme5.cc/2015/08/11/spring/s-SpringTest1/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="Annotations Spring Testing Annotations @ContextConfiguration类级别注解，用来声明如何加载和配置ApplicationContext。可以使用XML配置文件和被@Configuration注解的类。例如： 1234567891011121314151617181920212223// 1） xml@ContextConfiguration(">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-04-10T05:32:30.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringTesting （一） Annotations">
+<meta name="twitter:description" content="Annotations Spring Testing Annotations @ContextConfiguration类级别注解，用来声明如何加载和配置ApplicationContext。可以使用XML配置文件和被@Configuration注解的类。例如： 1234567891011121314151617181920212223// 1） xml@ContextConfiguration(">
+
+<link rel="canonical" href="http://giveme5.cc/2015/08/11/spring/s-SpringTest1/">
 
 
-  <link rel="canonical" href="http://giveme5.cc/2015/08/11/spring/s-SpringTest1/"/>
-
-
-
-
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
 
   <title>SpringTesting （一） Annotations | Sam's Notes | Sam Blog</title>
   
@@ -155,260 +81,208 @@ Spring Testing Annotations
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-
-
-
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
-      
   </div>
 
   <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            站点地图
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
 
-  
+  </li>
+  </ul>
+
 </nav>
-
-
-
- </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/11/spring/s-SpringTest1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Sam's Notes | Sam Blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">SpringTesting （一） Annotations</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          SpringTesting （一） Annotations
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-11T15:56:15+08:00">
-                2015-08-11
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2015-08-11 15:56:15" itemprop="dateCreated datePublished" datetime="2015-08-11T15:56:15+08:00">2015-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-04-10 13:32:30" itemprop="dateModified" datetime="2018-04-10T13:32:30+08:00">2018-04-10</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/spring/" itemprop="url" rel="index">
                     <span itemprop="name">spring</span>
                   </a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/08/11/spring/s-SpringTest1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/08/11/spring/s-SpringTest1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2015/08/11/spring/s-SpringTest1/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/08/11/spring/s-SpringTest1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
-    
 
+    
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        <p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#integration-testing-annotations" target="_blank" rel="external">Annotations</a></p>
+        <p><a href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#integration-testing-annotations" target="_blank" rel="noopener">Annotations</a></p>
 <h2 id="Spring-Testing-Annotations"><a href="#Spring-Testing-Annotations" class="headerlink" title="Spring Testing Annotations"></a>Spring Testing Annotations</h2><ul>
 <li><p><code>@ContextConfiguration</code><br>类级别注解，用来声明如何加载和配置<code>ApplicationContext</code>。可以使用XML配置文件和被<code>@Configuration</code>注解的类。<br>例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">// 1） xml</div><div class="line">@ContextConfiguration(&quot;/test-config.xml&quot;)</div><div class="line">public class XmlApplicationContextTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div><div class="line">  </div><div class="line">// 2）  @Configuration Class</div><div class="line">@ContextConfiguration(classes = TestConfig.class)</div><div class="line">public class ConfigClassApplicationContextTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div><div class="line">  </div><div class="line">// 3）  `ApplicationContextInitializer` Class</div><div class="line">@ContextConfiguration(initializers = CustomContextIntializer.class)</div><div class="line">public class ContextInitializerTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div><div class="line">  </div><div class="line">// 4）  ContextLoader</div><div class="line">@ContextConfiguration(locations = &quot;/test-context.xml&quot;, loader = CustomContextLoader.class)</div><div class="line">public class CustomLoaderXmlApplicationContextTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 1） xml</span><br><span class="line">@ContextConfiguration(&quot;/test-config.xml&quot;)</span><br><span class="line">public class XmlApplicationContextTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">// 2）  @Configuration Class</span><br><span class="line">@ContextConfiguration(classes = TestConfig.class)</span><br><span class="line">public class ConfigClassApplicationContextTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">// 3）  `ApplicationContextInitializer` Class</span><br><span class="line">@ContextConfiguration(initializers = CustomContextIntializer.class)</span><br><span class="line">public class ContextInitializerTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">// 4）  ContextLoader</span><br><span class="line">@ContextConfiguration(locations = &quot;/test-context.xml&quot;, loader = CustomContextLoader.class)</span><br><span class="line">public class CustomLoaderXmlApplicationContextTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>@WebAppConfiguration<br>类级别注解，用来声明如何加载<code>WebApplicationContext</code>。默认<code>&quot;file:src/main/webapp&quot;</code>为web App根目录。必须协同<code>@ContextConfiguration</code>才生效</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">@ContextConfiguration</div><div class="line">@WebAppConfiguration</div><div class="line">public class WebAppTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div><div class="line">    </div><div class="line">    </div><div class="line">    </div><div class="line">    </div><div class="line">@ContextConfiguration</div><div class="line">@WebAppConfiguration(&quot;classpath:test-web-resources&quot;)</div><div class="line">public class WebAppTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@WebAppConfiguration</span><br><span class="line">public class WebAppTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">@ContextConfiguration</span><br><span class="line">@WebAppConfiguration(&quot;classpath:test-web-resources&quot;)</span><br><span class="line">public class WebAppTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>@ContextHierarchy<br>类级别注解，声明多层级的<code>@ContextConfiguration</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@ContextHierarchy(&#123;</div><div class="line">    @ContextConfiguration(&quot;/parent-config.xml&quot;),</div><div class="line">    @ContextConfiguration(&quot;/child-config.xml&quot;)</div><div class="line">&#125;)</div><div class="line">public class ContextHierarchyTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@ContextHierarchy(&#123;</span><br><span class="line">    @ContextConfiguration(&quot;/parent-config.xml&quot;),</span><br><span class="line">    @ContextConfiguration(&quot;/child-config.xml&quot;)</span><br><span class="line">&#125;)</span><br><span class="line">public class ContextHierarchyTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@WebAppConfiguration</div><div class="line">@ContextHierarchy(&#123;</div><div class="line">    @ContextConfiguration(classes = AppConfig.class),</div><div class="line">    @ContextConfiguration(classes = WebConfig.class)</div><div class="line">&#125;)</div><div class="line">public class WebIntegrationTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@WebAppConfiguration</span><br><span class="line">@ContextHierarchy(&#123;</span><br><span class="line">    @ContextConfiguration(classes = AppConfig.class),</span><br><span class="line">    @ContextConfiguration(classes = WebConfig.class)</span><br><span class="line">&#125;)</span><br><span class="line">public class WebIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>@ActiveProfiles<br>类级别注解，声明<em>ApplicationContext</em>使用哪些profiles。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@ContextConfiguration</div><div class="line">@ActiveProfiles(&quot;dev&quot;)</div><div class="line">public class DeveloperTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li>@ActiveProfiles<br>类级别注解，声明<em>ApplicationContext</em>使用哪些profiles。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@ActiveProfiles(&quot;dev&quot;)</span><br><span class="line">public class DeveloperTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@ContextConfiguration</div><div class="line">@ActiveProfiles(&#123;&quot;dev&quot;, &quot;integration&quot;&#125;)</div><div class="line">public class DeveloperIntegrationTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@ActiveProfiles(&#123;&quot;dev&quot;, &quot;integration&quot;&#125;)</span><br><span class="line">public class DeveloperIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>@TestPropertySource<br>类级别注解，指定加载properties文件或手动增加PropertySources的内容<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@ContextConfiguration</div><div class="line">@TestPropertySource(&quot;/test.properties&quot;)</div><div class="line">public class MyIntegrationTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<li>@TestPropertySource<br>类级别注解，指定加载properties文件或手动增加PropertySources的内容<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@TestPropertySource(&quot;/test.properties&quot;)</span><br><span class="line">public class MyIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@ContextConfiguration</div><div class="line">@TestPropertySource(properties = &#123; &quot;timezone = GMT&quot;, &quot;port: 4242&quot; &#125;)</div><div class="line">public class MyIntegrationTests &#123;</div><div class="line">    // class body...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@TestPropertySource(properties = &#123; &quot;timezone = GMT&quot;, &quot;port: 4242&quot; &#125;)</span><br><span class="line">public class MyIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>@DirtiesContext<br>类或方法级别注解，根据不同策略，Spring TestContext会刷新Spring的上下文（就是重新创建ApplicationContext）<br>有各种策略</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">// BEFORE_CLASS</div><div class="line">@DirtiesContext(classMode = BEFORE_CLASS)</div><div class="line">public class FreshContextTests &#123;</div><div class="line">    // some tests that require a new Spring container</div><div class="line">&#125;</div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">//default class mode ： `AFTER_CLASS`</div><div class="line">@DirtiesContext</div><div class="line">public class ContextDirtyingTests &#123;</div><div class="line">    // some tests that result in the Spring container being dirtied</div><div class="line">&#125;</div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">// BEFORE_EACH_TEST_METHOD</div><div class="line">@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)</div><div class="line">public class FreshContextTests &#123;</div><div class="line">    // some tests that require a new Spring container</div><div class="line">&#125;</div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">// AFTER_EACH_TEST_METHOD</div><div class="line">@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)</div><div class="line">public class ContextDirtyingTests &#123;</div><div class="line">    // some tests that result in the Spring container being dirtied</div><div class="line">&#125;</div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">// BEFORE_METHOD</div><div class="line">@DirtiesContext(methodMode = BEFORE_METHOD)</div><div class="line">@Test</div><div class="line">public void testProcessWhichRequiresFreshAppCtx() &#123;</div><div class="line">    // some logic that requires a new Spring container</div><div class="line">&#125;</div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">//default method mode `AFTER_METHOD`</div><div class="line">@DirtiesContext</div><div class="line">@Test</div><div class="line">public void testProcessWhichDirtiesAppCtx() &#123;</div><div class="line">    // some logic that results in the Spring container being dirtied</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">// BEFORE_CLASS</span><br><span class="line">@DirtiesContext(classMode = BEFORE_CLASS)</span><br><span class="line">public class FreshContextTests &#123;</span><br><span class="line">    // some tests that require a new Spring container</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">//default class mode ： `AFTER_CLASS`</span><br><span class="line">@DirtiesContext</span><br><span class="line">public class ContextDirtyingTests &#123;</span><br><span class="line">    // some tests that result in the Spring container being dirtied</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">// BEFORE_EACH_TEST_METHOD</span><br><span class="line">@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)</span><br><span class="line">public class FreshContextTests &#123;</span><br><span class="line">    // some tests that require a new Spring container</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">// AFTER_EACH_TEST_METHOD</span><br><span class="line">@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)</span><br><span class="line">public class ContextDirtyingTests &#123;</span><br><span class="line">    // some tests that result in the Spring container being dirtied</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">// BEFORE_METHOD</span><br><span class="line">@DirtiesContext(methodMode = BEFORE_METHOD)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichRequiresFreshAppCtx() &#123;</span><br><span class="line">    // some logic that requires a new Spring container</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">//default method mode `AFTER_METHOD`</span><br><span class="line">@DirtiesContext</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichDirtiesAppCtx() &#123;</span><br><span class="line">    // some logic that results in the Spring container being dirtied</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>@TestExecutionListeners</code></p>
 </li>
@@ -435,289 +309,177 @@ Spring Testing Annotations
 <h2 id="Spring-JUnit-Testing-Annotations"><a href="#Spring-JUnit-Testing-Annotations" class="headerlink" title="Spring JUnit Testing Annotations"></a>Spring JUnit Testing Annotations</h2><p>组合SpringJUnit4ClassRunner, Spring’s JUnit rules, 或 Spring’s JUnit support classes使用的时候，Spring TestContext Framework 还支持下列标准的注解：</p>
 <ul>
 <li><p>@IfProfileValue<br>类级别或方法级别注解，校验具体的环境变量，匹配才进行测试，否则就会忽略。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@IfProfileValue(name=&quot;java.vendor&quot;, value=&quot;Oracle Corporation&quot;)</div><div class="line">@Test</div><div class="line">public void testProcessWhichRunsOnlyOnOracleJvm() &#123;</div><div class="line">    // some logic that should run only on Java VMs from Oracle Corporation</div><div class="line">&#125;</div><div class="line">  </div><div class="line">  </div><div class="line">@IfProfileValue(name=&quot;test-groups&quot;, values=&#123;&quot;unit-tests&quot;, &quot;integration-tests&quot;&#125;)</div><div class="line">@Test</div><div class="line">public void testProcessWhichRunsForUnitOrIntegrationTestGroups() &#123;</div><div class="line">    // some logic that should run only for unit and integration test groups</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@IfProfileValue(name=&quot;java.vendor&quot;, value=&quot;Oracle Corporation&quot;)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichRunsOnlyOnOracleJvm() &#123;</span><br><span class="line">    // some logic that should run only on Java VMs from Oracle Corporation</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">@IfProfileValue(name=&quot;test-groups&quot;, values=&#123;&quot;unit-tests&quot;, &quot;integration-tests&quot;&#125;)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichRunsForUnitOrIntegrationTestGroups() &#123;</span><br><span class="line">    // some logic that should run only for unit and integration test groups</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>@ProfileValueSourceConfiguration</p>
 </li>
 <li><p>@Timed</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@Timed(millis=1000)</div><div class="line">public void testProcessWithOneSecondTimeout() &#123;</div><div class="line">    // some logic that should not take longer than 1 second to execute</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Timed(millis=1000)</span><br><span class="line">public void testProcessWithOneSecondTimeout() &#123;</span><br><span class="line">    // some logic that should not take longer than 1 second to execute</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>@Repeat</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@Repeat(10)</div><div class="line">@Test</div><div class="line">public void testProcessRepeatedly() &#123;</div><div class="line">    // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Repeat(10)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessRepeatedly() &#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 
-      
     </div>
 
-    <div>
-      
-        
+    
+    
+    
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/junit/" rel="tag"># junit</a>
-          
-            <a href="/tags/spring/" rel="tag"># spring</a>
-          
-            <a href="/tags/test/" rel="tag"># test</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/08/07/spring/s-springPortletMVCFramework/" rel="next" title="SpringPortletMVCFramework">
-                <i class="fa fa-chevron-left"></i> SpringPortletMVCFramework
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/junit/" rel="tag"># junit</a>
+              <a href="/tags/spring/" rel="tag"># spring</a>
+              <a href="/tags/test/" rel="tag"># test</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/08/12/spring/s-SpringTest2/" rel="prev" title="SpringTesting （二） Spring TestContext Framework">
-                SpringTesting （二） Spring TestContext Framework <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/08/07/spring/s-springPortletMVCFramework/" rel="prev" title="SpringPortletMVCFramework">
+      <i class="fa fa-chevron-left"></i> SpringPortletMVCFramework
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/08/12/spring/s-SpringTest2/" rel="next" title="SpringTesting （二） Spring TestContext Framework">
+      SpringTesting （二） Spring TestContext Framework <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
           </div>
           
-
-
-          
+    
   <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
   </div>
-
+  
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/logo.png"
-               alt="sam chen" />
-          <p class="site-author-name" itemprop="name">sam chen</p>
-           
-              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">111</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Testing-Annotations"><span class="nav-number">1.</span> <span class="nav-text">Spring Testing Annotations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Standard-Annotation-Support"><span class="nav-number">2.</span> <span class="nav-text">Standard Annotation Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-JUnit-Testing-Annotations"><span class="nav-number">3.</span> <span class="nav-text">Spring JUnit Testing Annotations</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Testing-Annotations"><span class="nav-number">1.</span> <span class="nav-text">Spring Testing Annotations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Standard-Annotation-Support"><span class="nav-number">2.</span> <span class="nav-text">Standard Annotation Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-JUnit-Testing-Annotations"><span class="nav-number">3.</span> <span class="nav-text">Spring JUnit Testing Annotations</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright">
   
-  &copy;  2016 - 
+  &copy; 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">sam chen</span>
 </div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
 
         
+
+
+
+
+
+
+
 
         
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -734,108 +496,6 @@ Spring Testing Annotations
 
 
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://giveme5.cc/2015/08/11/spring/s-SpringTest1/';
-          this.page.identifier = '2015/08/11/spring/s-SpringTest1/';
-          this.page.title = 'SpringTesting （一） Annotations';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://amadis.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
 
 
 
@@ -843,29 +503,38 @@ Spring Testing Annotations
   
 
   
+
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
 </script>
-
-
-  
-
-  
-
-  
-
-  
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2015/08/11/spring/s-SpringTest1/",
+            identifier: "2015/08/11/spring/s-SpringTest1/",
+            title: "SpringTesting （一） Annotations"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
 
 </body>
 </html>

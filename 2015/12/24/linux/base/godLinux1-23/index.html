@@ -1,151 +1,77 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="GOD linux," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="主要内容
-系统启动配置
-Grub 加固
-服务启动管理">
-<meta property="og:type" content="article">
-<meta property="og:title" content="1-23 RHEL7启动配置">
-<meta property="og:url" content="http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/index.html">
-<meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="主要内容
-系统启动配置
-Grub 加固
-服务启动管理">
-<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="1-23 RHEL7启动配置">
-<meta name="twitter:description" content="主要内容
-系统启动配置
-Grub 加固
-服务启动管理">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
+  <meta name="description" content="主要内容 系统启动配置 Grub 加固 服务启动管理">
+<meta name="keywords" content="GOD linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-23 RHEL7启动配置">
+<meta property="og:url" content="http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 系统启动配置 Grub 加固 服务启动管理">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.692Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1-23 RHEL7启动配置">
+<meta name="twitter:description" content="主要内容 系统启动配置 Grub 加固 服务启动管理">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/">
 
 
-  <link rel="canonical" href="http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/"/>
-
-
-
-
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
 
   <title>1-23 RHEL7启动配置 | Sam's Notes | Sam Blog</title>
   
@@ -155,232 +81,180 @@ Grub 加固
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-
-
-
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
-      
   </div>
 
   <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            站点地图
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
 
-  
+  </li>
+  </ul>
+
 </nav>
-
-
-
- </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Sam's Notes | Sam Blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">1-23 RHEL7启动配置</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          1-23 RHEL7启动配置
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-24T16:29:44+08:00">
-                2015-12-24
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2015-12-24 16:29:44" itemprop="dateCreated datePublished" datetime="2015-12-24T16:29:44+08:00">2015-12-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-02-21 15:18:44" itemprop="dateModified" datetime="2017-02-21T15:18:44+08:00">2017-02-21</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/linux/" itemprop="url" rel="index">
                     <span itemprop="name">linux</span>
                   </a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/24/linux/base/godLinux1-23/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/12/24/linux/base/godLinux1-23/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2015/12/24/linux/base/godLinux1-23/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/24/linux/base/godLinux1-23/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
+
     
-
+    
+    
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><ul>
@@ -391,326 +265,216 @@ Grub 加固
 <a id="more"></a>
 <h2 id="系统启动配置"><a href="#系统启动配置" class="headerlink" title="系统启动配置"></a>系统启动配置</h2><p>RHEL7 依然可以通过MBR启动，MBR保存着系统的主引导程序（grub 446字节，分区表64字节，2字节校验），启动过程就是把内核加载到内存。</p>
 <h3 id="启动的顺序："><a href="#启动的顺序：" class="headerlink" title="启动的顺序："></a>启动的顺序：</h3><p>1、BIOS；<br>2、BIOS激活MBR；<br>3、MBR中的引导程序(grub)加载到内存，生成一个微系统（如xfs）；<br>4、grub 读取分区表，找到引导分区；<br>5、grub读取自身的配置文件，找到内核文件<br>6、加载内核文件；</p>
-<p>RHEL7中第一个启动进程是 <code>systemd</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment">#pstree -p | more</span></div><div class="line">systemd(1)-+-ModemManager(1017)-+-&#123;ModemManager&#125;(1049)</div><div class="line">           |                    `-&#123;ModemManager&#125;(1066)</div><div class="line">           |-NetworkManager(1006)-+-&#123;NetworkManager&#125;(1079)</div><div class="line">           |                      |-&#123;NetworkManager&#125;(1081)</div></pre></td></tr></table></figure></p>
-<h3 id="RHEL7设置启动级别"><a href="#RHEL7设置启动级别" class="headerlink" title="RHEL7设置启动级别"></a>RHEL7设置启动级别</h3><p>RHEL7 不在使用 <code>inittab</code> ， 打开<code>inittab</code> 可以看到如下内容;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/inittab</span></div><div class="line">inittab is no longer usedwhen using systemd.</div><div class="line"><span class="comment">#当使用systemd inittab不再使用。</span></div><div class="line"><span class="comment"># ADDING CONFIGURATIONHERE WILL HAVE NO EFFECT ON YOUR SYSTEM.</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Ctrl-Alt-Delete ishandled by /usr/lib/systemd/system/ctrl-alt-del.target</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># systemd uses 'targets'instead of runlevels. By default, there are two main targets:</span></div><div class="line"><span class="comment"># systemd使用“目标”而不是运行级。默认情况下,有两个主要目标</span></div><div class="line"><span class="comment"># multi-user.target:analogous to runlevel 3</span></div><div class="line"><span class="comment"># graphical.target:analogous to runlevel 5</span></div><div class="line"><span class="comment">#两种运行级别分别对应第三运行级别和第五运行级别</span></div><div class="line"><span class="comment"># To view current defaulttarget, run:</span></div><div class="line"><span class="comment"># systemctl get-default</span></div><div class="line"><span class="comment">#查看当前运行级别</span></div><div class="line"><span class="comment"># To set a defaulttarget, run:</span></div><div class="line"><span class="comment"># systemctl set-defaultTARGET.target</span></div><div class="line"><span class="comment">#设置运行级别</span></div></pre></td></tr></table></figure></p>
-<h4 id="查看当前运行级别"><a href="#查看当前运行级别" class="headerlink" title="查看当前运行级别"></a>查看当前运行级别</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemctlget-default</span></div><div class="line">graphical.target</div></pre></td></tr></table></figure>
-<h4 id="切换运行级别"><a href="#切换运行级别" class="headerlink" title="切换运行级别"></a>切换运行级别</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemctl isolate graphical.target</span></div></pre></td></tr></table></figure>
-<h4 id="设置默认的运行级别"><a href="#设置默认的运行级别" class="headerlink" title="设置默认的运行级别"></a>设置默认的运行级别</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemctl set-default multi-user.target</span></div><div class="line">rm<span class="string">'/etc/systemd/system/default.target'</span></div><div class="line">ln <span class="_">-s</span> <span class="string">'/usr/lib/systemd/system/multi-user.target'</span> <span class="string">'/etc/systemd/system/default.target'</span></div></pre></td></tr></table></figure>
+<p>RHEL7中第一个启动进程是 <code>systemd</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#pstree -p | more</span></span><br><span class="line">systemd(1)-+-ModemManager(1017)-+-&#123;ModemManager&#125;(1049)</span><br><span class="line">           |                    `-&#123;ModemManager&#125;(1066)</span><br><span class="line">           |-NetworkManager(1006)-+-&#123;NetworkManager&#125;(1079)</span><br><span class="line">           |                      |-&#123;NetworkManager&#125;(1081)</span><br></pre></td></tr></table></figure></p>
+<h3 id="RHEL7设置启动级别"><a href="#RHEL7设置启动级别" class="headerlink" title="RHEL7设置启动级别"></a>RHEL7设置启动级别</h3><p>RHEL7 不在使用 <code>inittab</code> ， 打开<code>inittab</code> 可以看到如下内容;<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/inittab</span></span><br><span class="line">inittab is no longer usedwhen using systemd.</span><br><span class="line"><span class="comment">#当使用systemd inittab不再使用。</span></span><br><span class="line"><span class="comment"># ADDING CONFIGURATIONHERE WILL HAVE NO EFFECT ON YOUR SYSTEM.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Ctrl-Alt-Delete ishandled by /usr/lib/systemd/system/ctrl-alt-del.target</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># systemd uses 'targets'instead of runlevels. By default, there are two main targets:</span></span><br><span class="line"><span class="comment"># systemd使用“目标”而不是运行级。默认情况下,有两个主要目标</span></span><br><span class="line"><span class="comment"># multi-user.target:analogous to runlevel 3</span></span><br><span class="line"><span class="comment"># graphical.target:analogous to runlevel 5</span></span><br><span class="line"><span class="comment">#两种运行级别分别对应第三运行级别和第五运行级别</span></span><br><span class="line"><span class="comment"># To view current defaulttarget, run:</span></span><br><span class="line"><span class="comment"># systemctl get-default</span></span><br><span class="line"><span class="comment">#查看当前运行级别</span></span><br><span class="line"><span class="comment"># To set a defaulttarget, run:</span></span><br><span class="line"><span class="comment"># systemctl set-defaultTARGET.target</span></span><br><span class="line"><span class="comment">#设置运行级别</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="查看当前运行级别"><a href="#查看当前运行级别" class="headerlink" title="查看当前运行级别"></a>查看当前运行级别</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctlget-default</span></span><br><span class="line">graphical.target</span><br></pre></td></tr></table></figure>
+<h4 id="切换运行级别"><a href="#切换运行级别" class="headerlink" title="切换运行级别"></a>切换运行级别</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl isolate graphical.target</span></span><br></pre></td></tr></table></figure>
+<h4 id="设置默认的运行级别"><a href="#设置默认的运行级别" class="headerlink" title="设置默认的运行级别"></a>设置默认的运行级别</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl set-default multi-user.target</span></span><br><span class="line">rm<span class="string">'/etc/systemd/system/default.target'</span></span><br><span class="line">ln -s <span class="string">'/usr/lib/systemd/system/multi-user.target'</span> <span class="string">'/etc/systemd/system/default.target'</span></span><br></pre></td></tr></table></figure>
 <h3 id="grub引导配置"><a href="#grub引导配置" class="headerlink" title="grub引导配置"></a>grub引导配置</h3><ul>
 <li>主要配置文件</li>
 </ul>
 <p><code>/etc/grub2.cfg</code> <code>/etc/default/grub</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># ll /etc/grub2.cfg</span></div><div class="line">lrwxrwxrwx. 1 root root 22 Nov22 03:40 /etc/grub2.cfg -&gt; ../boot/grub2/grub.cfg</div><div class="line">  </div><div class="line">[root@localhost ~]<span class="comment"># ll /etc/default/grub</span></div><div class="line">-rw-r--r--. 1 root root 192Nov 22 03:46 /etc/default/grub</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ll /etc/grub2.cfg</span></span><br><span class="line">lrwxrwxrwx. 1 root root 22 Nov22 03:40 /etc/grub2.cfg -&gt; ../boot/grub2/grub.cfg</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]<span class="comment"># ll /etc/default/grub</span></span><br><span class="line">-rw-r--r--. 1 root root 192Nov 22 03:46 /etc/default/grub</span><br></pre></td></tr></table></figure>
 <ul>
 <li>修改配置<br>修改系统启动参数的时候，不要直接修改 ，因为如果后期更新内核的时候，那个grub.cfg也会自动更新，先前所做的配置会全部失效，如果需要修改，建议修改/etc/default/grub，然后使用grub2-mkconfig 命令生效。这个文件是由/etc/grub.d/00_header文件调用</li>
 </ul>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/default/grub</span></div><div class="line">  </div><div class="line"><span class="comment">#选择菜单的显示时间，默认是5，值是0表示不显示菜单选项，值是-1表示无限期的等待，直到用户做出选择</span></div><div class="line">GRUB_TIMEOUT=5 </div><div class="line">  </div><div class="line"><span class="comment">#设置默认启动项，按menuentry顺序。比如要默认从第四个菜单项启动，数字改为3，若#改为 saved，#则默认为上次启动项。</span></div><div class="line">GRUB_DEFAULT=saved </div><div class="line">  </div><div class="line"><span class="comment">#修改完成之后通过grub2-mkconfig命令重新生成内核参数</span></div><div class="line">[root@localhost ~]<span class="comment">#grub2-mkconfig</span></div></pre></td></tr></table></figure>
-<h2 id="Grub-加固"><a href="#Grub-加固" class="headerlink" title="Grub 加固"></a>Grub 加固</h2><h3 id="明文"><a href="#明文" class="headerlink" title="明文"></a>明文</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/grub.d/00_header</span></div><div class="line">  </div><div class="line"><span class="comment">#末尾增加如下内容</span></div><div class="line">cat &lt;&lt;EOF</div><div class="line"><span class="built_in">set</span> superusers=<span class="string">"sam"</span></div><div class="line">password sam 123456</div><div class="line">EOF</div><div class="line">  </div><div class="line"><span class="comment">#更新grub</span></div><div class="line">[root@localhost ~]<span class="comment">#grub2-mkconfig -o /boot/grub2/grub.cfg</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/default/grub</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#选择菜单的显示时间，默认是5，值是0表示不显示菜单选项，值是-1表示无限期的等待，直到用户做出选择</span></span><br><span class="line">GRUB_TIMEOUT=5 </span><br><span class="line">  </span><br><span class="line"><span class="comment">#设置默认启动项，按menuentry顺序。比如要默认从第四个菜单项启动，数字改为3，若#改为 saved，#则默认为上次启动项。</span></span><br><span class="line">GRUB_DEFAULT=saved </span><br><span class="line">  </span><br><span class="line"><span class="comment">#修改完成之后通过grub2-mkconfig命令重新生成内核参数</span></span><br><span class="line">[root@localhost ~]<span class="comment">#grub2-mkconfig</span></span><br></pre></td></tr></table></figure>
+<h2 id="Grub-加固"><a href="#Grub-加固" class="headerlink" title="Grub 加固"></a>Grub 加固</h2><h3 id="明文"><a href="#明文" class="headerlink" title="明文"></a>明文</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/grub.d/00_header</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#末尾增加如下内容</span></span><br><span class="line">cat &lt;&lt;EOF</span><br><span class="line"><span class="built_in">set</span> superusers=<span class="string">"sam"</span></span><br><span class="line">password sam 123456</span><br><span class="line">EOF</span><br><span class="line">  </span><br><span class="line"><span class="comment">#更新grub</span></span><br><span class="line">[root@localhost ~]<span class="comment">#grub2-mkconfig -o /boot/grub2/grub.cfg</span></span><br></pre></td></tr></table></figure>
 <p>注意：用来加密的用户sam和系统中的用户没有任何关系， sam不是系统用户都可以。</p>
 <h3 id="pbkdfv2算法加密"><a href="#pbkdfv2算法加密" class="headerlink" title="pbkdfv2算法加密"></a>pbkdfv2算法加密</h3><p>grub1.98版之后，可以设定加密的密码</p>
 <ul>
 <li><p>生成 pbkdfv2 加密的密码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># grub2-mkpasswd-pbkdf2 </span></div><div class="line">Enter password:   <span class="comment">#输入 123</span></div><div class="line">Reenter password:  <span class="comment">#输入 123</span></div><div class="line">PBKDF2 <span class="built_in">hash</span> of your password is grub.pbkdf2.sha512.10000.8EE07022D712A9EDB5EA8CA2AA8FC8B3166D903FC2BD058FAE95F8950D115EE8722099F07EBB223D0B9475B90B01D8A6C04580273B0866674005603554AFEF0C.28A856AC620C831BC1E04C2E23B5602BEDCC6910EBFCA3D2ADEFE3F39166AAFE7DAE4EFF10E090945009DE73D2D3F0005E32930F13F8D55CD7F34ACF9C77276F</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># grub2-mkpasswd-pbkdf2 </span></span><br><span class="line">Enter password:   <span class="comment">#输入 123</span></span><br><span class="line">Reenter password:  <span class="comment">#输入 123</span></span><br><span class="line">PBKDF2 <span class="built_in">hash</span> of your password is grub.pbkdf2.sha512.10000.8EE07022D712A9EDB5EA8CA2AA8FC8B3166D903FC2BD058FAE95F8950D115EE8722099F07EBB223D0B9475B90B01D8A6C04580273B0866674005603554AFEF0C.28A856AC620C831BC1E04C2E23B5602BEDCC6910EBFCA3D2ADEFE3F39166AAFE7DAE4EFF10E090945009DE73D2D3F0005E32930F13F8D55CD7F34ACF9C77276F</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>将加密的密码写入/etc/grub.d/00_header文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim /etc/grub.d/00_header</span></div><div class="line">  </div><div class="line"><span class="comment">#末尾增加如下内容</span></div><div class="line">cat &lt;&lt;EOF</div><div class="line"><span class="built_in">set</span> superusers=<span class="string">"sam"</span></div><div class="line">password_pbkdf2  sam grub.pbkdf2.sha512.10000.8EE07022D712A9EDB5EA8CA2AA8FC8B3166D903FC2BD058FAE95F8950D115EE8722099F07EBB223D0B9475B90B01D8A6C04580273B0866674005603554AFEF0C.28A856AC620C831BC1E04C2E23B5602BEDCC6910EBFCA3D2ADEFE3F39166AAFE7DAE4EFF10E090945009DE73D2D3F0005E32930F13F8D55CD7F34ACF9C77276F</div><div class="line">EOF</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/grub.d/00_header</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#末尾增加如下内容</span></span><br><span class="line">cat &lt;&lt;EOF</span><br><span class="line"><span class="built_in">set</span> superusers=<span class="string">"sam"</span></span><br><span class="line">password_pbkdf2  sam grub.pbkdf2.sha512.10000.8EE07022D712A9EDB5EA8CA2AA8FC8B3166D903FC2BD058FAE95F8950D115EE8722099F07EBB223D0B9475B90B01D8A6C04580273B0866674005603554AFEF0C.28A856AC620C831BC1E04C2E23B5602BEDCC6910EBFCA3D2ADEFE3F39166AAFE7DAE4EFF10E090945009DE73D2D3F0005E32930F13F8D55CD7F34ACF9C77276F</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>更新grub</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># grub2-mkconfig -o /boot/grub2/grub.cfg</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># grub2-mkconfig -o /boot/grub2/grub.cfg</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>验证：重启， 在grub页面 输入 <code>e</code>； 用户 <code>sam</code>； 密码 <code>123</code></p>
 <h2 id="服务启动管理"><a href="#服务启动管理" class="headerlink" title="服务启动管理"></a>服务启动管理</h2><h3 id="服务启动配置"><a href="#服务启动配置" class="headerlink" title="服务启动配置"></a>服务启动配置</h3><p>RHEL7中所有的开机启动的服务，都会在 <code>/etc/systemd/system/multi-user.target.wants</code> 中有对应的链接文件<br>将服务设置为开机自动启动，其实就是将 <code>/usr/lib/systemd/system</code> 目录下的服务配置文件做一个软链接到/etc/systemd/system/multi-user.target.wants/目录下</p>
 <ul>
-<li>开机启动<br>例：安装httpd服务，并设置为开机自动启动<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># yum -y install httpd</span></div><div class="line">  </div><div class="line">[root@localhost ~]<span class="comment"># systemctl enable httpd</span></div><div class="line">ln <span class="_">-s</span> <span class="string">'/usr/lib/systemd/system/httpd.service'</span><span class="string">'/etc/systemd/system/multi-user.target.wants/httpd.service'</span></div></pre></td></tr></table></figure>
+<li>开机启动<br>例：安装httpd服务，并设置为开机自动启动<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># yum -y install httpd</span></span><br><span class="line">  </span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl enable httpd</span></span><br><span class="line">ln -s <span class="string">'/usr/lib/systemd/system/httpd.service'</span><span class="string">'/etc/systemd/system/multi-user.target.wants/httpd.service'</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <ul>
 <li><p>开机不启动<br>将服务设置为自动关闭，其实就是将/usr/lib/systemd/system/目录下的服务配置文件的软链接进行删除</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemctl disable httpd</span></div><div class="line">rm<span class="string">'/etc/systemd/system/multi-user.target.wants/httpd.service'</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl disable httpd</span></span><br><span class="line">rm<span class="string">'/etc/systemd/system/multi-user.target.wants/httpd.service'</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>查看服务开机启动状态</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemctlis -enabled httpd</span></div><div class="line">disabled</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctlis -enabled httpd</span></span><br><span class="line">disabled</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动和关闭服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemctl restart httpd</span></div><div class="line">  </div><div class="line">[root@localhost ~]<span class="comment"># systemctl stop  httpd</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl restart httpd</span></span><br><span class="line">  </span><br><span class="line">[root@localhost ~]<span class="comment"># systemctl stop  httpd</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="Systemd-amp-amp-systemV"><a href="#Systemd-amp-amp-systemV" class="headerlink" title="Systemd &amp;&amp; systemV"></a>Systemd &amp;&amp; systemV</h3><p>Systemd和systemV服务启动方式对比<br>1）systemV 在服务启动方面采用的是顺序启动，即每一个服务都有对应的启动顺序，优先级越高那么在服务启动时就会被优先启动<br>2）systemd    在服务启动方面则是采用了并行启动的方式，而且按需启动，减少系统资源消耗，大大节省了系统启动的等待时间</p>
 <p>相比较systemd而言，systemv的优势<br>1）原理简单，易于理解<br>2）依靠shell脚本控制，编写服务脚本门槛比较低</p>
 <p>缺点：<br>1）服务顺序启动，启动过程比较慢<br>2）不能做到根据需要来启动服务，比如：通常希望在插入U盘的时候，再启动USB控制的服务，这样可以更好的节省系统资源</p>
 <p>原本，systemv的服务启动慢，并不是一个问题，尤其是Linux系统以前主要是运行在服务器上，常年也难得重启一次，每次重启硬件检测都需要5分钟以上，相对来说系统启动已经很快了<br>但是随着移动互联网的到来，Systemv 服务启动慢的问题显得越来越突出，许多移动设备都是基于Linux内核，系统启动比较频繁，如果每次启动时都要等待服务顺序启动，显然难以接受，systemd就是为了解决这个问题诞生的</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="查看系统启动时间"><a href="#查看系统启动时间" class="headerlink" title="查看系统启动时间"></a>查看系统启动时间</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment">#systemd-analyze</span></div><div class="line">Startup finished <span class="keyword">in</span>6.894s (kernel) + 2.939s (initrd) + 12.978s (userspace) = 22.812s</div></pre></td></tr></table></figure>
-<h4 id="查看每个服务的启动时间"><a href="#查看每个服务的启动时间" class="headerlink" title="查看每个服务的启动时间"></a>查看每个服务的启动时间</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@localhost Desktop]<span class="comment"># systemd-analyze blame </span></div><div class="line">           405ms network.service</div><div class="line">           350ms postfix.service</div><div class="line">           320ms lvm2-monitor.service</div><div class="line">           279ms plymouth-quit-wait.service</div><div class="line">           255ms tuned.service</div><div class="line">           130ms NetworkManager.service</div><div class="line">           118ms ModemManager.service</div><div class="line">           107ms boot.mount</div><div class="line">            95ms accounts-daemon.service</div><div class="line">            79ms avahi-daemon.service</div><div class="line">            76ms chronyd.service</div><div class="line">            75ms rhel-dmesg.service</div><div class="line">            70ms abrt-ccpp.service</div><div class="line">            70ms rsyslog.service</div><div class="line">            61ms ksm.service</div><div class="line">            56ms systemd-logind.service</div><div class="line">            47ms systemd-vconsole-setup.service</div><div class="line">            45ms rtkit-daemon.service</div><div class="line">            43ms sysstat.service</div><div class="line">            42ms libvirtd.service</div><div class="line">            42ms auditd.service</div><div class="line">            40ms plymouth-read-write.service</div><div class="line">            37ms polkit.service</div></pre></td></tr></table></figure>
-<h4 id="查看严重消耗时间的服务树状表"><a href="#查看严重消耗时间的服务树状表" class="headerlink" title="查看严重消耗时间的服务树状表"></a>查看严重消耗时间的服务树状表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemd-analyze critical-chain</span></div><div class="line">The time after the unitis active or started is printed after the <span class="string">"@"</span> character.</div><div class="line">The time the unit takesto start is printed after the <span class="string">"+"</span> character.</div><div class="line">graphical.target @12.973s</div><div class="line">└─multi-user.target@12.972s</div><div class="line">  └─postfix.service @10.044s +2.070s</div><div class="line">    └─network.target @10.020s</div><div class="line">      └─network.service @9.218s +801ms</div><div class="line">        └─NetworkManager.service @5.186s +4.031s</div><div class="line">          └─basic.target @5.168s</div></pre></td></tr></table></figure>
-<h4 id="列出所有服务并且检查是否开机启动"><a href="#列出所有服务并且检查是否开机启动" class="headerlink" title="列出所有服务并且检查是否开机启动"></a>列出所有服务并且检查是否开机启动</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># systemctl list-unit-files --type service</span></div><div class="line">UNIT FILE                                   STATE</div><div class="line">abrt-ccpp.service                           enabled</div><div class="line">abrt-oops.service                           enabled</div><div class="line">abrt-pstoreoops.service                     disabled</div><div class="line">abrt-vmcore.service                         enabled</div><div class="line">abrt-xorg.service                           enabled</div></pre></td></tr></table></figure>
-      
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="查看系统启动时间"><a href="#查看系统启动时间" class="headerlink" title="查看系统启动时间"></a>查看系统启动时间</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#systemd-analyze</span></span><br><span class="line">Startup finished in6.894s (kernel) + 2.939s (initrd) + 12.978s (userspace) = 22.812s</span><br></pre></td></tr></table></figure>
+<h4 id="查看每个服务的启动时间"><a href="#查看每个服务的启动时间" class="headerlink" title="查看每个服务的启动时间"></a>查看每个服务的启动时间</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost Desktop]<span class="comment"># systemd-analyze blame </span></span><br><span class="line">           405ms network.service</span><br><span class="line">           350ms postfix.service</span><br><span class="line">           320ms lvm2-monitor.service</span><br><span class="line">           279ms plymouth-quit-wait.service</span><br><span class="line">           255ms tuned.service</span><br><span class="line">           130ms NetworkManager.service</span><br><span class="line">           118ms ModemManager.service</span><br><span class="line">           107ms boot.mount</span><br><span class="line">            95ms accounts-daemon.service</span><br><span class="line">            79ms avahi-daemon.service</span><br><span class="line">            76ms chronyd.service</span><br><span class="line">            75ms rhel-dmesg.service</span><br><span class="line">            70ms abrt-ccpp.service</span><br><span class="line">            70ms rsyslog.service</span><br><span class="line">            61ms ksm.service</span><br><span class="line">            56ms systemd-logind.service</span><br><span class="line">            47ms systemd-vconsole-setup.service</span><br><span class="line">            45ms rtkit-daemon.service</span><br><span class="line">            43ms sysstat.service</span><br><span class="line">            42ms libvirtd.service</span><br><span class="line">            42ms auditd.service</span><br><span class="line">            40ms plymouth-read-write.service</span><br><span class="line">            37ms polkit.service</span><br></pre></td></tr></table></figure>
+<h4 id="查看严重消耗时间的服务树状表"><a href="#查看严重消耗时间的服务树状表" class="headerlink" title="查看严重消耗时间的服务树状表"></a>查看严重消耗时间的服务树状表</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemd-analyze critical-chain</span></span><br><span class="line">The time after the unitis active or started is printed after the <span class="string">"@"</span> character.</span><br><span class="line">The time the unit takesto start is printed after the <span class="string">"+"</span> character.</span><br><span class="line">graphical.target @12.973s</span><br><span class="line">└─multi-user.target@12.972s</span><br><span class="line">  └─postfix.service @10.044s +2.070s</span><br><span class="line">    └─network.target @10.020s</span><br><span class="line">      └─network.service @9.218s +801ms</span><br><span class="line">        └─NetworkManager.service @5.186s +4.031s</span><br><span class="line">          └─basic.target @5.168s</span><br></pre></td></tr></table></figure>
+<h4 id="列出所有服务并且检查是否开机启动"><a href="#列出所有服务并且检查是否开机启动" class="headerlink" title="列出所有服务并且检查是否开机启动"></a>列出所有服务并且检查是否开机启动</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl list-unit-files --type service</span></span><br><span class="line">UNIT FILE                                   STATE</span><br><span class="line">abrt-ccpp.service                           enabled</span><br><span class="line">abrt-oops.service                           enabled</span><br><span class="line">abrt-pstoreoops.service                     disabled</span><br><span class="line">abrt-vmcore.service                         enabled</span><br><span class="line">abrt-xorg.service                           enabled</span><br></pre></td></tr></table></figure>
     </div>
 
-    <div>
-      
-        
+    
+    
+    
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/12/24/linux/base/godLinux1-22/" rel="next" title="1-22 系统救援">
-                <i class="fa fa-chevron-left"></i> 1-22 系统救援
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/25/linux/shell/shell-1/" rel="prev" title="shell （一） 基础">
-                shell （一） 基础 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/24/linux/base/godLinux1-22/" rel="prev" title="1-22 系统救援">
+      <i class="fa fa-chevron-left"></i> 1-22 系统救援
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/25/linux/shell/shell-1/" rel="next" title="shell （一） 基础">
+      shell （一） 基础 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
           </div>
           
-
-
-          
+    
   <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
   </div>
-
+  
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/logo.png"
-               alt="sam chen" />
-          <p class="site-author-name" itemprop="name">sam chen</p>
-           
-              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">111</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统启动配置"><span class="nav-number">2.</span> <span class="nav-text">系统启动配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动的顺序："><span class="nav-number">2.1.</span> <span class="nav-text">启动的顺序：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RHEL7设置启动级别"><span class="nav-number">2.2.</span> <span class="nav-text">RHEL7设置启动级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看当前运行级别"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看当前运行级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切换运行级别"><span class="nav-number">2.2.2.</span> <span class="nav-text">切换运行级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置默认的运行级别"><span class="nav-number">2.2.3.</span> <span class="nav-text">设置默认的运行级别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grub引导配置"><span class="nav-number">2.3.</span> <span class="nav-text">grub引导配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grub-加固"><span class="nav-number">3.</span> <span class="nav-text">Grub 加固</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#明文"><span class="nav-number">3.1.</span> <span class="nav-text">明文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pbkdfv2算法加密"><span class="nav-number">3.2.</span> <span class="nav-text">pbkdfv2算法加密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务启动管理"><span class="nav-number">4.</span> <span class="nav-text">服务启动管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务启动配置"><span class="nav-number">4.1.</span> <span class="nav-text">服务启动配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Systemd-amp-amp-systemV"><span class="nav-number">4.2.</span> <span class="nav-text">Systemd && systemV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">4.3.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看系统启动时间"><span class="nav-number">4.3.1.</span> <span class="nav-text">查看系统启动时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看每个服务的启动时间"><span class="nav-number">4.3.2.</span> <span class="nav-text">查看每个服务的启动时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看严重消耗时间的服务树状表"><span class="nav-number">4.3.3.</span> <span class="nav-text">查看严重消耗时间的服务树状表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出所有服务并且检查是否开机启动"><span class="nav-number">4.3.4.</span> <span class="nav-text">列出所有服务并且检查是否开机启动</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统启动配置"><span class="nav-number">2.</span> <span class="nav-text">系统启动配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启动的顺序："><span class="nav-number">2.1.</span> <span class="nav-text">启动的顺序：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RHEL7设置启动级别"><span class="nav-number">2.2.</span> <span class="nav-text">RHEL7设置启动级别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看当前运行级别"><span class="nav-number">2.2.1.</span> <span class="nav-text">查看当前运行级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切换运行级别"><span class="nav-number">2.2.2.</span> <span class="nav-text">切换运行级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置默认的运行级别"><span class="nav-number">2.2.3.</span> <span class="nav-text">设置默认的运行级别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grub引导配置"><span class="nav-number">2.3.</span> <span class="nav-text">grub引导配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grub-加固"><span class="nav-number">3.</span> <span class="nav-text">Grub 加固</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#明文"><span class="nav-number">3.1.</span> <span class="nav-text">明文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pbkdfv2算法加密"><span class="nav-number">3.2.</span> <span class="nav-text">pbkdfv2算法加密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#服务启动管理"><span class="nav-number">4.</span> <span class="nav-text">服务启动管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务启动配置"><span class="nav-number">4.1.</span> <span class="nav-text">服务启动配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Systemd-amp-amp-systemV"><span class="nav-number">4.2.</span> <span class="nav-text">Systemd &amp;&amp; systemV</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">4.3.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看系统启动时间"><span class="nav-number">4.3.1.</span> <span class="nav-text">查看系统启动时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看每个服务的启动时间"><span class="nav-number">4.3.2.</span> <span class="nav-text">查看每个服务的启动时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看严重消耗时间的服务树状表"><span class="nav-number">4.3.3.</span> <span class="nav-text">查看严重消耗时间的服务树状表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出所有服务并且检查是否开机启动"><span class="nav-number">4.3.4.</span> <span class="nav-text">列出所有服务并且检查是否开机启动</span></a></li></ol></li></ol></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright">
   
-  &copy;  2016 - 
+  &copy; 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">sam chen</span>
 </div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
 
         
+
+
+
+
+
+
+
 
         
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -727,108 +491,6 @@ Grub 加固
 
 
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/';
-          this.page.identifier = '2015/12/24/linux/base/godLinux1-23/';
-          this.page.title = '1-23 RHEL7启动配置';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://amadis.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
 
 
 
@@ -836,29 +498,38 @@ Grub 加固
   
 
   
+
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
 </script>
-
-
-  
-
-  
-
-  
-
-  
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/",
+            identifier: "2015/12/24/linux/base/godLinux1-23/",
+            title: "1-23 RHEL7启动配置"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
 
 </body>
 </html>

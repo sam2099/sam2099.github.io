@@ -1,166 +1,77 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="opencv,centos,python," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="主要内容
-
-系统环境
-软件源
-软件环境
-源码安装
-
-Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。
-……">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Opencv3.2 python2.7 的CentOS7安装">
-<meta property="og:url" content="http://giveme5.cc/2017/06/01/computerVision/opencv-python/index.html">
-<meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="主要内容
-
-系统环境
-软件源
-软件环境
-源码安装
-
-Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。
-……">
-<meta property="og:updated_time" content="2017-06-28T03:29:31.753Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Opencv3.2 python2.7 的CentOS7安装">
-<meta name="twitter:description" content="主要内容
-
-系统环境
-软件源
-软件环境
-源码安装
-
-Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。
-……">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
+  <meta name="description" content="主要内容  系统环境 软件源 软件环境 源码安装  Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。 ……">
+<meta name="keywords" content="opencv,centos,python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Opencv3.2 python2.7 的CentOS7安装">
+<meta property="og:url" content="http://giveme5.cc/2017/06/01/computerVision/opencv-python/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容  系统环境 软件源 软件环境 源码安装  Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。 ……">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-06-28T03:29:31.753Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Opencv3.2 python2.7 的CentOS7安装">
+<meta name="twitter:description" content="主要内容  系统环境 软件源 软件环境 源码安装  Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。 ……">
+
+<link rel="canonical" href="http://giveme5.cc/2017/06/01/computerVision/opencv-python/">
 
 
-  <link rel="canonical" href="http://giveme5.cc/2017/06/01/computerVision/opencv-python/"/>
-
-
-
-
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
 
   <title>Opencv3.2 python2.7 的CentOS7安装 | Sam's Notes | Sam Blog</title>
   
@@ -170,232 +81,180 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-
-
-
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
-      
   </div>
 
   <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            站点地图
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
 
-  
+  </li>
+  </ul>
+
 </nav>
-
-
-
- </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/06/01/computerVision/opencv-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Sam's Notes | Sam Blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">Opencv3.2 python2.7 的CentOS7安装</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          Opencv3.2 python2.7 的CentOS7安装
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-01T18:48:06+08:00">
-                2017-06-01
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2017-06-01 18:48:06" itemprop="dateCreated datePublished" datetime="2017-06-01T18:48:06+08:00">2017-06-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-06-28 11:29:31" itemprop="dateModified" datetime="2017-06-28T11:29:31+08:00">2017-06-28</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/机器视觉/" itemprop="url" rel="index">
                     <span itemprop="name">机器视觉</span>
                   </a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/06/01/computerVision/opencv-python/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/06/01/computerVision/opencv-python/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/06/01/computerVision/opencv-python/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/01/computerVision/opencv-python/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
+
     
-
+    
+    
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <p>主要内容</p>
@@ -408,15 +267,15 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 <p>Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 版本；为使用最新功能，下面介绍 源码安装 Opencv3。</p>
 <p>……</p>
 <a id="more"></a>
-<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">╭─root@localhost ~  </div><div class="line">╰─<span class="comment"># uname -a                                                                1 ↵</span></div><div class="line">Linux localhost.localdomain 3.10.0-514.21.1.el7.x86_64 <span class="comment">#1 SMP Thu May 25 17:04:51 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span></div><div class="line">╭─root@localhost ~  </div><div class="line">╰─<span class="comment"># cat /etc/redhat-release </span></div><div class="line">CentOS Linux release 7.3.1611 (Core)</div></pre></td></tr></table></figure>
+<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">╭─root@localhost ~  </span><br><span class="line">╰─<span class="comment"># uname -a                                                                1 ↵</span></span><br><span class="line">Linux localhost.localdomain 3.10.0-514.21.1.el7.x86_64 <span class="comment">#1 SMP Thu May 25 17:04:51 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span></span><br><span class="line">╭─root@localhost ~  </span><br><span class="line">╰─<span class="comment"># cat /etc/redhat-release </span></span><br><span class="line">CentOS Linux release 7.3.1611 (Core)</span><br></pre></td></tr></table></figure>
 <h2 id="软件源"><a href="#软件源" class="headerlink" title="软件源"></a>软件源</h2><ul>
-<li><a href="">epel</a><br>epel 源， 阿里的镜像</li>
+<li><a href>epel</a><br>epel 源， 阿里的镜像</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br></pre></td></tr></table></figure>
 <ul>
-<li><a href="http://li.nux.ro/repos.html" target="_blank" rel="external">Nux Dextop</a><br>vlc 播放器 和 视频解码器 等</li>
+<li><a href="http://li.nux.ro/repos.html" target="_blank" rel="noopener">Nux Dextop</a><br>vlc 播放器 和 视频解码器 等</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install epel-release &amp;&amp; rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install epel-release &amp;&amp; rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm</span><br></pre></td></tr></table></figure>
 <h2 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h2><p>编译opencv需要的软件包</p>
 <ul>
 <li>GCC 4.4.x or later</li>
@@ -431,325 +290,213 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 <li>[optional] libdc1394-devel libv4l-devel gstreamer-plugins-base-devel</li>
 <li>[optional] CUDA Toolkit 6.5 or higher</li>
 </ul>
-<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y update</div></pre></td></tr></table></figure>
-<h3 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum groupinstall <span class="string">'Development Tools'</span></div></pre></td></tr></table></figure>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install cmake cmake-gui git pkgconfig autoconf automake  freetype-devel gcc gcc-c++  libtool make mercurial nasm pkgconfig zlib-devel</div></pre></td></tr></table></figure>
-<h3 id="视频和图像格式"><a href="#视频和图像格式" class="headerlink" title="视频和图像格式"></a>视频和图像格式</h3><p>#图像<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install libpng-devel libjpeg-turbo-devel jasper-devel openexr-devel libtiff-devel libwebp-devel</div></pre></td></tr></table></figure></p>
-<p>#视频<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install libdc1394-devel libv4l-devel gstreamer-plugins-base-devel ffmpeg ffmpeg-devel</div></pre></td></tr></table></figure></p>
-<h3 id="GUI特征"><a href="#GUI特征" class="headerlink" title="GUI特征"></a>GUI特征</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install gtk2-devel</div></pre></td></tr></table></figure>
-<h3 id="Threading-Building-Blocks-TBB"><a href="#Threading-Building-Blocks-TBB" class="headerlink" title="Threading Building Blocks (TBB)"></a>Threading Building Blocks (TBB)</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install tbb-devel eigen3-devel</div></pre></td></tr></table></figure>
+<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y update</span><br></pre></td></tr></table></figure>
+<h3 id="开发工具"><a href="#开发工具" class="headerlink" title="开发工具"></a>开发工具</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum groupinstall <span class="string">'Development Tools'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install cmake cmake-gui git pkgconfig autoconf automake  freetype-devel gcc gcc-c++  libtool make mercurial nasm pkgconfig zlib-devel</span><br></pre></td></tr></table></figure>
+<h3 id="视频和图像格式"><a href="#视频和图像格式" class="headerlink" title="视频和图像格式"></a>视频和图像格式</h3><p>#图像<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libpng-devel libjpeg-turbo-devel jasper-devel openexr-devel libtiff-devel libwebp-devel</span><br></pre></td></tr></table></figure></p>
+<p>#视频<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libdc1394-devel libv4l-devel gstreamer-plugins-base-devel ffmpeg ffmpeg-devel</span><br></pre></td></tr></table></figure></p>
+<h3 id="GUI特征"><a href="#GUI特征" class="headerlink" title="GUI特征"></a>GUI特征</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gtk2-devel</span><br></pre></td></tr></table></figure>
+<h3 id="Threading-Building-Blocks-TBB"><a href="#Threading-Building-Blocks-TBB" class="headerlink" title="Threading Building Blocks (TBB)"></a>Threading Building Blocks (TBB)</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install tbb-devel eigen3-devel</span><br></pre></td></tr></table></figure>
 <h3 id="cuda安装"><a href="#cuda安装" class="headerlink" title="cuda安装"></a>cuda安装</h3><p>//TODO</p>
-<h3 id="vlc"><a href="#vlc" class="headerlink" title="vlc"></a>vlc</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install vlc</div></pre></td></tr></table></figure>
+<h3 id="vlc"><a href="#vlc" class="headerlink" title="vlc"></a>vlc</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install vlc</span><br></pre></td></tr></table></figure>
 <h3 id="python"><a href="#python" class="headerlink" title="python"></a>python</h3><p>centos 7 默认安装的是 python 2.7</p>
-<h4 id="pip-python-package-manager"><a href="#pip-python-package-manager" class="headerlink" title="pip (python package manager)"></a>pip (python package manager)</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">curl <span class="string">"https://bootstrap.pypa.io/get-pip.py"</span> -o <span class="string">"get-pip.py"</span></div><div class="line">python get-pip.py</div></pre></td></tr></table></figure>
-<p>或者yum安装，然后升级<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum install -y python-pip</div><div class="line">pip install --upgrade pip</div></pre></td></tr></table></figure></p>
-<h4 id="python-2-7-development-tools"><a href="#python-2-7-development-tools" class="headerlink" title="python 2.7 development tools"></a>python 2.7 development tools</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install python-devel</div></pre></td></tr></table></figure>
-<h4 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">pip install numpy</div><div class="line"></div><div class="line">pip install matplotlib </div><div class="line">yum install tkinter</div><div class="line">pip install scipy</div></pre></td></tr></table></figure>
+<h4 id="pip-python-package-manager"><a href="#pip-python-package-manager" class="headerlink" title="pip (python package manager)"></a>pip (python package manager)</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="string">"https://bootstrap.pypa.io/get-pip.py"</span> -o <span class="string">"get-pip.py"</span></span><br><span class="line">python get-pip.py</span><br></pre></td></tr></table></figure>
+<p>或者yum安装，然后升级<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install -y python-pip</span><br><span class="line">pip install --upgrade pip</span><br></pre></td></tr></table></figure></p>
+<h4 id="python-2-7-development-tools"><a href="#python-2-7-development-tools" class="headerlink" title="python 2.7 development tools"></a>python 2.7 development tools</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python-devel</span><br></pre></td></tr></table></figure>
+<h4 id="numpy"><a href="#numpy" class="headerlink" title="numpy"></a>numpy</h4><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pip install numpy</span><br><span class="line"></span><br><span class="line">pip install matplotlib </span><br><span class="line">yum install tkinter</span><br><span class="line">pip install scipy</span><br></pre></td></tr></table></figure>
 <p><code>matplotlib</code> <code>scipy</code> 是非必须的，但使用opencv python 肯定用的着，所以建议一起安装好。 <code>tkinter</code> 是 <code>matplotlib</code> 的依赖</p>
 <h2 id="Opencv3-2-源码安装"><a href="#Opencv3-2-源码安装" class="headerlink" title="Opencv3.2 源码安装"></a>Opencv3.2 源码安装</h2><p>工作目录为 <code>～</code>， 按照你的喜爱调整，记得下面的目录都要调整</p>
 <h3 id="获取源码"><a href="#获取源码" class="headerlink" title="获取源码"></a>获取源码</h3><ul>
 <li>opencv</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv.git</div><div class="line"><span class="built_in">cd</span> opencv</div><div class="line">git checkout 3.2.0</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv.git</span><br><span class="line"><span class="built_in">cd</span> opencv</span><br><span class="line">git checkout 3.2.0</span><br></pre></td></tr></table></figure>
 <ul>
 <li>opencv_contrib<br>从 opencv 3.0 开始， opencv_contrib 单独发布， 这里有很多有意思的功能</li>
 </ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv_contrib.git</div><div class="line"><span class="built_in">cd</span> opencv_contrib</div><div class="line">git checkout 3.2.0</div></pre></td></tr></table></figure>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><h4 id="编译目录"><a href="#编译目录" class="headerlink" title="编译目录"></a>编译目录</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~/opencv</div><div class="line">mkdir build</div><div class="line"><span class="built_in">cd</span> build</div></pre></td></tr></table></figure>
-<h4 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cmake -D CMAKE_BUILD_TYPE=RELEASE \</div><div class="line">    -D CMAKE_INSTALL_PREFIX=/usr/local \</div><div class="line">    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \</div><div class="line">    -D INSTALL_C_EXAMPLES=OFF \</div><div class="line">    -D INSTALL_PYTHON_EXAMPLES=ON \</div><div class="line">    -D BUILD_EXAMPLES=ON \</div><div class="line">    -D BUILD_OPENCV_PYTHON2=ON ..</div></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/opencv/opencv_contrib.git</span><br><span class="line"><span class="built_in">cd</span> opencv_contrib</span><br><span class="line">git checkout 3.2.0</span><br></pre></td></tr></table></figure>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><h4 id="编译目录"><a href="#编译目录" class="headerlink" title="编译目录"></a>编译目录</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/opencv</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br></pre></td></tr></table></figure>
+<h4 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cmake -D CMAKE_BUILD_TYPE=RELEASE \</span><br><span class="line">    -D CMAKE_INSTALL_PREFIX=/usr/local \</span><br><span class="line">    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \</span><br><span class="line">    -D INSTALL_C_EXAMPLES=OFF \</span><br><span class="line">    -D INSTALL_PYTHON_EXAMPLES=ON \</span><br><span class="line">    -D BUILD_EXAMPLES=ON \</span><br><span class="line">    -D BUILD_OPENCV_PYTHON2=ON ..</span><br></pre></td></tr></table></figure>
 <p>特保注意：</p>
 <ul>
 <li><p>ippicv<br>cmake 会停留在 如下类似位置：</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">-- checking <span class="keyword">for</span> module <span class="string">'libgphoto2'</span></div><div class="line">--   package <span class="string">'libgphoto2'</span> not found</div><div class="line">-- ICV: Downloading ippicv_linux_2017xxxx.tgz...</div></pre></td></tr></table></figure>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-- checking <span class="keyword">for</span> module <span class="string">'libgphoto2'</span></span><br><span class="line">--   package <span class="string">'libgphoto2'</span> not found</span><br><span class="line">-- ICV: Downloading ippicv_linux_2017xxxx.tgz...</span><br></pre></td></tr></table></figure>
 <p>  cmake 需要下载 <code>ippicv</code>， 会持续一段时间，耐心等待下。<br>  如果超时或者你想手动下载， 参照你 <code>build</code> 目录下 <code>CMakeDownloadLog.txt</code> 文件</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt; cat CMakeDownloadLog.txt </div><div class="line">use_cache <span class="string">"/home/alalek/projects/opencv/dev/.cache"</span></div><div class="line">do_unpack <span class="string">"ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"87cbdeb627415d8e4bc811156289fa3a"</span> <span class="string">"https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"/home/alalek/projects/opencv/build/opencv/3rdparty/ippicv"</span></div><div class="line"><span class="comment">#cmake_download "/home/alalek/projects/opencv/dev/.cache/ippicv/87cbdeb627415d8e4bc811156289fa3a-ippicv_2017u2_lnx_intel64_20170418.tgz" "https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span></div></pre></td></tr></table></figure>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; cat CMakeDownloadLog.txt </span><br><span class="line">use_cache <span class="string">"/home/alalek/projects/opencv/dev/.cache"</span></span><br><span class="line">do_unpack <span class="string">"ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"87cbdeb627415d8e4bc811156289fa3a"</span> <span class="string">"https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span> <span class="string">"/home/alalek/projects/opencv/build/opencv/3rdparty/ippicv"</span></span><br><span class="line"><span class="comment">#cmake_download "/home/alalek/projects/opencv/dev/.cache/ippicv/87cbdeb627415d8e4bc811156289fa3a-ippicv_2017u2_lnx_intel64_20170418.tgz" "https://raw.githubusercontent.com/opencv/opencv_3rdparty/a62e20676a60ee0ad6581e217fe7e4bada3b95db/ippicv/ippicv_2017u2_lnx_intel64_20170418.tgz"</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>python<br>检查 python相关环境是否一致， 类似如下</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">--   Python 2:</div><div class="line">--     Interpreter:                 /usr/bin/python2.7 (ver 2.7.5)</div><div class="line">--     Libraries:                   /lib64/libpython2.7.so (ver 2.7.5)</div><div class="line">--     numpy:                       /usr/lib64/python2.7/site-packages/numpy/core/include (ver 1.12.1)</div><div class="line">--     packages path:               lib/python2.7/site-packages</div></pre></td></tr></table></figure>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--   Python 2:</span><br><span class="line">--     Interpreter:                 /usr/bin/python2.7 (ver 2.7.5)</span><br><span class="line">--     Libraries:                   /lib64/libpython2.7.so (ver 2.7.5)</span><br><span class="line">--     numpy:                       /usr/lib64/python2.7/site-packages/numpy/core/include (ver 1.12.1)</span><br><span class="line">--     packages path:               lib/python2.7/site-packages</span><br></pre></td></tr></table></figure>
 <p>  可以通过 图像工具 <code>cmake-gui</code> 来调整</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cmake-gui ..</div></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake-gui ..</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h4 id="make"><a href="#make" class="headerlink" title="make"></a>make</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">make -j4 <span class="comment"># 4是你的电脑cpu线程</span></div></pre></td></tr></table></figure>
-<p>查看输出日志<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Linking CXX shared module ../../lib/cv2.so</div><div class="line">。。。</div><div class="line">Built target opencv_python2</div></pre></td></tr></table></figure></p>
+<h4 id="make"><a href="#make" class="headerlink" title="make"></a>make</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j4 <span class="comment"># 4是你的电脑cpu线程</span></span><br></pre></td></tr></table></figure>
+<p>查看输出日志<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Linking CXX shared module ../../lib/cv2.so</span><br><span class="line">。。。</span><br><span class="line">Built target opencv_python2</span><br></pre></td></tr></table></figure></p>
 <p>基本代表 opencv python <code>make</code> 成功， 如果没有， 使用 <code>cmake-gui ..</code> 重新 <code>make</code> 一次</p>
-<h4 id="make-install"><a href="#make-install" class="headerlink" title="make install"></a>make install</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">make install</div><div class="line">ldconfig</div></pre></td></tr></table></figure>
+<h4 id="make-install"><a href="#make-install" class="headerlink" title="make install"></a>make install</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br><span class="line">ldconfig</span><br></pre></td></tr></table></figure>
 <p>检查 <code>/usr/local/lib/python2.7/site-packages</code> 目录下 是否已经成功安装 <code>cv2.so</code></p>
-<h4 id="链接给python"><a href="#链接给python" class="headerlink" title="链接给python"></a>链接给python</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/lib64/python2.7/site-packages </div><div class="line">ln <span class="_">-s</span> /usr/<span class="built_in">local</span>/lib/python2.7/site-packages/cv2.so cv2.so</div></pre></td></tr></table></figure>
-<h3 id="测试opencv-python"><a href="#测试opencv-python" class="headerlink" title="测试opencv-python"></a>测试opencv-python</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">python</div><div class="line">&gt;&gt;&gt;import cv2</div><div class="line">&gt;&gt;&gt;cv2.__version__</div><div class="line">3.2.0<span class="string">'</span></div></pre></td></tr></table></figure>
+<h4 id="链接给python"><a href="#链接给python" class="headerlink" title="链接给python"></a>链接给python</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/lib64/python2.7/site-packages </span><br><span class="line">ln -s /usr/<span class="built_in">local</span>/lib/python2.7/site-packages/cv2.so cv2.so</span><br></pre></td></tr></table></figure>
+<h3 id="测试opencv-python"><a href="#测试opencv-python" class="headerlink" title="测试opencv-python"></a>测试opencv-python</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python</span><br><span class="line">&gt;&gt;&gt;import cv2</span><br><span class="line">&gt;&gt;&gt;cv2.__version__</span><br><span class="line">3.2.0<span class="string">'</span></span><br></pre></td></tr></table></figure>
 <p>congratulation！！！</p>
 
-      
     </div>
 
-    <div>
-      
-        
+    
+    
+    
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/opencv/" rel="tag"># opencv</a>
-          
-            <a href="/tags/centos/" rel="tag"># centos</a>
-          
-            <a href="/tags/python/" rel="tag"># python</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/04/22/linux/security2trouble/" rel="next" title="Linux 服务器安全和故障排除">
-                <i class="fa fa-chevron-left"></i> Linux 服务器安全和故障排除
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/opencv/" rel="tag"># opencv</a>
+              <a href="/tags/centos/" rel="tag"># centos</a>
+              <a href="/tags/python/" rel="tag"># python</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/27/linux/linuxUsbGrub/" rel="prev" title="U盘引导多个linux镜像">
-                U盘引导多个linux镜像 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/22/linux/security2trouble/" rel="prev" title="Linux 服务器安全和故障排除">
+      <i class="fa fa-chevron-left"></i> Linux 服务器安全和故障排除
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/27/linux/linuxUsbGrub/" rel="next" title="U盘引导多个linux镜像">
+      U盘引导多个linux镜像 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
           </div>
           
-
-
-          
+    
   <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
   </div>
-
+  
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/logo.png"
-               alt="sam chen" />
-          <p class="site-author-name" itemprop="name">sam chen</p>
-           
-              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">111</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统环境"><span class="nav-number">1.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件源"><span class="nav-number">2.</span> <span class="nav-text">软件源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件环境"><span class="nav-number">3.</span> <span class="nav-text">软件环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更新系统"><span class="nav-number">3.1.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发工具"><span class="nav-number">3.2.</span> <span class="nav-text">开发工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视频和图像格式"><span class="nav-number">3.3.</span> <span class="nav-text">视频和图像格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI特征"><span class="nav-number">3.4.</span> <span class="nav-text">GUI特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-Building-Blocks-TBB"><span class="nav-number">3.5.</span> <span class="nav-text">Threading Building Blocks (TBB)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cuda安装"><span class="nav-number">3.6.</span> <span class="nav-text">cuda安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vlc"><span class="nav-number">3.7.</span> <span class="nav-text">vlc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python"><span class="nav-number">3.8.</span> <span class="nav-text">python</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pip-python-package-manager"><span class="nav-number">3.8.1.</span> <span class="nav-text">pip (python package manager)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-2-7-development-tools"><span class="nav-number">3.8.2.</span> <span class="nav-text">python 2.7 development tools</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#numpy"><span class="nav-number">3.8.3.</span> <span class="nav-text">numpy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Opencv3-2-源码安装"><span class="nav-number">4.</span> <span class="nav-text">Opencv3.2 源码安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取源码"><span class="nav-number">4.1.</span> <span class="nav-text">获取源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装"><span class="nav-number">4.2.</span> <span class="nav-text">编译安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编译目录"><span class="nav-number">4.2.1.</span> <span class="nav-text">编译目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cmake"><span class="nav-number">4.2.2.</span> <span class="nav-text">cmake</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make"><span class="nav-number">4.2.3.</span> <span class="nav-text">make</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make-install"><span class="nav-number">4.2.4.</span> <span class="nav-text">make install</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链接给python"><span class="nav-number">4.2.5.</span> <span class="nav-text">链接给python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试opencv-python"><span class="nav-number">4.3.</span> <span class="nav-text">测试opencv-python</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#系统环境"><span class="nav-number">1.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件源"><span class="nav-number">2.</span> <span class="nav-text">软件源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件环境"><span class="nav-number">3.</span> <span class="nav-text">软件环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更新系统"><span class="nav-number">3.1.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发工具"><span class="nav-number">3.2.</span> <span class="nav-text">开发工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视频和图像格式"><span class="nav-number">3.3.</span> <span class="nav-text">视频和图像格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI特征"><span class="nav-number">3.4.</span> <span class="nav-text">GUI特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Threading-Building-Blocks-TBB"><span class="nav-number">3.5.</span> <span class="nav-text">Threading Building Blocks (TBB)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cuda安装"><span class="nav-number">3.6.</span> <span class="nav-text">cuda安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vlc"><span class="nav-number">3.7.</span> <span class="nav-text">vlc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python"><span class="nav-number">3.8.</span> <span class="nav-text">python</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pip-python-package-manager"><span class="nav-number">3.8.1.</span> <span class="nav-text">pip (python package manager)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#python-2-7-development-tools"><span class="nav-number">3.8.2.</span> <span class="nav-text">python 2.7 development tools</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#numpy"><span class="nav-number">3.8.3.</span> <span class="nav-text">numpy</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Opencv3-2-源码安装"><span class="nav-number">4.</span> <span class="nav-text">Opencv3.2 源码安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取源码"><span class="nav-number">4.1.</span> <span class="nav-text">获取源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译安装"><span class="nav-number">4.2.</span> <span class="nav-text">编译安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编译目录"><span class="nav-number">4.2.1.</span> <span class="nav-text">编译目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cmake"><span class="nav-number">4.2.2.</span> <span class="nav-text">cmake</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make"><span class="nav-number">4.2.3.</span> <span class="nav-text">make</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#make-install"><span class="nav-number">4.2.4.</span> <span class="nav-text">make install</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链接给python"><span class="nav-number">4.2.5.</span> <span class="nav-text">链接给python</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试opencv-python"><span class="nav-number">4.3.</span> <span class="nav-text">测试opencv-python</span></a></li></ol></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright">
   
-  &copy;  2016 - 
+  &copy; 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">sam chen</span>
 </div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
 
         
+
+
+
+
+
+
+
 
         
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -766,108 +513,6 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
 
 
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://giveme5.cc/2017/06/01/computerVision/opencv-python/';
-          this.page.identifier = '2017/06/01/computerVision/opencv-python/';
-          this.page.title = 'Opencv3.2 python2.7 的CentOS7安装';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://amadis.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
 
 
 
@@ -875,29 +520,38 @@ Opencv3.2 python2.7 的CentOS7 完整安装过程。 yum安装的opencv 是2.4 �
   
 
   
+
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
 </script>
-
-
-  
-
-  
-
-  
-
-  
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2017/06/01/computerVision/opencv-python/",
+            identifier: "2017/06/01/computerVision/opencv-python/",
+            title: "Opencv3.2 python2.7 的CentOS7安装"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
 
 </body>
 </html>

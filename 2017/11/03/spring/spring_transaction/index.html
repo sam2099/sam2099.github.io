@@ -1,155 +1,81 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="spring,transaction," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="主要内容spring Transaction 事务；Transaction 事务绑定事件
-更新历史无
-环境：spring 4.2 以上
-spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 编程式事务 ；否则都建议用 声明式事务">
+  <meta name="description" content="主要内容spring Transaction 事务；Transaction 事务绑定事件 更新历史无 环境：spring 4.2 以上 spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 编程式事务 ；否则都建议用 声明式事务">
+<meta name="keywords" content="spring,transaction">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring Transaction 事务">
 <meta property="og:url" content="http://giveme5.cc/2017/11/03/spring/spring_transaction/index.html">
-<meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="主要内容spring Transaction 事务；Transaction 事务绑定事件
-更新历史无
-环境：spring 4.2 以上
-spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 编程式事务 ；否则都建议用 声明式事务">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容spring Transaction 事务；Transaction 事务绑定事件 更新历史无 环境：spring 4.2 以上 spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 编程式事务 ；否则都建议用 声明式事务">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://giveme5.cc/images/spring_tx.png">
 <meta property="og:image" content="http://giveme5.cc/images/spring_tx_prop_required.png">
 <meta property="og:image" content="http://giveme5.cc/images/spring_tx_prop_requires_new.png">
 <meta property="og:updated_time" content="2018-04-18T10:02:39.005Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring Transaction 事务">
-<meta name="twitter:description" content="主要内容spring Transaction 事务；Transaction 事务绑定事件
-更新历史无
-环境：spring 4.2 以上
-spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 编程式事务 ；否则都建议用 声明式事务">
+<meta name="twitter:description" content="主要内容spring Transaction 事务；Transaction 事务绑定事件 更新历史无 环境：spring 4.2 以上 spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 官方的建议是： 除非你只有很少数目的事务操作， 你可以选择 编程式事务 ；否则都建议用 声明式事务">
 <meta name="twitter:image" content="http://giveme5.cc/images/spring_tx.png">
 
+<link rel="canonical" href="http://giveme5.cc/2017/11/03/spring/spring_transaction/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
   };
 </script>
-
-
-
-  <link rel="canonical" href="http://giveme5.cc/2017/11/03/spring/spring_transaction/"/>
-
-
-
-
 
   <title>spring Transaction 事务 | Sam's Notes | Sam Blog</title>
   
@@ -159,232 +85,180 @@ spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-
-
-
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
-      
   </div>
 
   <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            站点地图
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
 
-  
+  </li>
+  </ul>
+
 </nav>
-
-
-
- </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/11/03/spring/spring_transaction/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Sam's Notes | Sam Blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">spring Transaction 事务</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          spring Transaction 事务
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T19:44:58+08:00">
-                2017-11-03
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2017-11-03 19:44:58" itemprop="dateCreated datePublished" datetime="2017-11-03T19:44:58+08:00">2017-11-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-04-18 18:02:39" itemprop="dateModified" datetime="2018-04-18T18:02:39+08:00">2018-04-18</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/spring/" itemprop="url" rel="index">
                     <span itemprop="name">spring</span>
                   </a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/03/spring/spring_transaction/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/03/spring/spring_transaction/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/11/03/spring/spring_transaction/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/03/spring/spring_transaction/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
+
     
-
+    
+    
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring Transaction 事务；Transaction 事务绑定事件</p>
@@ -399,10 +273,10 @@ spring 的 事务分为 编程式事务 和 声明式事务 。对此， spring 
 <li>直接使用 <code>PlatformTransactionManager</code></li>
 </ul>
 <h3 id="TransactionTemplate"><a href="#TransactionTemplate" class="headerlink" title="TransactionTemplate"></a>TransactionTemplate</h3><h3 id="直接-PlatformTransactionManager"><a href="#直接-PlatformTransactionManager" class="headerlink" title="直接 PlatformTransactionManager"></a>直接 PlatformTransactionManager</h3><p>实例化 <code>PlatformTransactionManager</code> 的实现类(比如 <code>DataSourceTransactionManager</code>) 得到 <code>txManager</code> , 需要一个 datasource；<br>然后 <code>DefaultTransactionDefinition</code> 定义事务， <code>TransactionStatus</code> 操作具体SQL。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">DefaultTransactionDefinition def = <span class="keyword">new</span> DefaultTransactionDefinition();</div><div class="line"></div><div class="line"><span class="comment">// explicitly setting the transaction name is something that can only be done programmatically</span></div><div class="line">def.setName(<span class="string">"SomeTxName"</span>);</div><div class="line">def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);</div><div class="line"></div><div class="line">TransactionStatus status = txManager.getTransaction(def);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// execute your business logic here</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">catch</span> (MyException ex) &#123;</div><div class="line">        txManager.rollback(status);</div><div class="line">        <span class="keyword">throw</span> ex;</div><div class="line">&#125;</div><div class="line">txManager.commit(status);</div></pre></td></tr></table></figure>
-<h3 id="TransactionTemplate-1"><a href="#TransactionTemplate-1" class="headerlink" title="TransactionTemplate"></a>TransactionTemplate</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleService</span> <span class="keyword">implements</span> <span class="title">Service</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> TransactionTemplate transactionTemplate;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SimpleService</span><span class="params">(PlatformTransactionManager transactionManager)</span> </span>&#123;</div><div class="line">        Assert.notNull(transactionManager, <span class="string">"The 'transactionManager' argument must not be null."</span>);</div><div class="line">        <span class="keyword">this</span>.transactionTemplate = <span class="keyword">new</span> TransactionTemplate(transactionManager);</div><div class="line"></div><div class="line">        <span class="comment">// the transaction settings can be set here explicitly if so desired</span></div><div class="line">        <span class="keyword">this</span>.transactionTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_READ_UNCOMMITTED);</div><div class="line">        <span class="keyword">this</span>.transactionTemplate.setTimeout(<span class="number">30</span>); <span class="comment">// 30 seconds</span></div><div class="line">        <span class="comment">// and so forth...</span></div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//有返回值</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">someServiceMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> transactionTemplate.execute(<span class="keyword">new</span> TransactionCallback() &#123;</div><div class="line">                <span class="comment">// the code in this method executes in a transactional context</span></div><div class="line">                <span class="function"><span class="keyword">public</span> Object <span class="title">doInTransaction</span><span class="params">(TransactionStatus status)</span> </span>&#123;</div><div class="line">                        updateOperation1();</div><div class="line">                        <span class="keyword">return</span> resultOfUpdateOperation2();</div><div class="line">                &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="comment">//无返回值</span></div><div class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">someServiceMethod</span><span class="params">()</span> </span>&#123;</div><div class="line">        transactionTemplate.execute(<span class="keyword">new</span> TransactionCallbackWithoutResult() &#123;</div><div class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doInTransactionWithoutResult</span><span class="params">(TransactionStatus status)</span> </span>&#123;</div><div class="line">                        updateOperation1();</div><div class="line">                        updateOperation2();</div><div class="line">                &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">DefaultTransactionDefinition def = <span class="keyword">new</span> DefaultTransactionDefinition();</span><br><span class="line"></span><br><span class="line"><span class="comment">// explicitly setting the transaction name is something that can only be done programmatically</span></span><br><span class="line">def.setName(<span class="string">"SomeTxName"</span>);</span><br><span class="line">def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);</span><br><span class="line"></span><br><span class="line">TransactionStatus status = txManager.getTransaction(def);</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// execute your business logic here</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (MyException ex) &#123;</span><br><span class="line">        txManager.rollback(status);</span><br><span class="line">        <span class="keyword">throw</span> ex;</span><br><span class="line">&#125;</span><br><span class="line">txManager.commit(status);</span><br></pre></td></tr></table></figure>
+<h3 id="TransactionTemplate-1"><a href="#TransactionTemplate-1" class="headerlink" title="TransactionTemplate"></a>TransactionTemplate</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleService</span> <span class="keyword">implements</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> TransactionTemplate transactionTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SimpleService</span><span class="params">(PlatformTransactionManager transactionManager)</span> </span>&#123;</span><br><span class="line">        Assert.notNull(transactionManager, <span class="string">"The 'transactionManager' argument must not be null."</span>);</span><br><span class="line">        <span class="keyword">this</span>.transactionTemplate = <span class="keyword">new</span> TransactionTemplate(transactionManager);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// the transaction settings can be set here explicitly if so desired</span></span><br><span class="line">        <span class="keyword">this</span>.transactionTemplate.setIsolationLevel(TransactionDefinition.ISOLATION_READ_UNCOMMITTED);</span><br><span class="line">        <span class="keyword">this</span>.transactionTemplate.setTimeout(<span class="number">30</span>); <span class="comment">// 30 seconds</span></span><br><span class="line">        <span class="comment">// and so forth...</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//有返回值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">someServiceMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> transactionTemplate.execute(<span class="keyword">new</span> TransactionCallback() &#123;</span><br><span class="line">                <span class="comment">// the code in this method executes in a transactional context</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> Object <span class="title">doInTransaction</span><span class="params">(TransactionStatus status)</span> </span>&#123;</span><br><span class="line">                        updateOperation1();</span><br><span class="line">                        <span class="keyword">return</span> resultOfUpdateOperation2();</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//无返回值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">someServiceMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        transactionTemplate.execute(<span class="keyword">new</span> TransactionCallbackWithoutResult() &#123;</span><br><span class="line">                <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doInTransactionWithoutResult</span><span class="params">(TransactionStatus status)</span> </span>&#123;</span><br><span class="line">                        updateOperation1();</span><br><span class="line">                        updateOperation2();</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="声明式事务"><a href="#声明式事务" class="headerlink" title="声明式事务"></a>声明式事务</h2><p>注解方式的 声明式事务 主要涉及 <code>@Transactional</code> 和 <code>@EnableTransactionManagement</code> (需要配合 <code>@Configuration</code>)。<br>声明式事务 主要通过 事务代理 来实现，如下图：</p>
-<p><img src="/images/spring_tx.png" alt=""></p>
+<p><img src="/images/spring_tx.png" alt></p>
 <blockquote>
 <p>Transaction Advisor 可由 Spring 提供默认实现；Custom Advisor(s) 可借 Spring 事务绑定事件<code>@TransactionalEventListener</code> 触发自定义。</p>
 </blockquote>
@@ -475,9 +349,9 @@ table th:nth-of-type(2) {
 </tbody>
 </table>
 <h4 id="propagation-事务传播"><a href="#propagation-事务传播" class="headerlink" title="propagation 事务传播"></a>propagation 事务传播</h4><ul>
-<li><p>PROPAGATION_REQUIRED 默认设置<br>如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。<br>Support a current transaction, create a new one if none exists.<br><img src="/images/spring_tx_prop_required.png" alt=""></p>
+<li><p>PROPAGATION_REQUIRED 默认设置<br>如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。<br>Support a current transaction, create a new one if none exists.<br><img src="/images/spring_tx_prop_required.png" alt></p>
 </li>
-<li><p>PROPAGATION_REQUIRES_NEW<br>创建一个新的事务，如果当前存在事务，则把当前事务挂起。<br>Create a new transaction, and suspend the current transaction if one exists.<br><img src="/images/spring_tx_prop_requires_new.png" alt=""></p>
+<li><p>PROPAGATION_REQUIRES_NEW<br>创建一个新的事务，如果当前存在事务，则把当前事务挂起。<br>Create a new transaction, and suspend the current transaction if one exists.<br><img src="/images/spring_tx_prop_requires_new.png" alt></p>
 </li>
 <li><p>PROPAGATION_SUPPORTS<br>如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。</p>
 </li>
@@ -519,7 +393,7 @@ table th:nth-of-type(2) {
 <h4 id="解决Transactional不回滚"><a href="#解决Transactional不回滚" class="headerlink" title="解决Transactional不回滚"></a>解决Transactional不回滚</h4><ul>
 <li>检查方法是否是<code>public</code>的。</li>
 <li><p>异常类型是否是<code>unchecked</code>异常。<br>如果想check异常也想回滚怎么办，注解上面写明异常类型即可。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Transactional</span>(rollbackFor=Exception.class)</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor=Exception<span class="class">.<span class="keyword">class</span>)</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p><code>spring</code>是否开启对注解的解析<br><code>@EnableTransactionManagement</code><br>还有例如SpringDataJPA 事务容器声明：<br>transactionManager(JpaTransactionManager) -&gt; entityManagerFactory(EntityManagerFactory) -&gt; dataSource</p>
 </li>
@@ -529,7 +403,7 @@ table th:nth-of-type(2) {
 </li>
 </ul>
 <h3 id="事务绑定事件"><a href="#事务绑定事件" class="headerlink" title="事务绑定事件"></a>事务绑定事件</h3><p><code>@TransactionalEventListener</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionEventTestService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span></div><div class="line">    <span class="keyword">private</span> TestMapper mapper;</div><div class="line"></div><div class="line">    <span class="meta">@Resource</span></div><div class="line">    <span class="keyword">private</span> ApplicationEventPublisher publisher;</div><div class="line"></div><div class="line">    <span class="meta">@Transactional</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTestModel</span><span class="params">()</span> </span>&#123;</div><div class="line">        TestModel model = <span class="keyword">new</span> TestModel();</div><div class="line">        model.setName(<span class="string">"haogrgr"</span>);</div><div class="line">        mapper.insert(model);</div><div class="line"></div><div class="line">        <span class="comment">//如果model没有继承ApplicationEvent, 则内部会包装为PayloadApplicationEvent</span></div><div class="line">        <span class="comment">//对于@TransactionalEventListener, 会在事务提交后才执行Listener处理逻辑.</span></div><div class="line">        </div><div class="line">        <span class="comment">//发布事件, 事务提交后, 记录日志, 或发送消息等操作</span></div><div class="line">        publisher.publishEvent(model);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//当事务提交后, 才会真正的执行@TransactionalEventListener配置的Listener, 如果Listener抛异常, 方法返回失败, 但事务不会回滚.</span></div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Component</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionEventListener</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@TransactionalEventListener</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(PayloadApplicationEvent&lt;TestModel&gt; event)</span> </span>&#123;</div><div class="line">        System.out.println(event.getPayload().getName());</div><div class="line">        <span class="comment">//这里可以记录日志, 发送消息等操作.</span></div><div class="line">        <span class="comment">//这里抛出异常, 会导致addTestModel方法异常, 但不会回滚事务.</span></div><div class="line">        <span class="comment">//注意, ApplicationEventPublisher不能使用线程池, 否则不会执行到这里</span></div><div class="line">        <span class="comment">//因为, 包装类是通过ThreadLocal来判断当前是否有活动的事务信息.</span></div><div class="line">        <span class="comment">//TransactionalEventListener.fallbackExecution就是为了决定当当前线程没有事务上下文时,</span></div><div class="line">        <span class="comment">//是否还调用 handle 方法, 默认不调用.</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionEventTestService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> TestMapper mapper;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> ApplicationEventPublisher publisher;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Transactional</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addTestModel</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        TestModel model = <span class="keyword">new</span> TestModel();</span><br><span class="line">        model.setName(<span class="string">"haogrgr"</span>);</span><br><span class="line">        mapper.insert(model);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//如果model没有继承ApplicationEvent, 则内部会包装为PayloadApplicationEvent</span></span><br><span class="line">        <span class="comment">//对于@TransactionalEventListener, 会在事务提交后才执行Listener处理逻辑.</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">//发布事件, 事务提交后, 记录日志, 或发送消息等操作</span></span><br><span class="line">        publisher.publishEvent(model);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//当事务提交后, 才会真正的执行@TransactionalEventListener配置的Listener, 如果Listener抛异常, 方法返回失败, 但事务不会回滚.</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionEventListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@TransactionalEventListener</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(PayloadApplicationEvent&lt;TestModel&gt; event)</span> </span>&#123;</span><br><span class="line">        System.out.println(event.getPayload().getName());</span><br><span class="line">        <span class="comment">//这里可以记录日志, 发送消息等操作.</span></span><br><span class="line">        <span class="comment">//这里抛出异常, 会导致addTestModel方法异常, 但不会回滚事务.</span></span><br><span class="line">        <span class="comment">//注意, ApplicationEventPublisher不能使用线程池, 否则不会执行到这里</span></span><br><span class="line">        <span class="comment">//因为, 包装类是通过ThreadLocal来判断当前是否有活动的事务信息.</span></span><br><span class="line">        <span class="comment">//TransactionalEventListener.fallbackExecution就是为了决定当当前线程没有事务上下文时,</span></span><br><span class="line">        <span class="comment">//是否还调用 handle 方法, 默认不调用.</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h4><ul>
 <li><p><code>phase</code><br>BEFORE_COMMIT, AFTER_COMMIT (default), AFTER_ROLLBACK and AFTER_COMPLETION</p>
 </li>
@@ -537,275 +411,164 @@ table th:nth-of-type(2) {
 </li>
 </ul>
 
-      
     </div>
 
-    <div>
-      
-        
+    
+    
+    
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/spring/" rel="tag"># spring</a>
-          
-            <a href="/tags/transaction/" rel="tag"># transaction</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/10/17/java/FunctionalInterface/" rel="next" title="Java 8 内置函数式接口">
-                <i class="fa fa-chevron-left"></i> Java 8 内置函数式接口
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/spring/" rel="tag"># spring</a>
+              <a href="/tags/transaction/" rel="tag"># transaction</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/25/other/jwt1/" rel="prev" title="jwt (Json Web Tokens)">
-                jwt (Json Web Tokens) <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/17/java/FunctionalInterface/" rel="prev" title="Java 8 内置函数式接口">
+      <i class="fa fa-chevron-left"></i> Java 8 内置函数式接口
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/01/25/other/jwt1/" rel="next" title="jwt (Json Web Tokens)">
+      jwt (Json Web Tokens) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
           </div>
           
-
-
-          
+    
   <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
   </div>
-
+  
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/logo.png"
-               alt="sam chen" />
-          <p class="site-author-name" itemprop="name">sam chen</p>
-           
-              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">111</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程式事务"><span class="nav-number">2.</span> <span class="nav-text">编程式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate"><span class="nav-number">2.1.</span> <span class="nav-text">TransactionTemplate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接-PlatformTransactionManager"><span class="nav-number">2.2.</span> <span class="nav-text">直接 PlatformTransactionManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate-1"><span class="nav-number">2.3.</span> <span class="nav-text">TransactionTemplate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明式事务"><span class="nav-number">3.</span> <span class="nav-text">声明式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Transactional"><span class="nav-number">3.1.</span> <span class="nav-text">Transactional</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#propagation-事务传播"><span class="nav-number">3.1.1.</span> <span class="nav-text">propagation 事务传播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隔离级别"><span class="nav-number">3.1.2.</span> <span class="nav-text">隔离级别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transactional注意点"><span class="nav-number">3.2.</span> <span class="nav-text">Transactional注意点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Transactional特性"><span class="nav-number">3.2.1.</span> <span class="nav-text">Transactional特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决Transactional不回滚"><span class="nav-number">3.2.2.</span> <span class="nav-text">解决Transactional不回滚</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务绑定事件"><span class="nav-number">3.3.</span> <span class="nav-text">事务绑定事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#属性"><span class="nav-number">3.3.1.</span> <span class="nav-text">属性</span></a></li></ol></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程式事务"><span class="nav-number">2.</span> <span class="nav-text">编程式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate"><span class="nav-number">2.1.</span> <span class="nav-text">TransactionTemplate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接-PlatformTransactionManager"><span class="nav-number">2.2.</span> <span class="nav-text">直接 PlatformTransactionManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TransactionTemplate-1"><span class="nav-number">2.3.</span> <span class="nav-text">TransactionTemplate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#声明式事务"><span class="nav-number">3.</span> <span class="nav-text">声明式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Transactional"><span class="nav-number">3.1.</span> <span class="nav-text">Transactional</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#propagation-事务传播"><span class="nav-number">3.1.1.</span> <span class="nav-text">propagation 事务传播</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#隔离级别"><span class="nav-number">3.1.2.</span> <span class="nav-text">隔离级别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Transactional注意点"><span class="nav-number">3.2.</span> <span class="nav-text">Transactional注意点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Transactional特性"><span class="nav-number">3.2.1.</span> <span class="nav-text">Transactional特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解决Transactional不回滚"><span class="nav-number">3.2.2.</span> <span class="nav-text">解决Transactional不回滚</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事务绑定事件"><span class="nav-number">3.3.</span> <span class="nav-text">事务绑定事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#属性"><span class="nav-number">3.3.1.</span> <span class="nav-text">属性</span></a></li></ol></li></ol></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright">
   
-  &copy;  2016 - 
+  &copy; 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">sam chen</span>
 </div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
 
         
+
+
+
+
+
+
+
 
         
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -822,108 +585,6 @@ table th:nth-of-type(2) {
 
 
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://giveme5.cc/2017/11/03/spring/spring_transaction/';
-          this.page.identifier = '2017/11/03/spring/spring_transaction/';
-          this.page.title = 'spring Transaction 事务';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://amadis.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
 
 
 
@@ -931,29 +592,38 @@ table th:nth-of-type(2) {
   
 
   
+
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
 </script>
-
-
-  
-
-  
-
-  
-
-  
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2017/11/03/spring/spring_transaction/",
+            identifier: "2017/11/03/spring/spring_transaction/",
+            title: "spring Transaction 事务"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
 
 </body>
 </html>

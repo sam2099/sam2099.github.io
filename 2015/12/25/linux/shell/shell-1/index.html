@@ -1,154 +1,77 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
 
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="shell," />
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml" />
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
-
-
-
-
-
-
-<meta name="description" content="基本内容
-
-元字符
-变量
-注释">
-<meta property="og:type" content="article">
-<meta property="og:title" content="shell （一） 基础">
-<meta property="og:url" content="http://giveme5.cc/2015/12/25/linux/shell/shell-1/index.html">
-<meta property="og:site_name" content="Sam's Notes | Sam Blog">
-<meta property="og:description" content="基本内容
-
-元字符
-变量
-注释">
-<meta property="og:updated_time" content="2017-02-21T07:18:44.691Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="shell （一） 基础">
-<meta name="twitter:description" content="基本内容
-
-元字符
-变量
-注释">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
+<script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
     root: '/',
     scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
     algolia: {
-      applicationID: '',
+      appID: '',
       apiKey: '',
       indexName: '',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
 
+  <meta name="description" content="基本内容  元字符 变量 注释">
+<meta name="keywords" content="shell">
+<meta property="og:type" content="article">
+<meta property="og:title" content="shell （一） 基础">
+<meta property="og:url" content="http://giveme5.cc/2015/12/25/linux/shell/shell-1/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="基本内容  元字符 变量 注释">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-02-21T07:18:44.692Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="shell （一） 基础">
+<meta name="twitter:description" content="基本内容  元字符 变量 注释">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/25/linux/shell/shell-1/">
 
 
-  <link rel="canonical" href="http://giveme5.cc/2015/12/25/linux/shell/shell-1/"/>
-
-
-
-
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
 
   <title>shell （一） 基础 | Sam's Notes | Sam Blog</title>
   
@@ -158,232 +81,180 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-
-
-
-
-
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+    <div>
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Sam's Notes | Sam Blog</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
-      
         <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
-      
   </div>
 
   <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
   </div>
 </div>
 
+
 <nav class="site-nav">
   
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
         <li class="menu-item menu-item-sitemap">
-          <a href="/sitemap.xml" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
-            
-            站点地图
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
 
-  
+  </li>
+  </ul>
+
 </nav>
-
-
-
- </div>
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
-
-  
-
+  <div class="posts-expand">
+      
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/25/linux/shell/shell-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Sam's Notes | Sam Blog">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">shell （一） 基础</h1>
-        
+        <h1 class="post-title" itemprop="name headline">
+          shell （一） 基础
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-25T18:29:44+08:00">
-                2015-12-25
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
+              <time title="创建时间：2015-12-25 18:29:44" itemprop="dateCreated datePublished" datetime="2015-12-25T18:29:44+08:00">2015-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-02-21 15:18:44" itemprop="dateModified" datetime="2017-02-21T15:18:44+08:00">2017-02-21</time>
+              </span>
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
+              <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
                   <a href="/categories/linux/" itemprop="url" rel="index">
                     <span itemprop="name">linux</span>
                   </a>
                 </span>
-
-                
-                
-              
             </span>
-          
 
           
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2015/12/25/linux/shell/shell-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2015/12/25/linux/shell/shell-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2015/12/25/linux/shell/shell-1/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/12/25/linux/shell/shell-1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
 
         </div>
       </header>
+
     
-
+    
+    
     <div class="post-body" itemprop="articleBody">
-
-      
-      
 
       
         <p>基本内容</p>
@@ -395,20 +266,20 @@
 <a id="more"></a>
 <h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><p>具有特定功能的保留字<br><code>IFS（交换字段分隔符）</code>：由<space> <tab> <enter>三者之一组成（我们常用space），用来拆分command line的每一个词（word）用的，因为shell command line是按词来处理的。<br><code>CR（回车键）</code> ： 由<enter>产生，用来结束command line。<br><code>=</code> ：  设定变量。<br><code>$</code> ：  做变量或运算替换(请不要与 shell prompt 搞混了)。<br><code>&gt;</code> ：  重定向 stdout（标准输出standard out）。<br><code>&lt;</code> ：  重定向 stdin（标准输入standard in）。<br><code>|</code>：   管道命令。<br><code>&amp;</code> ：  重定向 file descriptor （文件描述符），或将命令置于后台执行。<br><code>( )</code>： 將其內的命令置于 nested subshell （嵌套的子shell）执行，或用于运算或命令替换。<br><code>{ }</code>： 將其內的命令置于 non-named function（未命名函数） 中执行，或用在变量替换的界定范围。<br><code>;</code> ：  在前一个命令结束时，而忽略其返回值，继续执行下一個命令。<br><code>&amp;&amp;</code> ： 在前一個命令结束时，若返回值为 true，继续执行下一個命令。<br><code>||</code> ： 在前一個命令结束时，若返回值为 false，继续执行下一個命令。<br><code>!</code>：   执行 history 列表中的命令<br><code>;</code> : 分隔同一行的2条shell语句。</enter></enter></tab></space></p>
 <h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>临时变量：是shell程序内部定义的，其使用范围仅限于定义它的程序，对其它程序不可见。<br>环境变量(永久变量): 其值不随shell 脚本的执行结束而消失。</p>
-<h3 id="自定义环境变量"><a href="#自定义环境变量" class="headerlink" title="自定义环境变量"></a>自定义环境变量</h3><p>编辑用户配置文件，利用export修改环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]#export PATH=/root:$PATH</div><div class="line">source 配置文件 #及时生效</div></pre></td></tr></table></figure></p>
+<h3 id="自定义环境变量"><a href="#自定义环境变量" class="headerlink" title="自定义环境变量"></a>自定义环境变量</h3><p>编辑用户配置文件，利用export修改环境变量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#export PATH=/root:$PATH</span><br><span class="line">source 配置文件 #及时生效</span><br></pre></td></tr></table></figure></p>
 <h3 id="临时变量"><a href="#临时变量" class="headerlink" title="临时变量"></a>临时变量</h3><p>由字母或下划线打头。 由字母、数字或下划线组成，并且大小写字母意义不同。变量名长度没有限制。<br>使用变量值时，要在变量名前加上“$”</p>
-<h4 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h4><p>赋值号“=”两边应没有空格。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# abc = 123</div><div class="line">bash: abc: command not found...</div><div class="line">  </div><div class="line">[root@localhost ~]# abc=123</div></pre></td></tr></table></figure></p>
+<h4 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h4><p>赋值号“=”两边应没有空格。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# abc = 123</span><br><span class="line">bash: abc: command not found...</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# abc=123</span><br></pre></td></tr></table></figure></p>
 <h4 id="命令赋给变量"><a href="#命令赋给变量" class="headerlink" title="命令赋给变量"></a>命令赋给变量</h4><p>两种方式：</p>
 <ul>
 <li><code>反引号</code></li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]#A=`date`</div><div class="line">[root@localhost ~]#echo $A</div><div class="line">Thu Dec 24 21:14:24 CST2015</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#A=`date`</span><br><span class="line">[root@localhost ~]#echo $A</span><br><span class="line">Thu Dec 24 21:14:24 CST2015</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>$()</code></li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]# B=$(date)</div><div class="line">[root@localhost ~]# echo $B</div><div class="line">Thu Dec 24 21:17:48 CST2015</div></pre></td></tr></table></figure>
-<h4 id="单引号和双引号的区别"><a href="#单引号和双引号的区别" class="headerlink" title="单引号和双引号的区别"></a>单引号和双引号的区别</h4><p>单引号之间的内容成为纯文本，取消所有特殊符号的意义；<br>双引号仅特殊符号 <strong>$ \ `</strong> 这三个的含义保留。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]#NAME=&quot;rm  mk  docker&quot;</div><div class="line">[root@localhost ~]#echo $NAME</div><div class="line">rm mk docker</div><div class="line">  </div><div class="line">[root@localhost ~]#NAME=&apos;rm  mk  docker&apos;</div><div class="line">[root@localhost ~]#echo $NAME</div><div class="line">rm mk docker</div><div class="line">  </div><div class="line">[root@localhost ~]#NAME=&quot;rm $NAME&quot;</div><div class="line">[root@localhost ~]#echo $NAME</div><div class="line">rm rm mk docker</div><div class="line">  </div><div class="line">[root@localhost ~]#NAME=&apos;rm $NAME&apos;</div><div class="line">[root@localhost ~]#echo $NAME</div><div class="line">rm $NAME</div></pre></td></tr></table></figure></p>
-<h4 id="unset-readonly"><a href="#unset-readonly" class="headerlink" title="unset readonly"></a>unset readonly</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">unset variable_name #删除变量</div><div class="line">readonly variable_name #只读变量</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# B=$(date)</span><br><span class="line">[root@localhost ~]# echo $B</span><br><span class="line">Thu Dec 24 21:17:48 CST2015</span><br></pre></td></tr></table></figure>
+<h4 id="单引号和双引号的区别"><a href="#单引号和双引号的区别" class="headerlink" title="单引号和双引号的区别"></a>单引号和双引号的区别</h4><p>单引号之间的内容成为纯文本，取消所有特殊符号的意义；<br>双引号仅特殊符号 <strong>$ \ `</strong> 这三个的含义保留。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#NAME=&quot;rm  mk  docker&quot;</span><br><span class="line">[root@localhost ~]#echo $NAME</span><br><span class="line">rm mk docker</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#NAME=&apos;rm  mk  docker&apos;</span><br><span class="line">[root@localhost ~]#echo $NAME</span><br><span class="line">rm mk docker</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#NAME=&quot;rm $NAME&quot;</span><br><span class="line">[root@localhost ~]#echo $NAME</span><br><span class="line">rm rm mk docker</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#NAME=&apos;rm $NAME&apos;</span><br><span class="line">[root@localhost ~]#echo $NAME</span><br><span class="line">rm $NAME</span><br></pre></td></tr></table></figure></p>
+<h4 id="unset-readonly"><a href="#unset-readonly" class="headerlink" title="unset readonly"></a>unset readonly</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unset variable_name #删除变量</span><br><span class="line">readonly variable_name #只读变量</span><br></pre></td></tr></table></figure>
 <h3 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h3><table>
 <thead>
 <tr>
@@ -459,279 +330,169 @@
 <h3 id="常用PATTERN："><a href="#常用PATTERN：" class="headerlink" title="常用PATTERN："></a>常用PATTERN：</h3><pre><code>^#:   以#开头
 #$:   以#结尾
 ^$:   空行
-</code></pre><h3 id="Read命令："><a href="#Read命令：" class="headerlink" title="Read命令："></a>Read命令：</h3><p>作用：从键盘读入数据，赋给变量<br>参数 ：-p    -n   -t参数结合使用<br>-p(提示语句)<br>-n(字符个数)<br>-t(等待时间)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]<span class="comment"># vim read1.sh</span></div><div class="line"><span class="meta">#!/bin/bash</span></div><div class="line"><span class="built_in">read</span> -p  <span class="string">"请输入你的姓名："</span>  YYNAME</div><div class="line"><span class="built_in">read</span> -p  <span class="string">"请输入你的年龄："</span>  YYAGE</div><div class="line"><span class="built_in">read</span> -p  <span class="string">"请输入你的性别："</span>  YYSEX</div><div class="line">  </div><div class="line"><span class="built_in">echo</span> <span class="string">"你的基本信息如下："</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"姓名：<span class="variable">$YYNAME</span>"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"年龄：<span class="variable">$YYAGE</span>"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"性别：<span class="variable">$YYSEX</span>"</span></div></pre></td></tr></table></figure></p>
-<h3 id="expr-命令"><a href="#expr-命令" class="headerlink" title="expr 命令"></a>expr 命令</h3><p>作用：Shell变量的算术运算：<br>expr命令：对整数型变量进行算术运算<br>语法： expr  表达式    #注意 运算符之间要有空格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@localhost ~]#expr 3 + 5</div><div class="line">8</div><div class="line">  </div><div class="line">[root@localhost ~]#expr 8 - 5</div><div class="line">3</div><div class="line">  </div><div class="line">[root@localhost ~]#expr 8 / 4</div><div class="line">2</div><div class="line">  </div><div class="line">[root@localhost ~]#expr 8 \* 4</div><div class="line">32</div></pre></td></tr></table></figure></p>
+</code></pre><h3 id="Read命令："><a href="#Read命令：" class="headerlink" title="Read命令："></a>Read命令：</h3><p>作用：从键盘读入数据，赋给变量<br>参数 ：-p    -n   -t参数结合使用<br>-p(提示语句)<br>-n(字符个数)<br>-t(等待时间)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim read1.sh</span></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">read</span> -p  <span class="string">"请输入你的姓名："</span>  YYNAME</span><br><span class="line"><span class="built_in">read</span> -p  <span class="string">"请输入你的年龄："</span>  YYAGE</span><br><span class="line"><span class="built_in">read</span> -p  <span class="string">"请输入你的性别："</span>  YYSEX</span><br><span class="line">  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"你的基本信息如下："</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"姓名：<span class="variable">$YYNAME</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"年龄：<span class="variable">$YYAGE</span>"</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"性别：<span class="variable">$YYSEX</span>"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="expr-命令"><a href="#expr-命令" class="headerlink" title="expr 命令"></a>expr 命令</h3><p>作用：Shell变量的算术运算：<br>expr命令：对整数型变量进行算术运算<br>语法： expr  表达式    #注意 运算符之间要有空格<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#expr 3 + 5</span><br><span class="line">8</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#expr 8 - 5</span><br><span class="line">3</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#expr 8 / 4</span><br><span class="line">2</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#expr 8 \* 4</span><br><span class="line">32</span><br></pre></td></tr></table></figure></p>
 <p><code>注意：乘号(*)前边必须加反斜杠(\)才能实现乘法运算</code></p>
-<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>以“#”开头的行就是注释，会被解释器忽略。<br>没有多行注释，只能每一行加一个#号。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">##### 用户配置区 开始 #####</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># 项目根目录</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment">##### 用户配置区 结束  #####</span></div></pre></td></tr></table></figure></p>
+<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2><p>以“#”开头的行就是注释，会被解释器忽略。<br>没有多行注释，只能每一行加一个#号。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##### 用户配置区 开始 #####</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 项目根目录</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">##### 用户配置区 结束  #####</span></span><br></pre></td></tr></table></figure></p>
 <p>遇到大段的代码需要临时注释起来，可以把这一段要注释的代码用一对花括号括起来，定义成一个函数，没有地方调用这个函数，这块代码就不会执行，达到了和注释一样的效果。 </p>
 
-      
     </div>
 
-    <div>
-      
-        
+    
+    
+    
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/shell/" rel="tag"># shell</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/12/24/linux/base/godLinux1-23/" rel="next" title="1-23 RHEL7启动配置">
-                <i class="fa fa-chevron-left"></i> 1-23 RHEL7启动配置
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/shell/" rel="tag"># shell</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/12/28/linux/shell/shell-2/" rel="prev" title="shell （二） 替换">
-                shell （二） 替换 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/24/linux/base/godLinux1-23/" rel="prev" title="1-23 RHEL7启动配置">
+      <i class="fa fa-chevron-left"></i> 1-23 RHEL7启动配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/28/linux/shell/shell-2/" rel="next" title="shell （二） 替换">
+      shell （二） 替换 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
-
-
-    <div class="post-spread">
-      
-    </div>
   </div>
 
 
           </div>
           
-
-
-          
+    
   <div class="comments" id="comments">
-    
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
   </div>
-
+  
 
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/logo.png"
-               alt="sam chen" />
-          <p class="site-author-name" itemprop="name">sam chen</p>
-           
-              <p class="site-description motion-element" itemprop="description">sam's notes, sam's note, sam's blog</p>
-          
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">113</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">111</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#元字符"><span class="nav-number">1.</span> <span class="nav-text">元字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义环境变量"><span class="nav-number">2.1.</span> <span class="nav-text">自定义环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#临时变量"><span class="nav-number">2.2.</span> <span class="nav-text">临时变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量赋值"><span class="nav-number">2.2.1.</span> <span class="nav-text">变量赋值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令赋给变量"><span class="nav-number">2.2.2.</span> <span class="nav-text">命令赋给变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单引号和双引号的区别"><span class="nav-number">2.2.3.</span> <span class="nav-text">单引号和双引号的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unset-readonly"><span class="nav-number">2.2.4.</span> <span class="nav-text">unset readonly</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊变量"><span class="nav-number">2.3.</span> <span class="nav-text">特殊变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用PATTERN："><span class="nav-number">2.4.</span> <span class="nav-text">常用PATTERN：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Read命令："><span class="nav-number">2.5.</span> <span class="nav-text">Read命令：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#expr-命令"><span class="nav-number">2.6.</span> <span class="nav-text">expr 命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-number">3.</span> <span class="nav-text">注释</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#元字符"><span class="nav-number">1.</span> <span class="nav-text">元字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义环境变量"><span class="nav-number">2.1.</span> <span class="nav-text">自定义环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#临时变量"><span class="nav-number">2.2.</span> <span class="nav-text">临时变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量赋值"><span class="nav-number">2.2.1.</span> <span class="nav-text">变量赋值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令赋给变量"><span class="nav-number">2.2.2.</span> <span class="nav-text">命令赋给变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#单引号和双引号的区别"><span class="nav-number">2.2.3.</span> <span class="nav-text">单引号和双引号的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#unset-readonly"><span class="nav-number">2.2.4.</span> <span class="nav-text">unset readonly</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊变量"><span class="nav-number">2.3.</span> <span class="nav-text">特殊变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用PATTERN："><span class="nav-number">2.4.</span> <span class="nav-text">常用PATTERN：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Read命令："><span class="nav-number">2.5.</span> <span class="nav-text">Read命令：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#expr-命令"><span class="nav-number">2.6.</span> <span class="nav-text">expr 命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注释"><span class="nav-number">3.</span> <span class="nav-text">注释</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright" >
+        
+
+<div class="copyright">
   
-  &copy;  2016 - 
+  &copy; 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">sam chen</span>
 </div>
-
-
-<div class="powered-by">
-  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
 
         
+
+
+
+
+
+
+
 
         
       </div>
     </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
   </div>
 
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -748,108 +509,6 @@
 
 
 
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
-
-
-
-  
-
-
-  
-
-    
-      <script id="dsq-count-scr" src="https://amadis.disqus.com/count.js" async></script>
-    
-
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://giveme5.cc/2015/12/25/linux/shell/shell-1/';
-          this.page.identifier = '2015/12/25/linux/shell/shell-1/';
-          this.page.title = 'shell （一） 基础';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://amadis.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
-    
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
 
 
 
@@ -857,29 +516,38 @@
   
 
   
+
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
 </script>
-
-
-  
-
-  
-
-  
-
-  
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2015/12/25/linux/shell/shell-1/",
+            identifier: "2015/12/25/linux/shell/shell-1/",
+            title: "shell （一） 基础"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
 
 </body>
 </html>
