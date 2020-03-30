@@ -54,7 +54,7 @@
 <meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
 <meta property="og:description" content="主要内容 环境准备 用户管理 sshd管理 防暴力破解  主要以 Centos 7 为主。 更新历史  2017-8-29 增加 SELinux 内容   ……">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-29T05:37:39.441Z">
+<meta property="og:updated_time" content="2020-03-02T09:19:16.425Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux server 配置选项">
 <meta name="twitter:description" content="主要内容 环境准备 用户管理 sshd管理 防暴力破解  主要以 Centos 7 为主。 更新历史  2017-8-29 增加 SELinux 内容   ……">
@@ -218,7 +218,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-08-29 13:37:39" itemprop="dateModified" datetime="2017-08-29T13:37:39+08:00">2017-08-29</time>
+                <time title="修改时间：2020-03-02 17:19:16" itemprop="dateModified" datetime="2020-03-02T17:19:16+08:00">2020-03-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -275,8 +275,21 @@
 <pre><code>hostnamectl set-hostname `your hostname`
 reboot
 </code></pre><p>修改 <code>/etc/hosts</code> 将 <code>your hostname</code> 写入到 ipv4 和 ipv6</p>
-<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h3><p><a href="http://mirrors.aliyun.com/help/centos" target="_blank" rel="noopener">阿里CentOS 镜像</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo </span><br><span class="line"></span><br><span class="line">yum makecache #生成缓存</span><br></pre></td></tr></table></figure>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><h3 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysconfig/network-scripts/ifcfg-enp2s0 <span class="comment"># ifcfg-enp2s0 文件根据你实际情况</span></span><br><span class="line"></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=none</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=no</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">NAME=enp2s0</span><br><span class="line">UUID=xxxxx-cf21-4b6f-bac5-3f1a0930ee74</span><br><span class="line">DEVICE=enp2s0</span><br><span class="line"></span><br><span class="line">HWADDR=40:8D:5C:A7:40:08</span><br><span class="line"></span><br><span class="line">IPV6_PEERDNS=yes</span><br><span class="line">IPV6_PEERROUTES=yes</span><br><span class="line"></span><br><span class="line">ONBOOT=yes</span><br><span class="line">IPADDR=192.168.xx.xx</span><br><span class="line">PREFIX=24</span><br><span class="line">GATEWAY=192.168.11.1</span><br><span class="line">DNS1=221.228.xx.xx</span><br><span class="line">DNS2=114.114.114.114</span><br></pre></td></tr></table></figure>
+<p>特别注意 <code>ONBOOT</code> 到最后， DNS 不配置是不能上外网的。</p>
+<h3 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h3><p><a href="https://developer.aliyun.com/mirror/centos" target="_blank" rel="noopener">阿里CentOS 镜像</a></p>
+<ul>
+<li>下载yum源</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>如果不是阿里ECS服务器， 替换源URL</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i -e <span class="string">'/mirrors.cloud.aliyuncs.com/d'</span> -e <span class="string">'/mirrors.aliyuncs.com/d'</span> /etc/yum.repos.d/CentOS-Base.repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成缓存</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum clean all</span><br><span class="line"></span><br><span class="line">yum makecache</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
 <h3 id="科学上网"><a href="#科学上网" class="headerlink" title="科学上网"></a>科学上网</h3><p><a href="/2016/05/05/other/shadowsocks">SS</a></p>
 <h3 id="git-git-flow"><a href="#git-git-flow" class="headerlink" title="git (git-flow)"></a>git (git-flow)</h3><pre><code>yum -y install git
 </code></pre><p><a href="/2016/05/03/devEnv/git/git/">git的后悔药</a></p>
@@ -372,7 +385,7 @@ reboot
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Centos"><span class="nav-number">2.</span> <span class="nav-text">安装Centos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘安装。"><span class="nav-number">2.1.</span> <span class="nav-text">U盘安装。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hostname"><span class="nav-number">2.2.</span> <span class="nav-text">hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">3.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum源"><span class="nav-number">3.1.</span> <span class="nav-text">yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#科学上网"><span class="nav-number">3.2.</span> <span class="nav-text">科学上网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-git-flow"><span class="nav-number">3.3.</span> <span class="nav-text">git (git-flow)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh"><span class="nav-number">3.4.</span> <span class="nav-text">zsh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oh-my-zsh"><span class="nav-number">3.5.</span> <span class="nav-text">oh-my-zsh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户管理"><span class="nav-number">4.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sshd管理"><span class="nav-number">5.</span> <span class="nav-text">sshd管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#firewall"><span class="nav-number">6.</span> <span class="nav-text">firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SELinux"><span class="nav-number">7.</span> <span class="nav-text">SELinux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看状态"><span class="nav-number">7.1.</span> <span class="nav-text">查看状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭-SELinux"><span class="nav-number">7.2.</span> <span class="nav-text">关闭 SELinux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#临时关闭"><span class="nav-number">7.2.1.</span> <span class="nav-text">临时关闭</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临时开启"><span class="nav-number">7.2.2.</span> <span class="nav-text">临时开启</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#永久关闭"><span class="nav-number">7.2.3.</span> <span class="nav-text">永久关闭</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防暴力破解"><span class="nav-number">8.</span> <span class="nav-text">防暴力破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VNC"><span class="nav-number">9.</span> <span class="nav-text">VNC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sonatype-nexus"><span class="nav-number">10.</span> <span class="nav-text">Sonatype nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab"><span class="nav-number">11.</span> <span class="nav-text">gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CI"><span class="nav-number">12.</span> <span class="nav-text">CI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-number">13.</span> <span class="nav-text">nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">14.</span> <span class="nav-text">mysql</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Centos"><span class="nav-number">2.</span> <span class="nav-text">安装Centos</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘安装。"><span class="nav-number">2.1.</span> <span class="nav-text">U盘安装。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hostname"><span class="nav-number">2.2.</span> <span class="nav-text">hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境准备"><span class="nav-number">3.</span> <span class="nav-text">环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络"><span class="nav-number">3.1.</span> <span class="nav-text">网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yum源"><span class="nav-number">3.2.</span> <span class="nav-text">yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#科学上网"><span class="nav-number">3.3.</span> <span class="nav-text">科学上网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-git-flow"><span class="nav-number">3.4.</span> <span class="nav-text">git (git-flow)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zsh"><span class="nav-number">3.5.</span> <span class="nav-text">zsh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#oh-my-zsh"><span class="nav-number">3.6.</span> <span class="nav-text">oh-my-zsh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户管理"><span class="nav-number">4.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sshd管理"><span class="nav-number">5.</span> <span class="nav-text">sshd管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#firewall"><span class="nav-number">6.</span> <span class="nav-text">firewall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SELinux"><span class="nav-number">7.</span> <span class="nav-text">SELinux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看状态"><span class="nav-number">7.1.</span> <span class="nav-text">查看状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭-SELinux"><span class="nav-number">7.2.</span> <span class="nav-text">关闭 SELinux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#临时关闭"><span class="nav-number">7.2.1.</span> <span class="nav-text">临时关闭</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#临时开启"><span class="nav-number">7.2.2.</span> <span class="nav-text">临时开启</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#永久关闭"><span class="nav-number">7.2.3.</span> <span class="nav-text">永久关闭</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防暴力破解"><span class="nav-number">8.</span> <span class="nav-text">防暴力破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VNC"><span class="nav-number">9.</span> <span class="nav-text">VNC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sonatype-nexus"><span class="nav-number">10.</span> <span class="nav-text">Sonatype nexus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab"><span class="nav-number">11.</span> <span class="nav-text">gitlab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CI"><span class="nav-number">12.</span> <span class="nav-text">CI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-number">13.</span> <span class="nav-text">nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">14.</span> <span class="nav-text">mysql</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -388,7 +401,7 @@ reboot
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -401,7 +414,7 @@ reboot
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-count">112</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -426,7 +439,7 @@ reboot
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

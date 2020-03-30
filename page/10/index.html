@@ -186,6 +186,121 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/25/mq/activemq3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/09/25/mq/activemq3/" class="post-title-link" itemprop="url">activemq(三) Spring集成 - 消息驱动</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-09-25 21:22:22" itemprop="dateCreated datePublished" datetime="2015-09-25T21:22:22+08:00">2015-09-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-02-21 15:18:44" itemprop="dateModified" datetime="2017-02-21T15:18:44+08:00">2017-02-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mq/" itemprop="url" rel="index">
+                    <span itemprop="name">mq</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2015/09/25/mq/activemq3/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/09/25/mq/activemq3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>上篇介绍了 <a href>集成Spring-远程调用</a>, 本次介绍集成 Spring， 常规JMS，消息驱动。主角是 activeMq， JmsTemplate， @JmsListener。</p>
+<ul>
+<li>activeMq 是消息总线，JMS provider； </li>
+<li>JmsTemplate 是由 Spring提供的消息模板，简化消息生产者和消费者端的代码开发量。就是封装了 连接JMS provider（如ActiveMQ），建立JMS Session（如QueueSession），建立消息生产者，建立消费者，发送消息，接收消息；</li>
+<li>@JmsListener 由 Spring 提供的最简单的消息接收端操作方式。</li>
+</ul>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="必须的jar"><a href="#必须的jar" class="headerlink" title="必须的jar"></a>必须的jar</h3><p>maven管理的方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.activemq&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;activemq-all&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;5.12.0&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;commons-pool2&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p>
+<p>activemq 的 PooledConnectionFactory 会调用 commons-pool2。</p>
+<h3 id="PropertySourcesPlaceholderConfigurer"><a href="#PropertySourcesPlaceholderConfigurer" class="headerlink" title="PropertySourcesPlaceholderConfigurer"></a>PropertySourcesPlaceholderConfigurer</h3><p>配置<code>PropertySourcesPlaceholderConfigurer</code>， 下面用得着，比较优雅。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">public class ApplicationConfiguration</span><br><span class="line">&#123;</span><br><span class="line">    //To resolve $&#123;&#125; in @Value (in *.properties files by @PropertySource included)</span><br><span class="line">    @Bean</span><br><span class="line">    public static PropertySourcesPlaceholderConfigurer propertyConfigInDev() &#123;</span><br><span class="line">      return new PropertySourcesPlaceholderConfigurer();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>消息生产者和消费者都需要。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.activemq.ActiveMQConnectionFactory;</span><br><span class="line">    import org.apache.activemq.command.ActiveMQQueue;</span><br><span class="line">import org.apache.activemq.pool.PooledConnectionFactory;</span><br><span class="line">import org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line">import org.springframework.context.annotation.PropertySource;</span><br><span class="line">import org.springframework.core.env.Environment;</span><br><span class="line">import org.springframework.jms.annotation.EnableJms;</span><br><span class="line">import org.springframework.jms.config.DefaultJmsListenerContainerFactory;</span><br><span class="line">import org.springframework.jms.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.jms.core.JmsTemplate;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">@EnableJms //开启jsm 注解</span><br><span class="line">@PropertySource(&#123; &quot;classpath:conf/jms.properties&quot;&#125;) // 加载配置资源文件</span><br><span class="line">public class JmsConfiguration</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private Environment env;</span><br><span class="line"></span><br><span class="line">    //ConnectionFactory</span><br><span class="line">    @Bean</span><br><span class="line">    public ActiveMQConnectionFactory jmsConnectionFactory()</span><br><span class="line">    &#123;</span><br><span class="line">        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();</span><br><span class="line">        connectionFactory.setBrokerURL(&quot;tcp://localhost:61616&quot;);</span><br><span class="line">        return connectionFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //activeMq PooledConnectionFactory</span><br><span class="line">    @Bean</span><br><span class="line">    public PooledConnectionFactory activeMqPooledConnectionFactory()</span><br><span class="line">    &#123;</span><br><span class="line">        PooledConnectionFactory jmsFactory = new PooledConnectionFactory();</span><br><span class="line">        jmsFactory.setConnectionFactory(jmsConnectionFactory());</span><br><span class="line">        return jmsFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //spring CachingConnectionFactory</span><br><span class="line">    @Bean</span><br><span class="line">    public CachingConnectionFactory springCachingConnectionFactory()</span><br><span class="line">    &#123;</span><br><span class="line">        CachingConnectionFactory jmsFactory = new CachingConnectionFactory();</span><br><span class="line">        jmsFactory.setTargetConnectionFactory(jmsConnectionFactory());</span><br><span class="line">        return jmsFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Queue</span><br><span class="line">    @Bean</span><br><span class="line">    public ActiveMQQueue jmsQueue()</span><br><span class="line">    &#123;</span><br><span class="line">        ActiveMQQueue queue = new ActiveMQQueue(env.getProperty(&quot;testQueue&quot;));</span><br><span class="line">        return queue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // ListenerContainerFactory， @EnableJms 需要这个默认 bean</span><br><span class="line">    @Bean</span><br><span class="line">    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() &#123;</span><br><span class="line">        DefaultJmsListenerContainerFactory factory =</span><br><span class="line">                new DefaultJmsListenerContainerFactory();</span><br><span class="line">        factory.setConnectionFactory(activeMqPooledConnectionFactory());</span><br><span class="line">        factory.setConcurrency(&quot;3-10&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Spring jmsTemplate</span><br><span class="line">    @Bean</span><br><span class="line">    public JmsTemplate myJmsTemplate()</span><br><span class="line">    &#123;</span><br><span class="line">        JmsTemplate jmsTp = new JmsTemplate();</span><br><span class="line">        jmsTp.setDefaultDestination(jmsQueue());</span><br><span class="line">        jmsTp.setConnectionFactory(activeMqPooledConnectionFactory());</span><br><span class="line">        return jmsTp;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>补充说明：</p>
+<ul>
+<li>@EnableJms：开启 JMS 注解， 这样 @JmsListener 等注解才会生效；默认需要jmsListenerContainerFactory 这个 Bean。</li>
+<li>activeMq PooledConnectionFactory 和 springCachingConnectionFactory 同等作用，可以替换。</li>
+<li>testQueue 具体value 在 jms.properties 里配置，类似常量。</li>
+</ul>
+<h2 id="消息发送和接收"><a href="#消息发送和接收" class="headerlink" title="消息发送和接收"></a>消息发送和接收</h2><p>首先看代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">@Service(&quot;GmGameAchvServiceImpl&quot;)</span><br><span class="line">@PropertySource(&#123; &quot;classpath:conf/jms.properties&quot;&#125;)</span><br><span class="line">public class GmGameAchvServiceImpl</span><br><span class="line">&#123;</span><br><span class="line">    @Resource(name = &quot;myJmsTemplate&quot;)</span><br><span class="line">    private JmsTemplate jmsTemplate;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 消息接收</span><br><span class="line">    @JmsListener(destination = &quot;$&#123;testQueue&#125;&quot;)</span><br><span class="line">    public void JmsReceiveTest(String data)</span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(&quot;jms ----------------------------- &quot; + data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //消息发送</span><br><span class="line">    public void jmsSendTest()</span><br><span class="line">    &#123;</span><br><span class="line">        int numberOfMessages = 10;</span><br><span class="line">        StringBuilder payload = null;</span><br><span class="line">        for (int i = 0; i &lt; numberOfMessages; ++i)</span><br><span class="line">        &#123;</span><br><span class="line">            payload = new StringBuilder();</span><br><span class="line">            payload.append(&quot;Message [&quot;).append(i).append(&quot;] sent at: &quot;).append(new Date());</span><br><span class="line">            final int finalI = i;</span><br><span class="line">            final StringBuilder finalPayload = payload;</span><br><span class="line">            jmsTemplate.send((Session session) -&gt; &#123;</span><br><span class="line">                TextMessage message = session.createTextMessage(finalPayload.toString());</span><br><span class="line">                message.setIntProperty(&quot;messageCount&quot;, finalI);</span><br><span class="line">                return message;</span><br><span class="line">            &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>消息发送<br>方法 <code>jmsSendTest</code>， 利用 jmsTemplate 很方便</li>
+<li>消息接收<br><code>JmsReceiveTest</code>， 使用了 <code>@JmsListener</code>，这是最简单的方式，比 jmsTemplate 更简单。<br><code>@JmsListener</code> 需要制定 <code>destination</code>， 这里 <code>${testQueue}</code> 的值由 <code>conf/jms.properties</code> 里具体制定， 由上文提到的 <code>PropertySourcesPlaceholderConfigurer</code> 负责转化。 如此在一个配置文件里配置，多个地方使用，如需改动，仅需修改配置文件，不用修改源代码。</li>
+</ul>
+<h2 id="消息数据转换-Message-Converters"><a href="#消息数据转换-Message-Converters" class="headerlink" title="消息数据转换 Message Converters"></a>消息数据转换 Message Converters</h2><p>Spring 会自动进行消息转换， 比如上面 <code>jmsSendTest</code> 发送的是 <code>TextMessage</code>， <code>JmsReceiveTest</code> 用 String 类型参数接收就好。POJO 对象一样可以如此操作。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">@JmsListener(destination = &quot;$&#123;testQueue&#125;&quot;)</span><br><span class="line">public void JmsReceiveTest(GmGameAchvEntity data)</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(&quot;jms ----------------------------- &quot; + data.getId());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Override</span><br><span class="line">public void jmsSendTest()</span><br><span class="line">&#123;</span><br><span class="line">    int numberOfMessages = 10;</span><br><span class="line">    StringBuilder payload = null;</span><br><span class="line">    for (int i = 0; i &lt; numberOfMessages; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        final int finalI = i;</span><br><span class="line">        GmGameAchvEntity achv = new GmGameAchvEntity();</span><br><span class="line">        achv.setId((long) i);</span><br><span class="line">        jmsTemplate.send((Session session) -&gt; &#123;</span><br><span class="line">            ObjectMessage message = session.createObjectMessage(achv);</span><br><span class="line">            message.setIntProperty(&quot;messageCount&quot;, finalI);</span><br><span class="line">            return message;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如此这般就好了，是不是 很简单方便。</p>
+<h2 id="响应管理"><a href="#响应管理" class="headerlink" title="响应管理"></a>响应管理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@JmsListener(destination = &quot;myQueue&quot;)</span><br><span class="line">@SendTo(&quot;queueOut&quot;)</span><br><span class="line">public OrderStatus processOrder(Order order) &#123;</span><br><span class="line">    // order processing</span><br><span class="line">    return status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>@SendTo</code> 就可以返回值 到 <code>queueOut</code> 这个destination</p>
+<p>～～～～～～～ 嗯嗯， 很不错的样子 ：）</p>
+<h2 id="activemq集合贴"><a href="#activemq集合贴" class="headerlink" title="activemq集合贴"></a><a href="http://giveme5.top/2015/09/11/mq/mq/#ActiveMQ" target="_blank" rel="noopener">activemq集合贴</a></h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/18/mq/activemq2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1179,132 +1294,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/19/spring/springCors/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/logo.png">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/08/19/spring/springCors/" class="post-title-link" itemprop="url">spring CORS</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2015-08-19 16:51:45" itemprop="dateCreated datePublished" datetime="2015-08-19T16:51:45+08:00">2015-08-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2018-04-10 13:30:48" itemprop="dateModified" datetime="2018-04-10T13:30:48+08:00">2018-04-10</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/spring/" itemprop="url" rel="index">
-                    <span itemprop="name">spring</span>
-                  </a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2015/08/19/spring/springCors/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/08/19/spring/springCors/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h2><p>跨域资源共享(CORS): 访问不同域站点上的资源；比如a.com上的某页面可以访问b.com上的资源，c.com上的某页面可以访问a.com上资源。</p>
-<p>不转载了，链接： <a href="http://blog.csdn.net/hfahe/article/details/7730944" target="_blank" rel="noopener">CORS（跨域资源共享）简介 </a></p>
-<h2 id="Spring-framework-对-CORS-的支持"><a href="#Spring-framework-对-CORS-的支持" class="headerlink" title="Spring framework 对 CORS 的支持"></a>Spring framework 对 CORS 的支持</h2><h3 id="controller上对类和方法的配置"><a href="#controller上对类和方法的配置" class="headerlink" title="controller上对类和方法的配置"></a>controller上对类和方法的配置</h3><p>Spring通过<code>@CrossOrigin</code>注解来实现对CORS的功能支持。</p>
-<ol>
-<li><p>方法级</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;/account&quot;)</span><br><span class="line">public class AccountController &#123;</span><br><span class="line"></span><br><span class="line">	@CrossOrigin</span><br><span class="line">	@RequestMapping(&quot;/&#123;id&#125;&quot;)</span><br><span class="line">	public Account retrieve(@PathVariable Long id) &#123;</span><br><span class="line">		// ...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@RequestMapping(method = RequestMethod.DELETE, path = &quot;/&#123;id&#125;&quot;)</span><br><span class="line">	public void remove(@PathVariable Long id) &#123;</span><br><span class="line">		// ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>类级</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@CrossOrigin(origins = &quot;http://domain2.com&quot;, maxAge = 3600)</span><br><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;/account&quot;)</span><br><span class="line">public class AccountController &#123;</span><br><span class="line"></span><br><span class="line">	@RequestMapping(&quot;/&#123;id&#125;&quot;)</span><br><span class="line">	public Account retrieve(@PathVariable Long id) &#123;</span><br><span class="line">		// ...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@RequestMapping(method = RequestMethod.DELETE, path = &quot;/&#123;id&#125;&quot;)</span><br><span class="line">	public void remove(@PathVariable Long id) &#123;</span><br><span class="line">		// ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>混合<br>Spring结合类和方法的注解内容生成。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@CrossOrigin(maxAge = 3600)</span><br><span class="line">@RestController</span><br><span class="line">@RequestMapping(&quot;/account&quot;)</span><br><span class="line">public class AccountController &#123;</span><br><span class="line"></span><br><span class="line">	@CrossOrigin(&quot;http://domain2.com&quot;)</span><br><span class="line">	@RequestMapping(&quot;/&#123;id&#125;&quot;)</span><br><span class="line">	public Account retrieve(@PathVariable Long id) &#123;</span><br><span class="line">		// ...</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@RequestMapping(method = RequestMethod.DELETE, path = &quot;/&#123;id&#125;&quot;)</span><br><span class="line">	public void remove(@PathVariable Long id) &#123;</span><br><span class="line">		// ...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="全局配置"><a href="#全局配置" class="headerlink" title="全局配置"></a>全局配置</h3><p>默认是GET，HEAD和POST有效</p>
-<ul>
-<li>java 配置</li>
-</ul>
-<ol>
-<li><p><code>/**</code>路径， 全部默认属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@EnableWebMvc</span><br><span class="line">public class WebConfig extends WebMvcConfigurerAdapter &#123;</span><br><span class="line"></span><br><span class="line">	@Override</span><br><span class="line">	public void addCorsMappings(CorsRegistry registry) &#123;</span><br><span class="line">		registry.addMapping(&quot;/**&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>自定义路径和属性</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableWebMvc</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCorsMappings</span><span class="params">(CorsRegistry registry)</span> </span>&#123;</span><br><span class="line">		registry.addMapping(<span class="string">"/api/**"</span>)</span><br><span class="line">			.allowedOrigins(<span class="string">"http://domain2.com"</span>)</span><br><span class="line">			.allowedMethods(<span class="string">"PUT"</span>, <span class="string">"DELETE"</span>)</span><br><span class="line">			.allowedHeaders(<span class="string">"header1"</span>, <span class="string">"header2"</span>, <span class="string">"header3"</span>)</span><br><span class="line">			.exposedHeaders(<span class="string">"header1"</span>, <span class="string">"header2"</span>)</span><br><span class="line">			.allowCredentials(<span class="keyword">false</span>).maxAge(<span class="number">3600</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ul>
-<li>XML 配置</li>
-</ul>
-<ol>
-<li><p><code>/**</code>路径， 全部默认属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;mvc:cors&gt;</span><br><span class="line">	&lt;mvc:mapping path=&quot;/**&quot; /&gt;</span><br><span class="line">&lt;/mvc:cors&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>自定义属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;mvc:cors&gt;</span><br><span class="line"></span><br><span class="line">	&lt;mvc:mapping path=&quot;/api/**&quot;</span><br><span class="line">		allowed-origins=&quot;http://domain1.com, http://domain2.com&quot;</span><br><span class="line">		allowed-methods=&quot;GET, PUT&quot;</span><br><span class="line">		allowed-headers=&quot;header1, header2, header3&quot;</span><br><span class="line">		exposed-headers=&quot;header1, header2&quot; allow-credentials=&quot;false&quot;</span><br><span class="line">		max-age=&quot;123&quot; /&gt;</span><br><span class="line"></span><br><span class="line">	&lt;mvc:mapping path=&quot;/resources/**&quot;</span><br><span class="line">		allowed-origins=&quot;http://domain1.com&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;/mvc:cors&gt;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1355,7 +1344,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">114</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1368,7 +1357,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">111</span>
+        <span class="site-state-item-count">112</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1393,7 +1382,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

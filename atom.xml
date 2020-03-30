@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2019-09-23T05:35:40.603Z</updated>
+  <updated>2020-03-30T05:44:01.602Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>分布式批处理框架 - spring boot quartz 集群</title>
+    <link href="http://giveme5.cc/2020/03/30/spring/springbootquartzs/"/>
+    <id>http://giveme5.cc/2020/03/30/spring/springbootquartzs/</id>
+    <published>2020-03-30T03:02:02.000Z</published>
+    <updated>2020-03-30T05:44:01.602Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>分布式批处理框架, 采用 <code>spring boot</code> 2,   <code>quartz</code> 2 集群</p>
+<p>本文以 <code>spring boot</code> V2.2.5 版本为例说明。</p>
+<p><em>更新历史</em><br>无</p>
+<hr>
+<a id="more"></a>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>POM文件大体如下:<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.5.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-quartz<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">quartz:</span></span><br><span class="line">    <span class="attr">job-store-type:</span> <span class="string">jdbc</span></span><br><span class="line">    <span class="attr">jdbc:</span></span><br><span class="line">      <span class="attr">initialize-schema:</span> <span class="string">never/embedded/always</span>   <span class="comment"># 第一次必须使用 always, 生成表</span></span><br><span class="line">    <span class="attr">properties:</span></span><br><span class="line">      <span class="attr">org:</span></span><br><span class="line">        <span class="attr">quartz:</span></span><br><span class="line">          <span class="attr">jobStore:</span></span><br><span class="line">            <span class="attr">class:</span> <span class="string">org.quartz.impl.jdbcjobstore.JobStoreTX</span></span><br><span class="line">            <span class="attr">driverDelegateClass:</span> <span class="string">org.quartz.impl.jdbcjobstore.StdJDBCDelegate</span></span><br><span class="line">            <span class="attr">clusterCheckinInterval:</span> <span class="number">5000</span></span><br><span class="line">            <span class="attr">tablePrefix:</span> <span class="string">QRTZ_</span>  <span class="comment"># 辅助表, 表名开头</span></span><br><span class="line">            <span class="attr">isClustered:</span> <span class="literal">true</span> <span class="comment"># 打开集群模式</span></span><br><span class="line">          <span class="attr">scheduler:</span></span><br><span class="line">            <span class="attr">instanceId:</span> <span class="string">AUTO</span></span><br><span class="line">          <span class="attr">threadPool:</span></span><br><span class="line">            <span class="attr">class:</span> <span class="string">org.quartz.simpl.SimpleThreadPool</span></span><br><span class="line">            <span class="attr">threadCount:</span> <span class="number">10</span></span><br><span class="line">            <span class="attr">threadPriority:</span> <span class="number">5</span></span><br><span class="line">            <span class="attr">threadsInheritContextClassLoaderOfInitializingThread:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="样例代码"><a href="#样例代码" class="headerlink" title="样例代码"></a>样例代码</h2><ul>
+<li><p>job</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mandalat.ehealth.job;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> cc.giveme5.common.service.ComSystemParameterService;</span><br><span class="line"><span class="keyword">import</span> org.quartz.Job;</span><br><span class="line"><span class="keyword">import</span> org.quartz.JobExecutionContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Value;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AJob</span> <span class="keyword">implements</span> <span class="title">Job</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ComSystemParameterService parameterService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;server.port&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String port;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(JobExecutionContext context)</span> </span>&#123;</span><br><span class="line">        parameterService.findAll();</span><br><span class="line"></span><br><span class="line">        System.out.println(port + <span class="string">"--------------------"</span> + LocalDateTime.now());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>job config</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.mandalat.ehealth.common.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.mandalat.ehealth.job.AJob;</span><br><span class="line"><span class="keyword">import</span> org.quartz.*;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JobConfiguration</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> JobDetail <span class="title">jobADetails</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        return JobBuilder.newJob(AJob.class).withIdentity("sampleJobA")</span><br><span class="line">                .storeDurably().build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Trigger <span class="title">jobATrigger</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> TriggerBuilder.newTrigger()</span><br><span class="line"></span><br><span class="line">                .forJob(jobADetails())</span><br><span class="line">                .withIdentity(<span class="string">"sampleTriggerA"</span>)</span><br><span class="line">                .withSchedule(CronScheduleBuilder.cronSchedule(<span class="string">"0/2 * * ? * * *"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>分别在 8080 和 8081 上 启动服务；<br>可以看到只有一台服务调用到了 <code>AJob</code> 中的方法；<br>把这台服务关闭, 5秒后可以看到另一台服务调用到了 <code>AJob</code> 中的方法；<br>说明Quartz 的集群分布式部署成功.</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;分布式批处理框架, 采用 &lt;code&gt;spring boot&lt;/code&gt; 2,   &lt;code&gt;quartz&lt;/code&gt; 2 集群&lt;/p&gt;
+&lt;p&gt;本文以 &lt;code&gt;spring boot&lt;/code&gt; V2.2.5 版本为例说明。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
+    
+    
+      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
+    
+      <category term="spring boot" scheme="http://giveme5.cc/tags/spring-boot/"/>
+    
+      <category term="quartzs" scheme="http://giveme5.cc/tags/quartzs/"/>
+    
+  </entry>
   
   <entry>
     <title>idea 和 eclipse 快捷键</title>
@@ -291,6 +338,69 @@
   </entry>
   
   <entry>
+    <title>JVM线上调优(二)  CPU调优</title>
+    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/"/>
+    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/</id>
+    <published>2018-11-07T13:31:21.000Z</published>
+    <updated>2018-11-06T09:46:50.442Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。<br>本章解决java线上CPU调优</p>
+<ul>
+<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
+</li>
+</ul>
+<p><em>更新历史</em></p>
+<a id="more"></a>
+<hr>
+<h2 id="定位线程"><a href="#定位线程" class="headerlink" title="定位线程"></a>定位线程</h2><ul>
+<li><p>TOP命令查看到CPU的占用情况<br>TOP –&gt; P : 按CPU使用率排序<br><img src="/images/jvm/ja_cpu_p.png" alt></p>
+</li>
+<li><p>具体线程<br>Java是一个多线程应用，进程是由多个线程构成的，上面看到的是这个进程的CPU占用率，导致这个进程CPU偏高的是其中某个或某几个线程，因而我们需要找到这些线程。<br>ps命令查看指定进程的线程情况</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -mp &lt;pid&gt; -o THREAD,tid,time</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/images/jvm/ja_cpu_thread.png" alt><br>线程tid为 9100 的线程，CPU占用率达到了99.8%， 就是这个线程的问题。</p>
+<h2 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h2><p>请出 <code>jstack</code> 分析具体线程。</p>
+<p><strong> 注意： 进制转换 </strong><br>ps命令查看到的线程ID 9100 是十进制，<code>jstack</code> 命令输出的线程ID可能是十六进制，使用如下命令转换<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─$ <span class="built_in">printf</span> <span class="string">"%x\n"</span> 9100</span><br><span class="line">238c</span><br></pre></td></tr></table></figure></p>
+<p>然后使用 <code>jstack</code> 定位具体的问题</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">╰─$ jstack 9078|grep 238c -A 15</span><br><span class="line"><span class="string">"Thread-0"</span> <span class="comment">#10 prio=5 os_prio=0 tid=0x00007fbea0821800 nid=0x238c runnable [0x00007fbe8bbfa000]</span></span><br><span class="line">   java.lang.Thread.State: RUNNABLE</span><br><span class="line">        at com.xxx.xxx.MyClassLoader<span class="variable">$1</span>.run(MyClassLoader.java:19)</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><img src="/images/jvm/ja_cpu_source.png" alt></p>
+<p>最后结合源码检查就ok。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;br&gt;本章解决java线上CPU调优&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="CPU调优" scheme="http://giveme5.cc/tags/CPU%E8%B0%83%E4%BC%98/"/>
+    
+      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
+    
+  </entry>
+  
+  <entry>
     <title>JVM线上调优(三)  内存调优</title>
     <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-memory/"/>
     <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-memory/</id>
@@ -381,69 +491,6 @@
       <category term="内存泄漏" scheme="http://giveme5.cc/tags/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
     
       <category term="内存调优" scheme="http://giveme5.cc/tags/%E5%86%85%E5%AD%98%E8%B0%83%E4%BC%98/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JVM线上调优(二)  CPU调优</title>
-    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/"/>
-    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/</id>
-    <published>2018-11-07T13:31:21.000Z</published>
-    <updated>2018-11-06T09:46:50.442Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。<br>本章解决java线上CPU调优</p>
-<ul>
-<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
-</li>
-<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
-</li>
-<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
-</li>
-</ul>
-<p><em>更新历史</em></p>
-<a id="more"></a>
-<hr>
-<h2 id="定位线程"><a href="#定位线程" class="headerlink" title="定位线程"></a>定位线程</h2><ul>
-<li><p>TOP命令查看到CPU的占用情况<br>TOP –&gt; P : 按CPU使用率排序<br><img src="/images/jvm/ja_cpu_p.png" alt></p>
-</li>
-<li><p>具体线程<br>Java是一个多线程应用，进程是由多个线程构成的，上面看到的是这个进程的CPU占用率，导致这个进程CPU偏高的是其中某个或某几个线程，因而我们需要找到这些线程。<br>ps命令查看指定进程的线程情况</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -mp &lt;pid&gt; -o THREAD,tid,time</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="/images/jvm/ja_cpu_thread.png" alt><br>线程tid为 9100 的线程，CPU占用率达到了99.8%， 就是这个线程的问题。</p>
-<h2 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h2><p>请出 <code>jstack</code> 分析具体线程。</p>
-<p><strong> 注意： 进制转换 </strong><br>ps命令查看到的线程ID 9100 是十进制，<code>jstack</code> 命令输出的线程ID可能是十六进制，使用如下命令转换<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─$ <span class="built_in">printf</span> <span class="string">"%x\n"</span> 9100</span><br><span class="line">238c</span><br></pre></td></tr></table></figure></p>
-<p>然后使用 <code>jstack</code> 定位具体的问题</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">╰─$ jstack 9078|grep 238c -A 15</span><br><span class="line"><span class="string">"Thread-0"</span> <span class="comment">#10 prio=5 os_prio=0 tid=0x00007fbea0821800 nid=0x238c runnable [0x00007fbe8bbfa000]</span></span><br><span class="line">   java.lang.Thread.State: RUNNABLE</span><br><span class="line">        at com.xxx.xxx.MyClassLoader<span class="variable">$1</span>.run(MyClassLoader.java:19)</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p><img src="/images/jvm/ja_cpu_source.png" alt></p>
-<p>最后结合源码检查就ok。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;br&gt;本章解决java线上CPU调优&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
-    
-    
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
-    
-      <category term="CPU调优" scheme="http://giveme5.cc/tags/CPU%E8%B0%83%E4%BC%98/"/>
-    
-      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
     
   </entry>
   
@@ -986,9 +1033,9 @@ Z  boolean
       <category term="server" scheme="http://giveme5.cc/categories/server/"/>
     
     
-      <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
-    
       <category term="server" scheme="http://giveme5.cc/tags/server/"/>
+    
+      <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
     
       <category term="keepalived" scheme="http://giveme5.cc/tags/keepalived/"/>
     
@@ -2018,77 +2065,6 @@ fc-list |grep SimSun
       <category term="UI" scheme="http://giveme5.cc/tags/UI/"/>
     
       <category term="Material Design" scheme="http://giveme5.cc/tags/Material-Design/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Android入门 图谱</title>
-    <link href="http://giveme5.cc/2017/08/22/android/android0_index/"/>
-    <id>http://giveme5.cc/2017/08/22/android/android0_index/</id>
-    <published>2017-08-22T11:29:44.000Z</published>
-    <updated>2017-08-22T08:19:44.021Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h1><p>Android 相关一览</p>
-<ul>
-<li>log</li>
-</ul>
-<p><em>更新历史</em><br>2017-8-22 logcat</p>
-<a id="more"></a>
-<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><h2 id="log"><a href="#log" class="headerlink" title="log"></a>log</h2><p>Android中的日志工具类是Log(android.util.Log),这个类中提供了如下5个方法来供我们打日志。 </p>
-<ul>
-<li>Log.v() 。用于打印那些最为琐碎的、意义最小的日志信息。对应级别verbose,Android日志里面级别最低的一种。 </li>
-<li>Log.d() 。用于打印一些调试信息,这些信息对你调试程序和分析问题应该是有帮助的对应级别debug,比verbose高一级。 </li>
-<li>Log.i() 。用于打印一些比较重要的数据,这些数据应该是你非常想看到的、可以帮你析用户行为数据。对应级别info,比debug高一级。 </li>
-<li>Log.w() 。用于打印一些警告信息,提示程序在这个地方可能会有潜在的风险,最好去复一下这些出现警告的地方。对应级别warn,比info高一级。 </li>
-<li>Log.e() 。用于打印程序中的错误信息,比如程序进入到了catch语句当中。当有错误息打印出来的时候,一般都代表你的程序出现严重问题了,必须尽快修复。对应级error,比warn高一级。 </li>
-</ul>
-<p>logcat 里面可以定制过滤器</p>
-<h3 id="定制日志工具"><a href="#定制日志工具" class="headerlink" title="定制日志工具"></a>定制日志工具</h3><p>用过<code>log4j</code>的同学一定知道日志等级，可以在配置文件中配置；郭霖大大的方案是自己定制下log</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public class LogUtil &#123;</span><br><span class="line">    public static final int VERBOSE = 1;</span><br><span class="line">    public static final int DEBUG = 2;</span><br><span class="line">    public static final int INFO = 3;</span><br><span class="line">    public static final int WARN = 4;</span><br><span class="line">    public static final int ERROR = 5;</span><br><span class="line">    public static final int NOTHING = 6;</span><br><span class="line">    public static int level = VERBOSE;</span><br><span class="line">    public static void v(String tag, String msg) &#123;</span><br><span class="line">        if (level &lt;= VERBOSE) &#123;</span><br><span class="line">            Log.v(tag, msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void d(String tag, String msg) &#123;</span><br><span class="line">        if (level &lt;= DEBUG) &#123;Log.d(tag, msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void i(String tag, String msg) &#123;</span><br><span class="line">        if (level &lt;= INFO) &#123;</span><br><span class="line">            Log.i(tag, msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void w(String tag, String msg) &#123;</span><br><span class="line">        if (level &lt;= WARN) &#123;</span><br><span class="line">            Log.w(tag, msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public static void e(String tag, String msg) &#123;</span><br><span class="line">        if (level &lt;= ERROR) &#123;</span><br><span class="line">            Log.e(tag, msg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后我们只需要修改level 变量的值,就可以自由地控制日志的打印行为了。比如让level=VERBOSE 就可以把所有的日志都打印出来,让level=WARN 就可以只打印警告以上级别的志,让level=NOTHING 就可以把所有日志都屏蔽掉。</p>
-<h1 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h1><h2 id="线性布局"><a href="#线性布局" class="headerlink" title="线性布局"></a>线性布局</h2><h2 id="相对布局"><a href="#相对布局" class="headerlink" title="相对布局"></a>相对布局</h2><h2 id="帧布局"><a href="#帧布局" class="headerlink" title="帧布局"></a>帧布局</h2><h2 id="表格布局"><a href="#表格布局" class="headerlink" title="表格布局"></a>表格布局</h2><h2 id="绝对布局"><a href="#绝对布局" class="headerlink" title="绝对布局"></a>绝对布局</h2><h1 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h1><h2 id="内部存储"><a href="#内部存储" class="headerlink" title="内部存储"></a>内部存储</h2><h2 id="SD卡"><a href="#SD卡" class="headerlink" title="SD卡"></a>SD卡</h2><h2 id="SharedPreference"><a href="#SharedPreference" class="headerlink" title="SharedPreference"></a>SharedPreference</h2><h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h1 id="SQLite"><a href="#SQLite" class="headerlink" title="SQLite"></a>SQLite</h1><h2 id="建库"><a href="#建库" class="headerlink" title="建库"></a>建库</h2><h2 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h2><h2 id="原生-CRUD"><a href="#原生-CRUD" class="headerlink" title="原生 CRUD"></a>原生 CRUD</h2><h2 id="API-CRUD"><a href="#API-CRUD" class="headerlink" title="API CRUD"></a>API CRUD</h2><h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h1 id="控件"><a href="#控件" class="headerlink" title="控件"></a>控件</h1><h2 id="Toast"><a href="#Toast" class="headerlink" title="Toast"></a>Toast</h2><h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><p>导入局部布局<br>条目点击监听 ： <code>setOnItemClickListener</code></p>
-<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><ul>
-<li>convertView</li>
-<li>ViewHolder</li>
-</ul>
-<h2 id="Dialog-对话框"><a href="#Dialog-对话框" class="headerlink" title="Dialog 对话框"></a>Dialog 对话框</h2><h3 id="确定取消Dialog"><a href="#确定取消Dialog" class="headerlink" title="确定取消Dialog"></a>确定取消Dialog</h3><h3 id="单选Dialog"><a href="#单选Dialog" class="headerlink" title="单选Dialog"></a>单选Dialog</h3><h3 id="多选Dialog"><a href="#多选Dialog" class="headerlink" title="多选Dialog"></a>多选Dialog</h3><h1 id="网络访问"><a href="#网络访问" class="headerlink" title="网络访问"></a>网络访问</h1><h2 id="堵塞"><a href="#堵塞" class="headerlink" title="堵塞"></a>堵塞</h2><h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><h1 id="四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器"><a href="#四大组件-Activity，Service服务-Content-Provider内容提供者，BroadcastReceiver广播接收器" class="headerlink" title="四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器"></a>四大组件 Activity，Service服务,Content Provider内容提供者，BroadcastReceiver广播接收器</h1><h1 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h1><h2 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h2><p>显式效率高</p>
-<h3 id="显式跳转"><a href="#显式跳转" class="headerlink" title="显式跳转"></a>显式跳转</h3><h3 id="隐式跳转"><a href="#隐式跳转" class="headerlink" title="隐式跳转"></a>隐式跳转</h3><h2 id="传递数据"><a href="#传递数据" class="headerlink" title="传递数据"></a>传递数据</h2><h3 id="跳转"><a href="#跳转" class="headerlink" title="跳转"></a>跳转</h3><h3 id="返回"><a href="#返回" class="headerlink" title="返回"></a>返回</h3><ul>
-<li><p>子Activity</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Intent data = new Intent();</span><br><span class="line">data.putExtra(&quot;key&quot;, value);</span><br><span class="line">setRestult(resultCode, data) //set result vaule</span><br><span class="line">finish(); //销毁当前Activity, 返回父Activity</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>父Activity<br>启动 ： <code>StartActivityForResult(Intent, requestCode)</code><br>接收 ： <code>OnActivityResult(int requestCode, int resultCode, Intent data)</code> 打开多个的情况可以采用requestCode和resultCode来区别每个子Activity及其返回数据的目的</p>
-</li>
-</ul>
-<h2 id="生命周期"><a href="#生命周期" class="headerlink" title="生命周期"></a>生命周期</h2><h2 id="启动模式"><a href="#启动模式" class="headerlink" title="启动模式"></a>启动模式</h2><h3 id="launchMode"><a href="#launchMode" class="headerlink" title="launchMode"></a>launchMode</h3><ul>
-<li>standard</li>
-<li>singleTop : 栈顶已经有一个相同类型的Activity实例，Intent不会再创建一个Activity，而是通过onNewIntent()被发送到现有的Activity</li>
-<li>singleTask : singleTask模式的Activity只允许在一个APP栈中有一个实例。如果系统中已经有了一个实例，持有这个实例的任务将移动到顶部，（将其上方的所有Activity销毁）同时intent将被通过onNewIntent()发送。如果没有，则会创建一个新的Activity并置放在合适的任务中。</li>
-<li>singleInstance : 非常接近于singleTask，系统中只允许一个Activity的实例存在。每个singleInstance会有自己独立的栈。实际开发中只有平台型应用（qq，微信，微博），提供给其他应用使用的情况，才采用。</li>
-</ul>
-<h2 id="横竖切换"><a href="#横竖切换" class="headerlink" title="横竖切换"></a>横竖切换</h2><ul>
-<li><p>默认切换会调用生命周期方法；<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:configChanges=&quot;orientation|keyboardHidden&quot;</code> 时，切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法</p>
-</li>
-<li><p>锁定<br>配置<code>AndroidManifest.xml</code> ， 增加<code>android:orientation</code><br>或者 在 <code>OnCreate</code>方法中 增加 <code>setRequestOrientation(Activity.)</code></p>
-</li>
-</ul>
-<h1 id="BroadcastReceiver广播接收器"><a href="#BroadcastReceiver广播接收器" class="headerlink" title="BroadcastReceiver广播接收器"></a>BroadcastReceiver广播接收器</h1><h1 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h1>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h1&gt;&lt;p&gt;Android 相关一览&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;log&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;2017-8-22 logcat&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Android" scheme="http://giveme5.cc/categories/Android/"/>
-    
-    
-      <category term="android" scheme="http://giveme5.cc/tags/android/"/>
-    
-      <category term="Android" scheme="http://giveme5.cc/tags/Android/"/>
     
   </entry>
   
