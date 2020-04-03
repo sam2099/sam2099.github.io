@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2020-03-30T06:19:47.627Z</updated>
+  <updated>2020-04-03T06:11:56.344Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,45 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java 范型(generics in java)</title>
+    <link href="http://giveme5.cc/2020/04/03/java/generics/"/>
+    <id>http://giveme5.cc/2020/04/03/java/generics/</id>
+    <published>2020-04-03T14:18:03.000Z</published>
+    <updated>2020-04-03T06:11:56.344Z</updated>
+    
+    <content type="html"><![CDATA[<p>发现一段牛(装)逼的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;R&gt; <span class="function">Observable&lt;R&gt; <span class="title">compose</span><span class="params">(Transformer&lt;? <span class="keyword">super</span> T, ? extends R&gt; transformer)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> ((Transformer&lt;T, R&gt;) transformer).call(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>常用的泛型含义：</p>
+<ul>
+<li>T - Type（类型）</li>
+<li>R - Result（结果）</li>
+<li>K - Key（键）</li>
+<li>V - Value（值）</li>
+<li>E - Element (元素)</li>
+<li>N - Number（数字）</li>
+<li>? - 通配符, 不确定类型</li>
+<li>extends - 上边界</li>
+<li>super - 下边界</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;发现一段牛(装)逼的代码&lt;/p&gt;
+&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/s
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="generics" scheme="http://giveme5.cc/tags/generics/"/>
+    
+  </entry>
   
   <entry>
     <title>Mysql 8 密码</title>
@@ -413,6 +452,69 @@
   </entry>
   
   <entry>
+    <title>JVM线上调优(二)  CPU调优</title>
+    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/"/>
+    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/</id>
+    <published>2018-11-07T13:31:21.000Z</published>
+    <updated>2018-11-06T09:46:50.442Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。<br>本章解决java线上CPU调优</p>
+<ul>
+<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
+</li>
+</ul>
+<p><em>更新历史</em></p>
+<a id="more"></a>
+<hr>
+<h2 id="定位线程"><a href="#定位线程" class="headerlink" title="定位线程"></a>定位线程</h2><ul>
+<li><p>TOP命令查看到CPU的占用情况<br>TOP –&gt; P : 按CPU使用率排序<br><img src="/images/jvm/ja_cpu_p.png" alt></p>
+</li>
+<li><p>具体线程<br>Java是一个多线程应用，进程是由多个线程构成的，上面看到的是这个进程的CPU占用率，导致这个进程CPU偏高的是其中某个或某几个线程，因而我们需要找到这些线程。<br>ps命令查看指定进程的线程情况</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -mp &lt;pid&gt; -o THREAD,tid,time</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/images/jvm/ja_cpu_thread.png" alt><br>线程tid为 9100 的线程，CPU占用率达到了99.8%， 就是这个线程的问题。</p>
+<h2 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h2><p>请出 <code>jstack</code> 分析具体线程。</p>
+<p><strong> 注意： 进制转换 </strong><br>ps命令查看到的线程ID 9100 是十进制，<code>jstack</code> 命令输出的线程ID可能是十六进制，使用如下命令转换<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─$ <span class="built_in">printf</span> <span class="string">"%x\n"</span> 9100</span><br><span class="line">238c</span><br></pre></td></tr></table></figure></p>
+<p>然后使用 <code>jstack</code> 定位具体的问题</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">╰─$ jstack 9078|grep 238c -A 15</span><br><span class="line"><span class="string">"Thread-0"</span> <span class="comment">#10 prio=5 os_prio=0 tid=0x00007fbea0821800 nid=0x238c runnable [0x00007fbe8bbfa000]</span></span><br><span class="line">   java.lang.Thread.State: RUNNABLE</span><br><span class="line">        at com.xxx.xxx.MyClassLoader<span class="variable">$1</span>.run(MyClassLoader.java:19)</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p><img src="/images/jvm/ja_cpu_source.png" alt></p>
+<p>最后结合源码检查就ok。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;br&gt;本章解决java线上CPU调优&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
+    
+    
+      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
+    
+      <category term="CPU调优" scheme="http://giveme5.cc/tags/CPU%E8%B0%83%E4%BC%98/"/>
+    
+      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
+    
+  </entry>
+  
+  <entry>
     <title>JVM线上调优(三)  内存调优</title>
     <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-memory/"/>
     <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-memory/</id>
@@ -503,69 +605,6 @@
       <category term="内存泄漏" scheme="http://giveme5.cc/tags/%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/"/>
     
       <category term="内存调优" scheme="http://giveme5.cc/tags/%E5%86%85%E5%AD%98%E8%B0%83%E4%BC%98/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JVM线上调优(二)  CPU调优</title>
-    <link href="http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/"/>
-    <id>http://giveme5.cc/2018/11/07/java/javaAnalyzer-cpu/</id>
-    <published>2018-11-07T13:31:21.000Z</published>
-    <updated>2018-11-06T09:46:50.442Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要内容</p>
-<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。<br>本章解决java线上CPU调优</p>
-<ul>
-<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
-</li>
-<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
-</li>
-<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
-</li>
-</ul>
-<p><em>更新历史</em></p>
-<a id="more"></a>
-<hr>
-<h2 id="定位线程"><a href="#定位线程" class="headerlink" title="定位线程"></a>定位线程</h2><ul>
-<li><p>TOP命令查看到CPU的占用情况<br>TOP –&gt; P : 按CPU使用率排序<br><img src="/images/jvm/ja_cpu_p.png" alt></p>
-</li>
-<li><p>具体线程<br>Java是一个多线程应用，进程是由多个线程构成的，上面看到的是这个进程的CPU占用率，导致这个进程CPU偏高的是其中某个或某几个线程，因而我们需要找到这些线程。<br>ps命令查看指定进程的线程情况</p>
-  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -mp &lt;pid&gt; -o THREAD,tid,time</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><img src="/images/jvm/ja_cpu_thread.png" alt><br>线程tid为 9100 的线程，CPU占用率达到了99.8%， 就是这个线程的问题。</p>
-<h2 id="具体分析"><a href="#具体分析" class="headerlink" title="具体分析"></a>具体分析</h2><p>请出 <code>jstack</code> 分析具体线程。</p>
-<p><strong> 注意： 进制转换 </strong><br>ps命令查看到的线程ID 9100 是十进制，<code>jstack</code> 命令输出的线程ID可能是十六进制，使用如下命令转换<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">╰─$ <span class="built_in">printf</span> <span class="string">"%x\n"</span> 9100</span><br><span class="line">238c</span><br></pre></td></tr></table></figure></p>
-<p>然后使用 <code>jstack</code> 定位具体的问题</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">╰─$ jstack 9078|grep 238c -A 15</span><br><span class="line"><span class="string">"Thread-0"</span> <span class="comment">#10 prio=5 os_prio=0 tid=0x00007fbea0821800 nid=0x238c runnable [0x00007fbe8bbfa000]</span></span><br><span class="line">   java.lang.Thread.State: RUNNABLE</span><br><span class="line">        at com.xxx.xxx.MyClassLoader<span class="variable">$1</span>.run(MyClassLoader.java:19)</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p><img src="/images/jvm/ja_cpu_source.png" alt></p>
-<p>最后结合源码检查就ok。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;主要内容&lt;/p&gt;
-&lt;p&gt;JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。&lt;br&gt;本章解决java线上CPU调优&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/06/java/javaAnalyzer/&quot;&gt;工具介绍&lt;/a&gt;&lt;br&gt;公欲善其事，必先利其器&lt;br&gt;jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-cpu/&quot;&gt;CPU调优&lt;/a&gt;&lt;br&gt;还我CPU&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&quot;/2018/11/07/java/javaAnalyzer-memory/&quot;&gt;Memory调优&lt;/a&gt;&lt;br&gt;吃我的吐出来&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
-    
-    
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
-    
-      <category term="CPU调优" scheme="http://giveme5.cc/tags/CPU%E8%B0%83%E4%BC%98/"/>
-    
-      <category term="jstack" scheme="http://giveme5.cc/tags/jstack/"/>
     
   </entry>
   
@@ -1900,48 +1939,6 @@ table th:first-of-type {
     
     
       <category term="docker" scheme="http://giveme5.cc/tags/docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>spring 多态 注入</title>
-    <link href="http://giveme5.cc/2017/10/10/spring/polymorphismDI/"/>
-    <id>http://giveme5.cc/2017/10/10/spring/polymorphismDI/</id>
-    <published>2017-10-10T11:44:58.000Z</published>
-    <updated>2017-10-10T08:49:45.085Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring 多态 注入<br>利用 <code>PropertySource</code> 实现 多态的动态注入。</p>
-<p><em>更新历史</em><br>无</p>
-<a id="more"></a>
-<hr>
-<p>环境：spring 4, JDK 1.8； 话不多说，看代码</p>
-<h2 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h2><p>一个 service 接口， 有若干具体实现</p>
-<h3 id="接口-IPolyDiService-java"><a href="#接口-IPolyDiService-java" class="headerlink" title="接口 IPolyDiService.java"></a>接口 <code>IPolyDiService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IPolyDiService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="实现A-APolyDiServiceImpl"><a href="#实现A-APolyDiServiceImpl" class="headerlink" title="实现A APolyDiServiceImpl"></a>实现A <code>APolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span>(<span class="string">"A_service"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">APolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"This is A PolyDiServiceImpl"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="实现B-BPolyDiServiceImpl"><a href="#实现B-BPolyDiServiceImpl" class="headerlink" title="实现B BPolyDiServiceImpl"></a>实现B <code>BPolyDiServiceImpl</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.service.impl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Service</span>(<span class="string">"B_service"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BPolyDiServiceImpl</span> <span class="keyword">implements</span> <span class="title">IPolyDiService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">printName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"This is B PolyDiServiceImpl"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="动态注入"><a href="#动态注入" class="headerlink" title="动态注入"></a>动态注入</h2><h3 id="配置文件-env-properties"><a href="#配置文件-env-properties" class="headerlink" title="配置文件 env.properties"></a>配置文件 <code>env.properties</code></h3><p>可以用其他外置配置替代， 如下， 改变 <code>service</code> 的值， 可以运行时动态注入不同的具体实现。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># service=B</span></span><br><span class="line">service=A</span><br></pre></td></tr></table></figure></p>
-<h3 id="Junit-PolyDiTest"><a href="#Junit-PolyDiTest" class="headerlink" title="Junit PolyDiTest"></a>Junit <code>PolyDiTest</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.xxx.service;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.xxx.service.IPolyDiService;</span><br><span class="line"><span class="keyword">import</span> org.junit.Test;</span><br><span class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.PropertySource;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.ContextConfiguration;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</span><br><span class="line"><span class="keyword">import</span> org.springframework.test.context.support.AnnotationConfigContextLoader;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"><span class="keyword">import</span> java.text.ParseException;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">ContextConfiguration</span>(<span class="title">loader</span> </span>= AnnotationConfigContextLoader<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">PolyDiTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span>(name = <span class="string">"$&#123;service&#125;_service"</span>)</span><br><span class="line">    <span class="keyword">private</span> IPolyDiService service;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> ParseException </span>&#123;</span><br><span class="line">        service.printName();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Configuration</span></span><br><span class="line">    <span class="meta">@PropertySource</span>(&#123; <span class="string">"classpath:conf/env.properties"</span>&#125;)</span><br><span class="line">    <span class="meta">@ComponentScan</span>(basePackages =&#123; <span class="string">"com.xxx.service.impl"</span>&#125;)</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ContextConfiguration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h3><p><code>service=A</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">This is A PolyDiServiceImpl</span><br></pre></td></tr></table></figure></p>
-<p><code>service=B</code> 的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">This is B PolyDiServiceImpl</span><br></pre></td></tr></table></figure></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring 多态 注入&lt;br&gt;利用 &lt;code&gt;PropertySource&lt;/code&gt; 实现 多态的动态注入。&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
-    
-    
-      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
-    
-      <category term="多态" scheme="http://giveme5.cc/tags/%E5%A4%9A%E6%80%81/"/>
-    
-      <category term="注入" scheme="http://giveme5.cc/tags/%E6%B3%A8%E5%85%A5/"/>
-    
-      <category term="DI" scheme="http://giveme5.cc/tags/DI/"/>
     
   </entry>
   
