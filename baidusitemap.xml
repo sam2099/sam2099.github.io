@@ -4,6 +4,52 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2017/08/18/devEnv/git/git/</loc>
+    <lastmod>2020-04-28T03:26:05.838Z</lastmod>
+    <data>
+        <display>
+        <title>git</title>
+        <pubTime>2017-08-18T08:44:58.000Z</pubTime>
+        
+        <tag>github</tag>
+         
+        <tag>git</tag>
+         
+        <tag>gitlab</tag>
+         
+         
+           
+             
+              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
+    <lastmod>2020-04-28T02:39:14.990Z</lastmod>
+    <data>
+        <display>
+        <title>nginx</title>
+        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
+        
+        <tag>server</tag>
+         
+        <tag>nginx</tag>
+         
+         
+           
+             
+              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2020/04/03/java/generics/</loc>
     <lastmod>2020-04-03T06:11:56.344Z</lastmod>
     <data>
@@ -109,28 +155,6 @@
            
              
               <breadCrumb title="spring" url="http://giveme5.cc/categories/spring/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
-    <lastmod>2019-12-30T08:09:50.645Z</lastmod>
-    <data>
-        <display>
-        <title>nginx</title>
-        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
-        
-        <tag>server</tag>
-         
-        <tag>nginx</tag>
-         
-         
-           
-             
-              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
           
         </display>
     </data>
@@ -1135,30 +1159,6 @@
            
              
               <breadCrumb title="Android" url="http://giveme5.cc/categories/Android/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2017/08/18/devEnv/git/git/</loc>
-    <lastmod>2017-08-18T07:48:59.710Z</lastmod>
-    <data>
-        <display>
-        <title>git</title>
-        <pubTime>2017-08-18T08:44:58.000Z</pubTime>
-        
-        <tag>github</tag>
-         
-        <tag>git</tag>
-         
-        <tag>gitlab</tag>
-         
-         
-           
-             
-              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
           
         </display>
     </data>

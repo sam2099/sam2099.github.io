@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://giveme5.cc/2017/08/18/devEnv/git/git/</loc>
+    
+    <lastmod>2020-04-28T03:26:05.838Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
+    
+    <lastmod>2020-04-28T02:39:14.990Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2020/04/03/java/generics/</loc>
     
     <lastmod>2020-04-03T06:11:56.344Z</lastmod>
@@ -33,13 +47,6 @@
     <loc>http://giveme5.cc/2020/03/30/spring/springbootquartzs/</loc>
     
     <lastmod>2020-03-30T06:04:16.670Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
-    
-    <lastmod>2019-12-30T08:09:50.645Z</lastmod>
     
   </url>
   
@@ -334,13 +341,6 @@
     <loc>http://giveme5.cc/2017/08/22/android/android0_index/</loc>
     
     <lastmod>2017-08-22T08:19:44.021Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2017/08/18/devEnv/git/git/</loc>
-    
-    <lastmod>2017-08-18T07:48:59.710Z</lastmod>
     
   </url>
   
