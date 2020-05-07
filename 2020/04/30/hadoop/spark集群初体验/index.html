@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="主要内容  spark集群初体验">
+<meta name="keywords" content="bigData,hadoop,spark">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spark集群初体验">
+<meta property="og:url" content="http://giveme5.cc/2020/04/30/hadoop/spark集群初体验/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容  spark集群初体验">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-07T02:37:18.758Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="spark集群初体验">
+<meta name="twitter:description" content="主要内容  spark集群初体验">
+
+<link rel="canonical" href="http://giveme5.cc/2020/04/30/hadoop/spark集群初体验/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>spark集群初体验 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2020/04/30/hadoop/spark集群初体验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          spark集群初体验
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-30 21:32:24" itemprop="dateCreated datePublished" datetime="2020-04-30T21:32:24+08:00">2020-04-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-07 10:37:18" itemprop="dateModified" datetime="2020-05-07T10:37:18+08:00">2020-05-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">hadoop</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/04/30/hadoop/spark集群初体验/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/30/hadoop/spark集群初体验/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<ul>
+<li>spark集群初体验</li>
+</ul>
+<hr>
+<a id="more"></a>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --class.org.apache.spark.examples.SparkPi \</span><br><span class="line">--master yarn \</span><br><span class="line">--mun-executors 1 \</span><br><span class="line">--driver-memory 1g \</span><br><span class="line">--executor-cores 1 \</span><br><span class="line">--conf <span class="string">"spark.app.name=SparkPi"</span> \</span><br><span class="line">/opt/cloudera/ xx .jar</span><br></pre></td></tr></table></figure>
+<p>run-example SparkPi</p>
+<h2 id="前置"><a href="#前置" class="headerlink" title="前置"></a>前置</h2><ul>
+<li><p>内存不足，在cm里配置yarn</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn.scheduler.maximum-allocation-mb</span><br><span class="line">yarn.nodemanager.resource.memory-mb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dfs</p>
+</li>
+</ul>
+<p>如果直接 root 执行，会有如下错误<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># spark-shell</span></span><br><span class="line">Setting default <span class="built_in">log</span> level to <span class="string">"WARN"</span>.</span><br><span class="line">To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).</span><br><span class="line">20/02/27 16:47:23 ERROR spark.SparkContext: Error initializing SparkContext.</span><br><span class="line">org.apache.hadoop.security.AccessControlException: Permission denied: user=root, access=WRITE, inode=<span class="string">"/user"</span>:hdfs:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure></p>
+<p>查看<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># hadoop fs -ls /                                                                                                 1 ↵</span></span><br><span class="line">Found 3 items</span><br><span class="line">drwxr-xr-x   - hbase hbase               0 2020-02-27 15:49 /hbase</span><br><span class="line">drwxrwxrwt   - hdfs  supergroup          0 2020-02-27 01:22 /tmp</span><br><span class="line">drwxr-xr-x   - hdfs  supergroup          0 2020-02-27 01:22 /user</span><br></pre></td></tr></table></figure></p>
+<p>解决方案<br>You need to have a user home directory on HDFS. Log as the HDFS user and create a home dir for root.<br>其他用户类似。</p>
+<p>hadoop的用户是hdfs， 默认是不能直接登录的<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop fs -mkdir /user/root  </span><br><span class="line">sudo -u hdfs hadoop fs -chown root:root /user/root</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment">#  hadoop fs -ls /user</span></span><br><span class="line">Found 6 items</span><br><span class="line">drwxrwxrwx   - mapred hadoop              0 2020-02-27 01:21 /user/<span class="built_in">history</span></span><br><span class="line">drwxrwxr-t   - hive   hive                0 2020-02-27 01:21 /user/hive</span><br><span class="line">drwxrwxr-x   - hue    hue                 0 2020-02-27 01:22 /user/hue</span><br><span class="line">drwxr-xr-x   - root   root                0 2020-02-27 17:27 /user/root</span><br><span class="line">drwxr-x--x   - spark  spark               0 2020-02-27 16:59 /user/spark</span><br><span class="line">drwxr-xr-x   - hdfs   supergroup          0 2020-02-27 01:20 /user/yarn</span><br></pre></td></tr></table></figure>
+<p>然后root用户可以执行 <code>spark-shell</code></p>
+<p>其实直接用 spark 用户执行就可以。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># sudo -u spark spark-shell</span></span><br><span class="line">Setting default <span class="built_in">log</span> level to <span class="string">"WARN"</span>.</span><br><span class="line">To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).</span><br><span class="line">20/02/27 17:31:33 WARN cluster.YarnSchedulerBackend<span class="variable">$YarnSchedulerEndpoint</span>: Attempted to request executors before the AM has registered!</span><br><span class="line">20/02/27 17:31:33 WARN lineage.LineageWriter: Lineage directory /var/<span class="built_in">log</span>/spark/lineage doesn<span class="string">'t exist or is not writable. Lineage for this application will be disabled.</span></span><br><span class="line"><span class="string">Spark context Web UI available at http://master-23:4040</span></span><br><span class="line"><span class="string">Spark context available as '</span>sc<span class="string">' (master = yarn, app id = application_1582792452399_0004).</span></span><br><span class="line"><span class="string">Spark session available as '</span>spark<span class="string">'.</span></span><br><span class="line"><span class="string">Welcome to</span></span><br><span class="line"><span class="string">      ____              __</span></span><br><span class="line"><span class="string">     / __/__  ___ _____/ /__</span></span><br><span class="line"><span class="string">    _\ \/ _ \/ _ `/ __/  '</span>_/</span><br><span class="line">   /___/ .__/\_,_/_/ /_/\_\   version 2.4.0-cdh6.3.2</span><br><span class="line">      /_/</span><br><span class="line"></span><br><span class="line">Using Scala version 2.11.12 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_181)</span><br><span class="line">Type <span class="keyword">in</span> expressions to have them evaluated.</span><br><span class="line">Type :<span class="built_in">help</span> <span class="keyword">for</span> more information.</span><br><span class="line"></span><br><span class="line">scala&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html" target="_blank" rel="noopener">Hadoop 3.2 文档</a></p>
+<h2 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h2><p>弹性分布式数据集（Resilient Distribution Dataset）<br>数据集合</p>
+<h3 id="创建RDD"><a href="#创建RDD" class="headerlink" title="创建RDD"></a>创建RDD</h3><ul>
+<li>SparkContext 的 parallelize</li>
+<li>读外部数据（HDFS，消息队列等）</li>
+</ul>
+<p>Pair RDD键值对操作<br><a href="https://blog.csdn.net/u014646662/article/details/84673920" target="_blank" rel="noopener">https://blog.csdn.net/u014646662/article/details/84673920</a><br><a href="https://blog.csdn.net/JasonDing1354/article/details/46845585" target="_blank" rel="noopener">https://blog.csdn.net/JasonDing1354/article/details/46845585</a></p>
+<h2 id="spark-sql"><a href="#spark-sql" class="headerlink" title="spark sql"></a>spark sql</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bigData/" rel="tag"># bigData</a>
+              <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+              <a href="/tags/spark/" rel="tag"># spark</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/29/hadoop/spark/" rel="prev" title="spark 安装">
+      <i class="fa fa-chevron-left"></i> spark 安装
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置"><span class="nav-number">1.</span> <span class="nav-text">前置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">2.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD"><span class="nav-number">3.</span> <span class="nav-text">RDD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建RDD"><span class="nav-number">3.1.</span> <span class="nav-text">创建RDD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spark-sql"><span class="nav-number">4.</span> <span class="nav-text">spark sql</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">119</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">117</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2020/04/30/hadoop/spark集群初体验/",
+            identifier: "2020/04/30/hadoop/spark集群初体验/",
+            title: "spark集群初体验"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
+
+</body>
+</html>

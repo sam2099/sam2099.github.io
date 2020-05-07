@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2020-04-03T06:11:56.344Z</updated>
+  <updated>2020-05-07T02:37:18.758Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,139 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>spark集群初体验</title>
+    <link href="http://giveme5.cc/2020/04/30/hadoop/spark%E9%9B%86%E7%BE%A4%E5%88%9D%E4%BD%93%E9%AA%8C/"/>
+    <id>http://giveme5.cc/2020/04/30/hadoop/spark集群初体验/</id>
+    <published>2020-04-30T13:32:24.000Z</published>
+    <updated>2020-05-07T02:37:18.758Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>spark集群初体验</li>
+</ul>
+<hr>
+<a id="more"></a>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">spark-submit --class.org.apache.spark.examples.SparkPi \</span><br><span class="line">--master yarn \</span><br><span class="line">--mun-executors 1 \</span><br><span class="line">--driver-memory 1g \</span><br><span class="line">--executor-cores 1 \</span><br><span class="line">--conf <span class="string">"spark.app.name=SparkPi"</span> \</span><br><span class="line">/opt/cloudera/ xx .jar</span><br></pre></td></tr></table></figure>
+<p>run-example SparkPi</p>
+<h2 id="前置"><a href="#前置" class="headerlink" title="前置"></a>前置</h2><ul>
+<li><p>内存不足，在cm里配置yarn</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn.scheduler.maximum-allocation-mb</span><br><span class="line">yarn.nodemanager.resource.memory-mb</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dfs</p>
+</li>
+</ul>
+<p>如果直接 root 执行，会有如下错误<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># spark-shell</span></span><br><span class="line">Setting default <span class="built_in">log</span> level to <span class="string">"WARN"</span>.</span><br><span class="line">To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).</span><br><span class="line">20/02/27 16:47:23 ERROR spark.SparkContext: Error initializing SparkContext.</span><br><span class="line">org.apache.hadoop.security.AccessControlException: Permission denied: user=root, access=WRITE, inode=<span class="string">"/user"</span>:hdfs:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure></p>
+<p>查看<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># hadoop fs -ls /                                                                                                 1 ↵</span></span><br><span class="line">Found 3 items</span><br><span class="line">drwxr-xr-x   - hbase hbase               0 2020-02-27 15:49 /hbase</span><br><span class="line">drwxrwxrwt   - hdfs  supergroup          0 2020-02-27 01:22 /tmp</span><br><span class="line">drwxr-xr-x   - hdfs  supergroup          0 2020-02-27 01:22 /user</span><br></pre></td></tr></table></figure></p>
+<p>解决方案<br>You need to have a user home directory on HDFS. Log as the HDFS user and create a home dir for root.<br>其他用户类似。</p>
+<p>hadoop的用户是hdfs， 默认是不能直接登录的<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo -u hdfs hadoop fs -mkdir /user/root  </span><br><span class="line">sudo -u hdfs hadoop fs -chown root:root /user/root</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment">#  hadoop fs -ls /user</span></span><br><span class="line">Found 6 items</span><br><span class="line">drwxrwxrwx   - mapred hadoop              0 2020-02-27 01:21 /user/<span class="built_in">history</span></span><br><span class="line">drwxrwxr-t   - hive   hive                0 2020-02-27 01:21 /user/hive</span><br><span class="line">drwxrwxr-x   - hue    hue                 0 2020-02-27 01:22 /user/hue</span><br><span class="line">drwxr-xr-x   - root   root                0 2020-02-27 17:27 /user/root</span><br><span class="line">drwxr-x--x   - spark  spark               0 2020-02-27 16:59 /user/spark</span><br><span class="line">drwxr-xr-x   - hdfs   supergroup          0 2020-02-27 01:20 /user/yarn</span><br></pre></td></tr></table></figure>
+<p>然后root用户可以执行 <code>spark-shell</code></p>
+<p>其实直接用 spark 用户执行就可以。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># sudo -u spark spark-shell</span></span><br><span class="line">Setting default <span class="built_in">log</span> level to <span class="string">"WARN"</span>.</span><br><span class="line">To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).</span><br><span class="line">20/02/27 17:31:33 WARN cluster.YarnSchedulerBackend<span class="variable">$YarnSchedulerEndpoint</span>: Attempted to request executors before the AM has registered!</span><br><span class="line">20/02/27 17:31:33 WARN lineage.LineageWriter: Lineage directory /var/<span class="built_in">log</span>/spark/lineage doesn<span class="string">'t exist or is not writable. Lineage for this application will be disabled.</span></span><br><span class="line"><span class="string">Spark context Web UI available at http://master-23:4040</span></span><br><span class="line"><span class="string">Spark context available as '</span>sc<span class="string">' (master = yarn, app id = application_1582792452399_0004).</span></span><br><span class="line"><span class="string">Spark session available as '</span>spark<span class="string">'.</span></span><br><span class="line"><span class="string">Welcome to</span></span><br><span class="line"><span class="string">      ____              __</span></span><br><span class="line"><span class="string">     / __/__  ___ _____/ /__</span></span><br><span class="line"><span class="string">    _\ \/ _ \/ _ `/ __/  '</span>_/</span><br><span class="line">   /___/ .__/\_,_/_/ /_/\_\   version 2.4.0-cdh6.3.2</span><br><span class="line">      /_/</span><br><span class="line"></span><br><span class="line">Using Scala version 2.11.12 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_181)</span><br><span class="line">Type <span class="keyword">in</span> expressions to have them evaluated.</span><br><span class="line">Type :<span class="built_in">help</span> <span class="keyword">for</span> more information.</span><br><span class="line"></span><br><span class="line">scala&gt;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html" target="_blank" rel="noopener">Hadoop 3.2 文档</a></p>
+<h2 id="RDD"><a href="#RDD" class="headerlink" title="RDD"></a>RDD</h2><p>弹性分布式数据集（Resilient Distribution Dataset）<br>数据集合</p>
+<h3 id="创建RDD"><a href="#创建RDD" class="headerlink" title="创建RDD"></a>创建RDD</h3><ul>
+<li>SparkContext 的 parallelize</li>
+<li>读外部数据（HDFS，消息队列等）</li>
+</ul>
+<p>Pair RDD键值对操作<br><a href="https://blog.csdn.net/u014646662/article/details/84673920" target="_blank" rel="noopener">https://blog.csdn.net/u014646662/article/details/84673920</a><br><a href="https://blog.csdn.net/JasonDing1354/article/details/46845585" target="_blank" rel="noopener">https://blog.csdn.net/JasonDing1354/article/details/46845585</a></p>
+<h2 id="spark-sql"><a href="#spark-sql" class="headerlink" title="spark sql"></a>spark sql</h2>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;spark集群初体验&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+      <category term="hadoop" scheme="http://giveme5.cc/categories/hadoop/"/>
+    
+    
+      <category term="bigData" scheme="http://giveme5.cc/tags/bigData/"/>
+    
+      <category term="hadoop" scheme="http://giveme5.cc/tags/hadoop/"/>
+    
+      <category term="spark" scheme="http://giveme5.cc/tags/spark/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>spark 安装</title>
+    <link href="http://giveme5.cc/2020/04/29/hadoop/spark/"/>
+    <id>http://giveme5.cc/2020/04/29/hadoop/spark/</id>
+    <published>2020-04-29T13:32:24.000Z</published>
+    <updated>2020-05-07T02:37:50.726Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="提前工作"><a href="#提前工作" class="headerlink" title="提前工作"></a>提前工作</h2><h3 id="关闭防火墙，SeLinux"><a href="#关闭防火墙，SeLinux" class="headerlink" title="关闭防火墙，SeLinux"></a>关闭防火墙，SeLinux</h3><h3 id="校准时间"><a href="#校准时间" class="headerlink" title="校准时间"></a>校准时间</h3><p>使用NTP服务 同步时间相关服务器时间<br><a href="https://blog.csdn.net/zonghua521/article/details/78239212" target="_blank" rel="noopener">ntpd, ntpdate</a></p>
+<h3 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h3><p>master slave 都配置好</p>
+<p><code>vim /etc/hosts</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.8.23 master-23</span><br><span class="line">192.168.8.24 slave-24</span><br><span class="line">192.168.8.25 slave-25</span><br></pre></td></tr></table></figure>
+<h3 id="公钥登录"><a href="#公钥登录" class="headerlink" title="公钥登录"></a>公钥登录</h3><p>公钥要分发到所有slave机器</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"your_email@your_email.com"</span> -b 4096</span><br><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub username@hostname</span><br></pre></td></tr></table></figure>
+<h2 id="cloudera-manager"><a href="#cloudera-manager" class="headerlink" title="cloudera-manager"></a>cloudera-manager</h2><p>使用当前最新版本 <code>6.3.1</code>， 只需要在master上安装。网络原因，可使用<a href="https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/RPMS/x86_64/" target="_blank" rel="noopener">清华的代理</a>。</p>
+<h3 id="yum方式"><a href="#yum方式" class="headerlink" title="yum方式"></a>yum方式</h3><p><a href="https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/cloudera-manager.repo" target="_blank" rel="noopener">yum文件</a></p>
+<h3 id="手工rpm方式"><a href="#手工rpm方式" class="headerlink" title="手工rpm方式"></a>手工rpm方式</h3><ul>
+<li><p>下载如下的包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-db-2-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装<br>到下载目录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ./*.rpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 cloudera-manager-installer.bin</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://cloudera.proxy.ustclug.org/cm6/6.3.1/cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ chmod u+x cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ sudo ./cloudera-manager-installer.bin</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="安装目录"><a href="#安装目录" class="headerlink" title="安装目录"></a>安装目录</h3><ul>
+<li><p>cdh<br>/opt/cloudera/</p>
+</li>
+<li><p>jdk<br>/usr/java/</p>
+</li>
+<li><p>cloudera<br>/var/lib/cloudera-scm-*</p>
+</li>
+</ul>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>cm 安装成功后 大约 1min<br>localhost:7180 可访问</p>
+<h2 id="CDH-6-3-2"><a href="#CDH-6-3-2" class="headerlink" title="CDH 6.3.2"></a>CDH 6.3.2</h2><p>parcels(离线) 方式， 注意一定要检测到 所需的cdh<br>仅需要在master安装</p>
+<h3 id="cm-daemons，-cm-agent"><a href="#cm-daemons，-cm-agent" class="headerlink" title="cm daemons， cm agent"></a>cm daemons， cm agent</h3><p>slave 都安装好 jdk，cm daemons， cm agent，<br>可以避免 下载速度慢<br>将 master上的<br>    cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm<br>    cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm<br>    oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm<br>copy 到 slave上，像master 一样安装</p>
+<h3 id="手工下载-CDH"><a href="#手工下载-CDH" class="headerlink" title="手工下载 CDH"></a>手工下载 CDH</h3><p>官网<br><a href="https://cloudera.proxy.ustclug.org/cdh6" target="_blank" rel="noopener">https://cloudera.proxy.ustclug.org/cdh6</a></p>
+<p>国内镜像<br><a href="https://cloudera.proxy.ustclug.org/cdh6/6.3.2/parcels/" target="_blank" rel="noopener">https://cloudera.proxy.ustclug.org/cdh6/6.3.2/parcels/</a></p>
+<p>对应操作系统下载文件</p>
+<pre><code>manifest.json
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256
+</code></pre><p>仅需上传到 master的目录<code>/opt/cloudera/parcel-repo</code>下</p>
+<p>注意：<br>cloudera-scm 必须拥有 /opt/cloudera 路径的所有权，<br>否则 cloudera manage 会无法识别 CDH。</p>
+<p>一旦出现，如下操作。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chown -R cloudera-scm:cloudera-scm /opt/cloudera</span><br><span class="line">systemctl stop cloudera-scm-agent.service</span><br><span class="line">systemctl restart cloudera-scm-server.service</span><br><span class="line"><span class="comment"># wait 30s ?</span></span><br><span class="line">systemctl restart cloudera-scm-agent.service</span><br></pre></td></tr></table></figure></p>
+<h3 id="CM-图形操作"><a href="#CM-图形操作" class="headerlink" title="CM 图形操作"></a>CM 图形操作</h3><p>cloudera express</p>
+<p><img src="/images/hadoop/cm1.png" alt><br><img src="/images/hadoop/cm2.png" alt><br><img src="/images/hadoop/cm3.png" alt><br><img src="/images/hadoop/cm4.png" alt><br><img src="/images/hadoop/cm5.png" alt><br><img src="/images/hadoop/cm6.png" alt><br><img src="/images/hadoop/cm7.png" alt><br><img src="/images/hadoop/cm8.png" alt><br><img src="/images/hadoop/cm9.png" alt><br><img src="/images/hadoop/cm10.png" alt><br><img src="/images/hadoop/cm11.png" alt><br><img src="/images/hadoop/cm12.png" alt></p>
+<p>如果 slave 安装异常，<br>解决方法：</p>
+<ul>
+<li>检查 /etc/hosts</li>
+<li>重启agent<br><code>systemctl restart cloudera-scm-agent</code></li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://segmentfault.com/a/1190000020188183?utm_source=tag-newest" target="_blank" rel="noopener">CDH离线搭建</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;提前工作&quot;&gt;&lt;a href=&quot;#提前工作&quot; class=&quot;headerlink&quot; title=&quot;提前工作&quot;&gt;&lt;/a&gt;提前工作&lt;/h2&gt;&lt;h3 id=&quot;关闭防火墙，SeLinux&quot;&gt;&lt;a href=&quot;#关闭防火墙，SeLinux&quot; class=&quot;headerlink
+    
+    </summary>
+    
+      <category term="hadoop" scheme="http://giveme5.cc/categories/hadoop/"/>
+    
+    
+      <category term="bigData" scheme="http://giveme5.cc/tags/bigData/"/>
+    
+      <category term="hadoop" scheme="http://giveme5.cc/tags/hadoop/"/>
+    
+      <category term="spark" scheme="http://giveme5.cc/tags/spark/"/>
+    
+  </entry>
   
   <entry>
     <title>Java 范型(generics in java)</title>
@@ -1694,251 +1827,6 @@ table th:first-of-type {
       <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
     
       <category term="aop" scheme="http://giveme5.cc/tags/aop/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Java 8 Streams</title>
-    <link href="http://giveme5.cc/2017/10/12/java/Streams/"/>
-    <id>http://giveme5.cc/2017/10/12/java/Streams/</id>
-    <published>2017-10-12T11:44:58.000Z</published>
-    <updated>2018-04-10T05:28:36.406Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>Java 8 Streams 在集合和其他数据集上运行函数式操作。<br>所有流计算都有一种共同的结构：它们具有一个流来源、0 或多个中间操作，以及一个终止操作。</p>
-<p><em>更新历史</em><br>无</p>
-<a id="more"></a>
-<hr>
-<h2 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h2><table>
-<thead>
-<tr>
-<th>方法</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Collection.stream()</td>
-<td>使用一个集合的元素创建一个流。</td>
-</tr>
-<tr>
-<td>Stream.of(T…)</td>
-<td>使用传递给工厂方法的参数创建一个流。</td>
-</tr>
-<tr>
-<td>Stream.of(T[])</td>
-<td>使用一个数组的元素创建一个流。</td>
-</tr>
-<tr>
-<td>Stream.empty()</td>
-<td>创建一个空流。</td>
-</tr>
-<tr>
-<td>Stream.iterate(T first, BinaryOperator<t> f)</t></td>
-<td>创建一个包含序列 first, f(first), f(f(first)), … 的无限流</td>
-</tr>
-<tr>
-<td>Stream.iterate(T first, Predicate<t> test, BinaryOperator<t> f)</t></t></td>
-<td>（仅限 Java 9）类似于 Stream.iterate(T first, BinaryOperator<t> f)，但流在测试预期返回 false 的第一个元素上终止。</t></td>
-</tr>
-<tr>
-<td>Stream.generate(Supplier<t> f)</t></td>
-<td>使用一个生成器函数创建一个无限流。</td>
-</tr>
-<tr>
-<td>IntStream.range(lower, upper)</td>
-<td>创建一个由下限到上限（不含）之间的元素组成的 IntStream。</td>
-</tr>
-<tr>
-<td>IntStream.rangeClosed(lower, upper)</td>
-<td>创建一个由下限到上限（含）之间的元素组成的 IntStream。</td>
-</tr>
-<tr>
-<td>BufferedReader.lines()</td>
-<td>创建一个有来自 BufferedReader 的行组成的流。</td>
-</tr>
-<tr>
-<td>BitSet.stream()</td>
-<td>创建一个由 BitSet 中的设置位的索引组成的 IntStream。</td>
-</tr>
-<tr>
-<td>Stream.chars()</td>
-<td>创建一个与 String 中的字符对应的 IntStream。</td>
-</tr>
-</tbody>
-</table>
-<h2 id="中间操作"><a href="#中间操作" class="headerlink" title="中间操作"></a>中间操作</h2><p>负责将一个流转换为另一个流</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>内容</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>filter(Predicate<t>)</t></td>
-<td>接受一个断言（谓词，返回boolean的函数）作为参数，并返回一个包括所有符合断言的元素的流</td>
-</tr>
-<tr>
-<td>map(Function&lt;T, U&gt;)</td>
-<td>映射， 将提供的函数应用于流的元素，并将其映射成一个新的元素</td>
-</tr>
-<tr>
-<td>flatMap(Function&lt;T, Stream<u>&gt;</u></td>
-<td>映射，扁平， 将提供的函数应用于流元素后获得的流元素， 即将一个流中的每个值都换成另一个流，然后把所有的流连接成为一个流</td>
-</tr>
-<tr>
-<td>distinct()</td>
-<td>已删除了重复的流元素</td>
-</tr>
-<tr>
-<td>sorted()</td>
-<td>按自然顺序排序的流元素</td>
-</tr>
-<tr>
-<td>Sorted(Comparator<t>)</t></td>
-<td>按提供的比较符排序的流元素</td>
-</tr>
-<tr>
-<td>limit(long)</td>
-<td>截断至所提供长度的流元素</td>
-</tr>
-<tr>
-<td>skip(long)</td>
-<td>丢弃了前 N 个元素的流元素， 与 <code>limit</code> 互补</td>
-</tr>
-<tr>
-<td>takeWhile(Predicate<t>)</t></td>
-<td>（仅限 Java 9）在第一个提供的预期不是 true 的元素处阶段的流元素</td>
-</tr>
-<tr>
-<td>dropWhile(Predicate<t>)</t></td>
-<td>（仅限 Java 9）丢弃了所提供的预期为 true 的初始元素分段的流元素</td>
-</tr>
-</tbody>
-</table>
-<h2 id="终止操作"><a href="#终止操作" class="headerlink" title="终止操作"></a>终止操作</h2><p>结束流</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>forEach(Consumer<t> action)</t></td>
-<td>将提供的操作应用于流的每个元素。</td>
-</tr>
-<tr>
-<td>toArray()</td>
-<td>使用流的元素创建一个数组。</td>
-</tr>
-<tr>
-<td>reduce(…)</td>
-<td>将流的元素聚合为一个汇总值。</td>
-</tr>
-<tr>
-<td>collect(…)</td>
-<td>将流的元素聚合到一个汇总结果容器中。</td>
-</tr>
-<tr>
-<td>min(Comparator<t>)</t></td>
-<td>通过比较符返回流的最小元素。</td>
-</tr>
-<tr>
-<td>max(Comparator<t>)</t></td>
-<td>通过比较符返回流的最大元素。</td>
-</tr>
-<tr>
-<td>count()</td>
-<td>返回流的大小。</td>
-</tr>
-<tr>
-<td>{any,all,none}Match(Predicate<t>)</t></td>
-<td>返回流的任何/所有元素是否与提供的预期相匹配。</td>
-</tr>
-<tr>
-<td>findFirst()</td>
-<td>返回流的第一个元素（如果有）。</td>
-</tr>
-<tr>
-<td>findAny()</td>
-<td>返回流的任何元素（如果有）。</td>
-</tr>
-</tbody>
-</table>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;Java 8 Streams 在集合和其他数据集上运行函数式操作。&lt;br&gt;所有流计算都有一种共同的结构：它们具有一个流来源、0 或多个中间操作，以及一个终止操作。&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="java" scheme="http://giveme5.cc/categories/java/"/>
-    
-    
-      <category term="java" scheme="http://giveme5.cc/tags/java/"/>
-    
-      <category term="java 8" scheme="http://giveme5.cc/tags/java-8/"/>
-    
-      <category term="jdk8" scheme="http://giveme5.cc/tags/jdk8/"/>
-    
-      <category term="Streams" scheme="http://giveme5.cc/tags/Streams/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>docker 入门 （未完）</title>
-    <link href="http://giveme5.cc/2017/10/10/docker/docker/"/>
-    <id>http://giveme5.cc/2017/10/10/docker/docker/</id>
-    <published>2017-10-10T11:44:58.000Z</published>
-    <updated>2017-10-10T08:52:20.626Z</updated>
-    
-    <content type="html"><![CDATA[<p>docker 入门 （未完）</p>
-<p><em>更新历史</em><br>无<br><a id="more"></a></p>
-<hr>
-<h1 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h1><h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>不要使用 dockercommit 定制镜像,定制行为应该使用 Dockerfile 来完成。<br>Dockerfile中每一个指令都会建立一层</p>
-<ul>
-<li><p>run<br>使用 <code>&amp;&amp;</code> 将各个所需命令串联起来</p>
-</li>
-<li><p>镜像构建上下文(Context)<br><code>docker build [选项] &lt;上下文路径/URL/-&gt;</code><br><code>docker build -t nginx:v3 .</code><br>最后有一个<code>.</code>。 <code>.</code>表示当前目录, 是在指定上下文路径。 即 docker 所能操作的根目录， 超出其路径， docker 是不能操作的<br><code>docker build</code>  命令得知这个路径后,会将路径下的所有内容打包,然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后,展开就会获得构建镜像所需的一切文件。<br>初学的错误是将<code>Dockerfile</code>放到硬盘根目录, 把上下文设置成硬盘根目录， 结果发现<code>docker build</code>执行后,在发送一个几十GB的东西。<br>一般来说,应该会将<code>Dockerfile</code>置于一个空目录下,或者项目根目录下。如果该目录下没有所需文件,那么应该把所需文件复制一份过来。<br>如果目录下有些东西确实不希望构建时传给 Docker 引擎,那么可以用<code>.gitignore</code>一样的语法写一个<code>.dockerignore</code>,该文件是用于剔除不需要作为上下文传递给Docker 引擎的。<br>那么为什么会有人误以为<code>.</code>是指定<code>Dockerfile</code>所在目录呢?这是因为在默认情况下,如果不额外指定<code>Dockerfile</code>的话,会将上下文目录下的名为 Dockerfile  的文件作为 Dockerfile。</p>
-</li>
-</ul>
-<h3 id="COPY复制文件"><a href="#COPY复制文件" class="headerlink" title="COPY复制文件"></a>COPY复制文件</h3><h3 id="ADD更高级的复制文件"><a href="#ADD更高级的复制文件" class="headerlink" title="ADD更高级的复制文件"></a>ADD更高级的复制文件</h3><h3 id="CMD容器启动命令"><a href="#CMD容器启动命令" class="headerlink" title="CMD容器启动命令"></a>CMD容器启动命令</h3><h3 id="ENTRYPOINT入口点"><a href="#ENTRYPOINT入口点" class="headerlink" title="ENTRYPOINT入口点"></a>ENTRYPOINT入口点</h3><h3 id="ENV设置环境变量"><a href="#ENV设置环境变量" class="headerlink" title="ENV设置环境变量"></a>ENV设置环境变量</h3><h3 id="ARG构建参数"><a href="#ARG构建参数" class="headerlink" title="ARG构建参数"></a>ARG构建参数</h3><h3 id="VOLUME定义匿名卷"><a href="#VOLUME定义匿名卷" class="headerlink" title="VOLUME定义匿名卷"></a>VOLUME定义匿名卷</h3><h3 id="EXPOSE声明端口"><a href="#EXPOSE声明端口" class="headerlink" title="EXPOSE声明端口"></a>EXPOSE声明端口</h3><h3 id="WORKDIR指定工作目录"><a href="#WORKDIR指定工作目录" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="WORKDIR指定工作目录-1"><a href="#WORKDIR指定工作目录-1" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="USER指定当前用户"><a href="#USER指定当前用户" class="headerlink" title="USER指定当前用户"></a>USER指定当前用户</h3><h3 id="HEALTHCHECK健康检查"><a href="#HEALTHCHECK健康检查" class="headerlink" title="HEALTHCHECK健康检查"></a>HEALTHCHECK健康检查</h3><h3 id="ONBUILD为他人做嫁衣裳"><a href="#ONBUILD为他人做嫁衣裳" class="headerlink" title="ONBUILD为他人做嫁衣裳"></a>ONBUILD为他人做嫁衣裳</h3><h2 id="删除本地镜像"><a href="#删除本地镜像" class="headerlink" title="删除本地镜像"></a>删除本地镜像</h2><p><code>dockerrmi[选项]&lt;镜像1&gt;[&lt;镜像2&gt;...]</code><br>其中, &lt;镜像&gt;可以是  镜像短ID、  镜像长ID、  镜像名或者  镜像摘要。<br>可以使用 <code>dockerimages-q</code>来配合使用<code>dockerrmi</code>,这样可以成批的删除希望删除的镜像。</p>
-<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><h2 id="新建并启动"><a href="#新建并启动" class="headerlink" title="新建并启动"></a>新建并启动</h2><p><code>docker    run</code><br><code>sudo    docker    run    -t    -i    ubuntu:14.04    /bin/bash</code></p>
-<p>检查本地是否存在指定的镜像,不存在就从公有仓库下载启动<br>利用镜像创建并启动一个容器<br>分配一个文件系统,并在只读的镜像层外面挂载一层可读写层<br>从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去<br>从地址池配置一个    ip    地址给容器<br>执行用户指定的应用程序<br>执行完毕后容器被终止</p>
-<h2 id="启动已终止容器"><a href="#启动已终止容器" class="headerlink" title="启动已终止容器"></a>启动已终止容器</h2><p><code>docker    start</code></p>
-<h2 id="后台-background-运行"><a href="#后台-background-运行" class="headerlink" title="后台(background)运行"></a>后台(background)运行</h2><p><code>sudo    docker    run    -d    ubuntu:14.04    /bin/sh    -c    &quot;while    true;    do    echo    hello    world;    sleep    1;    done</code><br>容器会在后台运行并不会把输出的结果(STDOUT)打印到宿主机上面(输出结果可以用docker    logs    查看)。<br><code>sudo    docker    logs    [container    ID    or    NAMES]</code></p>
-<h2 id="终止容器"><a href="#终止容器" class="headerlink" title="终止容器"></a>终止容器</h2><p><code>docker    stop</code></p>
-<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><ul>
-<li><code>nsenter</code>    命令</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PID=$(docker	inspect	--format	<span class="string">"&#123;&#123;	.State.Pid	&#125;&#125;"</span>	&lt;container&gt;)</span><br><span class="line">nsenter	--target	<span class="variable">$PID</span>	--mount	--uts	--ipc	--net	--pid</span><br><span class="line">nsenter	--target	<span class="variable">$pid</span>	--mount	--uts	--ipc	--net	--pid		--	/usr/bin/env	\	--ignore-environment	HOME=/root	/bin/bash	--login</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>.bashrc_docker</code><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget	-P	~	https://github.com/yeasy/docker_practice/raw/master/_local/.bashrc_docker;</span><br><span class="line"><span class="built_in">echo</span>	<span class="string">"[	-f	~/.bashrc_docker	]	&amp;&amp;	.	~/.bashrc_docker"</span>	&gt;&gt;	~/.bashrc;	<span class="built_in">source</span>	~/.bashrc</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>这个文件中定义了很多方便使用    Docker    的命令,例如         docker-pid        可以获取某<br>个容器的    PID;而         docker-enter        可以进入容器或直接在容器内执行命令。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span>	$(docker-pid	&lt;container&gt;)</span><br><span class="line">docker-enter	&lt;container&gt;	ls</span><br></pre></td></tr></table></figure>
-<h2 id="导出和导入容器-docker-export"><a href="#导出和导入容器-docker-export" class="headerlink" title="导出和导入容器 docker    export"></a>导出和导入容器 <code>docker    export</code></h2><h3 id="导出-docker-export"><a href="#导出-docker-export" class="headerlink" title="导出 docker    export"></a>导出 <code>docker    export</code></h3><h3 id="导入-docker-import"><a href="#导入-docker-import" class="headerlink" title="导入 docker    import"></a>导入 <code>docker    import</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat	ubuntu.tar	|	sudo	docker	import	-	test/ubuntu:v1.0</span><br><span class="line">sudo	docker	import	http://example.com/exampleimage.tgz	example/imagerepo</span><br></pre></td></tr></table></figure>
-<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><p><code>sudo    docker    rm        trusting_newton</code><br>如果要删除一个运行中的容器,可以添加         -f        参数</p>
-<h3 id="清理所有处于终止状态的容器"><a href="#清理所有处于终止状态的容器" class="headerlink" title="清理所有处于终止状态的容器"></a>清理所有处于终止状态的容器</h3><p><code>docker    rm    $(docker    ps    -a    -q)</code>可以全部清理掉, 包括还在运行中的容器.</p>
-<h1 id="Docker-数据管理"><a href="#Docker-数据管理" class="headerlink" title="Docker    数据管理"></a>Docker    数据管理</h1><h2 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;docker 入门 （未完）&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;br&gt;
-    
-    </summary>
-    
-      <category term="docker" scheme="http://giveme5.cc/categories/docker/"/>
-    
-    
-      <category term="docker" scheme="http://giveme5.cc/tags/docker/"/>
     
   </entry>
   
