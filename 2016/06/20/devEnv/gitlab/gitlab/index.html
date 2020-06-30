@@ -54,16 +54,16 @@
 <meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
 <meta property="og:description" content="gitlab 一个开源的版本管理系统,实现一个自托管的Git项目仓库,可通过Web界面进行访问公开的或者私人项目。基本拥有GitHub类似的功能。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://amadis.qiniudn.com/gitlab1.png">
-<meta property="og:image" content="http://amadis.qiniudn.com/gitlab2.png">
-<meta property="og:image" content="http://amadis.qiniudn.com/gitlab3.png">
-<meta property="og:image" content="http://amadis.qiniudn.com/gitlab4.png">
-<meta property="og:image" content="http://amadis.qiniudn.com/gitlab5.png">
-<meta property="og:updated_time" content="2017-02-21T07:18:44.688Z">
+<meta property="og:image" content="http://blog.nicejour.com/gitlab1.png">
+<meta property="og:image" content="http://blog.nicejour.com/gitlab2.png">
+<meta property="og:image" content="http://blog.nicejour.com/gitlab3.png">
+<meta property="og:image" content="http://blog.nicejour.com/gitlab4.png">
+<meta property="og:image" content="http://blog.nicejour.com/gitlab5.png">
+<meta property="og:updated_time" content="2020-06-30T08:07:39.765Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gitlab">
 <meta name="twitter:description" content="gitlab 一个开源的版本管理系统,实现一个自托管的Git项目仓库,可通过Web界面进行访问公开的或者私人项目。基本拥有GitHub类似的功能。">
-<meta name="twitter:image" content="http://amadis.qiniudn.com/gitlab1.png">
+<meta name="twitter:image" content="http://blog.nicejour.com/gitlab1.png">
 
 <link rel="canonical" href="http://giveme5.cc/2016/06/20/devEnv/gitlab/gitlab/">
 
@@ -224,7 +224,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-02-21 15:18:44" itemprop="dateModified" datetime="2017-02-21T15:18:44+08:00">2017-02-21</time>
+                <time title="修改时间：2020-06-30 16:07:39" itemprop="dateModified" datetime="2020-06-30T16:07:39+08:00">2020-06-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,18 +284,18 @@
 <pre><code>gitlab-ctl restart
 </code></pre></li>
 </ul>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="管理员"><a href="#管理员" class="headerlink" title="管理员"></a>管理员</h3><p>如图可以进入admin特别区域。多用于管理 <code>group</code>， <code>project</code>， <code>user</code>， 更高级的话管理 <code>job</code> 和 <code>hook</code><br><img src="http://amadis.qiniudn.com/gitlab1.png" alt></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="管理员"><a href="#管理员" class="headerlink" title="管理员"></a>管理员</h3><p>如图可以进入admin特别区域。多用于管理 <code>group</code>， <code>project</code>， <code>user</code>， 更高级的话管理 <code>job</code> 和 <code>hook</code><br><img src="http://blog.nicejour.com/gitlab1.png" alt></p>
 <h3 id="普通用户"><a href="#普通用户" class="headerlink" title="普通用户"></a>普通用户</h3><ul>
 <li>SSH KEY<br>统一使用ssh协议类操作git repository， 所以登陆以后，请将自己的public key添加到gitlab账户。</li>
 </ul>
-<p><img src="http://amadis.qiniudn.com/gitlab2.png" alt><br><img src="http://amadis.qiniudn.com/gitlab3.png" alt><br><img src="http://amadis.qiniudn.com/gitlab4.png" alt></p>
+<p><img src="http://blog.nicejour.com/gitlab2.png" alt><br><img src="http://blog.nicejour.com/gitlab3.png" alt><br><img src="http://blog.nicejour.com/gitlab4.png" alt></p>
 <p>ssh key 可由管理员方式发送到各位，<br>包括2个文件，一个是.pub结尾的，这个就是public key，另一个无后缀名的，这是各位的private key，请妥善保管，以后将凭这个文件来获得对git服务器的访问权。</p>
 <p>private key需要存放在办公电脑路径：<br>Linux ： <code>/home/你的用户/.ssh</code><br>Windows: <code>C:\Users\你的用户\.ssh</code></p>
 <p>如需自己生成：<code>ssh-keygen -t rsa -C &quot;your_email@your_email.com&quot;</code></p>
 <ul>
 <li>操作<br>每个人在自己的dashborad里可以看到自己加入的project<br>有权限的人，可以自己创建project</li>
 </ul>
-<p><img src="http://amadis.qiniudn.com/gitlab5.png" alt></p>
+<p><img src="http://blog.nicejour.com/gitlab5.png" alt></p>
 <p>版本操作完全是git的内容。Linux的话直接命令行就很好了； Windows的话 推荐 <a href="https://www.sourcetreeapp.com/" target="_blank" rel="noopener">SourceTree</a> or <a href="http://www.syntevo.com/smartgithg/" target="_blank" rel="noopener">smartgit</a></p>
 <h2 id="备份迁移"><a href="#备份迁移" class="headerlink" title="备份迁移"></a>备份迁移</h2><p>下面都是yum方式安装gitlab的用法, 工作目录都是 <code>gitlab.rb</code> 设置的 <code>gitlab_rails[&#39;backup_path&#39;]</code>； 完整的参考<a href="https://gitlab.com/gitlab-org/gitlab-ce/blob/master/doc/raketasks/backup_restore.md" target="_blank" rel="noopener">官方指南</a>.</p>
 <h3 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h3><pre><code>sudo gitlab-rake gitlab:backup:create
