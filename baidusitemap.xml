@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2020/04/29/hadoop/cdh/</loc>
+    <lastmod>2020-07-21T02:08:43.472Z</lastmod>
+    <data>
+        <display>
+        <title>CDH</title>
+        <pubTime>2020-04-29T13:32:24.000Z</pubTime>
+        
+        <tag>bigData</tag>
+         
+        <tag>hadoop</tag>
+         
+        <tag>cloudera</tag>
+         
+        <tag>CDH</tag>
+         
+         
+           
+             
+              <breadCrumb title="hadoop" url="http://giveme5.cc/categories/hadoop/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2016/06/20/devEnv/gitlab/gitlab/</loc>
     <lastmod>2020-06-30T08:07:39.765Z</lastmod>
     <data>
@@ -17,30 +43,6 @@
            
              
               <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2020/04/29/hadoop/spark/</loc>
-    <lastmod>2020-05-07T02:37:50.726Z</lastmod>
-    <data>
-        <display>
-        <title>spark 安装</title>
-        <pubTime>2020-04-29T13:32:24.000Z</pubTime>
-        
-        <tag>bigData</tag>
-         
-        <tag>hadoop</tag>
-         
-        <tag>spark</tag>
-         
-         
-           
-             
-              <breadCrumb title="hadoop" url="http://giveme5.cc/categories/hadoop/"/>
           
         </display>
     </data>

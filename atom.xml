@@ -75,13 +75,20 @@
   </entry>
   
   <entry>
-    <title>spark 安装</title>
-    <link href="http://giveme5.cc/2020/04/29/hadoop/spark/"/>
-    <id>http://giveme5.cc/2020/04/29/hadoop/spark/</id>
+    <title>CDH</title>
+    <link href="http://giveme5.cc/2020/04/29/hadoop/cdh/"/>
+    <id>http://giveme5.cc/2020/04/29/hadoop/cdh/</id>
     <published>2020-04-29T13:32:24.000Z</published>
-    <updated>2020-05-07T02:37:50.726Z</updated>
+    <updated>2020-07-21T02:08:43.472Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="提前工作"><a href="#提前工作" class="headerlink" title="提前工作"></a>提前工作</h2><h3 id="关闭防火墙，SeLinux"><a href="#关闭防火墙，SeLinux" class="headerlink" title="关闭防火墙，SeLinux"></a>关闭防火墙，SeLinux</h3><h3 id="校准时间"><a href="#校准时间" class="headerlink" title="校准时间"></a>校准时间</h3><p>使用NTP服务 同步时间相关服务器时间<br><a href="https://blog.csdn.net/zonghua521/article/details/78239212" target="_blank" rel="noopener">ntpd, ntpdate</a></p>
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>CDH 安装</li>
+</ul>
+<p>CDH  Cloudera’s Distribution, including Apache Hadoop。 Cloudera 公司出品。<br>拥有集群自动化安装、中心化管理、集群监控、报警功能的一个工具（软件），使得集群的安装可以从几天的时间缩短为几个小时，运维人数也会从数十人降低到几个人，极大的提高了集群管理的效率。</p>
+<hr>
+<a id="more"></a>
+<h2 id="提前工作"><a href="#提前工作" class="headerlink" title="提前工作"></a>提前工作</h2><h3 id="关闭防火墙，SeLinux"><a href="#关闭防火墙，SeLinux" class="headerlink" title="关闭防火墙，SeLinux"></a>关闭防火墙，SeLinux</h3><h3 id="校准时间"><a href="#校准时间" class="headerlink" title="校准时间"></a>校准时间</h3><p>使用NTP服务 同步时间相关服务器时间<br><a href="https://blog.csdn.net/zonghua521/article/details/78239212" target="_blank" rel="noopener">ntpd, ntpdate</a></p>
 <h3 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h3><p>master slave 都配置好</p>
 <p><code>vim /etc/hosts</code></p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.8.23 master-23</span><br><span class="line">192.168.8.24 slave-24</span><br><span class="line">192.168.8.25 slave-25</span><br></pre></td></tr></table></figure>
@@ -133,7 +140,12 @@ CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256
     
     <summary type="html">
     
-      &lt;h2 id=&quot;提前工作&quot;&gt;&lt;a href=&quot;#提前工作&quot; class=&quot;headerlink&quot; title=&quot;提前工作&quot;&gt;&lt;/a&gt;提前工作&lt;/h2&gt;&lt;h3 id=&quot;关闭防火墙，SeLinux&quot;&gt;&lt;a href=&quot;#关闭防火墙，SeLinux&quot; class=&quot;headerlink
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;CDH 安装&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CDH  Cloudera’s Distribution, including Apache Hadoop。 Cloudera 公司出品。&lt;br&gt;拥有集群自动化安装、中心化管理、集群监控、报警功能的一个工具（软件），使得集群的安装可以从几天的时间缩短为几个小时，运维人数也会从数十人降低到几个人，极大的提高了集群管理的效率。&lt;/p&gt;
+&lt;hr&gt;
     
     </summary>
     
@@ -144,7 +156,9 @@ CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256
     
       <category term="hadoop" scheme="http://giveme5.cc/tags/hadoop/"/>
     
-      <category term="spark" scheme="http://giveme5.cc/tags/spark/"/>
+      <category term="cloudera" scheme="http://giveme5.cc/tags/cloudera/"/>
+    
+      <category term="CDH" scheme="http://giveme5.cc/tags/CDH/"/>
     
   </entry>
   
