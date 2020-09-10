@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://giveme5.cc/2020/04/29/hadoop/cdh/</loc>
+    
+    <lastmod>2020-09-10T03:07:43.165Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/</loc>
     
     <lastmod>2020-09-10T02:51:38.742Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
     
     <lastmod>2020-08-04T07:05:57.993Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2020/04/29/hadoop/cdh/</loc>
-    
-    <lastmod>2020-07-27T01:03:58.603Z</lastmod>
     
   </url>
   

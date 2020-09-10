@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2020/04/29/hadoop/cdh/</loc>
+    <lastmod>2020-09-10T03:07:43.165Z</lastmod>
+    <data>
+        <display>
+        <title>cloudera</title>
+        <pubTime>2020-04-29T13:32:24.000Z</pubTime>
+        
+        <tag>bigData</tag>
+         
+        <tag>hadoop</tag>
+         
+        <tag>cloudera</tag>
+         
+        <tag>CDH</tag>
+         
+         
+           
+             
+              <breadCrumb title="hadoop" url="http://giveme5.cc/categories/hadoop/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/</loc>
     <lastmod>2020-09-10T02:51:38.742Z</lastmod>
     <data>
@@ -65,32 +91,6 @@
            
              
               <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2020/04/29/hadoop/cdh/</loc>
-    <lastmod>2020-07-27T01:03:58.603Z</lastmod>
-    <data>
-        <display>
-        <title>cloudera</title>
-        <pubTime>2020-04-29T13:32:24.000Z</pubTime>
-        
-        <tag>bigData</tag>
-         
-        <tag>hadoop</tag>
-         
-        <tag>cloudera</tag>
-         
-        <tag>CDH</tag>
-         
-         
-           
-             
-              <breadCrumb title="hadoop" url="http://giveme5.cc/categories/hadoop/"/>
           
         </display>
     </data>

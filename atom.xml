@@ -79,7 +79,7 @@
     <link href="http://giveme5.cc/2020/04/29/hadoop/cdh/"/>
     <id>http://giveme5.cc/2020/04/29/hadoop/cdh/</id>
     <published>2020-04-29T13:32:24.000Z</published>
-    <updated>2020-07-27T01:03:58.603Z</updated>
+    <updated>2020-09-10T03:07:43.165Z</updated>
     
     <content type="html"><![CDATA[<p>主要内容</p>
 <ul>
@@ -103,9 +103,8 @@
 </ul>
 <h3 id="公钥登录"><a href="#公钥登录" class="headerlink" title="公钥登录"></a>公钥登录</h3><p>公钥要分发到所有slave机器</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"your_email@your_email.com"</span> -b 4096</span><br><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub username@hostname</span><br></pre></td></tr></table></figure>
-<h2 id="cloudera-manager"><a href="#cloudera-manager" class="headerlink" title="cloudera-manager"></a>cloudera-manager</h2><p>使用当前最新版本 <code>6.3.1</code>， 只需要在master上安装。<br>网络原因，可使用 清华的代理 <a href="https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/RPMS/x86_64/" target="_blank" rel="noopener">https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/RPMS/x86_64/</a> 。</p>
-<h3 id="yum方式"><a href="#yum方式" class="headerlink" title="yum方式"></a>yum方式</h3><p><a href="https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/cloudera-manager.repo" target="_blank" rel="noopener">yum文件</a></p>
-<h3 id="手工rpm方式"><a href="#手工rpm方式" class="headerlink" title="手工rpm方式"></a>手工rpm方式</h3><ul>
+<h2 id="cloudera-manager"><a href="#cloudera-manager" class="headerlink" title="cloudera-manager"></a>cloudera-manager</h2><p>使用当前最新版本 <code>6.3.1</code>， 只需要在master上安装。网络原因，可使用 清华的代理 <code>https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/RPMS/x86_64/</code> 。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h4 id="手工rpm方式-推荐"><a href="#手工rpm方式-推荐" class="headerlink" title="手工rpm方式 (推荐)"></a>手工rpm方式 (推荐)</h4><ul>
 <li><p>下载如下的包</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-db-2-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</span><br></pre></td></tr></table></figure>
 </li>
@@ -113,8 +112,9 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ./*.rpm</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="cloudera-manager-installer-bin-安装"><a href="#cloudera-manager-installer-bin-安装" class="headerlink" title="cloudera-manager-installer.bin 安装"></a>cloudera-manager-installer.bin 安装</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://cloudera.proxy.ustclug.org/cm6/6.3.1/cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ chmod u+x cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ sudo ./cloudera-manager-installer.bin</span><br></pre></td></tr></table></figure>
-<h3 id="安装目录"><a href="#安装目录" class="headerlink" title="安装目录"></a>安装目录</h3><ul>
+<h4 id="yum方式-看网络"><a href="#yum方式-看网络" class="headerlink" title="yum方式 (看网络)"></a>yum方式 (看网络)</h4><p><a href="https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/cloudera-manager.repo" target="_blank" rel="noopener">yum文件</a></p>
+<h4 id="cloudera-manager-installer-bin-安装-看网络"><a href="#cloudera-manager-installer-bin-安装-看网络" class="headerlink" title="cloudera-manager-installer.bin 安装  (看网络)"></a>cloudera-manager-installer.bin 安装  (看网络)</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://cloudera.proxy.ustclug.org/cm6/6.3.1/cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ chmod u+x cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ sudo ./cloudera-manager-installer.bin</span><br></pre></td></tr></table></figure>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><h4 id="安装完成目录"><a href="#安装完成目录" class="headerlink" title="安装完成目录"></a>安装完成目录</h4><ul>
 <li><p>cdh<br><code>/opt/cloudera/</code></p>
 </li>
 <li><p>jdk<br><code>/usr/java/</code></p>
@@ -122,13 +122,16 @@
 <li><p>cloudera<br><code>/var/lib/cloudera-scm-*</code></p>
 </li>
 </ul>
-<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p>cm 安装成功后,重启系统, 大约 1min,<br>服务为 <code>cloudera-scm-agent.service</code> 和 <code>cloudera-scm-server.service</code><br>localhost:7180 可访问, 初始账户 admin， 密码 admin</p>
+<h4 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h4><p>cm 安装成功后,重启系统, 大约 1min,<br>服务为 <code>cloudera-scm-agent.service</code> 和 <code>cloudera-scm-server.service</code><br>localhost:7180 可访问, 初始账户 admin， 密码 admin</p>
+<h3 id="cm-daemons，-cm-agent"><a href="#cm-daemons，-cm-agent" class="headerlink" title="cm daemons， cm agent"></a>cm daemons， cm agent</h3><p>slave 都安装好 jdk，cm daemons， cm agent，<br>可以避免 下载速度慢<br>将 master上的<br>    cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm<br>    cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm<br>    oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm<br>copy 到 slave上，像master 一样安装。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>注意：<br>cloudera-scm 必须拥有 /opt/cloudera 路径的所有权。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R cloudera-scm:cloudera-scm /opt/cloudera</span><br></pre></td></tr></table></figure></p>
+<p>安装完成重启系统。</p>
 <h2 id="CDH-6-3-2"><a href="#CDH-6-3-2" class="headerlink" title="CDH 6.3.2"></a>CDH 6.3.2</h2><p>parcels(离线) 方式， 注意一定要检测到 所需的cdh<br>仅需要在master安装</p>
 <h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>默认是内存数据库，如果上生产，建议还是关系数据库。<br><a href="https://docs.cloudera.com/documentation/enterprise/6/latest/topics/cm_ig_installing_configuring_dbs.html" target="_blank" rel="noopener">官方文档</a></p>
-<h4 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h4><h4 id="java-驱动"><a href="#java-驱动" class="headerlink" title="java 驱动"></a>java 驱动</h4><p>可去华华镜像下载，<br><a href="https://docs.cloudera.com/documentation/enterprise/6/latest/topics/cm_ig_mysql.html#cmig_topic_5_5_3" target="_blank" rel="noopener">https://docs.cloudera.com/documentation/enterprise/6/latest/topics/cm_ig_mysql.html#cmig_topic_5_5_3</a></p>
-<p>####<br>/opt/cloudera/cm/schema/scm_prepare_database.sh -h 192.168.11.229 –scm-host 192.168.11.220 -u root -P 3306 -p mysql scm scm</p>
-<p>如果 是本机数据库， -h 和 –扫描-host 去掉</p>
-<h3 id="cm-daemons，-cm-agent"><a href="#cm-daemons，-cm-agent" class="headerlink" title="cm daemons， cm agent"></a>cm daemons， cm agent</h3><p>slave 都安装好 jdk，cm daemons， cm agent，<br>可以避免 下载速度慢<br>将 master上的<br>    cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm<br>    cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm<br>    oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm<br>copy 到 slave上，像master 一样安装。<br>注意：<br>cloudera-scm 必须拥有 /opt/cloudera 路径的所有权。 安装完成重启系统。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R cloudera-scm:cloudera-scm /opt/cloudera</span><br></pre></td></tr></table></figure></p>
+<h4 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a><a href="https://docs.cloudera.com/documentation/enterprise/6/latest/topics/cm_ig_mysql.html#cmig_topic_5_5_3" target="_blank" rel="noopener">Mysql</a></h4><h5 id="java-驱动"><a href="#java-驱动" class="headerlink" title="java 驱动"></a>java 驱动</h5><p>可去清华镜像下载<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.46.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf mysql-connector-java-5.1.46.tar.gz</span><br><span class="line"></span><br><span class="line">mkdir -p /usr/share/java/</span><br><span class="line"><span class="built_in">cd</span> mysql-connector-java-5.1.46</span><br><span class="line">cp mysql-connector-java-5.1.46-bin.jar /usr/share/java/mysql-connector-java.jar</span><br></pre></td></tr></table></figure></p>
+<h5 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/cloudera/cm/schema/scm_prepare_database.sh -h 192.168.11.229 mysql  --scm-host 192.168.11.220 -u root -P 3306 -p  scm scm</span><br></pre></td></tr></table></figure>
+<p>如果 是本机数据库， -h 和 –扫描-host 去掉<br>依次输入 root 和 scm 密码</p>
+<p>如果存在，删除embedded PostgreSQL properties<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm /etc/cloudera-scm-server/db.mgmt.properties</span><br></pre></td></tr></table></figure></p>
 <h3 id="手工下载-CDH"><a href="#手工下载-CDH" class="headerlink" title="手工下载 CDH"></a>手工下载 CDH</h3><p>官网<br><a href="https://cloudera.proxy.ustclug.org/cdh6" target="_blank" rel="noopener">https://cloudera.proxy.ustclug.org/cdh6</a></p>
 <p>国内镜像<br><a href="https://cloudera.proxy.ustclug.org/cdh6/6.3.2/parcels/" target="_blank" rel="noopener">https://cloudera.proxy.ustclug.org/cdh6/6.3.2/parcels/</a></p>
 <p>对应操作系统下载文件</p>
@@ -136,8 +139,8 @@
 CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel
 CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1
 CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256
-</code></pre><p>仅需上传到 master的目录<code>/opt/cloudera/parcel-repo</code>下</p>
-<p>注意：<br>cloudera-scm 必须拥有 /opt/cloudera 路径的所有权，<br>否则 cloudera manage 会无法识别 CDH。</p>
+</code></pre><p>仅需上传到 master的目录<code>/opt/cloudera/parcel-repo</code>下, <code>CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1</code> copy 一份成为 <code>CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1</code></p>
+<p>注意：<br>cloudera-scm 必须拥有 /opt/cloudera 路径的所有权，否则 cloudera manage 会无法识别 CDH。</p>
 <p>一旦出现，如下操作。 如再不能识别，重启master操作系统。<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chown -R cloudera-scm:cloudera-scm /opt/cloudera</span><br><span class="line">systemctl stop cloudera-scm-agent.service</span><br><span class="line">systemctl restart cloudera-scm-server.service</span><br><span class="line"><span class="comment"># wait 30s ?</span></span><br><span class="line">systemctl restart cloudera-scm-agent.service</span><br></pre></td></tr></table></figure></p>
 <p>如果仍然无法识别， </p>
 <h3 id="CM-图形安装"><a href="#CM-图形安装" class="headerlink" title="CM 图形安装"></a>CM 图形安装</h3><p>cloudera express</p>
