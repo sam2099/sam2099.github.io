@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/</loc>
+    
+    <lastmod>2020-09-10T02:51:38.742Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2016/06/20/devEnv/nexus/nexus/</loc>
+    
+    <lastmod>2020-08-04T07:49:53.779Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
+    
+    <lastmod>2020-08-04T07:05:57.993Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2020/04/29/hadoop/cdh/</loc>
     
-    <lastmod>2020-07-25T03:48:37.359Z</lastmod>
+    <lastmod>2020-07-27T01:03:58.603Z</lastmod>
     
   </url>
   
@@ -401,13 +422,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/</loc>
-    
-    <lastmod>2017-07-06T02:17:43.990Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/2017/06/01/computerVision/opencv-python/</loc>
     
     <lastmod>2017-06-28T03:29:31.753Z</lastmod>
@@ -464,13 +478,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
-    
-    <lastmod>2017-03-03T05:30:57.154Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/2016/05/17/android/broadcast/</loc>
     
     <lastmod>2017-02-22T06:22:31.767Z</lastmod>
@@ -492,7 +499,14 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/11/17/linux/lamp/</loc>
+    <loc>http://giveme5.cc/2015/09/18/mq/activemq2/</loc>
+    
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2016/03/02/other/searchEngine/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     
@@ -506,21 +520,21 @@
   </url>
   
   <url>
+    <loc>http://giveme5.cc/2015/09/11/mq/mq/</loc>
+    
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2015/11/17/linux/lamp/</loc>
+    
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/categories/index.html</loc>
-    
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2015/11/17/linux/ddos/</loc>
-    
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2016/01/26/other/encoding/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     
@@ -534,7 +548,14 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/09/11/mq/activemq/</loc>
+    <loc>http://giveme5.cc/2015/11/17/linux/ddos/</loc>
+    
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2016/01/06/linux/shell/shell9/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     
@@ -548,14 +569,28 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/09/18/mq/activemq2/</loc>
+    <loc>http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2016/03/02/other/searchEngine/</loc>
+    <loc>http://giveme5.cc/2016/01/26/other/encoding/</loc>
+    
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2015/08/19/methodology/methodology/</loc>
+    
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2015/09/08/other/interview/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     
@@ -590,13 +625,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/03/linux/base/godLinux1-4/</loc>
-    
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/2015/12/04/linux/base/godLinux1-5/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
@@ -605,6 +633,13 @@
   
   <url>
     <loc>http://giveme5.cc/2015/12/04/linux/base/godLinux1-6/</loc>
+    
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2015/12/03/linux/base/godLinux1-4/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     
@@ -639,7 +674,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/09/08/other/interview/</loc>
+    <loc>http://giveme5.cc/2015/09/11/mq/activemq/</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     
@@ -709,34 +744,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/08/19/methodology/methodology/</loc>
-    
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2015/09/11/mq/mq/</loc>
-    
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2016/01/06/linux/shell/shell9/</loc>
-    
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/</loc>
-    
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/tags/index.html</loc>
     
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
@@ -744,21 +751,14 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/09/linux/base/godLinux1-11~12/</loc>
+    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-17/</loc>
     
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/</loc>
-    
-    <lastmod>2017-02-21T07:18:44.688Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2015/12/07/linux/base/godLinux1-10/</loc>
+    <loc>http://giveme5.cc/2015/12/16/linux/base/godLinux1-15/</loc>
     
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     
@@ -772,14 +772,14 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-17/</loc>
+    <loc>http://giveme5.cc/2015/12/07/linux/base/godLinux1-10/</loc>
     
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/17/linux/base/godLinux1-16/</loc>
+    <loc>http://giveme5.cc/2015/12/09/linux/base/godLinux1-11~12/</loc>
     
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     
@@ -800,7 +800,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/10/15/devEnv/nexus/restlet/</loc>
+    <loc>http://giveme5.cc/2015/12/17/linux/base/godLinux1-16/</loc>
     
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     
@@ -814,7 +814,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2016/06/20/devEnv/nexus/nexus/</loc>
+    <loc>http://giveme5.cc/2015/10/15/devEnv/nexus/restlet/</loc>
     
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     
@@ -849,7 +849,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/16/linux/base/godLinux1-15/</loc>
+    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/</loc>
     
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     

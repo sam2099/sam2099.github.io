@@ -46,18 +46,18 @@
   };
 </script>
 
-  <meta name="description" content="永久免费的 Sonatype Nexus Repository Manager OSS版本，可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。主要配合maven 和 gradle 工作。">
+  <meta name="description" content="永久免费的 Sonatype Nexus Repository Manager OSS版本，可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。主要配合maven 和 gradle 工作。    版本 OSS 3.25.1-04">
 <meta name="keywords" content="nexus">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sonatype nexus">
 <meta property="og:url" content="http://giveme5.cc/2016/06/20/devEnv/nexus/nexus/index.html">
 <meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
-<meta property="og:description" content="永久免费的 Sonatype Nexus Repository Manager OSS版本，可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。主要配合maven 和 gradle 工作。">
+<meta property="og:description" content="永久免费的 Sonatype Nexus Repository Manager OSS版本，可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。主要配合maven 和 gradle 工作。    版本 OSS 3.25.1-04">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-02-21T07:18:44.688Z">
+<meta property="og:updated_time" content="2020-08-04T07:49:53.779Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Sonatype nexus">
-<meta name="twitter:description" content="永久免费的 Sonatype Nexus Repository Manager OSS版本，可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。主要配合maven 和 gradle 工作。">
+<meta name="twitter:description" content="永久免费的 Sonatype Nexus Repository Manager OSS版本，可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。主要配合maven 和 gradle 工作。    版本 OSS 3.25.1-04">
 
 <link rel="canonical" href="http://giveme5.cc/2016/06/20/devEnv/nexus/nexus/">
 
@@ -218,7 +218,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-02-21 15:18:44" itemprop="dateModified" datetime="2017-02-21T15:18:44+08:00">2017-02-21</time>
+                <time title="修改时间：2020-08-04 15:49:53" itemprop="dateModified" datetime="2020-08-04T15:49:53+08:00">2020-08-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -258,38 +258,34 @@
 
       
         <p>永久免费的 Sonatype Nexus Repository Manager OSS版本，<br>可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。<br>主要配合maven 和 gradle 工作。   </p>
+<p>版本 OSS 3.25.1-04</p>
 <a id="more"></a>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>前提要JRE7以上</p>
-<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a><a href="http://www.sonatype.com/download-oss-sonatype/" target="_blank" rel="noopener">下载</a></h3><p>配合maven使用， 下载 <code>Nexus Repository Manager OSS 2.xx</code></p>
-<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a><a href="http://books.sonatype.com/nexus-book/reference/installing.html" target="_blank" rel="noopener">安装</a></h3><p>主要步骤像这样滴</p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a><a href="https://help.sonatype.com/repomanager3/download" target="_blank" rel="noopener">下载</a></h3><h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a><a href="https://help.sonatype.com/repomanager3/installation" target="_blank" rel="noopener">安装</a></h3><p>主要步骤像这样滴</p>
 <ul>
 <li>文件</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp nexus-2.13.0-02-bundle.tar.gz /usr/local</span><br><span class="line">$ cd /usr/local</span><br><span class="line">$ sudo tar xvzf nexus-2.13.0-02-bundle.tar.gz</span><br><span class="line">$ sudo ln -s nexus-2.13.0-02 nexus</span><br></pre></td></tr></table></figure>
-<p><code>/usr/local</code> 这个安装路径根据自己的实际情况调整。</p>
-<ul>
-<li>环境变量</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line">NEXUS_HOME=/usr/local/nexus</span><br><span class="line">export NEXUS_HOME</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ sudo cp nexus-3.25.1-04-unix.tar.gz /opt</span><br><span class="line">$ <span class="built_in">cd</span> /opt</span><br><span class="line">$ sudo tar xvzf nexus-3.25.1-04-unix.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加用户 nexus</span></span><br><span class="line">useradd nexus</span><br><span class="line"></span><br><span class="line">ln -s nexus-3.25.1-04 nexus</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改nexus的权限</span></span><br><span class="line">chown -R nexus:nexus nexus-3.25.1-04</span><br><span class="line">chown -R nexus:nexus sonatype-work </span><br><span class="line">chown -R nexus:nexus nexus</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装</span></span><br><span class="line"><span class="built_in">cd</span> nexus/bin</span><br><span class="line">sudo -u nexus ./nexus run</span><br></pre></td></tr></table></figure>
 <ul>
 <li>sonatype-work</li>
 </ul>
-<p>安装同级目录有<code>sonatype-work</code>文件夹，用来保存 repository and configuration data；和安装文件分离，方便升级。</p>
+<p>安装同级目录有<code>sonatype-work</code>文件夹（$data-dir），用来保存 repository and configuration data；和安装文件分离，方便升级。</p>
 <ul>
-<li><a href="http://books.sonatype.com/nexus-book/reference/install-sect-service.html" target="_blank" rel="noopener">系统服务</a></li>
+<li><a href="https://help.sonatype.com/repomanager3/installation/run-as-a-service" target="_blank" rel="noopener">系统服务</a></li>
 </ul>
-<p>增加用户 nexus  : useradd nexus<br>修改nexus的权限 chown -R nexus.nexus nexus</p>
-<h2 id="配置和管理"><a href="#配置和管理" class="headerlink" title="配置和管理"></a>配置和管理</h2><ul>
-<li>配置文件<br><code>$NEXUS_HOME/conf/nexus.properties</code>， 大概像这样的</li>
+<p><code>vim /etc/systemd/system/nexus.service</code><br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=nexus service</span><br><span class="line">After=network.target</span><br><span class="line">  </span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">LimitNOFILE=65536</span><br><span class="line">ExecStart=/opt/nexus/bin/nexus start</span><br><span class="line">ExecStop=/opt/nexus/bin/nexus stop</span><br><span class="line">User=nexus</span><br><span class="line">Restart=on-abort</span><br><span class="line">TimeoutSec=600</span><br><span class="line">  </span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl <span class="built_in">enable</span> nexus.service</span><br><span class="line">systemctl start nexus.service</span><br></pre></td></tr></table></figure>
+<h2 id="配置和管理"><a href="#配置和管理" class="headerlink" title="配置和管理"></a><a href="https://help.sonatype.com/repomanager3/installation/configuring-the-runtime-environment" target="_blank" rel="noopener">配置和管理</a></h2><ul>
+<li>JVM配置<br>$install-dir/bin/nexus.vmoptions</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#</span><br><span class="line"># Sonatype Nexus (TM) Open Source Version</span><br><span class="line"># Copyright (c) 2007-2014 Sonatype, Inc.</span><br><span class="line"># All rights reserved. Includes the third-party code listed at http://links.sonatype.com/products/nexus/oss/attributions.</span><br><span class="line">#</span><br><span class="line"># This program and the accompanying materials are made available under the terms of the Eclipse Public License Version 1.0,</span><br><span class="line"># which accompanies this distribution and is available at http://www.eclipse.org/legal/epl-v10.html.</span><br><span class="line">#</span><br><span class="line"># Sonatype Nexus (TM) Professional Version is available from Sonatype, Inc. &quot;Sonatype&quot; and &quot;Sonatype Nexus&quot; are trademarks</span><br><span class="line"># of Sonatype, Inc. Apache Maven is a trademark of the Apache Software Foundation. M2eclipse is a trademark of the</span><br><span class="line"># Eclipse Foundation. All other trademarks are the property of their respective owners.</span><br><span class="line">#</span><br><span class="line"></span><br><span class="line"># Sonatype Nexus</span><br><span class="line"># ==============</span><br><span class="line"># This is the most basic configuration of Nexus.</span><br><span class="line"></span><br><span class="line"># Jetty section</span><br><span class="line">application-port=8081</span><br><span class="line">application-host=0.0.0.0</span><br><span class="line">nexus-webapp=$&#123;bundleBasedir&#125;/nexus</span><br><span class="line">nexus-webapp-context-path=/nexus</span><br><span class="line"></span><br><span class="line"># Nexus section</span><br><span class="line">nexus-work=$&#123;bundleBasedir&#125;/../sonatype-work/nexus</span><br><span class="line">runtime=$&#123;bundleBasedir&#125;/nexus/WEB-INF</span><br></pre></td></tr></table></figure>
 <ul>
-<li>启动</li>
+<li>主配置<br>$install-dir/etc<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ls -1 nexus-&lt;version&gt;/etc</span><br><span class="line">fabric</span><br><span class="line">jetty</span><br><span class="line">karaf</span><br><span class="line">logback</span><br><span class="line">nexus-default.properties</span><br><span class="line">ssl</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su nexus</span><br><span class="line">cd /data/iho/nexus/bin/</span><br><span class="line">./nexus start</span><br></pre></td></tr></table></figure>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p><a href="http://books.sonatype.com/nexus-book/reference/config.html" target="_blank" rel="noopener">官方文档</a></p>
+<p><code>nexus-default.properties</code> 是模块文件，不能修改， 第一次启动后会生成 实际使用的配置 <code>$data-dir/etc/nexus.properties</code>， </p>
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p><a href="https://help.sonatype.com/repomanager3/installation/run-behind-a-reverse-proxy" target="_blank" rel="noopener">官方文档</a></p>
 <h3 id="后台管理"><a href="#后台管理" class="headerlink" title="后台管理"></a>后台管理</h3><ul>
-<li><p>地址账户<br>地址    ：端口和context 参照 你自己配置的 <code>$NEXUS_HOME/conf/nexus.properties</code><br>初始账户 ：<code>admin</code><br>初始密码 ：<code>admin123</code></p>
+<li><p>地址账户<br>地址    ：端口和context 参照 你自己配置的 <code>$data-dir/etc/nexus.properties</code><br>初始账户 ：<code>admin</code><br>初始密码 ：参考 /opt/sonatype-work/nexus3/admin.password</p>
 </li>
 <li><p>Repository<br><a href="/2015/10/15/devEnv/nexus/restlet/">参照</a></p>
 </li>
@@ -364,7 +360,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载"><span class="nav-number">1.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置和管理"><span class="nav-number">2.</span> <span class="nav-text">配置和管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后台管理"><span class="nav-number">3.1.</span> <span class="nav-text">后台管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">3.2.</span> <span class="nav-text">客户端</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载"><span class="nav-number">1.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置和管理"><span class="nav-number">2.</span> <span class="nav-text">配置和管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反向代理"><span class="nav-number">3.</span> <span class="nav-text">反向代理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后台管理"><span class="nav-number">3.1.</span> <span class="nav-text">后台管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端"><span class="nav-number">3.2.</span> <span class="nav-text">客户端</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

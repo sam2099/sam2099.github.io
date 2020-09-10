@@ -46,18 +46,18 @@
   };
 </script>
 
-  <meta name="description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。">
+  <meta name="description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。 更新历史2020-9-10 Ventoy 致敬老师">
 <meta name="keywords" content="linux,usb,grub,BIOS,UEFI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="U盘引导多个linux镜像">
 <meta property="og:url" content="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/index.html">
 <meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
-<meta property="og:description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。">
+<meta property="og:description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。 更新历史2020-9-10 Ventoy 致敬老师">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-07-06T02:17:43.990Z">
+<meta property="og:updated_time" content="2020-09-10T02:51:38.742Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="U盘引导多个linux镜像">
-<meta name="twitter:description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。">
+<meta name="twitter:description" content="主要内容 一个U盘在手，走遍天下都不怕。关键就是这个U盘，它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。 话说我一个开发，怎么会研究这个玩意。 更新历史2020-9-10 Ventoy 致敬老师">
 
 <link rel="canonical" href="http://giveme5.cc/2017/06/27/linux/linuxUsbGrub/">
 
@@ -218,7 +218,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2017-07-06 10:17:43" itemprop="dateModified" datetime="2017-07-06T10:17:43+08:00">2017-07-06</time>
+                <time title="修改时间：2020-09-10 10:51:38" itemprop="dateModified" datetime="2020-09-10T10:51:38+08:00">2020-09-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,6 +260,7 @@
         <p><strong><em>主要内容</em></strong></p>
 <p>一个U盘在手，走遍天下都不怕。<br>关键就是这个U盘，<br>它引导多个linux镜像安装,同时支持BIOS和UEFI模式 。不需要安装系统时就是一个普通U 盘。</p>
 <p>话说我一个开发，怎么会研究这个玩意。</p>
+<p><em>更新历史</em><br>2020-9-10 Ventoy 致敬老师</p>
 <a id="more"></a>
 <h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><ul>
 <li><p>U盘<br>最好16G以上，不然装不了几个系统的。</p>
@@ -284,6 +285,7 @@
 <h2 id="美化"><a href="#美化" class="headerlink" title="美化"></a>美化</h2><p> 美化启动<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对应的把下面的/dev/sdb1替换成你的U盘的ESP分区</span></span><br><span class="line">sudo mount /dev/sdb1 /mnt/  -o uid=<span class="variable">$USER</span>,gid=<span class="variable">$USER</span>,utf8=1</span><br><span class="line">cp -R themes/ /mnt/boot/grub2/</span><br></pre></td></tr></table></figure></p>
 <p><code>themes</code> 请参考 <a href="http://git.oschina.net/abcfy2/grub-cfg" target="_blank" rel="noopener">Feng_Yu的</a></p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://wiki.archlinux.org/index.php/Multiboot_USB_drive" target="_blank" rel="noopener">Multiboot USB drive</a></p>
+<h2 id="Ventoy"><a href="#Ventoy" class="headerlink" title="Ventoy"></a>Ventoy</h2><p>好了，现成的来了<br><a href="https://www.ventoy.net/cn/doc_disk_layout.html" target="_blank" rel="noopener">Ventoy</a></p>
 
     </div>
 
@@ -357,7 +359,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化U盘"><span class="nav-number">2.</span> <span class="nav-text">格式化U盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘格式化为GPT分区"><span class="nav-number">2.1.</span> <span class="nav-text">U盘格式化为GPT分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分区"><span class="nav-number">2.1.1.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bios-grub"><span class="nav-number">2.1.2.</span> <span class="nav-text">bios_grub</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装grub到U盘"><span class="nav-number">3.</span> <span class="nav-text">安装grub到U盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加grub菜单"><span class="nav-number">4.</span> <span class="nav-text">添加grub菜单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#美化"><span class="nav-number">5.</span> <span class="nav-text">美化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期准备"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式化U盘"><span class="nav-number">2.</span> <span class="nav-text">格式化U盘</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘格式化为GPT分区"><span class="nav-number">2.1.</span> <span class="nav-text">U盘格式化为GPT分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分区"><span class="nav-number">2.1.1.</span> <span class="nav-text">分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#bios-grub"><span class="nav-number">2.1.2.</span> <span class="nav-text">bios_grub</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装grub到U盘"><span class="nav-number">3.</span> <span class="nav-text">安装grub到U盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加grub菜单"><span class="nav-number">4.</span> <span class="nav-text">添加grub菜单</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#美化"><span class="nav-number">5.</span> <span class="nav-text">美化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ventoy"><span class="nav-number">7.</span> <span class="nav-text">Ventoy</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

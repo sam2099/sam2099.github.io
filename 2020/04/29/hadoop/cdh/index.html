@@ -66,7 +66,7 @@
 <meta property="og:image" content="http://giveme5.cc/images/hadoop/cm10.png">
 <meta property="og:image" content="http://giveme5.cc/images/hadoop/cm11.png">
 <meta property="og:image" content="http://giveme5.cc/images/hadoop/cm12.png">
-<meta property="og:updated_time" content="2020-07-25T03:48:37.359Z">
+<meta property="og:updated_time" content="2020-07-27T01:03:58.603Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cloudera">
 <meta name="twitter:description" content="主要内容  CM 安装 CDH 安装  CDH  Cloudera’s Distribution, including Apache Hadoop。 Cloudera 公司出品。拥有集群自动化安装、中心化管理、集群监控、报警功能的一个工具（软件），使得集群的安装可以从几天的时间缩短为几个小时，运维人数也会从数十人降低到几个人，极大的提高了集群管理的效率。">
@@ -231,7 +231,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-25 11:48:37" itemprop="dateModified" datetime="2020-07-25T11:48:37+08:00">2020-07-25</time>
+                <time title="修改时间：2020-07-27 09:03:58" itemprop="dateModified" datetime="2020-07-27T09:03:58+08:00">2020-07-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -345,7 +345,7 @@ CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256
 <li>检查 /etc/hosts</li>
 <li>重启agent<br><code>systemctl restart cloudera-scm-agent</code></li>
 </ul>
-<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Configurator not found</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置 cm_guid</span></span><br><span class="line">rm /var/lib/cloudera-scm-agent/cm_guid</span><br><span class="line">systemctl restart cloudera-scm-agent.service</span><br></pre></td></tr></table></figure>
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Configurator not found</span><br><span class="line"></span><br><span class="line">or</span><br><span class="line"></span><br><span class="line">slave1: Host with invalid Cloudera Manager GUID is detected</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置 cm_guid</span></span><br><span class="line">rm /var/lib/cloudera-scm-agent/cm_guid</span><br><span class="line">systemctl restart cloudera-scm-agent.service</span><br></pre></td></tr></table></figure>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://segmentfault.com/a/1190000020188183?utm_source=tag-newest" target="_blank" rel="noopener">CDH离线搭建</a></p>
 
     </div>
