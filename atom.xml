@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://giveme5.cc/"/>
-  <updated>2020-05-07T02:37:18.758Z</updated>
+  <updated>2020-09-22T01:14:27.265Z</updated>
   <id>http://giveme5.cc/</id>
   
   <author>
@@ -14,6 +14,147 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>DDD</title>
+    <link href="http://giveme5.cc/2020/09/21/ddd/ddd/"/>
+    <id>http://giveme5.cc/2020/09/21/ddd/ddd/</id>
+    <published>2020-09-21T13:32:24.000Z</published>
+    <updated>2020-09-22T01:14:27.265Z</updated>
+    
+    <content type="html"><![CDATA[<p>主要内容</p>
+<ul>
+<li>DDD基础理论</li>
+<li>代码结构</li>
+</ul>
+<hr>
+<a id="more"></a>
+<h2 id="DDD基础理论"><a href="#DDD基础理论" class="headerlink" title="DDD基础理论"></a>DDD基础理论</h2><p>领域驱动设计</p>
+<p>参考书籍：</p>
+<p><code>领域驱动设计精粹</code></p>
+<p><code>领域驱动设计与模式实战</code></p>
+<h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><ul>
+<li>SRP(Single responsibility principle)：单一职责原则，一个module只有一个原因修改</li>
+<li>OCP(Open/closed principle)：开放-关闭原则，开放扩展，关闭修改</li>
+<li>LSP(Liskov substitution principle)：里氏替换原则，子类型必须能够替换它们的基类型</li>
+<li>ISP(Interface segregation principle)：接口隔离原则，你所依赖的必须是真正使用到的</li>
+<li>DIP(Dependency inversion principle)：依赖导致原则，依赖接口而不是实现（高层不需要知道底层的实现）</li>
+</ul>
+<h2 id="模型演化"><a href="#模型演化" class="headerlink" title="模型演化"></a>模型演化</h2><ul>
+<li>分层架构<br>系统按不同职责组织成有序层次，由于这种划分往往比较容易界定，也算是最常见和最受欢迎的一种架构，有一个说法是：“如果你不知道要用什么架构，那就用它。</li>
+</ul>
+<p>MVC</p>
+<p>缺点：</p>
+<pre><code>+ 底层是基础设施层， 领域层依赖于基础设施层
+</code></pre><ul>
+<li>依赖倒置</li>
+</ul>
+<p>依赖倒置的原则（DIP）由Robert C. Martin ：</p>
+<pre><code>高层模块不应该依赖于底层模块，两者都应该依赖于抽象
+抽象不应该依赖于实现细节，实现细节应该依赖于接口
+</code></pre><p><img src="/images/ddd/di.jpeg" alt></p>
+<p>事实上已经没有分层概念了。无论高层还是底层，实际只依赖于抽象，整个分层好像被推平了。</p>
+<ul>
+<li>六边形架构/整洁架构</li>
+</ul>
+<p><img src="/images/ddd/6bian.jpeg" alt="六边形架构/整洁架构"></p>
+<p>也是一种分层架构，只不过不是上下或左右，而是变成了内部和外部。<br>从外环到内环，软件的层级逐渐升高。<br>外环（low level）依赖内环（high level）。</p>
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><p><img src="/images/ddd/cengci.png" alt="代码"></p>
+<p><a href="http://git.xianzhongwang.cn:7001/quyu/homedoctor/homedoctor-ddd" target="_blank" rel="noopener">代码实例</a> </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">DDD</span><br><span class="line">├── adapter</span><br><span class="line">│     └── 输出适配器</span><br><span class="line">├── api</span><br><span class="line">│     └── 输入适配器</span><br><span class="line">├── application</span><br><span class="line">│     └── 应用层</span><br><span class="line">├── domain 领域层</span><br><span class="line">│     ├── model</span><br><span class="line">│     │     └── 领域模型层</span><br><span class="line">│     └── service</span><br><span class="line">│         └── 领域服务层</span><br></pre></td></tr></table></figure>
+<h3 id="adapter-输出适配器"><a href="#adapter-输出适配器" class="headerlink" title="adapter 输出适配器"></a>adapter 输出适配器</h3><p>系统内部，具体技术实现；<br>仓库，文档，缓存，消息机制，领域事件发布/监听；</p>
+<p>一般如下类型：</p>
+<ul>
+<li>persist</li>
+<li>message</li>
+<li>eventListener</li>
+</ul>
+<h3 id="api-输入适配器"><a href="#api-输入适配器" class="headerlink" title="api 输入适配器"></a>api 输入适配器</h3><ul>
+<li>对外接口，传统 <code>controller</code> <code>API</code> 层, 程序入口，客户端调用；</li>
+</ul>
+<p>一般如下类型：</p>
+<ul>
+<li>controller</li>
+</ul>
+<h3 id="application-应用层"><a href="#application-应用层" class="headerlink" title="application 应用层"></a>application 应用层</h3><p>应用服务，传统 <code>service</code> 层, 一般跟场景（用例）有关。</p>
+<p>一般如下类型：</p>
+<ul>
+<li>handler/service  </li>
+<li>command 场景 POJO</li>
+</ul>
+<p>一个场景（用例），对应一个command，对应一个handler</p>
+<h3 id="domain-领域层"><a href="#domain-领域层" class="headerlink" title="domain 领域层"></a>domain 领域层</h3><p>一般如下类型：</p>
+<ul>
+<li>model 领域模型</li>
+<li>service 领域服务</li>
+<li>factory/builder 工厂<br>复杂对象构建， 比如 主键ID使用snow或美团leaf</li>
+</ul>
+<h4 id="model-领域模型层"><a href="#model-领域模型层" class="headerlink" title="model 领域模型层"></a>model 领域模型层</h4><p>一般如下类型：</p>
+<ul>
+<li>entity</li>
+<li>repository</li>
+<li>event</li>
+<li>值对象</li>
+</ul>
+<h4 id="service-领域服务层"><a href="#service-领域服务层" class="headerlink" title="service 领域服务层"></a>service 领域服务层</h4><ul>
+<li>协调多个聚合，并且是领域逻辑,不放在应用服务层， 放在领域服务层</li>
+<li>算法，策略，保持实体和值对象的单一原则，可以提炼出来变成领域服务</li>
+<li>访问数据库等外部资源</li>
+</ul>
+<h2 id="方寸之间"><a href="#方寸之间" class="headerlink" title="方寸之间"></a>方寸之间</h2><h3 id="领域服务"><a href="#领域服务" class="headerlink" title="领域服务"></a>领域服务</h3><ul>
+<li><p>当领域遜辑放某-一个聚合里不合适，需要协调多个聚合，但由于是领域逻辑，放在应用服务里不合适的时候，可以放到领域服务里;</p>
+</li>
+<li><p>需要访问数据库等外部资源的业务逻辑，不建议聚合里，可以放到领域服务里</p>
+</li>
+<li><p>有些算法、策略代码，为了保持实体和值对象的职责单- - ，可以提炼出来变成领域服务( 领域服务类的命名不-定都要以Service结尾)</p>
+</li>
+<li><p>不涉及事务处理</p>
+</li>
+</ul>
+<h3 id="富领域模型双刃剑"><a href="#富领域模型双刃剑" class="headerlink" title="富领域模型双刃剑"></a>富领域模型双刃剑</h3><ul>
+<li>好处</li>
+</ul>
+<p>分开对待本质复杂度和偶然复杂度，核心业务逻辑被封装在领域对象里，内聚，容易保持一致性， 且容易维护和扩展。</p>
+<p>此外，容易测试，且代码和测试都可以作为文档。</p>
+<ul>
+<li>坏处</li>
+</ul>
+<p>对象引用多， 内存占用大， 影响吞吐量</p>
+<h3 id="通过聚合在贫富间取得平衡"><a href="#通过聚合在贫富间取得平衡" class="headerlink" title="通过聚合在贫富间取得平衡"></a>通过聚合在贫富间取得平衡</h3><p>聚合是一组相关领域模型的集合,是用来封装业务的不变性。同时强迫大家尽可能的简化领域模型之间的关联关系。在贫富之间寻找平衡。</p>
+<p>聚合的主要原则包括:</p>
+<ul>
+<li><p>聚合是-致性边界，聚合根负责执行业务规则，改变边界内的任一对象的状态都不能违反整个聚合的所有业务规则;</p>
+</li>
+<li><p>聚合根有全局标识，聚合边界内的其他实体只有局部标识，聚合边界外的对象，只能持有聚合根的<code>标识</code>，<code>不能引用聚合根对象</code>，也不能持有聚合内部对象或标识</p>
+</li>
+<li><p>聚合具有整体的生命周期，删除聚合根，聚合内的所有对象都需要删除 </p>
+</li>
+<li><p>只有聚合根能从持久化系统内查询得到，边界内的对象只能从聚合根导航访问</p>
+</li>
+</ul>
+<h3 id="聚合根和数据一致性"><a href="#聚合根和数据一致性" class="headerlink" title="聚合根和数据一致性"></a>聚合根和数据一致性</h3><p>应用服务作为事务一致性边界，一个事务里不能涉及到两个聚合的修改，跨聚合的数据应该使用最终一致。</p>
+<p>但最终一致性成本很高。</p>
+<p>实例代码中，基于内存实现同步的领域事件发布和订阅。这样，实际上两个聚合根的更改基于同一个本地数据库事务。</p>
+<p>但由于使用了事件驱动，在代码层面，两个聚合根的更新是解耦的，在需要最终一致性的时候容易重构。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;主要内容&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DDD基础理论&lt;/li&gt;
+&lt;li&gt;代码结构&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+    
+    </summary>
+    
+      <category term="ddd" scheme="http://giveme5.cc/categories/ddd/"/>
+    
+    
+      <category term="ddd" scheme="http://giveme5.cc/tags/ddd/"/>
+    
+  </entry>
   
   <entry>
     <title>spark集群初体验</title>
@@ -1320,9 +1461,9 @@ Z  boolean
       <category term="server" scheme="http://giveme5.cc/categories/server/"/>
     
     
-      <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
-    
       <category term="server" scheme="http://giveme5.cc/tags/server/"/>
+    
+      <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
     
       <category term="keepalived" scheme="http://giveme5.cc/tags/keepalived/"/>
     
@@ -1654,219 +1795,6 @@ table th:nth-of-type(2) {
       <category term="FunctionalInterface" scheme="http://giveme5.cc/tags/FunctionalInterface/"/>
     
       <category term="内置函数式接口" scheme="http://giveme5.cc/tags/%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E5%BC%8F%E6%8E%A5%E5%8F%A3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>spring aop 面向切面编程</title>
-    <link href="http://giveme5.cc/2017/10/13/spring/spring%20aop/"/>
-    <id>http://giveme5.cc/2017/10/13/spring/spring aop/</id>
-    <published>2017-10-13T11:44:58.000Z</published>
-    <updated>2018-04-18T07:49:28.188Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>spring aop 面向切面编程; 主要探索Spring框架对面向切面编程的支持，包括如何定义需要被切面(aspect)覆盖的类，如何使用注解创建切面。</p>
-<ul>
-<li>AOP基本知识</li>
-<li>spring AOP</li>
-</ul>
-<p><em>更新历史</em><br>无</p>
-<a id="more"></a>
-<hr>
-<h2 id="AOP基本知识"><a href="#AOP基本知识" class="headerlink" title="AOP基本知识"></a>AOP基本知识</h2><p>面向切面编程(AOP)模块化的单元则是切面。切面能对交叉关注点进行模块化，简单来说，交叉关注点值得是那些影响一个应用中多个模块的通用功能。</p>
-<p><img src="/images/aop1.png" alt></p>
-<p>把交叉关注点模块化到某个特定的类，这个类就称为切面(aspects)，这有两个优点：<br>关注点分离，而不是与业务逻辑代码混合在一起；<br>业务模块更加清晰，因为它们只需要关注业务逻辑部分；</p>
-<h2 id="AOP-术语"><a href="#AOP-术语" class="headerlink" title="AOP 术语"></a>AOP 术语</h2><ul>
-<li>切面(Aspect)</li>
-<li>连接点(Joinpoint)</li>
-<li>切入点(Pointcut)</li>
-<li>引入(Introduction)</li>
-<li>目标对象(Target Object)</li>
-<li>AOP代理(AOP Proxy)</li>
-<li>织入(Weaving)</li>
-<li>通知(Advice)</li>
-</ul>
-<h3 id="切面-Aspect"><a href="#切面-Aspect" class="headerlink" title="切面(Aspect)"></a>切面(Aspect)</h3><p>一个关注点的模块化，这个关注点可能会横切多个对象。通常由 通知(advice)、切点(pointcuts)和连接点(join points)组成；<br>事务管理是J2EE应用中一个关于横切关注点的很好的例子。在Spring AOP中，切面可以使用基于模式)或者基于@Aspect注解的方式来实现。<br><img src="/images/aop2.png" alt></p>
-<blockquote>
-<blockquote>
-<p>切面的功能(advice)通过一个或者多个连接点织入到应用的执行流程</p>
-</blockquote>
-</blockquote>
-<h3 id="连接点-Joinpoint"><a href="#连接点-Joinpoint" class="headerlink" title="连接点(Joinpoint)"></a>连接点(Joinpoint)</h3><p>在程序执行过程中某个特定的点，可能是正在调用的方法、正在抛出的异常或者是正在被修改的属性, 比如某方法调用的时候或者处理异常的时候。<br>在Spring AOP中，一个连接点总是表示一个方法的执行。<br>通常是业务代码中的概念， 不在切面(Aspect)代码中体现。理论上可以做为切入点的集合。</p>
-<h3 id="切入点-Pointcut"><a href="#切入点-Pointcut" class="headerlink" title="切入点(Pointcut)"></a>切入点(Pointcut)</h3><p>匹配连接点的断言， 逻辑上是连接点的子集，就是当前切面(Aspect)所关心/处理的连接点。<br>在切面(Aspect)代码中通过 <code>@Pointcut</code> 定义。</p>
-<h3 id="通知-Advice"><a href="#通知-Advice" class="headerlink" title="通知(Advice)"></a>通知(Advice)</h3><p>在切面的某个特定的切入点上执行的动作， 就是切面的真正目的——它真正要做的工作。</p>
-<p>通知类型：</p>
-<ul>
-<li>前置通知(Before advice)：在某连接点之前执行的通知</li>
-<li>后置通知(After returning advice)：在某连接点正常完成后执行的通知</li>
-<li>异常通知(After throwing advice)：在方法抛出异常退出时执行的通知</li>
-<li>最终通知(After (finally) advice)当某连接点退出的时候执行的通知(不论是正常返回还是异常退出)</li>
-<li>环绕通知(Around Advice)：包围一个连接点的通知，如方法调用。这是最强大的一种通知类型。环绕通知可以在方法调用前后完成自定义的行为。它也会选择是否继续执行连接点或直接返回它自己的返回值或抛出异常来结束执行。</li>
-</ul>
-<h3 id="引入-Introduction"><a href="#引入-Introduction" class="headerlink" title="引入(Introduction)"></a>引入(Introduction)</h3><p>用来给一个类型声明额外的方法或属性(也被称为连接类型声明(inter-type declaration))。Spring允许引入新的接口(以及一个对应的实现)到任何被代理的对象。例如，你可以使用引入来使一个bean实现IsModified接口，以便简化缓存机制。</p>
-<h3 id="目标对象-Target-Object"><a href="#目标对象-Target-Object" class="headerlink" title="目标对象(Target Object)"></a>目标对象(Target Object)</h3><p>被一个或者多个切面所通知的对象。也被称做被通知(advised)对象。 既然Spring AOP是通过运行时代理实现的，这个对象永远是一个被代理(proxied)对象。</p>
-<h3 id="AOP代理-AOP-Proxy"><a href="#AOP代理-AOP-Proxy" class="headerlink" title="AOP代理(AOP Proxy)"></a>AOP代理(AOP Proxy)</h3><p>AOP框架创建的对象，用来实现切面契约(例如通知方法执行等等)。在Spring中，AOP代理可以是JDK动态代理或者CGLIB代理。</p>
-<h3 id="织入-Weaving"><a href="#织入-Weaving" class="headerlink" title="织入(Weaving)"></a>织入(Weaving)</h3><p>把切面连接到其它的应用程序类型或者对象上，并创建一个被通知的对象。这些可以在编译时(例如使用AspectJ编译器)，类加载时和运行时完成。Spring和其他纯Java AOP框架一样，在运行时完成织入。</p>
-<h2 id="Spring-的AOP支持"><a href="#Spring-的AOP支持" class="headerlink" title="Spring 的AOP支持"></a>Spring 的AOP支持</h2><p>Spring对AOP的支持来自以下四种形式：</p>
-<ul>
-<li>基于代理的Spring AOP</li>
-<li>Pure-POJO aspects</li>
-<li>基于@AspectJ注解的aspects</li>
-<li>注入AspectJ aspects(所有版本的Spring都支持)</li>
-</ul>
-<p>前三种属于Spring自己的AOP实现：Spring AOP基于动态代理机制构建，也正是因为这个原因，Spring AOP仅仅支持函数调用级别的拦截。</p>
-<h3 id="启用-AspectJ支持"><a href="#启用-AspectJ支持" class="headerlink" title="启用@AspectJ支持"></a>启用@AspectJ支持</h3><p>java config： <code>@EnableAspectJAutoProxy</code><br>或<br>xml config： <code>&lt;aop:aspectj-autoproxy /&gt;</code></p>
-<h3 id="完整-经典-切面"><a href="#完整-经典-切面" class="headerlink" title="完整(经典)切面"></a>完整(经典)切面</h3><p>一个 完整(经典)切面 通常 由 切面， 切入点， 通知 3部分组成。</p>
-<h4 id="切面-Aspect-1"><a href="#切面-Aspect-1" class="headerlink" title="切面 @Aspect"></a>切面 <code>@Aspect</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Aspect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="切入点-pointcut-Pointcut"><a href="#切入点-pointcut-Pointcut" class="headerlink" title="切入点(pointcut) @Pointcut"></a>切入点(pointcut) <code>@Pointcut</code></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Pointcut</span>(value=<span class="string">"execution(* transfer(..)) &amp;&amp; args(param)"</span>, argNames = <span class="string">"param"</span>)<span class="comment">// the pointcut expression</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">pointcutName</span><span class="params">()</span> </span>&#123;&#125;<span class="comment">// the pointcut signature</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>value</code> : 指定切入点表达式, 如execution、args等</li>
-<li><code>argNames</code> : 指定该切入点方法参数列表,多个用,分隔,这些参数将传递给通知方法同名的参数;</li>
-<li><code>pointcutName</code> : 切入点名字，可以用该名字引用该切入点表达式</li>
-</ul>
-<p>切入点指示符(PCD)</p>
-<style>
-table th:first-of-type {
-    width: 20%;
-}
-</style>
-
-<table>
-<thead>
-<tr>
-<th style="text-align:center">切入点指示符</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">execution</td>
-<td style="text-align:left">匹配方法，这是你将会用到的Spring的最主要的切入点指示符。</td>
-</tr>
-<tr>
-<td style="text-align:center">within</td>
-<td style="text-align:left">匹配特定类型之内的全部方法</td>
-</tr>
-<tr>
-<td style="text-align:center">target</td>
-<td style="text-align:left">用于匹配当前目标对象类型的连接点,不包括接口。</td>
-</tr>
-<tr>
-<td style="text-align:center">args</td>
-<td style="text-align:left">用于匹配当前执行的方法传入的参数为指定类型的连接点</td>
-</tr>
-<tr>
-<td style="text-align:center">this</td>
-<td style="text-align:left">用于匹配当前AOP代理对象类型的连接点,包括接口</td>
-</tr>
-<tr>
-<td style="text-align:center">@annotation</td>
-<td style="text-align:left">匹配持有指定注解的方法(注解在方法上)。</td>
-</tr>
-<tr>
-<td style="text-align:center">@within</td>
-<td style="text-align:left">匹配持有指定注解的类型里面的所有方法(注解在类上)</td>
-</tr>
-<tr>
-<td style="text-align:center">@target</td>
-<td style="text-align:left">用于匹配当前目标对象类型的连接点，其中目标对象持有指定的注解</td>
-</tr>
-<tr>
-<td style="text-align:center">@args</td>
-<td style="text-align:left">匹配当前执行的方法传入的参数持有指定的注解</td>
-</tr>
-</tbody>
-</table>
-<h4 id="声明通知"><a href="#声明通知" class="headerlink" title="声明通知"></a>声明通知</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Before</span>(value = <span class="string">"切入点表达式或命名切入点"</span>, argNames = <span class="string">"参数列表参数名"</span>)</span><br><span class="line"><span class="meta">@After</span>(value  = <span class="string">"切入点表达式或命名切入点"</span>, argNames = <span class="string">"参数列表参数名"</span>)</span><br><span class="line"><span class="meta">@Around</span>(value = <span class="string">"切入点表达式或命名切入点"</span>, argNames = <span class="string">"参数列表参数名"</span>)</span><br><span class="line"><span class="meta">@AfterReturning</span>(</span><br><span class="line">value = <span class="string">"切入点表达式或命名切入点"</span>,</span><br><span class="line">pointcut = <span class="string">"切入点表达式或命名切入点"</span>, <span class="comment">// 如果指定了将覆盖value属性指定的，pointcut具有高优先级</span></span><br><span class="line">argNames = <span class="string">"参数列表参数名"</span>,</span><br><span class="line">returning = <span class="string">"返回值对应参数名"</span>)</span><br><span class="line"><span class="meta">@AfterThrowing</span>(</span><br><span class="line">value = <span class="string">"切入点表达式或命名切入点"</span>,</span><br><span class="line">pointcut = <span class="string">"切入点表达式或命名切入点"</span>,</span><br><span class="line">argNames = <span class="string">"参数列表参数名"</span>,</span><br><span class="line">throwing = <span class="string">"异常对应参数名"</span>)</span><br></pre></td></tr></table></figure>
-<p>如果在同一个连接点上执行多个通知,可以使用<code>@Order</code>注解决定其执行顺序</p>
-<ul>
-<li><p>前置通知 <code>@Before</code><br>声明前置通知</p>
-</li>
-<li><p>后置通知 <code>@AfterReturning</code><br>在一个匹配的方法返回的时候执行</p>
-<p>  通知体内得到返回的值</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.AfterReturning;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AfterReturningExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="meta">@AfterReturning</span>(</span><br><span class="line">    pointcut=<span class="string">"com.xyz.myapp.SystemArchitecture.dataAccessOperation()"</span>,</span><br><span class="line">    returning=<span class="string">"retVal"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doAccessCheck</span><span class="params">(Object retVal)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>异常通知 <code>@AfterThrowing</code><br>只在某种特殊的异常被抛出的时候匹配<br>还可以将抛出的异常绑定到通知的一个参数上</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.AfterThrowing;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AfterThrowingExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@AfterThrowing</span>(</span><br><span class="line">    pointcut=<span class="string">"com.xyz.myapp.SystemArchitecture.dataAccessOperation()"</span>,</span><br><span class="line">    throwing=<span class="string">"ex"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doRecoveryActions</span><span class="params">(DataAccessException ex)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>最终通知  <code>@After</code> 不论一个方法是如何结束的，最终通知都会运行。<br>最终通知必须准备处理正常返回和异常返回两种情况。通常用它来释放资源。</p>
-</li>
-<li><p>环绕通知 <code>@Around</code><br>环绕通知在一个方法执行之前和之后执行。<br>通知的第一个参数必须是 ProceedingJoinPoint类型。在通知体内，调用 ProceedingJoinPoint的proceed()方法会导致 后台的连接点方法执行。proceed 方法也可能会被调用并且传入一个 Object[]对象-该数组中的值将被作为方法执行时的参数。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Around;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.ProceedingJoinPoint;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AroundExample</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Around</span>(<span class="string">"com.xyz.myapp.SystemArchitecture.businessService()"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> Object <span class="title">doBasicProfiling</span><span class="params">(ProceedingJoinPoint pjp)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">    <span class="comment">// start stopwatch</span></span><br><span class="line">    Object retVal = pjp.proceed();</span><br><span class="line">    <span class="comment">// stop stopwatch</span></span><br><span class="line">    <span class="keyword">return</span> retVal;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h4 id="通知参数-Advice-parameters"><a href="#通知参数-Advice-parameters" class="headerlink" title="通知参数(Advice parameters)"></a>通知参数(Advice parameters)</h4><p>可以在通知签名中声明所需的参数.</p>
-<p>如果第一个参数是JoinPoint， ProceedingJoinPoint， 或者JoinPoint.StaticPart类型， 你可以在“argNames”属性的值中省去参数的名字,Spring会自动传入。<br>其他使用 额外的”argNames”属性指定的参数名。<br>如下 参数 <code>trackNumber</code>, <code>jp</code> 都可以使用。</p>
-<h4 id="完整切面例子"><a href="#完整切面例子" class="headerlink" title="完整切面例子"></a>完整切面例子</h4><p>上面章节分别说明了切面，切入点，通知， 下面结合整体例子说明， 注意 1,2,3 点。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Aspect;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Before;</span><br><span class="line"><span class="keyword">import</span> org.aspectj.lang.annotation.Pointcut;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;<span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Aspect</span> <span class="comment">//1. 切面</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrackCounter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, Integer&gt; trackCounts = <span class="keyword">new</span> HashMap&lt;Integer, Integer&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Pointcut</span>( <span class="comment">//2. 切入点</span></span><br><span class="line">            <span class="string">"execution(* com.spring.sample.soundsystem.CompactDisc.playTrack( .. )) "</span> +</span><br><span class="line">            <span class="string">"&amp;&amp; args(trackNumber)"</span>)  </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trackPlayed</span><span class="params">(<span class="keyword">int</span> trackNumber)</span> </span>&#123;&#125; <span class="comment">//2.1 注意参数声明和上面切入点签名一致</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span>(<span class="string">"trackPlayed(trackNumber)"</span>)  <span class="comment">//3. 通知</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countTrack</span><span class="params">(JoinPoint jp, <span class="keyword">int</span> trackNumber)</span> </span>&#123;  <span class="comment">//3.1 注意参数声明和上面通知签名一致</span></span><br><span class="line">        <span class="keyword">int</span> currentCount = getPlayCount(trackNumber);</span><br><span class="line">        trackCounts.put(trackNumber, currentCount + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPlayCount</span><span class="params">(<span class="keyword">int</span> trackNumber)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> trackCounts.containsKey(trackNumber) ？ trackCounts.get(trackNumber) : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="引入-Introduction-1"><a href="#引入-Introduction-1" class="headerlink" title="引入(Introduction)"></a>引入(Introduction)</h2><p>在不修改原有类的基础上为该类添加新方法，即通过切面为Spring的beans增加新方法。<br>使用 <code>@DeclareParents</code> 注解</p>
-<p>假定现有一个来自Spring的接口 <code>SpringIntroduction</code>, 现在你需要给它增加 <code>Encode</code>功能，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Encode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">AopEncode</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>你暂时还不能修改Spring 的代码， 那你就可以使用Spring AOP。</p>
-<h3 id="introduced的默认实现"><a href="#introduced的默认实现" class="headerlink" title="introduced的默认实现"></a>introduced的默认实现</h3><p>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultEncode</span> <span class="keyword">implements</span> <span class="title">Encode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">aopEncode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Introduction the Encode!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="introduced-切面"><a href="#introduced-切面" class="headerlink" title="introduced 切面"></a>introduced 切面</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EncodeIntroducer</span> </span>&#123;</span><br><span class="line">    <span class="meta">@DeclareParents</span>(value = <span class="string">"io.spring.xxx.SpringIntroduction+"</span>,</span><br><span class="line">                    defaultImpl = DefaultEncode<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">static</span> <span class="title">Encode</span> <span class="title">encode</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过<code>@DeclareParents</code>注解将 Encode 接口引入到 SpringIntroduction 接口的实现中。</p>
-<p><code>@DeclareParents</code> 注解的组成包括三点：</p>
-<ul>
-<li>value属性用于匹配那些beans需要被引入这个新的接口。在这个例子中是所有SpringIntroduction的实现都被引入了新的接口（最后的那个+表示，所有SpringIntroduction的子类型，除了SpringIntroduction自己）。</li>
-<li>defaultImpl属性用于指定一个新引入的接口的实现，在这里我们提供了DefaultEncode类；</li>
-<li>引入的新接口被定义为public static的属性，这里引入了Encode接口</li>
-</ul>
-<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>junit 的使用例子</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration(loader = AnnotationConfigContextLoader.class)</span><br><span class="line">public class EncodeIntroducerTest &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private SpringIntroduction springIntroduction;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void testEncode() &#123;</span><br><span class="line">        Encode encode = (Encode) springIntroduction; //使用方法</span><br><span class="line">        Encode.aopEncode();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Bean</span><br><span class="line">    public EncodeIntroducer encodeIntroducer() &#123;</span><br><span class="line">        return  new EncodeIntroducer();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Configuration</span><br><span class="line">    @EnableAspectJAutoProxy</span><br><span class="line">    public static class EncdeIntroducerTest &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="附录-切入点表达式"><a href="#附录-切入点表达式" class="headerlink" title="附录 切入点表达式"></a>附录 切入点表达式</h2><h3 id="类型匹配语句"><a href="#类型匹配语句" class="headerlink" title="类型匹配语句"></a>类型匹配语句</h3><p>类型匹配语句格式像下面这样(带?的属于可选,可以不写):</p>
-<p>对类的匹配: 注解<code>?</code> 类的全限定名字<br>对方法的匹配: 注解<code>?</code> 修饰符<code>?</code> 返回值类型 类型声明<code>?</code> 方法名(参数列表) 异常列表<code>？</code></p>
-<h3 id="类型匹配的通配符"><a href="#类型匹配的通配符" class="headerlink" title="类型匹配的通配符"></a>类型匹配的通配符</h3><p><code>*</code> : 匹配任何数量字符；<br><code>..</code> :(两个点)匹配任何数量字符的重复;如在类型模式中匹配任何数量子包,而在方法参数模式中匹配任何数量参数<br><code>+</code> : 匹配指定类型的子类型,仅能作为后缀放在类型模式后边</p>
-<h3 id="切入点表达式-例"><a href="#切入点表达式-例" class="headerlink" title="切入点表达式 例"></a>切入点表达式 例</h3><p>AspectJ使用 与(&amp;&amp;)、或(||)、非(!)来组合切入点表达式, 在xml文件中可使用and、or、not</p>
-<ul>
-<li><p>任意公共方法的执行：<br><code>execution(public * *(..))</code></p>
-</li>
-<li><p>任何一个名字以“set”开始的方法的执行：<br><code>execution(* set*(..))</code></p>
-</li>
-<li><p>AccountService接口定义的任意方法的执行：<br><code>execution(* com.xyz.service.AccountService.*(..))</code></p>
-</li>
-<li><p>在service包中定义的任意方法的执行：<br><code>execution(* com.xyz.service.*.*(..))</code></p>
-</li>
-<li><p>在service包或其子包中定义的任意方法的执行：<br><code>execution(* com.xyz.service..*.*(..))</code></p>
-</li>
-<li><p>在service包中的任意连接点(在Spring AOP中只是方法执行)：<br><code>within(com.xyz.service.*)</code></p>
-</li>
-<li><p>在service包或其子包中的任意连接点(在Spring AOP中只是方法执行)：<br><code>within(com.xyz.service..*)</code></p>
-</li>
-<li><p>实现了AccountService接口的代理对象的任意连接点 (在Spring AOP中只是方法执行)：<br><code>this(com.xyz.service.AccountService)</code><br>‘this’在绑定表单中更加常用：- 请参见后面的通知一节中了解如何使得代理对象在通知体内可用。</p>
-</li>
-<li><p>实现AccountService接口的目标对象的任意连接点 (在Spring AOP中只是方法执行)：<br><code>target(com.xyz.service.AccountService)</code><br>‘target’在绑定表单中更加常用：- 请参见后面的通知一节中了解如何使得目标对象在通知体内可用。</p>
-</li>
-<li><p>任何一个只接受一个参数，并且运行时所传入的参数是Serializable 接口的连接点(在Spring AOP中只是方法执行)<br><code>args(java.io.Serializable)</code><br>‘args’在绑定表单中更加常用：- 请参见后面的通知一节中了解如何使得方法参数在通知体内可用。<br>请注意在例子中给出的切入点不同于 execution(<em> </em>(java.io.Serializable))： args版本只有在动态运行时候传入参数是Serializable时才匹配，而execution版本在方法签名中声明只有一个 Serializable类型的参数时候匹配。</p>
-</li>
-<li><p>目标对象中有一个 @Transactional 注解的任意连接点 (在Spring AOP中只是方法执行)<br><code>@target(org.springframework.transaction.annotation.Transactional)</code><br>‘@target’在绑定表单中更加常用：- 请参见后面的通知一节中了解如何使得注解对象在通知体内可用。</p>
-</li>
-<li><p>任何一个目标对象声明的类型有一个 @Transactional 注解的连接点 (在Spring AOP中只是方法执行)：<br><code>@within(org.springframework.transaction.annotation.Transactional)</code><br>‘@within’在绑定表单中更加常用：- 请参见后面的通知一节中了解如何使得注解对象在通知体内可用。</p>
-</li>
-<li><p>任何一个执行的方法有一个 @Transactional 注解的连接点 (在Spring AOP中只是方法执行)<br><code>@annotation(org.springframework.transaction.annotation.Transactional)</code><br>‘@annotation’在绑定表单中更加常用：- 请参见后面的通知一节中了解如何使得注解对象在通知体内可用。</p>
-</li>
-<li><p>任何一个只接受一个参数，并且运行时所传入的参数类型具有@Classified 注解的连接点(在Spring AOP中只是方法执行)<br><code>@args(com.xyz.security.Classified)</code><br><code>@args</code>在绑定表单中更加常用：- 请参见后面的通知一节中了解如何使得注解对象在通知体内可用。</p>
-</li>
-<li><p>任何一个在名为’tradeService’的Spring bean之上的连接点 (在Spring AOP中只是方法执行)：<br><code>bean(tradeService)</code><br>任何一个在名字匹配通配符表达式’<em>Service’的Spring bean之上的连接点 (在Spring AOP中只是方法执行)：<br>bean(</em>Service)</p>
-</li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;主要内容&quot;&gt;&lt;a href=&quot;#主要内容&quot; class=&quot;headerlink&quot; title=&quot;主要内容&quot;&gt;&lt;/a&gt;主要内容&lt;/h2&gt;&lt;p&gt;spring aop 面向切面编程; 主要探索Spring框架对面向切面编程的支持，包括如何定义需要被切面(aspect)覆盖的类，如何使用注解创建切面。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;AOP基本知识&lt;/li&gt;
-&lt;li&gt;spring AOP&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;更新历史&lt;/em&gt;&lt;br&gt;无&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="spring" scheme="http://giveme5.cc/categories/spring/"/>
-    
-    
-      <category term="spring" scheme="http://giveme5.cc/tags/spring/"/>
-    
-      <category term="aop" scheme="http://giveme5.cc/tags/aop/"/>
     
   </entry>
   

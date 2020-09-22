@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://giveme5.cc').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":"default"},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: true,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="主要内容  DDD基础理论 代码结构">
+<meta name="keywords" content="ddd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDD">
+<meta property="og:url" content="http://giveme5.cc/2020/09/21/ddd/ddd/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容  DDD基础理论 代码结构">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://giveme5.cc/images/ddd/di.jpeg">
+<meta property="og:image" content="http://giveme5.cc/images/ddd/6bian.jpeg">
+<meta property="og:image" content="http://giveme5.cc/images/ddd/cengci.png">
+<meta property="og:updated_time" content="2020-09-22T01:14:27.265Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="DDD">
+<meta name="twitter:description" content="主要内容  DDD基础理论 代码结构">
+<meta name="twitter:image" content="http://giveme5.cc/images/ddd/di.jpeg">
+
+<link rel="canonical" href="http://giveme5.cc/2020/09/21/ddd/ddd/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>DDD | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sam's Notes | Sam Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2020/09/21/ddd/ddd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.png">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes, sam's note, sam's blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DDD
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-09-21 21:32:24" itemprop="dateCreated datePublished" datetime="2020-09-21T21:32:24+08:00">2020-09-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-09-22 09:14:27" itemprop="dateModified" datetime="2020-09-22T09:14:27+08:00">2020-09-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ddd/" itemprop="url" rel="index">
+                    <span itemprop="name">ddd</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/09/21/ddd/ddd/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/21/ddd/ddd/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<ul>
+<li>DDD基础理论</li>
+<li>代码结构</li>
+</ul>
+<hr>
+<a id="more"></a>
+<h2 id="DDD基础理论"><a href="#DDD基础理论" class="headerlink" title="DDD基础理论"></a>DDD基础理论</h2><p>领域驱动设计</p>
+<p>参考书籍：</p>
+<p><code>领域驱动设计精粹</code></p>
+<p><code>领域驱动设计与模式实战</code></p>
+<h2 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h2><ul>
+<li>SRP(Single responsibility principle)：单一职责原则，一个module只有一个原因修改</li>
+<li>OCP(Open/closed principle)：开放-关闭原则，开放扩展，关闭修改</li>
+<li>LSP(Liskov substitution principle)：里氏替换原则，子类型必须能够替换它们的基类型</li>
+<li>ISP(Interface segregation principle)：接口隔离原则，你所依赖的必须是真正使用到的</li>
+<li>DIP(Dependency inversion principle)：依赖导致原则，依赖接口而不是实现（高层不需要知道底层的实现）</li>
+</ul>
+<h2 id="模型演化"><a href="#模型演化" class="headerlink" title="模型演化"></a>模型演化</h2><ul>
+<li>分层架构<br>系统按不同职责组织成有序层次，由于这种划分往往比较容易界定，也算是最常见和最受欢迎的一种架构，有一个说法是：“如果你不知道要用什么架构，那就用它。</li>
+</ul>
+<p>MVC</p>
+<p>缺点：</p>
+<pre><code>+ 底层是基础设施层， 领域层依赖于基础设施层
+</code></pre><ul>
+<li>依赖倒置</li>
+</ul>
+<p>依赖倒置的原则（DIP）由Robert C. Martin ：</p>
+<pre><code>高层模块不应该依赖于底层模块，两者都应该依赖于抽象
+抽象不应该依赖于实现细节，实现细节应该依赖于接口
+</code></pre><p><img src="/images/ddd/di.jpeg" alt></p>
+<p>事实上已经没有分层概念了。无论高层还是底层，实际只依赖于抽象，整个分层好像被推平了。</p>
+<ul>
+<li>六边形架构/整洁架构</li>
+</ul>
+<p><img src="/images/ddd/6bian.jpeg" alt="六边形架构/整洁架构"></p>
+<p>也是一种分层架构，只不过不是上下或左右，而是变成了内部和外部。<br>从外环到内环，软件的层级逐渐升高。<br>外环（low level）依赖内环（high level）。</p>
+<h2 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h2><p><img src="/images/ddd/cengci.png" alt="代码"></p>
+<p><a href="http://git.xianzhongwang.cn:7001/quyu/homedoctor/homedoctor-ddd" target="_blank" rel="noopener">代码实例</a> </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">DDD</span><br><span class="line">├── adapter</span><br><span class="line">│     └── 输出适配器</span><br><span class="line">├── api</span><br><span class="line">│     └── 输入适配器</span><br><span class="line">├── application</span><br><span class="line">│     └── 应用层</span><br><span class="line">├── domain 领域层</span><br><span class="line">│     ├── model</span><br><span class="line">│     │     └── 领域模型层</span><br><span class="line">│     └── service</span><br><span class="line">│         └── 领域服务层</span><br></pre></td></tr></table></figure>
+<h3 id="adapter-输出适配器"><a href="#adapter-输出适配器" class="headerlink" title="adapter 输出适配器"></a>adapter 输出适配器</h3><p>系统内部，具体技术实现；<br>仓库，文档，缓存，消息机制，领域事件发布/监听；</p>
+<p>一般如下类型：</p>
+<ul>
+<li>persist</li>
+<li>message</li>
+<li>eventListener</li>
+</ul>
+<h3 id="api-输入适配器"><a href="#api-输入适配器" class="headerlink" title="api 输入适配器"></a>api 输入适配器</h3><ul>
+<li>对外接口，传统 <code>controller</code> <code>API</code> 层, 程序入口，客户端调用；</li>
+</ul>
+<p>一般如下类型：</p>
+<ul>
+<li>controller</li>
+</ul>
+<h3 id="application-应用层"><a href="#application-应用层" class="headerlink" title="application 应用层"></a>application 应用层</h3><p>应用服务，传统 <code>service</code> 层, 一般跟场景（用例）有关。</p>
+<p>一般如下类型：</p>
+<ul>
+<li>handler/service  </li>
+<li>command 场景 POJO</li>
+</ul>
+<p>一个场景（用例），对应一个command，对应一个handler</p>
+<h3 id="domain-领域层"><a href="#domain-领域层" class="headerlink" title="domain 领域层"></a>domain 领域层</h3><p>一般如下类型：</p>
+<ul>
+<li>model 领域模型</li>
+<li>service 领域服务</li>
+<li>factory/builder 工厂<br>复杂对象构建， 比如 主键ID使用snow或美团leaf</li>
+</ul>
+<h4 id="model-领域模型层"><a href="#model-领域模型层" class="headerlink" title="model 领域模型层"></a>model 领域模型层</h4><p>一般如下类型：</p>
+<ul>
+<li>entity</li>
+<li>repository</li>
+<li>event</li>
+<li>值对象</li>
+</ul>
+<h4 id="service-领域服务层"><a href="#service-领域服务层" class="headerlink" title="service 领域服务层"></a>service 领域服务层</h4><ul>
+<li>协调多个聚合，并且是领域逻辑,不放在应用服务层， 放在领域服务层</li>
+<li>算法，策略，保持实体和值对象的单一原则，可以提炼出来变成领域服务</li>
+<li>访问数据库等外部资源</li>
+</ul>
+<h2 id="方寸之间"><a href="#方寸之间" class="headerlink" title="方寸之间"></a>方寸之间</h2><h3 id="领域服务"><a href="#领域服务" class="headerlink" title="领域服务"></a>领域服务</h3><ul>
+<li><p>当领域遜辑放某-一个聚合里不合适，需要协调多个聚合，但由于是领域逻辑，放在应用服务里不合适的时候，可以放到领域服务里;</p>
+</li>
+<li><p>需要访问数据库等外部资源的业务逻辑，不建议聚合里，可以放到领域服务里</p>
+</li>
+<li><p>有些算法、策略代码，为了保持实体和值对象的职责单- - ，可以提炼出来变成领域服务( 领域服务类的命名不-定都要以Service结尾)</p>
+</li>
+<li><p>不涉及事务处理</p>
+</li>
+</ul>
+<h3 id="富领域模型双刃剑"><a href="#富领域模型双刃剑" class="headerlink" title="富领域模型双刃剑"></a>富领域模型双刃剑</h3><ul>
+<li>好处</li>
+</ul>
+<p>分开对待本质复杂度和偶然复杂度，核心业务逻辑被封装在领域对象里，内聚，容易保持一致性， 且容易维护和扩展。</p>
+<p>此外，容易测试，且代码和测试都可以作为文档。</p>
+<ul>
+<li>坏处</li>
+</ul>
+<p>对象引用多， 内存占用大， 影响吞吐量</p>
+<h3 id="通过聚合在贫富间取得平衡"><a href="#通过聚合在贫富间取得平衡" class="headerlink" title="通过聚合在贫富间取得平衡"></a>通过聚合在贫富间取得平衡</h3><p>聚合是一组相关领域模型的集合,是用来封装业务的不变性。同时强迫大家尽可能的简化领域模型之间的关联关系。在贫富之间寻找平衡。</p>
+<p>聚合的主要原则包括:</p>
+<ul>
+<li><p>聚合是-致性边界，聚合根负责执行业务规则，改变边界内的任一对象的状态都不能违反整个聚合的所有业务规则;</p>
+</li>
+<li><p>聚合根有全局标识，聚合边界内的其他实体只有局部标识，聚合边界外的对象，只能持有聚合根的<code>标识</code>，<code>不能引用聚合根对象</code>，也不能持有聚合内部对象或标识</p>
+</li>
+<li><p>聚合具有整体的生命周期，删除聚合根，聚合内的所有对象都需要删除 </p>
+</li>
+<li><p>只有聚合根能从持久化系统内查询得到，边界内的对象只能从聚合根导航访问</p>
+</li>
+</ul>
+<h3 id="聚合根和数据一致性"><a href="#聚合根和数据一致性" class="headerlink" title="聚合根和数据一致性"></a>聚合根和数据一致性</h3><p>应用服务作为事务一致性边界，一个事务里不能涉及到两个聚合的修改，跨聚合的数据应该使用最终一致。</p>
+<p>但最终一致性成本很高。</p>
+<p>实例代码中，基于内存实现同步的领域事件发布和订阅。这样，实际上两个聚合根的更改基于同一个本地数据库事务。</p>
+<p>但由于使用了事件驱动，在代码层面，两个聚合根的更新是解耦的，在需要最终一致性的时候容易重构。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ddd/" rel="tag"># ddd</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/30/hadoop/spark集群初体验/" rel="prev" title="spark集群初体验">
+      <i class="fa fa-chevron-left"></i> spark集群初体验
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DDD基础理论"><span class="nav-number">1.</span> <span class="nav-text">DDD基础理论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计原则"><span class="nav-number">2.</span> <span class="nav-text">设计原则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型演化"><span class="nav-number">3.</span> <span class="nav-text">模型演化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码结构"><span class="nav-number">4.</span> <span class="nav-text">代码结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#adapter-输出适配器"><span class="nav-number">4.1.</span> <span class="nav-text">adapter 输出适配器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#api-输入适配器"><span class="nav-number">4.2.</span> <span class="nav-text">api 输入适配器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#application-应用层"><span class="nav-number">4.3.</span> <span class="nav-text">application 应用层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#domain-领域层"><span class="nav-number">4.4.</span> <span class="nav-text">domain 领域层</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#model-领域模型层"><span class="nav-number">4.4.1.</span> <span class="nav-text">model 领域模型层</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#service-领域服务层"><span class="nav-number">4.4.2.</span> <span class="nav-text">service 领域服务层</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方寸之间"><span class="nav-number">5.</span> <span class="nav-text">方寸之间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#领域服务"><span class="nav-number">5.1.</span> <span class="nav-text">领域服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#富领域模型双刃剑"><span class="nav-number">5.2.</span> <span class="nav-text">富领域模型双刃剑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过聚合在贫富间取得平衡"><span class="nav-number">5.3.</span> <span class="nav-text">通过聚合在贫富间取得平衡</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚合根和数据一致性"><span class="nav-number">5.4.</span> <span class="nav-text">聚合根和数据一致性</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="sam chen"
+      src="/images/logo.png">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes, sam's note, sam's blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">120</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">120</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://amadis.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: {page: {
+            url: "http://giveme5.cc/2020/09/21/ddd/ddd/",
+            identifier: "2020/09/21/ddd/ddd/",
+            title: "DDD"
+          }
+        }
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://amadis.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+</script>
+
+</body>
+</html>

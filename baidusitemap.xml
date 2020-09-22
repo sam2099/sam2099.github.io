@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2020/09/21/ddd/ddd/</loc>
+    <lastmod>2020-09-22T01:14:27.265Z</lastmod>
+    <data>
+        <display>
+        <title>DDD</title>
+        <pubTime>2020-09-21T13:32:24.000Z</pubTime>
+        
+        <tag>ddd</tag>
+         
+         
+           
+             
+              <breadCrumb title="ddd" url="http://giveme5.cc/categories/ddd/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2020/04/29/hadoop/cdh/</loc>
     <lastmod>2020-09-10T03:07:43.165Z</lastmod>
     <data>
@@ -197,9 +217,9 @@
         <title>nginx</title>
         <pubTime>2016-01-22T02:48:42.000Z</pubTime>
         
-        <tag>nginx</tag>
-         
         <tag>server</tag>
+         
+        <tag>nginx</tag>
          
          
            
@@ -579,9 +599,9 @@
         <title>keepalived + nginx 双活热备负载均衡</title>
         <pubTime>2018-02-27T02:48:42.000Z</pubTime>
         
-        <tag>nginx</tag>
-         
         <tag>server</tag>
+         
+        <tag>nginx</tag>
          
         <tag>keepalived</tag>
          
@@ -1081,11 +1101,11 @@
         
         <tag>tomcat</tag>
          
+        <tag>server</tag>
+         
         <tag>https</tag>
          
         <tag>nginx</tag>
-         
-        <tag>server</tag>
          
          
            
@@ -1153,11 +1173,11 @@
         
         <tag>linux</tag>
          
+        <tag>安全</tag>
+         
         <tag>firewalld</tag>
          
         <tag>防火墙</tag>
-         
-        <tag>安全</tag>
          
          
            
@@ -1656,6 +1676,24 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2016/03/02/other/searchEngine/</loc>
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    <data>
+        <display>
+        <title>搜索引擎技巧 搜索引擎指令 提高搜索效率</title>
+        <pubTime>2016-03-02T08:35:05.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2015/09/18/mq/activemq2/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
@@ -1669,24 +1707,6 @@
            
              
               <breadCrumb title="mq" url="http://giveme5.cc/categories/mq/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/03/02/other/searchEngine/</loc>
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    <data>
-        <display>
-        <title>搜索引擎技巧 搜索引擎指令 提高搜索效率</title>
-        <pubTime>2016-03-02T08:35:05.000Z</pubTime>
-        
-         
-           
-             
-              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
           
         </display>
     </data>
@@ -1734,27 +1754,6 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/11/17/linux/lamp/</loc>
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    <data>
-        <display>
-        <title>lamp</title>
-        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
-        
-        <tag>lamp</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-    
-  <url>
     <loc>http://giveme5.cc/2015/10/22/questions/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
@@ -1769,21 +1768,19 @@
     </url>
 
     
+    
   <url>
-    <loc>http://giveme5.cc/2015/11/17/linux/ddos/</loc>
+    <loc>http://giveme5.cc/2015/08/19/methodology/methodology/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
         <display>
-        <title>DDOS</title>
-        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
+        <title>二十一条军规</title>
+        <pubTime>2015-08-19T08:35:47.000Z</pubTime>
         
-        <tag>DDOS</tag>
+        <tag>methodology</tag>
          
          
            
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
         </display>
     </data>
     </url>
@@ -1810,19 +1807,19 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/09/14/other/checkList/</loc>
+    <loc>http://giveme5.cc/2015/11/17/linux/ddos/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
         <display>
-        <title>checkList（一）</title>
-        <pubTime>2015-09-14T06:28:38.000Z</pubTime>
+        <title>DDOS</title>
+        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
         
-        <tag>测试 checkList</tag>
+        <tag>DDOS</tag>
          
          
            
              
-              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
           
         </display>
     </data>
@@ -1838,6 +1835,26 @@
         <pubTime>2015-12-24T08:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/11/17/linux/lamp/</loc>
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    <data>
+        <display>
+        <title>lamp</title>
+        <pubTime>2015-11-17T03:34:57.000Z</pubTime>
+        
+        <tag>lamp</tag>
          
          
            
@@ -1870,31 +1887,14 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/08/19/methodology/methodology/</loc>
+    <loc>http://giveme5.cc/2015/09/14/other/checkList/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
         <display>
-        <title>二十一条军规</title>
-        <pubTime>2015-08-19T08:35:47.000Z</pubTime>
+        <title>checkList（一）</title>
+        <pubTime>2015-09-14T06:28:38.000Z</pubTime>
         
-        <tag>methodology</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2015/09/08/other/interview/</loc>
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    <data>
-        <display>
-        <title>面试时除了薪水以外的问题</title>
-        <pubTime>2015-09-08T06:28:38.000Z</pubTime>
-        
-        <tag>面试</tag>
+        <tag>测试 checkList</tag>
          
          
            
@@ -1987,6 +1987,26 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2015/12/03/linux/base/godLinux1-4/</loc>
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    <data>
+        <display>
+        <title>1-4 rhel7文件管理和xfs文件系统备份</title>
+        <pubTime>2015-12-03T07:29:44.000Z</pubTime>
+        
+        <tag>GOD linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2015/12/04/linux/base/godLinux1-5/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
@@ -2013,26 +2033,6 @@
         <display>
         <title>1-6 用户管理</title>
         <pubTime>2015-12-04T14:29:44.000Z</pubTime>
-        
-        <tag>GOD linux</tag>
-         
-         
-           
-             
-              <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2015/12/03/linux/base/godLinux1-4/</loc>
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    <data>
-        <display>
-        <title>1-4 rhel7文件管理和xfs文件系统备份</title>
-        <pubTime>2015-12-03T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -2129,26 +2129,6 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/09/11/mq/activemq/</loc>
-    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
-    <data>
-        <display>
-        <title>activemq (一) 简介</title>
-        <pubTime>2015-09-11T11:59:44.000Z</pubTime>
-        
-        <tag>activemq</tag>
-         
-         
-           
-             
-              <breadCrumb title="mq" url="http://giveme5.cc/categories/mq/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://giveme5.cc/2015/12/25/linux/shell/shell-1/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
@@ -2162,6 +2142,26 @@
            
              
               <breadCrumb title="linux" url="http://giveme5.cc/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2015/09/08/other/interview/</loc>
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    <data>
+        <display>
+        <title>面试时除了薪水以外的问题</title>
+        <pubTime>2015-09-08T06:28:38.000Z</pubTime>
+        
+        <tag>面试</tag>
+         
+         
+           
+             
+              <breadCrumb title="杂谈" url="http://giveme5.cc/categories/%E6%9D%82%E8%B0%88/"/>
           
         </display>
     </data>
@@ -2209,12 +2209,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-4/</loc>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-3/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
         <display>
-        <title>shell （四） 字符串</title>
-        <pubTime>2015-12-28T11:59:44.000Z</pubTime>
+        <title>shell （三） 运算符</title>
+        <pubTime>2015-12-28T11:29:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -2229,12 +2229,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-3/</loc>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-4/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
         <display>
-        <title>shell （三） 运算符</title>
-        <pubTime>2015-12-28T11:29:44.000Z</pubTime>
+        <title>shell （四） 字符串</title>
+        <pubTime>2015-12-28T11:59:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -2269,12 +2269,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-7/</loc>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-6/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
         <display>
-        <title>shell （七） 循环</title>
-        <pubTime>2015-12-28T13:49:44.000Z</pubTime>
+        <title>shell （六） 条件</title>
+        <pubTime>2015-12-28T13:29:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -2289,12 +2289,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-6/</loc>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-7/</loc>
     <lastmod>2017-02-21T07:18:44.692Z</lastmod>
     <data>
         <display>
-        <title>shell （六） 条件</title>
-        <pubTime>2015-12-28T13:29:44.000Z</pubTime>
+        <title>shell （七） 循环</title>
+        <pubTime>2015-12-28T13:49:44.000Z</pubTime>
         
         <tag>shell</tag>
          
@@ -2328,14 +2328,34 @@
     </url>
 
     
+  <url>
+    <loc>http://giveme5.cc/2015/09/11/mq/activemq/</loc>
+    <lastmod>2017-02-21T07:18:44.692Z</lastmod>
+    <data>
+        <display>
+        <title>activemq (一) 简介</title>
+        <pubTime>2015-09-11T11:59:44.000Z</pubTime>
+        
+        <tag>activemq</tag>
+         
+         
+           
+             
+              <breadCrumb title="mq" url="http://giveme5.cc/categories/mq/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
     
   <url>
-    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-17/</loc>
+    <loc>http://giveme5.cc/2015/12/17/linux/base/godLinux1-16/</loc>
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     <data>
         <display>
-        <title>1-17 系统存储管理器和磁盘配额</title>
-        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
+        <title>1-16 Linux LVM （Logical Volume Manager 逻辑卷管理）</title>
+        <pubTime>2015-12-17T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -2350,12 +2370,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/16/linux/base/godLinux1-15/</loc>
+    <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-17/</loc>
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     <data>
         <display>
-        <title>1-15 Linux RAID（Redundant Array of Independent Disks,独立磁盘冗余阵列）</title>
-        <pubTime>2015-12-16T07:29:44.000Z</pubTime>
+        <title>1-17 系统存储管理器和磁盘配额</title>
+        <pubTime>2015-12-18T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
@@ -2470,12 +2490,12 @@
 
     
   <url>
-    <loc>http://giveme5.cc/2015/12/17/linux/base/godLinux1-16/</loc>
+    <loc>http://giveme5.cc/2015/12/16/linux/base/godLinux1-15/</loc>
     <lastmod>2017-02-21T07:18:44.688Z</lastmod>
     <data>
         <display>
-        <title>1-16 Linux LVM （Logical Volume Manager 逻辑卷管理）</title>
-        <pubTime>2015-12-17T07:29:44.000Z</pubTime>
+        <title>1-15 Linux RAID（Redundant Array of Independent Disks,独立磁盘冗余阵列）</title>
+        <pubTime>2015-12-16T07:29:44.000Z</pubTime>
         
         <tag>GOD linux</tag>
          
