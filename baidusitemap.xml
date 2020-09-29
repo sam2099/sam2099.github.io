@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
+    <lastmod>2020-09-29T09:27:15.141Z</lastmod>
+    <data>
+        <display>
+        <title>nginx</title>
+        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
+        
+        <tag>server</tag>
+         
+        <tag>nginx</tag>
+         
+         
+           
+             
+              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2020/09/21/ddd/ddd/</loc>
     <lastmod>2020-09-22T01:14:27.265Z</lastmod>
     <data>
@@ -203,28 +225,6 @@
            
              
               <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
-    <lastmod>2020-04-28T02:39:14.990Z</lastmod>
-    <data>
-        <display>
-        <title>nginx</title>
-        <pubTime>2016-01-22T02:48:42.000Z</pubTime>
-        
-        <tag>server</tag>
-         
-        <tag>nginx</tag>
-         
-         
-           
-             
-              <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
           
         </display>
     </data>
