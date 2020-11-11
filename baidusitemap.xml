@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
-    <lastmod>2020-09-29T09:27:15.141Z</lastmod>
+    <lastmod>2020-11-11T09:35:12.157Z</lastmod>
     <data>
         <display>
         <title>nginx</title>
@@ -19,6 +19,26 @@
            
              
               <breadCrumb title="server" url="http://giveme5.cc/categories/server/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://giveme5.cc/2016/11/23/mysql/mysql/</loc>
+    <lastmod>2020-11-10T08:25:27.589Z</lastmod>
+    <data>
+        <display>
+        <title>mysql</title>
+        <pubTime>2016-11-23T14:53:57.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://giveme5.cc/categories/mysql/"/>
           
         </display>
     </data>
@@ -397,26 +417,6 @@
            
              
               <breadCrumb title="java" url="http://giveme5.cc/categories/java/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2016/11/23/mysql/mysql/</loc>
-    <lastmod>2019-07-17T05:33:00.904Z</lastmod>
-    <data>
-        <display>
-        <title>mysql</title>
-        <pubTime>2016-11-23T14:53:57.000Z</pubTime>
-        
-        <tag>mysql</tag>
-         
-         
-           
-             
-              <breadCrumb title="mysql" url="http://giveme5.cc/categories/mysql/"/>
           
         </display>
     </data>
