@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
+    
+    <lastmod>2020-11-16T03:33:55.005Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
     
-    <lastmod>2020-11-11T09:35:12.157Z</lastmod>
+    <lastmod>2020-11-13T03:14:05.564Z</lastmod>
     
   </url>
   
@@ -40,13 +47,6 @@
     <loc>http://giveme5.cc/2016/06/20/devEnv/nexus/nexus/</loc>
     
     <lastmod>2020-08-04T07:49:53.779Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
-    
-    <lastmod>2020-08-04T07:05:57.993Z</lastmod>
     
   </url>
   

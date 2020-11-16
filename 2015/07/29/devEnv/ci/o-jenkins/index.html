@@ -46,26 +46,29 @@
   };
 </script>
 
-  <meta name="description" content="主要内容jenkins-2.235.3-1.1 安装 使用  更新历史2020-08-04 增加jenkins的清华镜像设置">
+  <meta name="description" content="主要内容jenkins-2.235.3-1.1 安装 使用  更新历史2020-08-04 增加jenkins的清华镜像设置2020-11-14 国内镜像源设置">
 <meta name="keywords" content="jenkins">
 <meta property="og:type" content="article">
 <meta property="og:title" content="jenkins集合">
 <meta property="og:url" content="http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/index.html">
 <meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
-<meta property="og:description" content="主要内容jenkins-2.235.3-1.1 安装 使用  更新历史2020-08-04 增加jenkins的清华镜像设置">
+<meta property="og:description" content="主要内容jenkins-2.235.3-1.1 安装 使用  更新历史2020-08-04 增加jenkins的清华镜像设置2020-11-14 国内镜像源设置">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://giveme5.cc/images/jenkins_proxy.jpg">
 <meta property="og:image" content="http://giveme5.cc/images/jenkins0.png">
 <meta property="og:image" content="http://giveme5.cc/images/jenkins1.png">
 <meta property="og:image" content="http://giveme5.cc/images/jenkins2.png">
 <meta property="og:image" content="http://giveme5.cc/images/jenkins3.png">
 <meta property="og:image" content="http://giveme5.cc/images/jenkins4.png">
 <meta property="og:image" content="http://giveme5.cc/images/jenkins5.png">
-<meta property="og:updated_time" content="2020-08-04T07:05:57.993Z">
+<meta property="og:image" content="http://giveme5.cc/images/jenkins6.png">
+<meta property="og:image" content="http://giveme5.cc/images/jenkins7.png">
+<meta property="og:image" content="http://giveme5.cc/images/jenkins8.png">
+<meta property="og:image" content="http://giveme5.cc/images/jenkins9.png">
+<meta property="og:updated_time" content="2020-11-16T03:33:55.005Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jenkins集合">
-<meta name="twitter:description" content="主要内容jenkins-2.235.3-1.1 安装 使用  更新历史2020-08-04 增加jenkins的清华镜像设置">
-<meta name="twitter:image" content="http://giveme5.cc/images/jenkins_proxy.jpg">
+<meta name="twitter:description" content="主要内容jenkins-2.235.3-1.1 安装 使用  更新历史2020-08-04 增加jenkins的清华镜像设置2020-11-14 国内镜像源设置">
+<meta name="twitter:image" content="http://giveme5.cc/images/jenkins0.png">
 
 <link rel="canonical" href="http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/">
 
@@ -226,7 +229,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-08-04 15:05:57" itemprop="dateModified" datetime="2020-08-04T15:05:57+08:00">2020-08-04</time>
+                <time title="修改时间：2020-11-16 11:33:55" itemprop="dateModified" datetime="2020-11-16T11:33:55+08:00">2020-11-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,27 +269,12 @@
 
       
         <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>jenkins-2.235.3-1.1 安装 使用 </p>
-<p><em>更新历史</em><br>2020-08-04 增加jenkins的清华镜像设置</p>
+<p><em>更新历史</em><br><del>2020-08-04 增加jenkins的清华镜像设置</del><br>2020-11-14 国内镜像源设置</p>
 <a id="more"></a>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://wiki.jenkins-ci.org/display/JENKINS/Installing+Jenkins+on+Red+Hat+distributions" target="_blank" rel="noopener">官方指南</a></p>
 <h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>JDK1.8以上 安装</p>
 <h3 id="清华镜像"><a href="#清华镜像" class="headerlink" title="清华镜像"></a>清华镜像</h3><p>由于网络，jenkins本身和插件的安装更新都很慢，感谢清华，提供了国内的快速路。</p>
-<h3 id="更新索引-安装完成后设置"><a href="#更新索引-安装完成后设置" class="headerlink" title="更新索引 (安装完成后设置)"></a>更新索引 (安装完成后设置)</h3><ul>
-<li>进入jenkins系统管理</li>
-<li>进入插件管理（Manage Plugins）——高级——升级站点<br>jenkins插件清华大学镜像地址<br><code>https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</code></li>
-</ul>
-<p><img src="/images/jenkins_proxy.jpg" alt></p>
-<h3 id="实际更新-安装前设置"><a href="#实际更新-安装前设置" class="headerlink" title="实际更新 (安装前设置)"></a>实际更新 (安装前设置)</h3><p><code>https://mirrors.tuna.tsinghua.edu.cn/jenkins/updates/update-center.json</code> 这个文件里面包含了所有插件的更新地址 ，但是没有把里面的插件升级地址改成清华。 这样只会获取更新信息快，实际下载还是去<code>mirrors.jenkins-ci.org</code>下载，所以速度还是不快。</p>
-<p>解决方案是用 nginx 反向代理 <code>mirrors.jenkins-ci.org</code> <code>updates.jenkins-ci.org</code> 到清华镜像。</p>
-<ul>
-<li><p>域名解析 jenkins-ci.org 到 nginx 所在服务器</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># cat /etc/hosts | grep jenkins</span></span><br><span class="line">192.168.11.169 mirrors.jenkins-ci.org</span><br><span class="line">192.168.11.169 updates.jenkins-ci.org</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>nginx反向代理到清华<br>配置文件参考</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name mirrors.jenkins-ci.org updates.jenkins-ci.org ;</span><br><span class="line"></span><br><span class="line">    location /download/plugins</span><br><span class="line">    &#123;</span><br><span class="line">        proxy_next_upstream http_502 http_504 error timeout invalid_header;</span><br><span class="line">        proxy_set_header Host mirrors.tuna.tsinghua.edu.cn;</span><br><span class="line">        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>; </span><br><span class="line">        rewrite /download/plugins(.*) /jenkins/plugins/<span class="variable">$1</span> <span class="built_in">break</span>;</span><br><span class="line">        proxy_pass https://mirrors.tuna.tsinghua.edu.cn;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="RedHat系-YUM安装"><a href="#RedHat系-YUM安装" class="headerlink" title="RedHat系 YUM安装"></a>RedHat系 YUM安装</h3><p>centOS 7 安装稳定版本如下：</p>
+<h3 id="RedHat系-YUM安装"><a href="#RedHat系-YUM安装" class="headerlink" title="RedHat系 YUM安装"></a>RedHat系 YUM安装</h3><p>centOS 8 安装稳定版本如下：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo</span><br><span class="line">rpm --import https://jenkins-ci.org/redhat/jenkins-ci.org.key</span><br><span class="line">yum install jenkins</span><br></pre></td></tr></table></figure>
 <p>如果网络慢， 可以手工安装, 如下 安装版本jenkins-2.235.3-1.1.noarch.rpm<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/jenkins/redhat-stable/jenkins-2.235.3-1.1.noarch.rpm</span><br><span class="line">yum install -y jenkins-2.235.3-1.1.noarch.rpm</span><br></pre></td></tr></table></figure></p>
 <h3 id="安装结果"><a href="#安装结果" class="headerlink" title="安装结果"></a>安装结果</h3><ul>
@@ -299,6 +287,9 @@
 <h3 id="启动-停止"><a href="#启动-停止" class="headerlink" title="启动/停止"></a>启动/停止</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start/stop/restart jenkins</span><br><span class="line">systemctl enable jenkins ##开机自动启动</span><br></pre></td></tr></table></figure>
 <p>ps: 别忘了关闭防火墙或者设置防火墙</p>
 <p><img src="/images/jenkins0.png" alt><br><img src="/images/jenkins1.png" alt><br>选推荐插件<br><img src="/images/jenkins2.png" alt><br><img src="/images/jenkins3.png" alt><br><img src="/images/jenkins4.png" alt><br><img src="/images/jenkins5.png" alt></p>
+<h3 id="插件管理-升级站点-设置"><a href="#插件管理-升级站点-设置" class="headerlink" title="插件管理 升级站点 设置"></a>插件管理 升级站点 设置</h3><p>由于长城的原因， 建议把插件站点设置成国内的。</p>
+<p><img src="/images/jenkins6.png" alt><br><img src="/images/jenkins7.png" alt><br><img src="/images/jenkins8.png" alt><br><img src="/images/jenkins9.png" alt></p>
+<p><strong>特别注意</strong><br>如果是操作系统是<code>CentOS 8</code> 执行如下命令， 重启 jenkins<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update-crypto-policies --<span class="built_in">set</span> LEGACY</span><br></pre></td></tr></table></figure></p>
 <h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h3><p>一般yum安装的 JAVA_HOME 为 <code>/usr/lib/jvm/java</code></p>
 <h3 id="maven"><a href="#maven" class="headerlink" title="maven"></a>maven</h3><p>安装maven<br>yum安装的 M2_HOME 为 <code>/usr/share/maven</code></p>
 <h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>这些必须安装：</p>
@@ -392,7 +383,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前提"><span class="nav-number">2.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清华镜像"><span class="nav-number">2.2.</span> <span class="nav-text">清华镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新索引-安装完成后设置"><span class="nav-number">2.3.</span> <span class="nav-text">更新索引 (安装完成后设置)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实际更新-安装前设置"><span class="nav-number">2.4.</span> <span class="nav-text">实际更新 (安装前设置)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedHat系-YUM安装"><span class="nav-number">2.5.</span> <span class="nav-text">RedHat系 YUM安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装结果"><span class="nav-number">2.6.</span> <span class="nav-text">安装结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动-停止"><span class="nav-number">2.7.</span> <span class="nav-text">启动/停止</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK"><span class="nav-number">3.1.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven"><span class="nav-number">3.2.</span> <span class="nav-text">maven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">3.3.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manage-Jenkins-–-gt-Configure-Global-Security"><span class="nav-number">3.4.</span> <span class="nav-text">Manage Jenkins –&gt; Configure Global Security</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manage-Jenkins-–-gt-Configure-System"><span class="nav-number">3.5.</span> <span class="nav-text">Manage Jenkins –&gt; Configure System</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-key"><span class="nav-number">3.6.</span> <span class="nav-text">ssh-key</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#New-Item"><span class="nav-number">4.</span> <span class="nav-text">New Item</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#root-project"><span class="nav-number">4.1.</span> <span class="nav-text">root project</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sub-project"><span class="nav-number">4.2.</span> <span class="nav-text">sub project</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目权限"><span class="nav-number">5.</span> <span class="nav-text">项目权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次ssh连接-gitServer"><span class="nav-number">6.1.</span> <span class="nav-text">第一次ssh连接 gitServer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络导致日志疯狂增长"><span class="nav-number">6.2.</span> <span class="nav-text">网络导致日志疯狂增长</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前提"><span class="nav-number">2.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清华镜像"><span class="nav-number">2.2.</span> <span class="nav-text">清华镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RedHat系-YUM安装"><span class="nav-number">2.3.</span> <span class="nav-text">RedHat系 YUM安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装结果"><span class="nav-number">2.4.</span> <span class="nav-text">安装结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动-停止"><span class="nav-number">2.5.</span> <span class="nav-text">启动/停止</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件管理-升级站点-设置"><span class="nav-number">2.6.</span> <span class="nav-text">插件管理 升级站点 设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#JDK"><span class="nav-number">3.1.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven"><span class="nav-number">3.2.</span> <span class="nav-text">maven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">3.3.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manage-Jenkins-–-gt-Configure-Global-Security"><span class="nav-number">3.4.</span> <span class="nav-text">Manage Jenkins –&gt; Configure Global Security</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manage-Jenkins-–-gt-Configure-System"><span class="nav-number">3.5.</span> <span class="nav-text">Manage Jenkins –&gt; Configure System</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh-key"><span class="nav-number">3.6.</span> <span class="nav-text">ssh-key</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#New-Item"><span class="nav-number">4.</span> <span class="nav-text">New Item</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#root-project"><span class="nav-number">4.1.</span> <span class="nav-text">root project</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sub-project"><span class="nav-number">4.2.</span> <span class="nav-text">sub project</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目权限"><span class="nav-number">5.</span> <span class="nav-text">项目权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">6.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次ssh连接-gitServer"><span class="nav-number">6.1.</span> <span class="nav-text">第一次ssh连接 gitServer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络导致日志疯狂增长"><span class="nav-number">6.2.</span> <span class="nav-text">网络导致日志疯狂增长</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

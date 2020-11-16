@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
+    <lastmod>2020-11-16T03:33:55.005Z</lastmod>
+    <data>
+        <display>
+        <title>jenkins集合</title>
+        <pubTime>2015-07-29T02:14:56.000Z</pubTime>
+        
+        <tag>jenkins</tag>
+         
+         
+           
+             
+              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
-    <lastmod>2020-11-11T09:35:12.157Z</lastmod>
+    <lastmod>2020-11-13T03:14:05.564Z</lastmod>
     <data>
         <display>
         <title>nginx</title>
@@ -128,26 +148,6 @@
         <pubTime>2016-06-20T07:22:59.000Z</pubTime>
         
         <tag>nexus</tag>
-         
-         
-           
-             
-              <breadCrumb title="developEnv" url="http://giveme5.cc/categories/developEnv/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
-    <lastmod>2020-08-04T07:05:57.993Z</lastmod>
-    <data>
-        <display>
-        <title>jenkins集合</title>
-        <pubTime>2015-07-29T02:14:56.000Z</pubTime>
-        
-        <tag>jenkins</tag>
          
          
            
