@@ -186,7 +186,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/11/17/linux/lamp/">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/11/17/linux/ddos/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.png">
@@ -200,7 +200,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2015/11/17/linux/lamp/" class="post-title-link" itemprop="url">lamp</a>
+            <a href="/2015/11/17/linux/ddos/" class="post-title-link" itemprop="url">DDOS</a>
         </h1>
 
         <div class="post-meta">
@@ -240,8 +240,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2015/11/17/linux/lamp/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/17/linux/lamp/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2015/11/17/linux/ddos/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/17/linux/ddos/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -256,10 +256,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h2 id="调优"><a href="#调优" class="headerlink" title="调优"></a>调优</h2>
+          <h2 id="参考是否受到-ddos"><a href="#参考是否受到-ddos" class="headerlink" title="参考是否受到 ddos"></a>参考是否受到 ddos</h2><ul>
+<li>sh<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">netstat -ntu | awk &apos;&#123;print $5&#125;&apos; | cut -d: -f1          | sort | uniq -C | sort -n</span><br><span class="line">netstat -ntu | awk &apos;&#123;print $5&#125;&apos; | cut -d: -f4          | sort | uniq -C | sort -n</span><br><span class="line">#             截取外网ip 端口号   | 截取外网ip 以：为分割符 | 排序  |排除相同记录|排序并统计</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2015/11/17/linux/lamp/#more" rel="contents">
+              <a class="btn" href="/2015/11/17/linux/ddos/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>

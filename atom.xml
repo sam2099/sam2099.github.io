@@ -1461,9 +1461,9 @@ Z  boolean
       <category term="server" scheme="http://giveme5.cc/categories/server/"/>
     
     
-      <category term="server" scheme="http://giveme5.cc/tags/server/"/>
-    
       <category term="nginx" scheme="http://giveme5.cc/tags/nginx/"/>
+    
+      <category term="server" scheme="http://giveme5.cc/tags/server/"/>
     
       <category term="keepalived" scheme="http://giveme5.cc/tags/keepalived/"/>
     
