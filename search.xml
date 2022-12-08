@@ -4022,8 +4022,7 @@ fc-list |grep SimSun
 <h2 id="域名映射"><a href="#域名映射" class="headerlink" title="域名映射"></a>域名映射</h2><p>在source根路径下，创建文件CNAME（无后缀，大写）;内容就一行，是你需要映射的域名，比如我的</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">giveme5.top</span><br></pre></td></tr></table></figure>
 
-
-
+<h2 id="图片缩放"><a href="#图片缩放" class="headerlink" title="图片缩放"></a>图片缩放</h2><p>启用NexT内嵌的图像缩放插件，以允许放大图像。NexT提供了两个插件：fanncybox和mediumzoom，前者功能更加强大，而后者更加轻巧所以网页加载更快，按需选择。<br>修改主题配置文件，如fancybox: true即可， 不要2个同时为true。</p>
 <h2 id="藏在最后"><a href="#藏在最后" class="headerlink" title="藏在最后"></a>藏在最后</h2><p>这是第一篇，我想这个作为笔记，有需要就可以拿出来看看，省得记载纸上找不到；所以这个大概是给自己看的。</p>
 ]]></content>
       <categories>
