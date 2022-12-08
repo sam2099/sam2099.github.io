@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://giveme5.cc/2021/09/18/hadoop/hadoop/</loc>
+    
+    <lastmod>2022-12-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2015/07/03/other/hexo/</loc>
     
     <lastmod>2022-12-08</lastmod>
@@ -56,7 +65,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2022/07/15/canal/canal/</loc>
+    <loc>http://giveme5.cc/2017/06/01/computerVision/opencv-python/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -65,7 +74,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2017/06/01/computerVision/opencv-python/</loc>
+    <loc>http://giveme5.cc/2022/07/15/canal/canal/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -147,15 +156,6 @@
   
   <url>
     <loc>http://giveme5.cc/2017/03/01/hadoop/hadoopHBase/</loc>
-    
-    <lastmod>2022-12-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2021/09/18/hadoop/hadoop/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -290,7 +290,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2017/06/29/java/javaIO/</loc>
+    <loc>http://giveme5.cc/2017/03/28/linux/Firewalld-md/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -299,7 +299,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2017/03/28/linux/Firewalld-md/</loc>
+    <loc>http://giveme5.cc/2017/06/29/java/javaIO/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -713,7 +713,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2021/11/24/spring/srpingValidator/</loc>
+    <loc>http://giveme5.cc/2020/03/30/web%20server/https/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -722,7 +722,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2020/03/30/web%20server/https/</loc>
+    <loc>http://giveme5.cc/2021/11/24/spring/srpingValidator/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -767,6 +767,15 @@
   </url>
   
   <url>
+    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
+    
+    <lastmod>2022-12-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2017/08/18/devEnv/git/git/</loc>
     
     <lastmod>2022-12-08</lastmod>
@@ -785,7 +794,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/</loc>
+    <loc>http://giveme5.cc/2015/10/30/devEnv/maven/maven/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -804,15 +813,6 @@
   
   <url>
     <loc>http://giveme5.cc/2015/10/15/devEnv/nexus/restlet/</loc>
-    
-    <lastmod>2022-12-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2015/10/30/devEnv/maven/maven/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -893,15 +893,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/22/linux/base/godLinux1-19~20/</loc>
-    
-    <lastmod>2022-12-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/</loc>
     
     <lastmod>2022-12-08</lastmod>
@@ -920,6 +911,15 @@
   </url>
   
   <url>
+    <loc>http://giveme5.cc/2015/12/22/linux/base/godLinux1-19~20/</loc>
+    
+    <lastmod>2022-12-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2015/12/24/linux/base/godLinux1-22/</loc>
     
     <lastmod>2022-12-08</lastmod>
@@ -929,7 +929,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/</loc>
+    <loc>http://giveme5.cc/2015/11/27/linux/base/godLinux1-3/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -938,7 +938,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/11/27/linux/base/godLinux1-3/</loc>
+    <loc>http://giveme5.cc/2015/12/24/linux/base/godLinux1-23/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -983,15 +983,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/06/linux/base/godLinux1-8/</loc>
-    
-    <lastmod>2022-12-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/2015/12/06/linux/base/godLinux1-9/</loc>
     
     <lastmod>2022-12-08</lastmod>
@@ -1019,6 +1010,24 @@
   </url>
   
   <url>
+    <loc>http://giveme5.cc/2015/12/06/linux/base/godLinux1-8/</loc>
+    
+    <lastmod>2022-12-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2015/12/25/linux/shell/shell-1/</loc>
+    
+    <lastmod>2022-12-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/2016/01/22/linux/shell/shell-10/</loc>
     
     <lastmod>2022-12-08</lastmod>
@@ -1037,7 +1046,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2015/12/25/linux/shell/shell-1/</loc>
+    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-4/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -1047,15 +1056,6 @@
   
   <url>
     <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-3/</loc>
-    
-    <lastmod>2022-12-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/2015/12/28/linux/shell/shell-4/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -1100,15 +1100,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/</loc>
-    
-    <lastmod>2022-12-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/2016/01/06/linux/shell/shell9/</loc>
     
     <lastmod>2022-12-08</lastmod>
@@ -1118,7 +1109,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/2017/02/21/web%20server/tomcat/tomcatLog/</loc>
+    <loc>http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -1128,6 +1119,15 @@
   
   <url>
     <loc>http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/</loc>
+    
+    <lastmod>2022-12-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/2017/02/21/web%20server/tomcat/tomcatLog/</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -1154,7 +1154,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/tags/index.html</loc>
+    <loc>http://giveme5.cc/categories/index.html</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -1163,7 +1163,7 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/categories/index.html</loc>
+    <loc>http://giveme5.cc/tags/index.html</loc>
     
     <lastmod>2022-12-08</lastmod>
     
@@ -1223,6 +1223,27 @@
   </url>
   
   <url>
+    <loc>http://giveme5.cc/tags/opencv/</loc>
+    <lastmod>2022-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/tags/centos/</loc>
+    <lastmod>2022-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/tags/python/</loc>
+    <lastmod>2022-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://giveme5.cc/tags/canal/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -1245,27 +1266,6 @@
   
   <url>
     <loc>http://giveme5.cc/tags/%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/</loc>
-    <lastmod>2022-12-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/tags/opencv/</loc>
-    <lastmod>2022-12-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/tags/centos/</loc>
-    <lastmod>2022-12-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/tags/python/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1370,14 +1370,14 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/tags/hbase/</loc>
+    <loc>http://giveme5.cc/tags/hadoop-ha/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://giveme5.cc/tags/hadoop-ha/</loc>
+    <loc>http://giveme5.cc/tags/hbase/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1580,27 +1580,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/tags/IO/</loc>
-    <lastmod>2022-12-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/tags/NIO/</loc>
-    <lastmod>2022-12-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://giveme5.cc/tags/NIO2/</loc>
-    <lastmod>2022-12-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/tags/linux/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -1623,6 +1602,27 @@
   
   <url>
     <loc>http://giveme5.cc/tags/%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2022-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/tags/IO/</loc>
+    <lastmod>2022-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/tags/NIO/</loc>
+    <lastmod>2022-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/tags/NIO2/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -1958,13 +1958,6 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/tags/Validator/</loc>
-    <lastmod>2022-12-08</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://giveme5.cc/tags/https/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
@@ -1973,6 +1966,13 @@
   
   <url>
     <loc>http://giveme5.cc/tags/Let-s-Encrypt/</loc>
+    <lastmod>2022-12-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://giveme5.cc/tags/Validator/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2014,14 +2014,14 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/tags/nexus/</loc>
+    <loc>http://giveme5.cc/tags/maven/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://giveme5.cc/tags/maven/</loc>
+    <loc>http://giveme5.cc/tags/nexus/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -2100,14 +2100,14 @@
   </url>
   
   <url>
-    <loc>http://giveme5.cc/categories/canal/</loc>
+    <loc>http://giveme5.cc/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://giveme5.cc/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/</loc>
+    <loc>http://giveme5.cc/categories/canal/</loc>
     <lastmod>2022-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
