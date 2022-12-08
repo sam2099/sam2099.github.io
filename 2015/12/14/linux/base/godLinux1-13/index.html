@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="磁盘管理的一般步骤：添加设备 –&gt; 分区 –&gt; 格式化（创建文件系统） –&gt; 创建挂载点 –&gt; 挂载 –&gt; 修改配置文件 目录 分区 挂载 卸载 扩展swap  磁盘分区按磁盘的大小，采用不同的方式。磁盘容量小于4T， 建议使用MBR分区；大于等于4T，采用GPT分区。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-13 Linux 磁盘管理">
+<meta property="og:url" content="http://giveme5.cc/2015/12/14/linux/base/godLinux1-13/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="磁盘管理的一般步骤：添加设备 –&gt; 分区 –&gt; 格式化（创建文件系统） –&gt; 创建挂载点 –&gt; 挂载 –&gt; 修改配置文件 目录 分区 挂载 卸载 扩展swap  磁盘分区按磁盘的大小，采用不同的方式。磁盘容量小于4T， 建议使用MBR分区；大于等于4T，采用GPT分区。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-12-14T06:29:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="GOD linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/14/linux/base/godLinux1-13/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-13 Linux 磁盘管理 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/14/linux/base/godLinux1-13/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-13 Linux 磁盘管理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-12-14 14:29:44" itemprop="dateCreated datePublished" datetime="2015-12-14T14:29:44+08:00">2015-12-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>磁盘管理的一般步骤：<br>添加设备 –&gt; 分区 –&gt; 格式化（创建文件系统） –&gt; 创建挂载点 –&gt; 挂载 –&gt; 修改配置文件</p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>分区</li>
+<li>挂载</li>
+<li>卸载</li>
+<li>扩展swap</li>
+</ul>
+<h2 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h2><p>按磁盘的大小，采用不同的方式。磁盘容量小于4T， 建议使用MBR分区；大于等于4T，采用GPT分区。</p>
+<span id="more"></span>
+
+<h3 id="MBR-fdisk"><a href="#MBR-fdisk" class="headerlink" title="MBR  fdisk"></a>MBR  fdisk</h3><p>MBR： Master boot record  ： 主引导记录<br>硬盘的0柱面、0磁头、1扇区称为主引导扇区（也叫主引导记录MBR）,总共512字节。<br>它由三个部分组成，主引导程序、硬盘分区表DPT（Disk Partition table）和分区有效标志（55AA）。</p>
+<ul>
+<li>第一部分是主引导程序（boot loader）占446个字节，</li>
+<li>第二部分是Partition table区（分区表），即DPT，占64个字节，16*4&#x3D;64，硬盘中分区有多少以及每一分区的大小都记在其中。</li>
+<li>第三部分是magic number，占2个字节，固定为55AA。<br>magic number：·结束标志字，偏移地址01FE–01FF的2个字节值为结束标志55AA,称为“魔数”（magic number）。如果该标志错误系统就不能启动。<br>linux中 使用 <code>fdisk</code> 工具进行管理。</li>
+</ul>
+<br> 
+#### fdisk
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#fdisk -l                                  #查看设备使用状况</span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">[root@localhost ~]<span class="comment">#fdisk /dev/sda</span></span><br><span class="line">Command (m <span class="keyword">for</span> <span class="built_in">help</span>): m</span><br><span class="line">Command action</span><br><span class="line">   a   toggle a bootable flag                                              <span class="comment">#设置启动分区</span></span><br><span class="line">   b  edit bsd disklabel</span><br><span class="line">   c  toggle the dos compatibility flag</span><br><span class="line">   d   delete a partition                                                     <span class="comment">#删除分区</span></span><br><span class="line">   g  create a new empty GPT partition table</span><br><span class="line">   G  create an IRIX (SGI) partition table</span><br><span class="line">   l  list known partition types</span><br><span class="line">   m  <span class="built_in">print</span> this menu                                                       <span class="comment">#打印帮助页面</span></span><br><span class="line">   n   adda new partition                                                  <span class="comment">#创建一个新的分区</span></span><br><span class="line">   o  create a new empty DOS partition table</span><br><span class="line">   p  <span class="built_in">print</span> the partition table                                           <span class="comment">#打印分区表</span></span><br><span class="line">   q   quit without saving changes                                   <span class="comment">#退出不保存</span></span><br><span class="line">   s  create a new empty Sun disklabel                     </span><br><span class="line">   t  change a partition<span class="string">&#x27;s system id</span></span><br><span class="line"><span class="string">   u  change display/entry units</span></span><br><span class="line"><span class="string">   v  verify the partition table</span></span><br><span class="line"><span class="string">   w   write table to disk and exit                                      #保存</span></span><br><span class="line"><span class="string">   x  extra functionality (experts only)</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Command (m for help): n                                                  #创建一个新的分区</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Partition type:</span></span><br><span class="line"><span class="string">   p  primary (2 primary, 0 extended, 2 free)                           #创建一个主分区</span></span><br><span class="line"><span class="string">   e  extended                                                                  #创建一个扩展分区</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Select (default p): e</span></span><br><span class="line"><span class="string">Partition number (3,4,default 3):                                        #指定分区号</span></span><br><span class="line"><span class="string">First sector(26208256-41943039, default 26208256):            #指定开始柱面，默认回车就可以</span></span><br><span class="line"><span class="string">Using default value26208256</span></span><br><span class="line"><span class="string">Last sector, +sectorsor +size&#123;K,M,G&#125; (26208256-41943039, default 41943039): +1G         </span></span><br><span class="line"><span class="string">#指定结束柱面，默认不指定的话是把剩下的所有空间分配给分区，等于说指定分区大小</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Partition 3 of typeExtended and of size 5 GiB is set</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Command (m for help): p                                                    #打印分区表</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Disk /dev/sda: 21.5 GB,21474836480 bytes, 41943040 sectors</span></span><br><span class="line"><span class="string">Units = sectors of 1 *512 = 512 bytes</span></span><br><span class="line"><span class="string">Sector size(logical/physical): 512 bytes / 512 bytes</span></span><br><span class="line"><span class="string">I/O size(minimum/optimal): 512 bytes / 512 bytes</span></span><br><span class="line"><span class="string">Disk label type: dos</span></span><br><span class="line"><span class="string">Disk identifier:0x000a705c</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">   Device Boot      Start         End      Blocks  Id  System</span></span><br><span class="line"><span class="string">/dev/sda1   *       2048     1026047      512000  83  Linux</span></span><br><span class="line"><span class="string">/dev/sda2         1026048    26208255   12591104   8e  Linux LVM</span></span><br><span class="line"><span class="string">/dev/sda3        26208256    36694015    5242880    5  Extended      #表明是扩展 分区</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Command (m for help): n</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Partition type:</span></span><br><span class="line"><span class="string">   p  primary (2 primary, 1 extended, 1 free)</span></span><br><span class="line"><span class="string">   l  logical (numbered from 5)                                               #创建一个逻辑分区</span></span><br><span class="line"><span class="string">Select (default p): l</span></span><br><span class="line"><span class="string">Adding logicalpartition 5</span></span><br><span class="line"><span class="string">First sector(26210304-36694015, default 26210304):</span></span><br><span class="line"><span class="string">Using default value26210304</span></span><br><span class="line"><span class="string">Last sector, +sectorsor +size&#123;K,M,G&#125; (26210304-36694015, default 36694015): +1G</span></span><br><span class="line"><span class="string">Partition 5 of typeLinux and of size 1 GiB is set</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Command (m for help): p</span></span><br><span class="line"><span class="string">Disk /dev/sda: 21.5 GB,21474836480 bytes, 41943040 sectors</span></span><br><span class="line"><span class="string">Units = sectors of 1 *512 = 512 bytes</span></span><br><span class="line"><span class="string">Sector size(logical/physical): 512 bytes / 512 bytes</span></span><br><span class="line"><span class="string">I/O size(minimum/optimal): 512 bytes / 512 bytes</span></span><br><span class="line"><span class="string">Disk label type: dos</span></span><br><span class="line"><span class="string">Disk identifier:0x000a705c</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">   Device Boot      Start         End      Blocks  Id  System</span></span><br><span class="line"><span class="string">/dev/sda1   *       2048     1026047      512000  83  Linux</span></span><br><span class="line"><span class="string">/dev/sda2         1026048    26208255   12591104   8e  Linux LVM</span></span><br><span class="line"><span class="string">/dev/sda3        26208256    36694015    5242880    5  Extended</span></span><br><span class="line"><span class="string">/dev/sda5        26210304    28307455    1048576   83  Linux</span></span><br><span class="line"><span class="string">#逻辑分区的分区号从5开始，不管之前有没有第四或者第三个分区</span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">Command (m for help): w                                            #保存</span></span><br><span class="line"><span class="string">The partition table hasbeen altered!</span></span><br><span class="line"><span class="string">Calling ioctl() tore-read partition table.</span></span><br><span class="line"><span class="string">WARNING: Re-reading thepartition table failed with error 16: Device or resource busy.</span></span><br><span class="line"><span class="string">The kernelstill uses the old table. The new table will be used at</span></span><br><span class="line"><span class="string">the nextreboot or after you run partprobe(8) or kpartx(8)</span></span><br><span class="line"><span class="string">Syncingdisks.</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="GPT-parted"><a href="#GPT-parted" class="headerlink" title="GPT  parted"></a>GPT  parted</h3><p>GPT，全局唯一标识分区表(GUID Partition Table)，GUID，与MBR最大4个分区表项的限制相比，GPT对分区数量没有限制，但Windows最大仅支持128个GPT分区。GPT可管理硬盘大小达到了18EB(1EB&#x3D;1024PB&#x3D;1,048,576TB)，不过NTFS格式最大仅支持256TB。</p>
+<h4 id="Parted-磁盘分区工具"><a href="#Parted-磁盘分区工具" class="headerlink" title="Parted 磁盘分区工具"></a>Parted 磁盘分区工具</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># rpm -qf `which parted`</span></span><br><span class="line">parted-3.1-20.el7.x86_64</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看parted命令的帮助信息："><a href="#查看parted命令的帮助信息：" class="headerlink" title="查看parted命令的帮助信息："></a>查看parted命令的帮助信息：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># parted --help</span></span><br><span class="line">或</span><br><span class="line">[root@localhost ~]<span class="comment"># parted</span></span><br><span class="line">GNU Parted 3.1</span><br><span class="line">Using /dev/sda</span><br><span class="line">Welcome to GNU Parted!Type <span class="string">&#x27;help&#x27;</span> to view a list of commands.</span><br><span class="line">(parted) <span class="built_in">help</span>            </span><br><span class="line">(parted) quit                      <span class="comment">#退出</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="查看所有磁盘状态"><a href="#查看所有磁盘状态" class="headerlink" title="查看所有磁盘状态"></a>查看所有磁盘状态</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#parted -l</span><br></pre></td></tr></table></figure>
+<h4 id="parted对磁盘进行操作"><a href="#parted对磁盘进行操作" class="headerlink" title="parted对磁盘进行操作"></a>parted对磁盘进行操作</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#parted /dev/sdb</span><br><span class="line">GNU Parted 3.1</span><br><span class="line">Using /dev/sdb</span><br><span class="line">Welcome to GNU Parted!Type &#x27;help&#x27; to view a list of commands.</span><br><span class="line">  </span><br><span class="line">(parted) p                               #查看磁盘分区状态</span><br><span class="line">Error: /dev/sdb:unrecognised disk label                    </span><br><span class="line">  </span><br><span class="line">(parted) mklabel                       #指定创建分区表类型为GPT</span><br><span class="line">New disk label type? `gpt`</span><br><span class="line">  </span><br><span class="line">(parted) mkpart                  #创建分区                                              </span><br><span class="line">Partition name?  []? `mydisk1`                                             </span><br><span class="line">  </span><br><span class="line">File system type?  [ext2]?       #指定分区文件系统类型，默认就可以，因为后期对分区进行格式化的时候，同样可以指定                                              </span><br><span class="line">  </span><br><span class="line">Start?  `1`                                  #指定分区起始位置                                                          </span><br><span class="line">  </span><br><span class="line">End? `100M`                        #指定分区结束位置                                                    </span><br><span class="line">  </span><br><span class="line">(parted) `p`                        #查看磁盘分区状态</span><br><span class="line">Number  Start  End     Size    File system Name     Flags</span><br><span class="line"> 1     1049kB  99.6MB  98.6MB             mydisk1</span><br><span class="line">  </span><br><span class="line">(parted) `mkpart`                                                           </span><br><span class="line">  </span><br><span class="line">Partition name?  []? `2`                                                    </span><br><span class="line">  </span><br><span class="line">File system type?  [ext2]?                                               </span><br><span class="line">  </span><br><span class="line">Start? `100M`                                                               </span><br><span class="line">  </span><br><span class="line">End? `200M`                                                                 </span><br><span class="line">  </span><br><span class="line">(parted) `p`                                                               </span><br><span class="line">  </span><br><span class="line">Model: VMware, VMwareVirtual S (scsi)</span><br><span class="line">Disk /dev/sdb: 21.5GB</span><br><span class="line">Sector size(logical/physical): 512B/512B</span><br><span class="line">Partition Table: gpt</span><br><span class="line">Disk Flags:</span><br><span class="line">  </span><br><span class="line">Number  Start  End     Size    File system Name     Flags</span><br><span class="line"> 1     1049kB  99.6MB  98.6MB               mydisk1</span><br><span class="line"> 2     99.6MB  200MB   101MB                2</span><br><span class="line">  </span><br><span class="line">(parted) `quit`                                                             </span><br><span class="line">  </span><br><span class="line">Information: You mayneed to update /etc/fstab.</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="重新获取分区表"><a href="#重新获取分区表" class="headerlink" title="重新获取分区表"></a>重新获取分区表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#partprobe /dev/sda</span><br><span class="line"></span><br><span class="line">[root@localhost ~]# ls /dev/sda*</span><br><span class="line">/dev/sda  /dev/sda1 /dev/sda2  /dev/sda3  /dev/sda5</span><br></pre></td></tr></table></figure>
+
+<h2 id="格式化"><a href="#格式化" class="headerlink" title="格式化"></a>格式化</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkfs.ext3 /dev/sdb1　　 或mkfs -t ext3 /dev/sdb1            #RHEL5 格式化</span><br><span class="line">#mkfs.ext4 /dev/sdb1　　   或mkfs -t ext4 /dev/sdb1          #RHEL6 格式化</span><br><span class="line">mkfs.xfs  /dev/sda5           或mkfs -t xfs /dev/sda5       #RHEL7 格式化</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="磁盘挂载"><a href="#磁盘挂载" class="headerlink" title="磁盘挂载"></a>磁盘挂载</h2><h3 id="创建挂载点"><a href="#创建挂载点" class="headerlink" title="创建挂载点"></a>创建挂载点</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  # 新建一个目录</span><br><span class="line">[root@localhost ~]# mkdir /data</span><br></pre></td></tr></table></figure>
+
+<h3 id="手动"><a href="#手动" class="headerlink" title="手动"></a>手动</h3><ul>
+<li><p>挂载新磁盘</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# mount /dev/sda5 /data/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看挂载状况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# df -h</span><br><span class="line">或</span><br><span class="line">[root@localhost ~]#mount | grep data</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="开机自动挂载"><a href="#开机自动挂载" class="headerlink" title="开机自动挂载"></a>开机自动挂载</h3><p>开机时系统会自动加载 <code>/etc/fstab</code> 文件内容, 类似执行 <code>mount -a</code> 。我们为了开机自动挂载，也是修改此文件内容。<br>在文件最后新增一行，编辑需要新挂载的磁盘。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# vim /etc/fstab</span><br><span class="line">/dev/sda5             /sda5                    xfs          defaults         0                   0</span><br></pre></td></tr></table></figure>
+
+<p>各字段说明:</p>
+<table>
+<thead>
+<tr>
+<th>&#x2F;dev&#x2F;sda5</th>
+<th>&#x2F;sda5</th>
+<th>xfs</th>
+<th>defaults</th>
+<th>0</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>挂载的分区</code></td>
+<td><code>挂载点</code></td>
+<td>文件系统类型</td>
+<td>挂载选项</td>
+<td>是否备份 fs_dump</td>
+<td>是否检测 fs_pass</td>
+</tr>
+</tbody></table>
+<p>fs_dump： 是否要使用dump命令进行备份. 0为不备份，1为要备份。<br>fs_pass： 该字段被fsck命令用来决定在启动时是否需要被扫描的文件系统的顺序，根文件系统&#x2F;对应该字段的值应该为1，其他文件系统应该为2。若该文件系统无需在启动 时扫描则设置该字段为0</p>
+<h4 id="UUID开机自动挂载"><a href="#UUID开机自动挂载" class="headerlink" title="UUID开机自动挂载"></a>UUID开机自动挂载</h4><ul>
+<li><p>UUID作用<br>UUID是一个标识你系统中的存储设备的字符串，其目的是帮助使用者唯一的确定系统中的所有存储设备，不管它们是什么类型的。它可以标识DVD驱动器，USB存储设备以及你系统中的硬盘设备等。</p>
+</li>
+<li><p>特点：<br>它是真正的唯一标志符。Linux中的许多关键功能现在开始依赖于UUID</p>
+</li>
+<li><p>获取设备的UUID</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# blkid | grep sda5</span><br><span class="line">/dev/sda5:UUID=&quot;db81af84-5903-4907-b407-233716641819&quot; TYPE=&quot;xfs&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动挂载</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# vim /etc/fstab</span><br><span class="line">UUID=db81af84-5903-4907-b407-233716641819       /sda5      xfs   defaults 0 0</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="光盘开机自动挂载"><a href="#光盘开机自动挂载" class="headerlink" title="光盘开机自动挂载"></a>光盘开机自动挂载</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# vim /etc/fstab</span><br><span class="line">/dev/sr0                /mnt                    iso9660   defaults       0 0</span><br><span class="line">  # 或者：/dev/cdrom， /dev/sr0 = /dev/sr0</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# ll/dev/cdrom</span><br><span class="line">lrwxrwxrwx 1 root root3 Dec 10  2015 /dev/cdrom -&gt; sr0</span><br></pre></td></tr></table></figure>
+
+<h3 id="特殊挂载方法："><a href="#特殊挂载方法：" class="headerlink" title="特殊挂载方法："></a>特殊挂载方法：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> #指定格式 </span><br><span class="line">[root@localhost ~]#mount -t xfs /dev/sda5  /sda5/</span><br><span class="line"> #挂载ios光盘</span><br><span class="line">[root@localhost ~]#mount -o loop rhel-server-7.1-x86_64-dvd   /media/</span><br><span class="line"> # </span><br><span class="line">[root@localhost ~]#mount -o remount,ro  /sda5/</span><br></pre></td></tr></table></figure>
+
+<h2 id="磁盘卸载"><a href="#磁盘卸载" class="headerlink" title="磁盘卸载"></a>磁盘卸载</h2><p>通过 <code>挂载点</code> 或 <code>挂载的分区</code> 来卸载磁盘</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#umount /dev/sda5</span><br><span class="line">[root@localhost ~]#umount /data/</span><br></pre></td></tr></table></figure>
+
+<h3 id="无法卸载"><a href="#无法卸载" class="headerlink" title="无法卸载"></a>无法卸载</h3><p>当其他用户正在使用磁盘时， 就会出现无法卸载； 可以通过 <code>lsof</code> 或 <code>fuser</code> 找到当前使用磁盘的进程，关闭此进程，再尝试卸载。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#umount /dev/sda5</span><br><span class="line">umount: /sda5: targetis busy.</span><br><span class="line">        (In some cases useful info aboutprocesses that use</span><br><span class="line">         the device is found by lsof(8) or fuser(1))</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#lsof /sda5/</span><br><span class="line">COMMAND  PID USER  FD   TYPE DEVICE SIZE/OFF NODENAME</span><br><span class="line">bash    3967 root cwd    DIR    8,5       6  128 /sda5</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#kill -9 3967</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#fuser -m -u -v /sda5/</span><br><span class="line">                     USER        PID ACCESS COMMAND</span><br><span class="line">/sda5:               root     kernel mount (root)/sda5</span><br><span class="line">                     root      36749 ..c.. (root)bash</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#kill -9 36749</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]#umount /dev/sda5</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展swap"><a href="#扩展swap" class="headerlink" title="扩展swap"></a>扩展swap</h2><p>当swap分区空间不够时， 可以通过以下方式扩展swap大小。</p>
+<h3 id="新建swap-分区"><a href="#新建swap-分区" class="headerlink" title="新建swap 分区"></a>新建swap 分区</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> #格式化sdb1分区为swap格式</span><br><span class="line">[root@localhost ~]# mkswap /dev/sdb1</span><br><span class="line">Setting up swapspaceversion 1, size = 96252 KiB</span><br><span class="line">no label,UUID=d6e96d3b-9d74-4eda-8bdf-387754dca90e</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看虚拟内存大小"><a href="#查看虚拟内存大小" class="headerlink" title="查看虚拟内存大小"></a>查看虚拟内存大小</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#free -m</span><br><span class="line">              total        used        free      shared buff/cache   available</span><br><span class="line">Mem:           3939         517        2942           9         479        3191</span><br><span class="line">Swap:          2047           0        2047</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动swap分区"><a href="#启动swap分区" class="headerlink" title="启动swap分区"></a>启动swap分区</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#swapon /dev/sdb1</span><br></pre></td></tr></table></figure>
+
+<h3 id="再次查看"><a href="#再次查看" class="headerlink" title="再次查看"></a>再次查看</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#free -m</span><br><span class="line">              total       used        free      shared buff/cache   available</span><br><span class="line">Mem:           3939         516        2942           9         479        3191</span><br><span class="line">Swap:          2141           0        2141</span><br></pre></td></tr></table></figure>
+<h3 id="实现开机自动挂载swap分区"><a href="#实现开机自动挂载swap分区" class="headerlink" title="实现开机自动挂载swap分区"></a>实现开机自动挂载swap分区</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost~]# vim /etc/fstab</span><br><span class="line">/dev/sdb1               swap                    swap    defaults        0 0</span><br></pre></td></tr></table></figure>
+<p>说明：只有重启才能生效，mount –a 无法自动扩展swap分区的。</p>
+<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#swapoff /dev/sdb1</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/09/linux/base/godLinux1-11~12/" rel="prev" title="1-11~12 - 重定向和文件查找">
+      <i class="fa fa-chevron-left"></i> 1-11~12 - 重定向和文件查找
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/15/linux/base/godLinux1-14/" rel="next" title="1-14 Linux 文件系统">
+      1-14 Linux 文件系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA"><span class="nav-number">2.</span> <span class="nav-text">磁盘分区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MBR-fdisk"><span class="nav-number">2.1.</span> <span class="nav-text">MBR  fdisk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GPT-parted"><span class="nav-number">2.2.</span> <span class="nav-text">GPT  parted</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Parted-%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">2.2.1.</span> <span class="nav-text">Parted 磁盘分区工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8Bparted%E5%91%BD%E4%BB%A4%E7%9A%84%E5%B8%AE%E5%8A%A9%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="nav-number">2.2.2.</span> <span class="nav-text">查看parted命令的帮助信息：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E7%A3%81%E7%9B%98%E7%8A%B6%E6%80%81"><span class="nav-number">2.2.3.</span> <span class="nav-text">查看所有磁盘状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#parted%E5%AF%B9%E7%A3%81%E7%9B%98%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.4.</span> <span class="nav-text">parted对磁盘进行操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%96%B0%E8%8E%B7%E5%8F%96%E5%88%86%E5%8C%BA%E8%A1%A8"><span class="nav-number">2.3.</span> <span class="nav-text">重新获取分区表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="nav-number">3.</span> <span class="nav-text">格式化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E6%8C%82%E8%BD%BD"><span class="nav-number">4.</span> <span class="nav-text">磁盘挂载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%8C%82%E8%BD%BD%E7%82%B9"><span class="nav-number">4.1.</span> <span class="nav-text">创建挂载点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8"><span class="nav-number">4.2.</span> <span class="nav-text">手动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD"><span class="nav-number">4.3.</span> <span class="nav-text">开机自动挂载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UUID%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD"><span class="nav-number">4.3.1.</span> <span class="nav-text">UUID开机自动挂载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%89%E7%9B%98%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BD"><span class="nav-number">4.3.2.</span> <span class="nav-text">光盘开机自动挂载</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%8C%82%E8%BD%BD%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">4.4.</span> <span class="nav-text">特殊挂载方法：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%8D%B8%E8%BD%BD"><span class="nav-number">5.</span> <span class="nav-text">磁盘卸载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E5%8D%B8%E8%BD%BD"><span class="nav-number">5.1.</span> <span class="nav-text">无法卸载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95swap"><span class="nav-number">6.</span> <span class="nav-text">扩展swap</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BAswap-%E5%88%86%E5%8C%BA"><span class="nav-number">6.1.</span> <span class="nav-text">新建swap 分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E5%A4%A7%E5%B0%8F"><span class="nav-number">6.2.</span> <span class="nav-text">查看虚拟内存大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8swap%E5%88%86%E5%8C%BA"><span class="nav-number">6.3.</span> <span class="nav-text">启动swap分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%8D%E6%AC%A1%E6%9F%A5%E7%9C%8B"><span class="nav-number">6.4.</span> <span class="nav-text">再次查看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%BC%80%E6%9C%BA%E8%87%AA%E5%8A%A8%E6%8C%82%E8%BD%BDswap%E5%88%86%E5%8C%BA"><span class="nav-number">6.5.</span> <span class="nav-text">实现开机自动挂载swap分区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD"><span class="nav-number">6.6.</span> <span class="nav-text">关闭</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容 文件基本权限 文件高级权限  文件基本权限查看文件权限1$ ll $filename  基本权限构成12$ ll text -rw-r--r-- 1 sam users 0 12月  1 15:20 text    - rw- r– r– sam users text(FILENAME)    类型 拥有者的权限 所属组的权限 其他人的权限 拥有者 属组 对象">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-7 文件权限管理">
+<meta property="og:url" content="http://giveme5.cc/2015/12/05/linux/base/godLinux1-7/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 文件基本权限 文件高级权限  文件基本权限查看文件权限1$ ll $filename  基本权限构成12$ ll text -rw-r--r-- 1 sam users 0 12月  1 15:20 text    - rw- r– r– sam users text(FILENAME)    类型 拥有者的权限 所属组的权限 其他人的权限 拥有者 属组 对象">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-12-05T10:29:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="GOD linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/05/linux/base/godLinux1-7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-7 文件权限管理 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/05/linux/base/godLinux1-7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-7 文件权限管理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-12-05 18:29:44" itemprop="dateCreated datePublished" datetime="2015-12-05T18:29:44+08:00">2015-12-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><ul>
+<li>文件基本权限</li>
+<li>文件高级权限</li>
+</ul>
+<h2 id="文件基本权限"><a href="#文件基本权限" class="headerlink" title="文件基本权限"></a>文件基本权限</h2><h3 id="查看文件权限"><a href="#查看文件权限" class="headerlink" title="查看文件权限"></a>查看文件权限</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ll <span class="variable">$filename</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="基本权限构成"><a href="#基本权限构成" class="headerlink" title="基本权限构成"></a>基本权限构成</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ll text </span><br><span class="line">-rw-r--r-- 1 sam users 0 12月  1 15:20 text</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>rw-</th>
+<th>r–</th>
+<th>r–</th>
+<th>sam</th>
+<th>users</th>
+<th>text(FILENAME)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类型</td>
+<td>拥有者的权限</td>
+<td>所属组的权限</td>
+<td>其他人的权限</td>
+<td>拥有者</td>
+<td>属组</td>
+<td>对象</td>
+</tr>
+</tbody></table>
+<span id="more"></span>
+
+<p>对于文件：r读　　w写　　x执行<br>对于目录：r读（看到目录里面有什么）       cat   more  less   ls<br>　　　　　w建文件、删除、移动                  touch   mkdir   rm   mv  cp<br>　　　　　x进入                                        cd</p>
+<h3 id="修改权限"><a href="#修改权限" class="headerlink" title="修改权限"></a>修改权限</h3><h4 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h4><p>作用：修改文件权限<br>u-w               user                      拥有者<br>g+x               group                   组<br>o&#x3D;r                other                    其他人<br>a+x               all                        所有人<br><code>-</code> 代表移除； <code>+</code> 代表增加； <code>=</code> 代表替换<br>此命令同样可以修改目录， 用法和修改文件一致</p>
+<ul>
+<li>数字表示权限</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>r–</th>
+<th>-w-</th>
+<th>–x</th>
+<th>进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100</td>
+<td>010</td>
+<td>001</td>
+<td>二进制</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2</td>
+<td>1</td>
+<td>十进制</td>
+</tr>
+</tbody></table>
+<p>用数字表示就是把对应数据相加<br>so <code>rwx</code> 表示为 7； <code>rw</code> 为 6;<br>rwxr-xr-x 的值是多少？rwx&#x3D;4+2+1&#x3D;7;r-x&#x3D;4+1&#x3D;5;r-x&#x3D;4+1&#x3D;5; rwxr-xr-x&#x3D;755 </p>
+<h4 id="chown"><a href="#chown" class="headerlink" title="chown"></a>chown</h4><p>作用：修改文件拥有者和所属组<br>语法：chown USER:GROUP 对象<br>chown USER 对象<br>chown :GROUP 对象 <code>:</code> 必须<br>-R 递归(目录下的所有内容全部更改，否则只修改目录)<br>一个文件只有读的权限，拥有者是否可以写这个文件？   文件所有者一定可以写文件</p>
+<h3 id="默认权限"><a href="#默认权限" class="headerlink" title="默认权限"></a>默认权限</h3><ul>
+<li>计算方法：<br>** 快速计算<br>文件默认权限＝666（默认值）-umask值<br>目录默认权限＝777（默认值）-umask值<br>这是一个快速计算方法，但不严谨。<br>** 完整算法<br>在2进制表示的情况下<br>默认值 &amp;&amp; （umask值取反）<br>** umask值<br>用户默认的shell配置文件中设置，如 <code>/etc/bashrc</code><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if [ $UID -gt 199 ]&amp;&amp; [ &quot;`id -gn`&quot; = &quot;`id -un`&quot; ]; then  # id -gn显示组名，id -un 显示用户名</span><br><span class="line">        umask 002   ＃普通用户</span><br><span class="line">else</span><br><span class="line">        umask 022   ＃系统用户</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="高级权限"><a href="#高级权限" class="headerlink" title="高级权限"></a>高级权限</h2><h3 id="特殊权限"><a href="#特殊权限" class="headerlink" title="特殊权限"></a>特殊权限</h3><p>SUID               SGID                 Stickybit<br>s对应的数值为：u 4，g  2，o   1</p>
+<ul>
+<li><p>SUID：<br>限定：只能设置在二进制可执行程序上面。对目录文本设置无效。<br>功能：程序运行时的权限从执行者变更成程序所有者。<br>可用 <code>chmod</code> 修改</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#chmod u+s /usr/bin/less</span><br><span class="line">[root@localhost ~]# ll /usr/bin/less</span><br><span class="line">-rwsr-xr-x. 1 root root158240 Feb  4  2014 /usr/bin/less</span><br></pre></td></tr></table></figure>
+<p>注意：<br><code>[root@localhost ~]#chmod u+s /usr/bin/less</code> 等同于 <code>[root@localhost ~]#chmod 4755 /usr/bin/less</code></p>
+</li>
+<li><p>SGID：<br>限定：既可以给二进制可执行程序设置，也可以给目录设置。<br>功能：在设置了SGID权限的目录下建立文件时，新创建的文件的所属组会继承上级目录的所属组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#chmod g+s test/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Stickybit<br>限定：只作用于目录<br>功能：目录下创建的文件只有root、文件创建者、目录所有者才能删除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#chmod o+t test</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="扩展ACL"><a href="#扩展ACL" class="headerlink" title="扩展ACL"></a>扩展ACL</h3><ul>
+<li><p>查看 getfacl</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#getfacl test</span><br><span class="line"># file: test</span><br><span class="line"># owner: root</span><br><span class="line"># group: root</span><br><span class="line">user::rw-</span><br><span class="line">group::r--</span><br><span class="line">other::r--</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置 setfacl <code>-m</code> 必须</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#setfacl -m u:sam1:rwx test</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对目录进行设置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#setfacl -R -m u:sam1:rw- test</span><br></pre></td></tr></table></figure>
+<p>(<code>-R</code> 一定要在 <code>-m</code> 前面，表示目录下所有文件）</p>
+</li>
+<li><p>删除acl</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#setfacl -x u:sam1 test #删除单个用户的权限</span><br><span class="line">[root@xuegod163~]# setfacl -b test         #删除所有acl权限</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="文件系统扩展属性"><a href="#文件系统扩展属性" class="headerlink" title="文件系统扩展属性"></a>文件系统扩展属性</h3><ul>
+<li>命令<br><code>chattr</code>：设置， <code>lsattr</code>：查看<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chattr [+/-] [a/i] $filename</span><br></pre></td></tr></table></figure>
+<code>+</code> 增加属性， <code>-</code> 减少属性； <code>a</code> ：只能追加内容， <code>i</code>：不能被修改<br>如 <code>+a</code>&#x3D; 只能追加内容， <code>+i</code>&#x3D; 不能被修改<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#chattr +i test   #root 都不能删除</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/04/linux/base/godLinux1-6/" rel="prev" title="1-6 用户管理">
+      <i class="fa fa-chevron-left"></i> 1-6 用户管理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/06/linux/base/godLinux1-8/" rel="next" title="1-8-RHEL7软件包管理">
+      1-8-RHEL7软件包管理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E5%9F%BA%E6%9C%AC%E6%9D%83%E9%99%90"><span class="nav-number">2.</span> <span class="nav-text">文件基本权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90"><span class="nav-number">2.1.</span> <span class="nav-text">查看文件权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%9D%83%E9%99%90%E6%9E%84%E6%88%90"><span class="nav-number">2.2.</span> <span class="nav-text">基本权限构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%9D%83%E9%99%90"><span class="nav-number">2.3.</span> <span class="nav-text">修改权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#chmod"><span class="nav-number">2.3.1.</span> <span class="nav-text">chmod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chown"><span class="nav-number">2.3.2.</span> <span class="nav-text">chown</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E6%9D%83%E9%99%90"><span class="nav-number">2.4.</span> <span class="nav-text">默认权限</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E6%9D%83%E9%99%90"><span class="nav-number">3.</span> <span class="nav-text">高级权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%9D%83%E9%99%90"><span class="nav-number">3.1.</span> <span class="nav-text">特殊权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95ACL"><span class="nav-number">3.2.</span> <span class="nav-text">扩展ACL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E6%89%A9%E5%B1%95%E5%B1%9E%E6%80%A7"><span class="nav-number">3.3.</span> <span class="nav-text">文件系统扩展属性</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

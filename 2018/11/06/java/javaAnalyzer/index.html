@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容 JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。 本章首先介绍各种倚天剑和屠龙刀（致敬 金庸大大）  工具介绍公欲善其事，必先利其器jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)  CPU调优还我CPU  Memory调优吃我的吐出来   更">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM线上调优(一) 工具介绍">
+<meta property="og:url" content="http://giveme5.cc/2018/11/06/java/javaAnalyzer/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。 本章首先介绍各种倚天剑和屠龙刀（致敬 金庸大大）  工具介绍公欲善其事，必先利其器jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)  CPU调优还我CPU  Memory调优吃我的吐出来   更">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://giveme5.cc/images/jvm/ja_visualvm.jpg">
+<meta property="article:published_time" content="2018-11-06T13:31:21.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="jstack">
+<meta property="article:tag" content="jvm">
+<meta property="article:tag" content="jps">
+<meta property="article:tag" content="jstat">
+<meta property="article:tag" content="jmap">
+<meta property="article:tag" content="jhat">
+<meta property="article:tag" content="jinfo">
+<meta property="article:tag" content="JConsole">
+<meta property="article:tag" content="VisualVM">
+<meta property="article:tag" content="MAT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://giveme5.cc/images/jvm/ja_visualvm.jpg">
+
+<link rel="canonical" href="http://giveme5.cc/2018/11/06/java/javaAnalyzer/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>JVM线上调优(一) 工具介绍 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2018/11/06/java/javaAnalyzer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM线上调优(一) 工具介绍
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-11-06 21:31:21" itemprop="dateCreated datePublished" datetime="2018-11-06T21:31:21+08:00">2018-11-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<p>JVM调优的工具和方法 深入浅出，分如下3节介绍，可以解决实际问题。</p>
+<p>本章首先介绍各种倚天剑和屠龙刀<br>（致敬 金庸大大）</p>
+<ul>
+<li><p><a href="/2018/11/06/java/javaAnalyzer/">工具介绍</a><br>公欲善其事，必先利其器<br>jps, jstat, jmap, jhat, jstack, jinfo, JConsole, VisualVM, Eclipse Memory Analyzer(MAT)</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-cpu/">CPU调优</a><br>还我CPU</p>
+</li>
+<li><p><a href="/2018/11/07/java/javaAnalyzer-memory/">Memory调优</a><br>吃我的吐出来</p>
+</li>
+</ul>
+<p><em>更新历史</em></p>
+<span id="more"></span>
+<hr>
+<p>TIPs： 以下命令都尽量在启动JVM的用户环境下使用</p>
+<h2 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h2><p>JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程。</p>
+<h3 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h3><pre><code>jps [-q] [-mlvV] [&lt;hostid&gt;]
+</code></pre>
+<p>参数都非必须</p>
+<h3 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h3><pre><code>-q : 只输出LVMID
+-l : 输出主类全名或jar路径
+-m : 输出JVM启动时传递给main()的参数
+-v : 输出JVM启动时显示指定的JVM参数
+</code></pre>
+<h3 id="例"><a href="#例" class="headerlink" title="例"></a>例</h3><pre><code>╰─$ jps -l   
+15346 org.jetbrains.idea.maven.server.RemoteMavenServer
+15527 org.jetbrains.jps.cmdline.Launcher
+14986 com.intellij.idea.Main
+30074 jdk.jcmd/sun.tools.jps.Jps
+18941 org.jetbrains.jps.cmdline.Launcher
+</code></pre>
+<h2 id="jstat-性能分析"><a href="#jstat-性能分析" class="headerlink" title="jstat 性能分析"></a>jstat 性能分析</h2><p>jstat(JVM statistics Monitoring)是用于监视虚拟机运行时状态信息的命令，类装载、内存、垃圾收集、JIT编译等数据</p>
+<h3 id="命令-1"><a href="#命令-1" class="headerlink" title="命令"></a>命令</h3><pre><code>jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]
+</code></pre>
+<h3 id="参数-1"><a href="#参数-1" class="headerlink" title="参数"></a>参数</h3><pre><code>[option] : 操作参数
+vmid : 本地虚拟机进程ID
+[interval] : 连续输出的时间间隔
+[count] : 连续输出的次数
+</code></pre>
+<h4 id="参数一览"><a href="#参数一览" class="headerlink" title="参数一览"></a>参数一览</h4><style>
+table th:first-of-type {
+    width: 20%;
+}
+</style>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>gc</td>
+<td>垃圾回收堆的行为统计。Statistics of the behavior of the garbage collected heap.</td>
+</tr>
+<tr>
+<td>class</td>
+<td>class loader的行为统计。Statistics on the behavior of the class loader.</td>
+</tr>
+<tr>
+<td>compiler</td>
+<td>HotSpt JIT编译器行为统计。Statistics of the behavior of the HotSpot Just-in-Time compiler.</td>
+</tr>
+<tr>
+<td>gccapacity</td>
+<td>各个垃圾回收代容量(young,old,perm)和他们相应的空间统计。Statistics of the capacities of the generations and their corresponding spaces.</td>
+</tr>
+<tr>
+<td>gcutil</td>
+<td>垃圾回收统计概述。Summary of garbage collection statistics.</td>
+</tr>
+<tr>
+<td>gccause</td>
+<td>垃圾收集统计概述（同-gcutil），附加最近两次垃圾回收事件的原因。Summary of garbage collection statistics (same as -gcutil), with the cause of the last and</td>
+</tr>
+<tr>
+<td>gcnew</td>
+<td>新生代行为统计。Statistics of the behavior of the new generation.</td>
+</tr>
+<tr>
+<td>gcnewcapacity</td>
+<td>新生代与其相应的内存空间的统计。Statistics of the sizes of the new generations and its corresponding spaces.</td>
+</tr>
+<tr>
+<td>gcold</td>
+<td>年老代和永生代行为统计。Statistics of the behavior of the old and permanent generations.</td>
+</tr>
+<tr>
+<td>gcoldcapacity</td>
+<td>年老代行为统计。Statistics of the sizes of the old generation.</td>
+</tr>
+<tr>
+<td>gcpermcapacity</td>
+<td>永生代行为统计。Statistics of the sizes of the permanent generation.</td>
+</tr>
+<tr>
+<td>printcompilation</td>
+<td>HotSpot编译方法统计。HotSpot compilation method statistics.</td>
+</tr>
+</tbody></table>
+<p><code>-gc</code><br>常用命令 垃圾回收堆的行为统计</p>
+<pre><code>╰─# jstat -gc 15490 3s
+S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT   
+8192.0 33792.0 8181.8  0.0   724992.0 592657.6  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+8192.0 33792.0 8181.8  0.0   724992.0 594107.5  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+8192.0 33792.0 8181.8  0.0   724992.0 594455.2  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+8192.0 33792.0 8181.8  0.0   724992.0 595905.2  215040.0   81474.7   90880.0 86753.7 11520.0 10764.0     20    0.625   3      0.365    0.990
+</code></pre>
+<p><strong>C即Capacity 总容量，U即Used 已使用的容量</strong></p>
+<ul>
+<li>S0C：第一个幸存区的大小</li>
+<li>S1C：第二个幸存区的大小</li>
+<li>S0U：第一个幸存区的使用大小</li>
+<li>S1U：第二个幸存区的使用大小</li>
+<li>EC：伊甸园区的大小</li>
+<li>EU：伊甸园区的使用大小</li>
+<li>OC：老年代大小</li>
+<li>OU：老年代使用大小</li>
+<li>MC：方法区大小</li>
+<li>MU：方法区使用大小</li>
+<li>CCSC:压缩类空间大小</li>
+<li>CCSU:压缩类空间使用大小</li>
+<li>YGC：年轻代垃圾回收次数</li>
+<li>YGCT：年轻代垃圾回收消耗时间</li>
+<li>FGC：老年代垃圾回收次数</li>
+<li>FGCT：老年代垃圾回收消耗时间</li>
+<li>GCT：垃圾回收消耗总时间</li>
+</ul>
+<p>更多可参考<a target="_blank" rel="noopener" href="https://app.yinxiang.com/shard/s70/nl/17973191/9a8fdbd4-6a6b-46fb-8c70-babd70a02fcb">jstat</a> <a target="_blank" rel="noopener" href="https://blog.csdn.net/maosijunzi/article/details/46049117">java高分局之jstat命令使用</a></p>
+<h2 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h2><p>jinfo(JVM Configuration info)实时查看和调整虚拟机运行参数</p>
+<h3 id="命令-2"><a href="#命令-2" class="headerlink" title="命令"></a>命令</h3><pre><code>jinfo &lt;option&gt; &lt;pid&gt;
+</code></pre>
+<h3 id="option"><a href="#option" class="headerlink" title="option"></a>option</h3><pre><code>-flag : 输出指定args参数的值
+-flags : 不需要args参数，输出所有JVM参数的值
+-sysprops : 输出系统属性，等同于System.getProperties()
+</code></pre>
+<h2 id="jmap-查看内存"><a href="#jmap-查看内存" class="headerlink" title="jmap 查看内存"></a>jmap 查看内存</h2><p>jmap(JVM Memory Map)命令用于生成heap dump文件，如果不使用这个命令，还可以使用-XX:+HeapDumpOnOutOfMemoryError参数来让虚拟机出现OOM的时候自动生成dump文件。<br>又或者在Linux系统下通过Kill-3命令发送进程退出信号“吓唬”一下虚拟机，也能拿到dump文件。<br>jmap不仅能生成dump文件，还可以查询finalize执行队列、Java堆和永久代的详细信息，如当前使用率、当前使用的是哪种收集器等。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>openjdk 需要 安装 <code>debuginfo</code>，版本需要和openjdk 一致</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum update java-1.8.0-openjdk.x86_64</span><br><span class="line">yum --enablerepo=<span class="string">&quot;*-debug*&quot;</span> install java-1.8.0-openjdk-debuginfo</span><br></pre></td></tr></table></figure>
+
+<p>否则 异常</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- unknown CollectedHeap type : class sun.jvm.hotspot.gc_interface.CollectedHeap</span><br></pre></td></tr></table></figure>
+
+<h3 id="命令-3"><a href="#命令-3" class="headerlink" title="命令"></a>命令</h3><pre><code>jmap [option] pid
+</code></pre>
+<h3 id="option参数"><a href="#option参数" class="headerlink" title="option参数"></a>option参数</h3><pre><code>dump : 生成堆转储快照
+finalizerinfo : 显示在F-Queue队列等待Finalizer线程执行finalizer方法的对象
+heap : 显示Java堆详细信息
+histo : 显示堆中对象的统计信息
+clstats : 类加载的统计信息
+F : 当-dump没有响应时，强制生成dump快照
+</code></pre>
+<h3 id="例-1"><a href="#例-1" class="headerlink" title="例"></a>例</h3><ul>
+<li>-dump<br>  jmap -dump:live,format&#x3D;b,file&#x3D;dump.hprof $pid</li>
+</ul>
+<p>dump.hprof这个后缀是为了后续可以直接用MAT(Memory Anlysis Tool)打开。</p>
+<ul>
+<li><p>-finalizerinfo<br>打印等待回收对象的信息</p>
+</li>
+<li><p>-heap<br>打印heap的概要信息，GC使用的算法，heap的配置及wise heap的使用情况,可以用此来判断内存目前的使用情况以及垃圾回收情况</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># jmap -heap 15490</span></span><br><span class="line">Attaching to process ID 15490, please <span class="built_in">wait</span>...</span><br><span class="line">Debugger attached successfully.</span><br><span class="line">Server compiler detected.</span><br><span class="line">JVM version is 25.191-b12</span><br><span class="line"></span><br><span class="line">using thread-local object allocation.</span><br><span class="line">Parallel GC with 2 thread(s) //GC 方式  </span><br><span class="line"></span><br><span class="line">Heap Configuration:</span><br><span class="line">    MinHeapFreeRatio         = 0 //对应jvm启动参数-XX:MinHeapFreeRatio设置JVM堆最小空闲比率(default 40)</span><br><span class="line">    MaxHeapFreeRatio         = 100 //对应jvm启动参数 -XX:MaxHeapFreeRatio设置JVM堆最大空闲比率(default 70)</span><br><span class="line">    MaxHeapSize              = 4164943872 (3972.0MB) //对应jvm启动参数-XX:MaxHeapSize=设置JVM堆的最大大小</span><br><span class="line">    NewSize                  = 87031808 (83.0MB) //对应jvm启动参数-XX:NewSize=设置JVM堆的‘新生代’的默认大小</span><br><span class="line">    MaxNewSize               = 1388314624 (1324.0MB) //对应jvm启动参数-XX:MaxNewSize=设置JVM堆的‘新生代’的最大大小</span><br><span class="line">    OldSize                  = 175112192 (167.0MB) //对应jvm启动参数-XX:OldSize=&lt;value&gt;:设置JVM堆的‘老生代’的大小</span><br><span class="line">    NewRatio                 = 2 //对应jvm启动参数-XX:NewRatio=:‘新生代’和‘老生代’的大小比率</span><br><span class="line">    SurvivorRatio            = 8 //对应jvm启动参数-XX:SurvivorRatio=设置年轻代中Eden区与Survivor区的大小比值 </span><br><span class="line">    MetaspaceSize            = 21807104 (20.796875MB) //对应jvm启动参数-XX:MetaspaceSize=&lt;value&gt;:设置JVM堆的‘方法区’的初始大小</span><br><span class="line">    CompressedClassSpaceSize = 1073741824 (1024.0MB)</span><br><span class="line">    MaxMetaspaceSize         = 17592186044415 MB //对应jvm启动参数-XX:MaxMetaspaceSize=&lt;value&gt;:设置JVM堆的‘方法区’的最大大小</span><br><span class="line">    G1HeapRegionSize         = 0 (0.0MB)</span><br><span class="line"></span><br><span class="line">Heap Usage: //堆内存使用情况</span><br><span class="line">PS Young Generation</span><br><span class="line">Eden Space: //Eden区内存分布</span><br><span class="line">    capacity = 742391808 (708.0MB) //Eden区总容量</span><br><span class="line">    used     = 626604800 (597.576904296875MB) //Eden区已使用</span><br><span class="line">    free     = 115787008 (110.423095703125MB) //Eden区剩余容量</span><br><span class="line">    84.40351755605579% used //Eden区使用比率</span><br><span class="line">From Space: //其中一个Survivor区的内存分布</span><br><span class="line">    capacity = 8388608 (8.0MB)</span><br><span class="line">    used     = 8378128 (7.9900054931640625MB)</span><br><span class="line">    free     = 10480 (0.0099945068359375MB)</span><br><span class="line">    99.87506866455078% used</span><br><span class="line">To Space: //另一个Survivor区的内存分布</span><br><span class="line">    capacity = 34603008 (33.0MB)</span><br><span class="line">    used     = 0 (0.0MB)</span><br><span class="line">    free     = 34603008 (33.0MB)</span><br><span class="line">    0.0% used</span><br><span class="line">PS Old Generation //当前的Old区内存分布</span><br><span class="line">    capacity = 220200960 (210.0MB)</span><br><span class="line">    used     = 83430072 (79.56511688232422MB)</span><br><span class="line">    free     = 136770888 (130.43488311767578MB)</span><br><span class="line">    37.88815089634487% used</span><br><span class="line"></span><br><span class="line">38773 interned Strings occupying 4270344 bytes.</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>-histo<br>打印堆的对象统计，包括对象数、内存大小等等 （因为在dump:live前会进行full gc，如果带上live则只统计活对象，因此不加live的堆大小要大于加live堆的大小 ）</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ jmap -histo:live 15490 | more</span><br><span class="line"></span><br><span class="line"> num     <span class="comment">#instances         #bytes  class name</span></span><br><span class="line">----------------------------------------------</span><br><span class="line">   1:        137190       15505768  [C</span><br><span class="line">   2:         10772        8598936  [B</span><br><span class="line">   3:        131166        3147984  java.lang.String</span><br><span class="line">   4:         29783        2620904  java.lang.reflect.Method</span><br><span class="line">   5:         36792        2354688  com.mysql.jdbc.ConnectionPropertiesImpl<span class="variable">$BooleanConnectionProperty</span></span><br><span class="line">   6:         72596        2323072  java.util.concurrent.ConcurrentHashMap<span class="variable">$Node</span></span><br><span class="line">   7:         17598        1948272  java.lang.Class</span><br><span class="line">   8:         14682        1766000  [Ljava.util.HashMap<span class="variable">$Node</span>;</span><br><span class="line">   9:         55163        1765216  java.util.Hashtable<span class="variable">$Entry</span></span><br><span class="line">  10:         13793        1732072  [I</span><br><span class="line">  ....</span><br></pre></td></tr></table></figure>
+
+<p>  xml class name是对象类型，说明如下：</p>
+<pre><code>  B  byte
+  C  char
+  D  double
+  F  float
+  I  int
+  J  long
+  Z  boolean
+  [  数组，如[I表示int[]
+  [L+类名 其他对象
+</code></pre>
+</li>
+<li><p>-clstats<br>打印Java堆内存的类加载器的统计信息。对于每个类加载器而言，它的名称、活跃度、地址、父类加载器、它所加载的类的数量和大小都会被打印。此外，包含的字符串数量和大小也会被打印。</p>
+  <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jmap -clstats 15490</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="jhat"><a href="#jhat" class="headerlink" title="jhat"></a>jhat</h2><p>jhat(JVM Heap Analysis Tool)命令是与jmap搭配使用，用来分析jmap生成的dump。<br>千万下载dump文件到开发环境进行分析。<br>推荐使用 Eclipse Memory Analyzer(MAT)</p>
+<h2 id="jstack-查看线程"><a href="#jstack-查看线程" class="headerlink" title="jstack 查看线程"></a>jstack 查看线程</h2><p>jstack（Stack Trace for Java）用于生成虚拟机当前时刻的线程快照（一般称为threaddump或者javacore文件）。<br>线程快照是当前java虚拟机内每一条线程正在执行的方法堆栈的集合，生成线程快照的主要目的是<strong>定位线程出现长时间停顿</strong>的原因，如<strong>线程间死锁、死循环、请求外部资源</strong>等。<br>如果现在运行的java程序呈现停顿状态，jstack是非常有用的。</p>
+<h3 id="命令-4"><a href="#命令-4" class="headerlink" title="命令"></a>命令</h3><pre><code>jstack [-l][-e] &lt;pid&gt;
+</code></pre>
+<h3 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h3><pre><code>-l  long listing. Prints additional information about locks
+-e  extended listing. Prints additional information about threads
+</code></pre>
+<h3 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h3><p>参考 <a target="_blank" rel="noopener" href="http://www.hollischuang.com/archives/110">jstack</a></p>
+<hr>
+<p>以下都是可视化的工具</p>
+<h2 id="JConsole"><a href="#JConsole" class="headerlink" title="JConsole"></a>JConsole</h2><p>JConsole（Java Monitoring and Management Console）是一种基于JMX的可视化监视、 管理工具</p>
+<h2 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h2><p>大名鼎鼎的 VisualVM， 基于NetBeans平台开发，通过插件扩展支持，VisualVM可以做到</p>
+<ul>
+<li>显示虚拟机进程以及进程的配置、 环境信息（jps、 jinfo）。</li>
+<li>监视应用程序的CPU、 GC、 堆、 方法区以及线程的信息（jstat、 jstack）。</li>
+<li>dump以及分析堆转储快照（jmap、 jhat）。</li>
+<li>方法级的程序运行性能分析，找出被调用最多、 运行时间最长的方法。</li>
+<li>离线程序快照：收集程序的运行时配置、线程dump、内存dump等信息建立一个快照，可以将快照发送开发者处进行Bug反馈。</li>
+</ul>
+<p><img src="/images/jvm/ja_visualvm.jpg"></p>
+<h2 id="Eclipse-Memory-Analyzer-MAT"><a href="#Eclipse-Memory-Analyzer-MAT" class="headerlink" title="Eclipse Memory Analyzer(MAT)"></a><a target="_blank" rel="noopener" href="https://www.eclipse.org/mat/">Eclipse Memory Analyzer(MAT)</a></h2><p>Eclipse 出品，MAT可以对堆dump的文件进行分析，可以去detail页看线程各个对象的使用数目等情况。</p>
+<ul>
+<li>内存泄露报表，自动检查可能存在内存泄露的对象，通过报表展示存活的对象以及为什么他们没有被垃圾收集；</li>
+<li>对象报表，对可颖对象的分析，如字符串是否定义重了，空的collection、finalizer以及弱引用等。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+              <a href="/tags/jstack/" rel="tag"># jstack</a>
+              <a href="/tags/jvm/" rel="tag"># jvm</a>
+              <a href="/tags/jps/" rel="tag"># jps</a>
+              <a href="/tags/jstat/" rel="tag"># jstat</a>
+              <a href="/tags/jmap/" rel="tag"># jmap</a>
+              <a href="/tags/jhat/" rel="tag"># jhat</a>
+              <a href="/tags/jinfo/" rel="tag"># jinfo</a>
+              <a href="/tags/JConsole/" rel="tag"># JConsole</a>
+              <a href="/tags/VisualVM/" rel="tag"># VisualVM</a>
+              <a href="/tags/MAT/" rel="tag"># MAT</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/11/04/spring/springfox-md/" rel="prev" title="swagger springfox rest接口文档">
+      <i class="fa fa-chevron-left"></i> swagger springfox rest接口文档
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/07/java/javaAnalyzer-memory/" rel="next" title="JVM线上调优(三)  内存调优">
+      JVM线上调优(三)  内存调优 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jps"><span class="nav-number">1.</span> <span class="nav-text">jps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B"><span class="nav-number">1.3.</span> <span class="nav-text">例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstat-%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">jstat 性能分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4-1"><span class="nav-number">2.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0-1"><span class="nav-number">2.2.</span> <span class="nav-text">参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%B8%80%E8%A7%88"><span class="nav-number">2.2.1.</span> <span class="nav-text">参数一览</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jinfo"><span class="nav-number">3.</span> <span class="nav-text">jinfo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4-2"><span class="nav-number">3.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#option"><span class="nav-number">3.2.</span> <span class="nav-text">option</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jmap-%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98"><span class="nav-number">4.</span> <span class="nav-text">jmap 查看内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">4.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4-3"><span class="nav-number">4.2.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#option%E5%8F%82%E6%95%B0"><span class="nav-number">4.3.</span> <span class="nav-text">option参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B-1"><span class="nav-number">4.4.</span> <span class="nav-text">例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jhat"><span class="nav-number">5.</span> <span class="nav-text">jhat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jstack-%E6%9F%A5%E7%9C%8B%E7%BA%BF%E7%A8%8B"><span class="nav-number">6.</span> <span class="nav-text">jstack 查看线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4-4"><span class="nav-number">6.1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Options"><span class="nav-number">6.2.</span> <span class="nav-text">Options</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90"><span class="nav-number">6.3.</span> <span class="nav-text">解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JConsole"><span class="nav-number">7.</span> <span class="nav-text">JConsole</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VisualVM"><span class="nav-number">8.</span> <span class="nav-text">VisualVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eclipse-Memory-Analyzer-MAT"><span class="nav-number">9.</span> <span class="nav-text">Eclipse Memory Analyzer(MAT)</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

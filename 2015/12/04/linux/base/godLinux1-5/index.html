@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="写在一起之前： 命令行输入 vimtutor 你会有惊喜， 全部做完，恭喜你，入门了！！！！！！！！！ 主要内容：vim主要模式介绍vim命令模式vim插（输）入模式vim命令（末）行模式设置vim开发环境 主要模式vim 主要有 命令模式 插（输）入模式 命令（末）行模式 三种模式， 意义和转换如下图：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-5 vim编辑器">
+<meta property="og:url" content="http://giveme5.cc/2015/12/04/linux/base/godLinux1-5/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="写在一起之前： 命令行输入 vimtutor 你会有惊喜， 全部做完，恭喜你，入门了！！！！！！！！！ 主要内容：vim主要模式介绍vim命令模式vim插（输）入模式vim命令（末）行模式设置vim开发环境 主要模式vim 主要有 命令模式 插（输）入模式 命令（末）行模式 三种模式， 意义和转换如下图：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xklqw.com1.z0.glb.clouddn.com/vimmodels.png">
+<meta property="article:published_time" content="2015-12-04T08:29:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="GOD linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xklqw.com1.z0.glb.clouddn.com/vimmodels.png">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/04/linux/base/godLinux1-5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-5 vim编辑器 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/04/linux/base/godLinux1-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-5 vim编辑器
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-12-04 16:29:44" itemprop="dateCreated datePublished" datetime="2015-12-04T16:29:44+08:00">2015-12-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>写在一起之前： 命令行输入 <code>vimtutor</code> 你会有惊喜， 全部做完，恭喜你，入门了！！！！！！！！！</p>
+<p>主要内容：<br>vim主要模式介绍<br>vim命令模式<br>vim插（输）入模式<br>vim命令（末）行模式<br>设置vim开发环境</p>
+<h2 id="主要模式"><a href="#主要模式" class="headerlink" title="主要模式"></a>主要模式</h2><p>vim 主要有 <code>命令模式</code> <code>插（输）入模式</code> <code>命令（末）行模式</code> 三种模式， 意义和转换如下图：<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/vimmodels.png"></p>
+<span id="more"></span>
+
+<h2 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h2><p>此状态下敲击键盘动作会被Vim识别为命令，而非输入字符。</p>
+<h3 id="字符操作"><a href="#字符操作" class="headerlink" title="字符操作"></a>字符操作</h3><ul>
+<li><code>i</code> 当前字符之前插入</li>
+<li><code>I</code> 行首插入</li>
+<li><code>a</code> 当前字符之后插入</li>
+<li><code>A</code> 行尾插入</li>
+<li><code>esc</code> 退出当前模式</li>
+<li><code>o</code> 下一行插入</li>
+<li><code>O</code> 上一行插入</li>
+<li><code>x</code> 向后删除一个字符del</li>
+<li><code>X</code> 向前删除一个字符</li>
+<li><code>u</code> 撤销一步</li>
+</ul>
+<h3 id="定位"><a href="#定位" class="headerlink" title="定位"></a>定位</h3><ul>
+<li><code>gg</code> 定位到行首</li>
+<li><code>G</code> 定位到最后一行，行首</li>
+<li><code>nG</code> 定位到某一行</li>
+<li><code>:n</code> 定位到某一行</li>
+<li><code>ngg</code> 定位到某一行<br>n 代表行号</li>
+</ul>
+<h3 id="行操作"><a href="#行操作" class="headerlink" title="行操作"></a>行操作</h3><ul>
+<li><code>home键或^</code> 行首 </li>
+<li><code>end或$</code> 行尾</li>
+<li><code>dd</code> 删除一行<br><code>ndd</code> 删除以当前行开始的n行<br><code>ddp</code> 上下两行的内容互换<br><code>dG</code> 删除从当前行至文件未尾的所有行。</li>
+<li><code>yy</code> 复制一行<br><code>Nyy</code> 复制N行</li>
+<li><code>p</code> 将复制行粘贴 P上粘</li>
+<li>扩展：剪切&#x3D;先删除，再粘贴</li>
+<li><code>d + HOME 或^</code> 删除到行首  </li>
+<li><code>d + END 或$</code> 删除到行尾</li>
+</ul>
+<h3 id="词操作"><a href="#词操作" class="headerlink" title="词操作"></a>词操作</h3><ul>
+<li><code>dw</code> 删除一个词，删除时要将光标移动到这个词的行首。 另外，如果光标不在行首，则删除光标之后的字母。</li>
+<li><code>yw</code> 复制一个词</li>
+<li><code>w</code> 切换单词</li>
+</ul>
+<h3 id="块操作"><a href="#块操作" class="headerlink" title="块操作"></a>块操作</h3><ul>
+<li><code>大D 或d+$</code> 删至行尾<br><code>d+^</code> 删至行首</li>
+<li><code>y+$</code> 复制至尾<br><code>y+^</code> 复制至首<br><code>&quot;+y</code>  复制选中内容到＋寄存器，也就是系统的剪贴板，供其他程序用 +需要显式输入。 ：reg 可查看支付支持＋寄存器</li>
+</ul>
+<h3 id="v-模式"><a href="#v-模式" class="headerlink" title="v 模式"></a>v 模式</h3><p>进入v模式 移动光标选择区域、<br>编程的时候需要进行多行注释：<br>1、注释：ctrl+v 进入列编辑模式<br>2向下或向上移动光标<br>3把需要注释的行的开头标记起来<br>4然后按大写的I<br>5再插入注释符,比如”#”。<br>6再按Esc,就会全部注释了。</p>
+<p>  删除多行注释：<br>  删除：再按ctrl+v 进入列编辑模式；向下或向上移动光标 ；选中注释部分,然后按d, 就会删除注释符号。</p>
+<h2 id="输入模式"><a href="#输入模式" class="headerlink" title="输入模式"></a>输入模式</h2><p>字符就是字符本身，用来编辑内容</p>
+<h2 id="命令（末）行模式"><a href="#命令（末）行模式" class="headerlink" title="命令（末）行模式"></a>命令（末）行模式</h2><ul>
+<li><p>保存退出<br><code>:w</code> 保存 save<br><code>:q</code> 没有进行任何修改，退出 quit<br><code>:q!</code> 修改了，不保存，强制退出<br><code>:wq</code> 保存并退出<br><code>:wq!</code> 强制保存并退出。</p>
+</li>
+<li><p>替换<br><code>:%s /this/that</code> #每一行的第一个this被替换成that<br><code>:s /emacs/vim</code> #在当前行中把第一个emacs替换成vim。<br><code>:%s /this/that/g</code> #将文本中所有的this替换成that<br><code>:2,5s /this/that/g</code> #替换第二行到第五行中sbin<br>注意： <code>替换内容中本身有/符号， 外面的/可以用#替换。 比如 :%s #this#that#g</code></p>
+</li>
+<li><p><code>:set nu/nonu</code>  #显示行号</p>
+</li>
+<li><p>查找<br><code>/</code> 正向查找 ：&#x2F;target<br><code>n</code> 往下查找，<br><code>N</code> 往上查找<br>去消高亮显示： noh 或 随便查找一组没有的字符</p>
+</li>
+<li><p><code>:! command</code> 运行shell命令</p>
+</li>
+<li><p><code>:r /etc/ssh/sshd_config.bak</code>  读取其他文件</p>
+</li>
+</ul>
+<h2 id="设置vim开发环境"><a href="#设置vim开发环境" class="headerlink" title="设置vim开发环境"></a>设置vim开发环境</h2><p>在命令模式下用set命令设置的东西是不能保存的，下次打开vim时又要重新设置。所以vim提供了一个配置文件叫vimrc，可以保存你的配置信息。<br>  ~&#x2F;.vimrc<br>输入：<br><code>set nu</code> #显示行数<br><code>set history=10</code> #<br><code>set autoindent</code> #自动缩排，如当前行是从第3个字符的位置开始编辑的,按回车后光标会自动定位在下一行第三3个字符的位置。<br><code>set paste</code> #置粘贴模式，这样粘贴过来的程序代码就不会错位了。<br>等等</p>
+<h2 id="vim同时打开多个文件"><a href="#vim同时打开多个文件" class="headerlink" title="vim同时打开多个文件"></a>vim同时打开多个文件</h2><p>用法： vim -[o&#x2F;O] filename<br>大写 <code>O</code> 左右分屏，小写的 <code>o</code> 上下分屏， <code>ctrl+WW</code> 在文件之间进行切换</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="http://linux.vbird.org/linux_basic/0310vi.php">鸟哥linux</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/03/linux/base/godLinux1-4/" rel="prev" title="1-4 rhel7文件管理和xfs文件系统备份">
+      <i class="fa fa-chevron-left"></i> 1-4 rhel7文件管理和xfs文件系统备份
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/04/linux/base/godLinux1-6/" rel="next" title="1-6 用户管理">
+      1-6 用户管理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">主要模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">命令模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E6%93%8D%E4%BD%9C"><span class="nav-number">2.1.</span> <span class="nav-text">字符操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D"><span class="nav-number">2.2.</span> <span class="nav-text">定位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">行操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%8D%E6%93%8D%E4%BD%9C"><span class="nav-number">2.4.</span> <span class="nav-text">词操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%97%E6%93%8D%E4%BD%9C"><span class="nav-number">2.5.</span> <span class="nav-text">块操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#v-%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.6.</span> <span class="nav-text">v 模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">输入模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%EF%BC%88%E6%9C%AB%EF%BC%89%E8%A1%8C%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.</span> <span class="nav-text">命令（末）行模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEvim%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">5.</span> <span class="nav-text">设置vim开发环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vim%E5%90%8C%E6%97%B6%E6%89%93%E5%BC%80%E5%A4%9A%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">vim同时打开多个文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

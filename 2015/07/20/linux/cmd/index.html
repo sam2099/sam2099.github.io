@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="命令 查看整体空间 (-h 按M单位) 1$ df -h   查看输出当前目录下各个子目录所使用的空间(-h 按M单位) 1$ du -h --max-depth&#x3D;1  排序 1$ du  --max-depth&#x3D;1 |sort -rn   手动清空缓存 12$ sync$ echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;drop_caches  查找以前用过的命令ctrl + r  Netst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux 常用规则， 酷～～～">
+<meta property="og:url" content="http://giveme5.cc/2015/07/20/linux/cmd/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="命令 查看整体空间 (-h 按M单位) 1$ df -h   查看输出当前目录下各个子目录所使用的空间(-h 按M单位) 1$ du -h --max-depth&#x3D;1  排序 1$ du  --max-depth&#x3D;1 |sort -rn   手动清空缓存 12$ sync$ echo 3 &gt; &#x2F;proc&#x2F;sys&#x2F;vm&#x2F;drop_caches  查找以前用过的命令ctrl + r  Netst">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-07-20T02:09:38.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2015/07/20/linux/cmd/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>linux 常用规则， 酷～～～ | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/07/20/linux/cmd/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux 常用规则， 酷～～～
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-07-20 10:09:38" itemprop="dateCreated datePublished" datetime="2015-07-20T10:09:38+08:00">2015-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
+<li><p>查看整体空间 (-h 按M单位)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ df -h</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>查看输出当前目录下各个子目录所使用的空间(-h 按M单位)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">du</span> -h --max-depth=1</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>排序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ du  --max-depth=1 |sort -rn</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>手动清空缓存</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sync</span></span><br><span class="line">$ <span class="built_in">echo</span> 3 &gt; /proc/sys/vm/drop_caches</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查找以前用过的命令<br><code>ctrl + r</code></p>
+</li>
+<li><p>Netstat<br>Netstat 命令用于显示各种网络相关信息，如网络连接，路由表，接口状态 (Interface Statistics)，masquerade 连接，多播成员 (Multicast Memberships) 等等。<br><a target="_blank" rel="noopener" href="http://www.cnblogs.com/ggjucheng/archive/2012/01/08/2316661.html">Linux netstat命令详解 链接</a><br>程序端口占用情况</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ netstat –apn </span><br><span class="line"></span><br><span class="line">$ netstat   -anp   |   grep  portno</span><br><span class="line"></span><br><span class="line">$ ps -aux | grep java</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>抓包 tcpdump &#x2F; wireshark</p>
+</li>
+<li><p>rsync 增量备份，保持原有属性<br>-a<br>-z<br>-p<br>–delete</p>
+</li>
+<li><p>inotify + rsync 实时备份<br>inotify 安装</p>
+</li>
+</ul>
+<p>inotifywait<br>-e 监控事件<br>-m 持续监控<br>-r 递归<br>-q 简化信息</p>
+<ul>
+<li><p>ctrl + r 查找历史命令</p>
+</li>
+<li><p>rs 上传</p>
+</li>
+<li><p>waf ： web application firewall<br>modsecurity</p>
+</li>
+<li><p>Linux下高效数据恢复软件extundelete</p>
+</li>
+<li><p>curl wget lynx<br><a target="_blank" rel="noopener" href="http://blog.51yip.com/linux/1049.html">curl</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ curl -I ip/domain #查看web服务器类型和版本</span><br><span class="line">$ wget -C URL #断点续传 -t 重试次数 -T 超时时间</span><br><span class="line">$ wget --user username --password pass URL #认证</span><br><span class="line">$ curl -C URL #断点续传</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="常用技巧"><a href="#常用技巧" class="headerlink" title="常用技巧"></a>常用技巧</h2><h3 id="特殊变量"><a href="#特殊变量" class="headerlink" title="特殊变量"></a>特殊变量</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$0</td>
+<td>当前脚本的文件名</td>
+</tr>
+<tr>
+<td>$n</td>
+<td>传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。</td>
+</tr>
+<tr>
+<td>!$</td>
+<td>上个命令最后一个参数</td>
+</tr>
+<tr>
+<td>$#</td>
+<td>传递给脚本或函数的参数个数。</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>传递给脚本或函数的所有参数。</td>
+</tr>
+<tr>
+<td>$@</td>
+<td>传递给脚本或函数的所有参数。被双引号(“ “)包含时，与 $* 稍有不同，下面将会讲到。</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>上个命令的退出状态，或函数的返回值。</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。</td>
+</tr>
+<tr>
+<td>$!</td>
+<td>执行上一个后台程序的PID</td>
+</tr>
+<tr>
+<td><code>$*</code> 和 <code>$@</code> 都表示传递给函数或脚本的所有参数，不被双引号(“ “)包含时，都以”$1” “$2” … “$n” 的形式输出所有参数。</td>
+<td></td>
+</tr>
+<tr>
+<td>但是当它们被双引号(“ “)包含时，<code>$*</code> 会将所有的参数作为一个整体，以”$1 $2 … $n”的形式输出所有参数；<code>$@</code> 会将各个参数分开，以”$1” “$2” … “$n” 的形式输出所有参数。</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="常用PATTERN："><a href="#常用PATTERN：" class="headerlink" title="常用PATTERN："></a>常用PATTERN：</h3><pre><code>`^#`:   以#开头
+`#$`:   以#结尾
+`^$`:   空行
+</code></pre>
+<h2 id="知乎"><a href="#知乎" class="headerlink" title="知乎"></a><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20140085">知乎</a></h2><h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="最小存储单位"><a href="#最小存储单位" class="headerlink" title="最小存储单位"></a>最小存储单位</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>最小存储单位</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>硬盘</td>
+<td>扇区（512B）</td>
+</tr>
+<tr>
+<td>文件系统</td>
+<td>block（1K，4K）</td>
+</tr>
+<tr>
+<td>RAID</td>
+<td>chunk （512）    mdadm  -c</td>
+</tr>
+<tr>
+<td>LVM</td>
+<td>PE （16M 自定义）</td>
+</tr>
+</tbody></table>
+<h2 id="调教-kaffeine-播放各类媒体格式"><a href="#调教-kaffeine-播放各类媒体格式" class="headerlink" title="调教 kaffeine 播放各类媒体格式"></a>调教 kaffeine 播放各类媒体格式</h2><p>kaffeine 是基于 <code>libxine2</code>, openSUSE 官方提供的 libxine2 缺少一些插件，那用户要怎么安装这些编解码器呢？ 我们先说安装 mkv, mp4, wmv, m4v, mov, 3gp, 3g2 等视频文件的编解码器，这些可以很方便的从 packman 安装。核心的包是 <code>libxine2-codecs</code> ，我以 openSUSE 13.2 为例进行讲解：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo zypper ar -f http://packman.inode.at/suse/openSUSE_13.2/ packman</span><br><span class="line">sudo zypper update</span><br><span class="line">sudo zypper install libxine2-codecs</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="安全相关"><a href="#安全相关" class="headerlink" title="安全相关"></a>安全相关</h2><p><code>last</code><br><code>lastb</code><br><code>lastlog</code><br><code>history</code><br><code>/var/log/secure</code> : 登录的ssh公钥签名可以通过 <code>ssh-keygen -l -f xxx.pub</code> 获得 <code>远程日志服务</code></p>
+<h3 id="网络实时流量监测-iftop"><a href="#网络实时流量监测-iftop" class="headerlink" title="网络实时流量监测 iftop"></a>网络实时流量监测 iftop</h3><p>单服务器</p>
+<h3 id="网络流量监控与分析-Ntop-和-Ntopng"><a href="#网络流量监控与分析-Ntop-和-Ntopng" class="headerlink" title="网络流量监控与分析 Ntop 和 Ntopng"></a>网络流量监控与分析 Ntop 和 Ntopng</h3><h3 id="网络性能评估-iperf"><a href="#网络性能评估-iperf" class="headerlink" title="网络性能评估 iperf"></a>网络性能评估 iperf</h3><h3 id="rootkit-检测工具"><a href="#rootkit-检测工具" class="headerlink" title="rootkit 检测工具"></a>rootkit 检测工具</h3><ul>
+<li>chkrootkit</li>
+<li>RKHunter</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/07/03/other/hexo/" rel="prev" title="github hexo 多说 构建自己的blog">
+      <i class="fa fa-chevron-left"></i> github hexo 多说 构建自己的blog
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/07/21/linux/Docker/" rel="next" title="Docker 入门到实践">
+      Docker 入门到实践 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="nav-number">2.</span> <span class="nav-text">常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%8F%98%E9%87%8F"><span class="nav-number">2.1.</span> <span class="nav-text">特殊变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8PATTERN%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">常用PATTERN：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A5%E4%B9%8E"><span class="nav-number">3.</span> <span class="nav-text">知乎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">4.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%AD%98%E5%82%A8%E5%8D%95%E4%BD%8D"><span class="nav-number">4.1.</span> <span class="nav-text">最小存储单位</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E6%95%99-kaffeine-%E6%92%AD%E6%94%BE%E5%90%84%E7%B1%BB%E5%AA%92%E4%BD%93%E6%A0%BC%E5%BC%8F"><span class="nav-number">5.</span> <span class="nav-text">调教 kaffeine 播放各类媒体格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E7%9B%B8%E5%85%B3"><span class="nav-number">6.</span> <span class="nav-text">安全相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%AE%9E%E6%97%B6%E6%B5%81%E9%87%8F%E7%9B%91%E6%B5%8B-iftop"><span class="nav-number">6.1.</span> <span class="nav-text">网络实时流量监测 iftop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%B5%81%E9%87%8F%E7%9B%91%E6%8E%A7%E4%B8%8E%E5%88%86%E6%9E%90-Ntop-%E5%92%8C-Ntopng"><span class="nav-number">6.2.</span> <span class="nav-text">网络流量监控与分析 Ntop 和 Ntopng</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E8%AF%84%E4%BC%B0-iperf"><span class="nav-number">6.3.</span> <span class="nav-text">网络性能评估 iperf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rootkit-%E6%A3%80%E6%B5%8B%E5%B7%A5%E5%85%B7"><span class="nav-number">6.4.</span> <span class="nav-text">rootkit 检测工具</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容  正则表达式  sed  awk  cut">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-29 Linux 正则表达式 sed awk cut">
+<meta property="og:url" content="http://giveme5.cc/2016/01/06/linux/shell/shell9/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容  正则表达式  sed  awk  cut">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-01-06T11:59:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="GOD linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2016/01/06/linux/shell/shell9/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-29 Linux 正则表达式 sed awk cut | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/06/linux/shell/shell9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-29 Linux 正则表达式 sed awk cut
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-01-06 19:59:44" itemprop="dateCreated datePublished" datetime="2016-01-06T19:59:44+08:00">2016-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<ul>
+<li>正则表达式 </li>
+<li>sed </li>
+<li>awk </li>
+<li>cut</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><p>正则表达式，又称正规表示法、常规表示法（英语：Regular Expression，在代码中常简写为regex、regexp或RE），计算机科学的一个概念。正则表达式使用单个字符串来描述、匹配一系列符合某个句法规则的字符串。<br>正则表达式是一种符号表示法，被用来识别文本模式。</p>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><p>grep : “global regular expression print”，所以我们能看出 grep 程序和正则表达式有关联。 本质上，grep 程序会在文本文件中查找一个指定的正则表达式，并把匹配行输出到标准输出。<br>参数：</p>
+<pre><code>-i 忽略大小写
+-v 反转
+-n  显示行号
+</code></pre>
+<h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><pre><code>^ $ . [ ] &#123; &#125; - ? * + ( ) | \
+</code></pre>
+<p>其他都被认为是原义字符； 元字符可以通过 <code>\</code> 来转义为原义字符。</p>
+<h3 id="锚点"><a href="#锚点" class="headerlink" title="锚点 ^ $"></a>锚点 ^ $</h3><ul>
+<li><code>^</code> 行首</li>
+<li><code>$</code> 行尾</li>
+<li><code>\&lt;</code> 表示词首  </li>
+<li><code>\&gt;</code> 表示词尾</li>
+</ul>
+<p>^word：待搜寻的字符串(word)在行首</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep &quot;^sync&quot; /etc/passwd</span><br><span class="line">sync:x:5:0:sync:/sbin:/bin/sync</span><br></pre></td></tr></table></figure>
+
+<p>word$：待搜寻的字符串(word)在行尾</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep &quot;shutdown$&quot; passwd</span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br></pre></td></tr></table></figure>
+
+<p>显示空白行及行号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep &quot;^$&quot; passwd  -n</span><br><span class="line">50:</span><br></pre></td></tr></table></figure>
+
+<p>精确匹配 ： <code>&#39;\&lt;匹配内容\&gt;&#39;</code> </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ifconfig |grep &#x27;\&lt;inet\&gt;&#x27;</span><br><span class="line">        inet 192.168.1.68  netmask 255.255.255.0  broadcast 192.168.1.255</span><br><span class="line">        inet 127.0.0.1  netmask 255.0.0.0</span><br></pre></td></tr></table></figure>
+
+<h3 id="转义"><a href="#转义" class="headerlink" title="转义 \"></a>转义 \</h3><p>搜寻包括单引号 ‘的行，并把行号也打印出来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep \&#x27; passwd</span><br><span class="line">halt:x:7:0:&#x27;halt&#x27;:/sbin:/sbin/halt</span><br><span class="line">&#x27;mail&#x27;:x:8:12:mail:/var/spool/mail:/sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<p>过滤文件的反斜杠‘’\“</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep &#x27;\\&#x27; passwd</span><br><span class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</span><br><span class="line">[root@localhost ~]# grep -F &#x27;\&#x27;  passwd</span><br><span class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</span><br><span class="line">[root@localhost ~]# fgrep &#x27;\&#x27; passwd</span><br><span class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符集合"><a href="#字符集合" class="headerlink" title="字符集合 [ ]"></a>字符集合 [ ]</h3><ul>
+<li><code>[list]</code> ：字符集合，里面列出想要选择的字符</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep g[ao] passwd</span><br><span class="line">games:x:12:100:games:/usr/games:/sbin/nologin</span><br><span class="line">gopher:x\:13:30:gopher:/var/gopher:/sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>[n1-n2]：字符集合的，里面列出想要包括的字符范围！</li>
+</ul>
+<p>搜寻含有数字的3到5的行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep [3-5] passwd</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br><span class="line">sync:x:5:0:sync:/sbin:/bin/sync</span><br></pre></td></tr></table></figure>
+
+<p>开始为大写字母的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep ^[A-Z]  passwd</span><br><span class="line">Rm2:x:502:500::/home/rm:/bin/bash</span><br><span class="line">Rm3:x:503:500::/home/rm:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="否定"><a href="#否定" class="headerlink" title="否定 [^ ]"></a>否定 [^ ]</h3><p><code>[^list]</code> : 否定字符集合，里面列出想要排除的字符, <code>^</code> 必须是 <code>[]</code> 内的第一个符合才能启动否定。</p>
+<p>不想要开头是英文字母：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep ^[^a-zA-Z] passwd</span><br><span class="line">&#x27;mail&#x27;:x:8:12:mail:/var/spool/mail:/sbin/nologin</span><br><span class="line">&quot;uucp&quot;:x:10:14:uucp:/var/spool/uucp:/sbin/nologin</span><br><span class="line">#rmt:x:500:500::/home/rm:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="POSIX-字符集"><a href="#POSIX-字符集" class="headerlink" title="POSIX 字符集"></a>POSIX 字符集</h3><table>
+<thead>
+<tr>
+<th>字符集</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[:alnum:]</td>
+<td>字母数字字符。在 ASCII 中，等价于：[A-Za-z0-9]</td>
+</tr>
+<tr>
+<td>[:word:]</td>
+<td>与[:alnum:]相同, 但增加了下划线字符。</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>字母字符。在 ASCII 中，等价于：[A-Za-z]</td>
+</tr>
+<tr>
+<td>[:blank:]</td>
+<td>包含空格和 tab 字符。</td>
+</tr>
+<tr>
+<td>[:cntrl:]</td>
+<td>ASCII 的控制码。包含了0到31，和127的 ASCII 字符。</td>
+</tr>
+<tr>
+<td>[:digit:]</td>
+<td>数字0到9</td>
+</tr>
+<tr>
+<td>[:graph:]</td>
+<td>可视字符。在 ASCII 中，它包含33到126的字符。</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>小写字母。</td>
+</tr>
+<tr>
+<td>[:punct:]</td>
+<td>标点符号字符。在 ASCII 中，等价于：</td>
+</tr>
+<tr>
+<td>[:print:]</td>
+<td>可打印的字符。在[:graph:]中的所有字符，再加上空格字符。</td>
+</tr>
+<tr>
+<td>[:space:]</td>
+<td>空白字符，包括空格，tab，回车，换行，vertical tab, 和 form feed.在 ASCII 中， 等价于：[ \t\r\n\v\f]</td>
+</tr>
+<tr>
+<td>[:upper:]</td>
+<td>大写字母。</td>
+</tr>
+<tr>
+<td>[:xdigit:]</td>
+<td>用来表示十六进制数字的字符。在 ASCII 中，等价于：[0-9A-Fa-f]</td>
+</tr>
+</tbody></table>
+<h3 id="限定符"><a href="#限定符" class="headerlink" title="限定符"></a>限定符</h3><p><code>.</code>  代表绝对有一个任意字符的意思；<br><code>*</code>  代表重复前一个字符到无穷次的意思;<br><code>.*</code> 任长度的字符。</p>
+<p>寻找包括有r开头和t结束且长度为四个字符行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep r..t passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:&quot;operator&quot;:/root:/sbin/nologin</span><br><span class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<p>寻找oo, ooo, oooo 等等的数据,也就是说,至少要有两个o 以上：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep ooo* passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br></pre></td></tr></table></figure>
+
+<p>寻找包括g开头和g结束的字符串,中间可有可无</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# grep ^g.*g  passwd</span><br></pre></td></tr></table></figure>
+
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p><code>\?</code> 用于修饰前导字符，表示前导字符出现0或1次, 例： grep “test?“<br><code>\+</code> 用于修饰前导字符，表示前导字符出现1或多次   例：a+ 匹配1或多个a<br><code>\&#123;n,m\&#125;</code>  用于修饰前导字符，表示前导字符出现n至m次 （n和m都是整数，且n&lt;m）<br>例：a{3,5} 匹配3至5个连续的a</p>
+<h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><ul>
+<li><p>概念<br><code>sed</code> : strem editor  流编辑器<br>sed编辑器是一行一行的处理文件内容的。正在处理的内容存放在模式空间(缓冲区)内，处理完成后按照选项的规定进行输出或文件的修改。它一次处理一行内容。处理时，把当前处理的行存储在临时缓冲区中，称为“模式空间”（pattern space），接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。接着处理下一行，这样不断重复，直到文件末尾。文件内容并没有 改变，除非你使用重定向存储输出。Sed主要用来自动编辑一个或多个文件；简化对文件的反复操作；</p>
+</li>
+<li><p>用法</p>
+<pre><code>sed  [options]  ‘[command]’  [filename]
+</code></pre>
+</li>
+</ul>
+<p>options:<br><code>-n</code>	抑制自动(默认的) 输出   读取下一个输入行  <em><strong>常用</strong></em><br>-e	执行多个sed指令<br>-f	运行脚本<br><code>-i</code>	编辑文件内容 <em><strong>常用</strong></em><br>-i.bak	编辑的同时创造.bak的备份<br>-r	使用扩展的正则表达式 </p>
+<p>  command:<br>  <code>a</code>	在匹配后追加  <em><strong>常用</strong></em><br>  <code>i</code>	在匹配前插入  <em><strong>常用</strong></em><br>  <code>p</code>	打印  <em><strong>常用</strong></em><br>  <code>d</code>	删除  <em><strong>常用</strong></em><br>  r&#x2F;R	读取文件&#x2F;一行<br>  w	另存<br>  s	查找<br>  c	替换<br>  y	替换<br>  <code>h/H</code>	复制拷贝&#x2F;追加模式空间(缓冲区)到存放空间  <em><strong>常用</strong></em><br>  <code>g/G</code>	粘贴 从存放空间取回&#x2F;追加到模式空间       <em><strong>常用</strong></em><br>  x	两个空间内容的交换<br>  n&#x2F;N	拷贝&#x2F;追加下一行内容到当前<br>  D	删除\n之前的内容<br>  P	打印\n之前的内容<br>  b	无条件跳转<br>  t	满足匹配后的跳转<br>  T	不满足匹配时跳转</p>
+<h3 id="s-替换"><a href="#s-替换" class="headerlink" title="s 替换"></a>s 替换</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;s/root/ROOT/&#x27; /etc/passwd &gt; newfilename</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>s&#x2F;regexp&#x2F;replacement&#x2F;</p>
+</li>
+<li><p>&#x2F;..&#x2F;..&#x2F;	分隔符<br>分割符 “&#x2F;“ 可以用别的符号代替 , 比如 “,”   “|”   “_“等</p>
+</li>
+<li><p>用 &amp; 表示匹配的字符串<br>对文件中的root内容两边加上（）</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;s/root/(&amp;)/&#x27;  passwd</span><br></pre></td></tr></table></figure>
+
+<p>对文件中的所有以小写字母开头的行进行注释</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;s/^[a-z]/#&amp;/&#x27; passwd</span><br></pre></td></tr></table></figure>
+
+<p>sed 默认只替换搜索字符串的第一次出现 , 利用 &#x2F;g 可以替换搜索字符串所有</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed -e &#x27;3,5s/nologin/bash/&#x27; -e &#x27;9,11s/sbin/bin/&#x27; passwd</span><br></pre></td></tr></table></figure>
+
+<h3 id="p-打印"><a href="#p-打印" class="headerlink" title="p 打印"></a>p 打印</h3><ul>
+<li>显示文件第三行</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed -n &#x27;3p&#x27; passwd</span><br><span class="line">roott</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>显示文件前三行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed -n &#x27;1,3p&#x27; passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line">roott</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示文件除前三行之外的全部内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed -n &#x27;1,3!p&#x27; passwd</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>显示文件第三行和之后的三行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed -n &#x27;3,+3p&#x27; passwd</span><br><span class="line">roott</span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="i-匹配前插入"><a href="#i-匹配前插入" class="headerlink" title="i 匹配前插入"></a>i 匹配前插入</h3><ul>
+<li>在文件头插入“###”<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;1i###&#x27; passwd  &gt; a.txt</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="a-在匹配后追加"><a href="#a-在匹配后追加" class="headerlink" title="a 在匹配后追加"></a>a 在匹配后追加</h3><ul>
+<li><p>在文件尾插入”@@@”</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;$a@@@&#x27; passwd</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在文件的第二行后插入两行内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;2a hello \</span><br><span class="line">how are you?  \</span><br><span class="line">what is your name?&#x27; passwd</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="c-替换"><a href="#c-替换" class="headerlink" title="c 替换"></a>c 替换</h3><ul>
+<li>把文件第三行替换成“$$$”<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;3c$$$&#x27; passwd</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="复制粘贴"><a href="#复制粘贴" class="headerlink" title="复制粘贴"></a>复制粘贴</h3><p><code>h/H</code>	复制拷贝&#x2F;追加模式空间(缓冲区)到存放空间<br><code>g/G</code>	粘贴 从存放空间取回&#x2F;追加到模式空间</p>
+<ul>
+<li>把文件的第二行到第四行复制到文件的末尾<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed &#x27;2,4H;$G&#x27; passwd  &gt; b.txt</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="d-删除"><a href="#d-删除" class="headerlink" title="d 删除"></a>d 删除</h3><ul>
+<li>删除空行<br>[root@localhost ~]# sed ‘&#x2F;^$&#x2F;d’ passwd<br>把fstab中包含xfs的记录（行）写入新的文件中<br>[root@localhost ~]# sed ‘&#x2F;xfs&#x2F;w newfstab2’ &#x2F;etc&#x2F;fstab</li>
+</ul>
+<h3 id="直接修改文件"><a href="#直接修改文件" class="headerlink" title="直接修改文件"></a>直接修改文件</h3><p>sed 的-i选项可以直接修改文件中的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed -i &#x27;s/root/rm/&#x27; passwd</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="http://coolshell.cn/articles/9104.html">sed 简明教程</a></p>
+<h2 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h2><p><code>AWK</code> 是一种优良的文本处理工具，Linux及Unix环境中现有的功能最强大的数据处理引擎之一。这种编程及数据操作语言的最大功能取决于一个人所拥有的知识。awk命名:Alfred Aho Peter Weinberger和brian kernighan三个人的姓的缩写。<br>最简单地说， AWK 是一种用于处理文本的编程语言工具。<br>任何awk语句都是由模式和动作组成，一个awk脚本可以有多个语句。模式决定动作语句的触发条件和触发时间。</p>
+<h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><pre><code>  netstat | awk &#39;&#123;print $1, $7&#125;&#39;
+</code></pre>
+<h4 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h4><p>单引号中的被大括号括着的就是awk的语句，注意，其只能被单引号包含。<br>其中的$1..$n表示第几例。注：$0表示整个行。</p>
+<h4 id="保留字"><a href="#保留字" class="headerlink" title="保留字"></a>保留字</h4><p><code>BEGIN</code> ：在任何动作之前进行。<br><code>END</code> ： 在完成动作之后执行。</p>
+<h4 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h4><p>print</p>
+<h4 id="过滤记录"><a href="#过滤记录" class="headerlink" title="过滤记录"></a>过滤记录</h4><ul>
+<li><p>比较运算符<br>&#x3D;&#x3D;，!&#x3D;, &gt;, &lt;, &gt;&#x3D;, &lt;&#x3D;</p>
+</li>
+<li><p>逻辑运算符<br>&amp;&amp; ， ||</p>
+</li>
+</ul>
+<h4 id="内建变量"><a href="#内建变量" class="headerlink" title="内建变量"></a>内建变量</h4><table>
+<thead>
+<tr>
+<th>$0</th>
+<th>当前记录（这个变量中存放着整个行的内容）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$1~$n</td>
+<td>当前记录的第n个字段，字段间由FS分隔</td>
+</tr>
+<tr>
+<td>FS</td>
+<td>输入字段分隔符 默认是空格或Tab</td>
+</tr>
+<tr>
+<td>NF</td>
+<td>当前记录中的字段个数，就是有多少列</td>
+</tr>
+<tr>
+<td>NR</td>
+<td>已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。</td>
+</tr>
+<tr>
+<td>FNR</td>
+<td>当前记录数，与NR不同的是，这个值会是各个文件自己的行号</td>
+</tr>
+<tr>
+<td>RS</td>
+<td>输入的记录分隔符， 默认为换行符</td>
+</tr>
+<tr>
+<td>OFS</td>
+<td>输出字段分隔符， 默认也是空格</td>
+</tr>
+<tr>
+<td>ORS</td>
+<td>输出的记录分隔符，默认为换行符</td>
+</tr>
+<tr>
+<td>FILENAME</td>
+<td>当前输入文件的名字</td>
+</tr>
+</tbody></table>
+<h4 id="指定分隔符"><a href="#指定分隔符" class="headerlink" title="指定分隔符"></a>指定分隔符</h4><p>默认分隔符是空格或Tab</p>
+<p>指定冒号分割</p>
+<pre><code>  awk  -F: &#39;&#123;print $1,$3,$6&#125;&#39; /etc/passwd
+  或
+  awk  &#39;BEGIN&#123;FS=&quot;:&quot;&#125; &#123;print $1,$3,$6&#125;&#39; /etc/passwd
+</code></pre>
+<p>指定多个分隔符</p>
+<pre><code>  awk -F &#39;[;:]&#39;
+</code></pre>
+<h4 id="字符串匹配"><a href="#字符串匹配" class="headerlink" title="字符串匹配"></a>字符串匹配</h4><p>匹配FIN状态，其实 ~ 表示模式开始。&#x2F; &#x2F;中是模式。这就是一个正则表达式的匹配。 <code>|| NR==1</code> 其实是不处理第一行。</p>
+<pre><code>  awk &#39;$6 ~ /FIN/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#39; OFS=&quot;\t&quot; netstat.txt
+</code></pre>
+<p>模式取反</p>
+<pre><code>  awk &#39;$6 !~ /WAIT/ || NR==1 &#123;print NR,$4,$5,$6&#125;&#39; OFS=&quot;\t&quot; netstat.txt
+  或
+  awk &#39;!/WAIT/&#39; netstat.txt
+</code></pre>
+<h4 id="折分文件"><a href="#折分文件" class="headerlink" title="折分文件"></a>折分文件</h4><p>awk拆分文件很简单，就使用重定向。如按第6例分隔文件，相当的简单（其中的NR!&#x3D;1表示不处理表头）。</p>
+<pre><code>awk &#39;NR!=1&#123;print &gt; $6&#125;&#39; netstat.txt
+</code></pre>
+<p>你也可以把指定的列输出到文件</p>
+<pre><code>awk &#39;NR!=1&#123;print $4,$5 &gt; $6&#125;&#39; netstat.txt
+</code></pre>
+<h4 id="awk脚本"><a href="#awk脚本" class="headerlink" title="awk脚本"></a>awk脚本</h4><p>语法如下：</p>
+<pre><code>BEGIN&#123; 这里面放的是执行前的语句 &#125;
+END &#123;这里面放的是处理完所有的行后要执行的语句 &#125;
+&#123;这里面放的是处理每一行时要执行的语句&#125;
+</code></pre>
+<p>有这么一个文件（学生成绩表）： score.txt</p>
+<pre><code>Marry   2143 78 84 77
+Jack    2321 66 78 45
+Tom     2122 48 77 71
+Mike    2537 87 97 95
+Bob     2415 40 57 62
+</code></pre>
+<p>awk脚本如下</p>
+<pre><code>#!/bin/awk -f
+#运行前
+BEGIN &#123;
+math = 0
+english = 0
+computer = 0
+
+printf &quot;NAME    NO.   MATH  ENGLISH  COMPUTER   TOTAL\n&quot;
+printf &quot;---------------------------------------------\n&quot;
+&#125;
+#运行中
+&#123;
+math+=$3
+english+=$4
+computer+=$5
+printf &quot;%-6s %-6s %4d %8d %8d %8d\n&quot;, $1, $2, $3,$4,$5, $3+$4+$5
+&#125;
+#运行后
+END &#123;
+printf &quot;---------------------------------------------\n&quot;
+printf &quot;  TOTAL:%10d %8d %8d \n&quot;, math, english, computer
+printf &quot;AVERAGE:%10.2f %8.2f %8.2f\n&quot;, math/NR, english/NR, computer/NR
+&#125;
+</code></pre>
+<p>执行</p>
+<pre><code>awk -f cal.awk score.txt
+或
+./cal.awk score.txt
+</code></pre>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><ul>
+<li><p>获取当前主机网卡的ip地址</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ipaddress=$(ifconfig | grep broadcast | awk &#x27;&#123;print $2&#125;&#x27;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打印出passwd中用户UID大于1000的用户名和登录shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /etc/passwd | awk -F: &#x27;$3&gt;1000 &#123;print $1 &quot;\t&quot; $7&#125;&#x27;</span><br><span class="line">nfsnobody       /sbin/nologin</span><br><span class="line">rm1     /bin/bash</span><br><span class="line">rm2     /bin/bash</span><br><span class="line">rm3     /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多条件进行过滤<br>能登录的普通用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat /etc/passwd | awk -F: &#x27;BEGIN &#123;print &quot;name \t shell&quot;&#125; $3&gt;1000 &amp;&amp; $7==&quot;/bin/bash&quot; &#123;print $1 &quot;\t&quot; $7&#125; END &#123;print &quot;Thank you!!!&quot;&#125;&#x27;</span><br><span class="line">name     shell</span><br><span class="line">rm1     /bin/bash</span><br><span class="line">rm2     /bin/bash</span><br><span class="line">rm3     /bin/bash</span><br><span class="line">Thank you!!!</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>awk在脚本中的使用<br>找到系统中所有的能登录的普通用户，并进行删除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">user=$(cat /etc/passwd | awk -F: &#x27;$3&gt;=1000 &amp;&amp; $7==&quot;/bin/bash&quot; &#123;print $1&#125;&#x27;)</span><br><span class="line">for i in $user</span><br><span class="line">do</span><br><span class="line"> userdel -r $i</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>RHEL7中查看系统当前内存使用百分比</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">echo &quot;此脚本可以用来查看当前内存使用百分比&quot;</span><br><span class="line">use=$(free -m | grep &quot;Mem:&quot; | awk &#x27;&#123;print $3&#125;&#x27;)</span><br><span class="line">total=$(free -m | grep &quot;Mem:&quot; | awk &#x27;&#123;print $2&#125;&#x27;)</span><br><span class="line">useper=$(expr $use \* 100 / $total)</span><br><span class="line">echo &quot;系统当前内存使用百分比为:&quot;</span><br><span class="line">echo $&#123;useper&#125;%</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="cut"><a href="#cut" class="headerlink" title="cut"></a>cut</h2><p>cut是一个选取命令，就是将一段数据经过分析，取出我们想要的。一般来说，选取信息通常是针对“行”来进行分析的，并不是整篇信息分析的。<br>主要参数<br>-b ：以字节为单位进行分割。这些字节位置将忽略多字节字符边界，除非也指定了 -n 标志。<br>-c ：以字符为单位进行分割。<br>-d ：自定义分隔符，默认为制表符。<br>-f ：与-d一起使用，指定显示哪个区域。</p>
+<ul>
+<li><p>以字节进行分割</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# tail -3 /etc/passwd | cut -b 1-4,11,12</span><br><span class="line">post89</span><br><span class="line">sshd74</span><br><span class="line">tcpd72</span><br></pre></td></tr></table></figure></li>
+<li><p>以字符进行分割</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat newyear.txt | cut -c 1-4</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以空格作为分隔符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sed -n l c.txt</span><br><span class="line">aaaa\tbbbb    cccc$</span><br><span class="line">aaaa    bbbb\tcccc$</span><br><span class="line">[root@localhost ~]# cat c.txt  | cut -d &#x27; &#x27; -f 1</span><br><span class="line">aaaa    bbbb</span><br><span class="line">aaaa</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>总结：<br>cut有哪些缺陷和不足？<br>如果文件里面的某些域是由若干个空格来间隔的，那么用cut就有点麻烦了，因为cut只擅长处理“以一个字符间隔”的文本内容</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/28/linux/shell/shell-8/" rel="prev" title="shell （八） 函数, 文件包含, 转码工具">
+      <i class="fa fa-chevron-left"></i> shell （八） 函数, 文件包含, 转码工具
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/01/22/web%20server/nginx/nginx/" rel="next" title="nginx">
+      nginx <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#grep"><span class="nav-number">1.1.</span> <span class="nav-text">grep</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E5%AD%97%E7%AC%A6"><span class="nav-number">1.2.</span> <span class="nav-text">元字符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%9A%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">锚点 ^ $</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89"><span class="nav-number">1.4.</span> <span class="nav-text">转义 \</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E9%9B%86%E5%90%88"><span class="nav-number">1.5.</span> <span class="nav-text">字符集合 [ ]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%A6%E5%AE%9A"><span class="nav-number">1.6.</span> <span class="nav-text">否定 [^ ]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POSIX-%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">1.7.</span> <span class="nav-text">POSIX 字符集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="nav-number">1.8.</span> <span class="nav-text">限定符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.8.1.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sed"><span class="nav-number">2.</span> <span class="nav-text">sed</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#s-%E6%9B%BF%E6%8D%A2"><span class="nav-number">2.1.</span> <span class="nav-text">s 替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p-%E6%89%93%E5%8D%B0"><span class="nav-number">2.2.</span> <span class="nav-text">p 打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#i-%E5%8C%B9%E9%85%8D%E5%89%8D%E6%8F%92%E5%85%A5"><span class="nav-number">2.3.</span> <span class="nav-text">i 匹配前插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a-%E5%9C%A8%E5%8C%B9%E9%85%8D%E5%90%8E%E8%BF%BD%E5%8A%A0"><span class="nav-number">2.4.</span> <span class="nav-text">a 在匹配后追加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#c-%E6%9B%BF%E6%8D%A2"><span class="nav-number">2.5.</span> <span class="nav-text">c 替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4"><span class="nav-number">2.6.</span> <span class="nav-text">复制粘贴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d-%E5%88%A0%E9%99%A4"><span class="nav-number">2.7.</span> <span class="nav-text">d 删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6"><span class="nav-number">2.8.</span> <span class="nav-text">直接修改文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">2.9.</span> <span class="nav-text">参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#awk"><span class="nav-number">3.</span> <span class="nav-text">awk</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">基本语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B5%B7%E6%AD%A5"><span class="nav-number">3.1.1.</span> <span class="nav-text">起步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%9D%E7%95%99%E5%AD%97"><span class="nav-number">3.1.2.</span> <span class="nav-text">保留字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%BC%E5%BC%8F%E5%8C%96%E8%BE%93%E5%87%BA"><span class="nav-number">3.1.3.</span> <span class="nav-text">格式化输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E8%AE%B0%E5%BD%95"><span class="nav-number">3.1.4.</span> <span class="nav-text">过滤记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%BB%BA%E5%8F%98%E9%87%8F"><span class="nav-number">3.1.5.</span> <span class="nav-text">内建变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E5%88%86%E9%9A%94%E7%AC%A6"><span class="nav-number">3.1.6.</span> <span class="nav-text">指定分隔符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D"><span class="nav-number">3.1.7.</span> <span class="nav-text">字符串匹配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%98%E5%88%86%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.8.</span> <span class="nav-text">折分文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#awk%E8%84%9A%E6%9C%AC"><span class="nav-number">3.1.9.</span> <span class="nav-text">awk脚本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cut"><span class="nav-number">4.</span> <span class="nav-text">cut</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

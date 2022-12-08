@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="索引擎能使用一些特殊的搜索引擎高级指令，对于提高搜索效率，了解网站seo优化效果、研究竞争对手以及找寻网站外链优化资源是非常有用的。 主要有如下技巧&#x2F;指令： 双引号空格 加号 减号星号inurl:inanchor:intitle:site:link:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搜索引擎技巧 搜索引擎指令 提高搜索效率">
+<meta property="og:url" content="http://giveme5.cc/2016/03/02/other/searchEngine/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="索引擎能使用一些特殊的搜索引擎高级指令，对于提高搜索效率，了解网站seo优化效果、研究竞争对手以及找寻网站外链优化资源是非常有用的。 主要有如下技巧&#x2F;指令： 双引号空格 加号 减号星号inurl:inanchor:intitle:site:link:">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-03-02T08:35:05.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="sam, notes">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2016/03/02/other/searchEngine/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>搜索引擎技巧 搜索引擎指令 提高搜索效率 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/03/02/other/searchEngine/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          搜索引擎技巧 搜索引擎指令 提高搜索效率
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-03-02 16:35:05" itemprop="dateCreated datePublished" datetime="2016-03-02T16:35:05+08:00">2016-03-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>  索引擎能使用一些特殊的搜索引擎高级指令，对于提高搜索效率，了解网站seo优化效果、研究竞争对手以及找寻网站外链优化资源是非常有用的。</p>
+<p>主要有如下技巧&#x2F;指令：</p>
+<p><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#%E5%8F%8C%E5%BC%95%E5%8F%B7">双引号</a><br><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#%E7%A9%BA%E6%A0%BC_%E5%8A%A0%E5%8F%B7_%E5%87%8F%E5%8F%B7">空格 加号 减号</a><br><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#%E6%98%9F%E5%8F%B7">星号</a><br><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#inurl:">inurl:</a><br><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#inanchor:">inanchor:</a><br><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#intitle:">intitle:</a><br><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#site:">site:</a><br><a target="_blank" rel="noopener" href="http://giveme5.top/2016/03/02/other/searchEngine/#link:">link:</a></p>
+<span id="more"></span>
+<h2 id="双引号"><a href="#双引号" class="headerlink" title="双引号"></a>双引号</h2><p>把搜索词放在双引号中，表示精确匹配搜索，也就是说搜索结果返回的页面包含双引号中出现的所有的词，连顺序也必须完全匹配。<br>百度和谷歌都支持这个指令。</p>
+<pre><code>  &quot;搜索词&quot;
+</code></pre>
+<p>使用双引号扫完可以更准确地找到特定关键词的竟争对手。</p>
+<h2 id="空格-加号-减号"><a href="#空格-加号-减号" class="headerlink" title="空格 加号 减号"></a>空格 加号 减号</h2><ul>
+<li><p>空格 加号 表示and， 搜索结果的并集</p>
+<pre><code>搜索词1 搜索词2
+搜索词1 +搜索词2
+</code></pre>
+</li>
+<li><p>减号（-）表示搜索结果不包含减号后面的词。谷歌和百度都支持。</p>
+<pre><code>搜索词 -不要的词  #减号前面必须是空格，减号后面没有空格
+</code></pre>
+</li>
+</ul>
+<h2 id="星号"><a href="#星号" class="headerlink" title="星号"></a>星号</h2><p>星号常用作通配符，百度不支持 <code>*</code> 号搜索指令，谷歌支持</p>
+<pre><code>  搜索词*搜索词
+</code></pre>
+<h2 id="inurl"><a href="#inurl" class="headerlink" title="inurl:"></a>inurl:</h2><p><code>inurl:</code> 指令用于搜索搜索词出现在URL中的结果。</p>
+<pre><code>inurl:搜索词
+</code></pre>
+<p>关键词出现在 URL中对排名有一定影响，因此使用inurl:搜索可以更准确地找到竟争对手。</p>
+<h2 id="inanchor"><a href="#inanchor" class="headerlink" title="inanchor:"></a>inanchor:</h2><p><code>inanchor:</code> 指令搜索链接锚文字中包含搜索词的结果。（百度不支持）</p>
+<pre><code>inanchor:搜索词
+</code></pre>
+<h2 id="intitle"><a href="#intitle" class="headerlink" title="intitle:"></a>intitle:</h2><p><code>intitle:</code> 指令搜索title中包含搜索词的页面。Google和百度都支持。</p>
+<pre><code>intitle:搜索词
+</code></pre>
+<p>title是目前页面优化的最重要因素。</p>
+<h2 id="site"><a href="#site" class="headerlink" title="site:"></a>site:</h2><p><code>site:</code> 搜索某个域名下的所有结果</p>
+<pre><code>site:domainName
+</code></pre>
+<p>查询网站收录页面数最直接方法。</p>
+<h2 id="link"><a href="#link" class="headerlink" title="link:"></a>link:</h2><p><code>link:</code> 用来搜索某个url的反向链接，既包含内部链接，也包含外部链接。</p>
+<pre><code>link:domainName #返回domain的反向链接
+
+ 
+</code></pre>
+<h2 id="allintitle-allinurl"><a href="#allintitle-allinurl" class="headerlink" title="allintitle:   allinurl:"></a>allintitle:   allinurl:</h2><p><code>allintitle:</code> 搜索title中包含多组搜索词的结果。（百度不支持）</p>
+<pre><code>allintitle:搜索1 搜索2  #相当于 title:搜索1 title:搜索2
+
+  
+</code></pre>
+<p><code>allinurl:</code> 就是 多组<code>inurl</code>的集合，跟 <code>allintitle:</code> 类似 （百度不支持）</p>
+<h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><ul>
+<li><p>inurl:gov 淘宝<br> 返回的就是URL中包含“gov”，页面中有“淘宝”这个词的页面。很多SEO人员认为政府和学校网站有比较高的权重，找到相关的政府和学校网站，就找到了最好的链接资源。</p>
+</li>
+<li><p>inurl:.edu.cn 交换链接<br>返回的是来自.edu.cn，也就是学校域名上的包含 “交换链接” 这个词的页面。从中SEO人员可以找到愿意交换链接的学校网站。<br>或者使用一个更精确的搜索：inurl:.edu.cn intitle:交换链接     </p>
+</li>
+<li><p>淘宝 inurl:links<br>很多站长把交换链接的页面命名为　links.html等，所以这个指令返回的就是与淘宝主题相关的交换链接页面。      </p>
+</li>
+<li><p>allinurl:gov.cn+links<br>返回的是url中包含“gov.cn” 以及“links” 的页面，也就是政府域名上的交换链接页面。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/02/15/exception/ClientAbortException/" rel="prev" title="ClientAbortException">
+      <i class="fa fa-chevron-left"></i> ClientAbortException
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/05/other/shadowsocks/" rel="next" title="ss">
+      ss <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E5%BC%95%E5%8F%B7"><span class="nav-number">1.</span> <span class="nav-text">双引号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A9%BA%E6%A0%BC-%E5%8A%A0%E5%8F%B7-%E5%87%8F%E5%8F%B7"><span class="nav-number">2.</span> <span class="nav-text">空格 加号 减号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%9F%E5%8F%B7"><span class="nav-number">3.</span> <span class="nav-text">星号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#inurl"><span class="nav-number">4.</span> <span class="nav-text">inurl:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#inanchor"><span class="nav-number">5.</span> <span class="nav-text">inanchor:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#intitle"><span class="nav-number">6.</span> <span class="nav-text">intitle:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#site"><span class="nav-number">7.</span> <span class="nav-text">site:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#link"><span class="nav-number">8.</span> <span class="nav-text">link:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#allintitle-allinurl"><span class="nav-number">9.</span> <span class="nav-text">allintitle:   allinurl:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%BC%E5%90%88"><span class="nav-number">10.</span> <span class="nav-text">综合</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容  安装 配置 使用  使用 fail2ban 防御服务器的暴力破解攻击， ssh，nginx 服务为例。 变更历史  2019-7-16 Fail2Ban v0.9.7 ssh filter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fail2ban防御暴力破解攻击">
+<meta property="og:url" content="http://giveme5.cc/2017/03/28/linux/fail2ban-md/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容  安装 配置 使用  使用 fail2ban 防御服务器的暴力破解攻击， ssh，nginx 服务为例。 变更历史  2019-7-16 Fail2Ban v0.9.7 ssh filter">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-03-28T09:30:41.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="安全">
+<meta property="article:tag" content="fail2ban">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2017/03/28/linux/fail2ban-md/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>fail2ban防御暴力破解攻击 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/03/28/linux/fail2ban-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          fail2ban防御暴力破解攻击
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-03-28 17:30:41" itemprop="dateCreated datePublished" datetime="2017-03-28T17:30:41+08:00">2017-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<ul>
+<li>安装</li>
+<li>配置</li>
+<li>使用</li>
+</ul>
+<p>使用 fail2ban 防御服务器的暴力破解攻击， ssh，nginx 服务为例。</p>
+<p>变更历史</p>
+<ul>
+<li>2019-7-16 Fail2Ban v0.9.7 ssh filter</li>
+</ul>
+<span id="more"></span>
+
+<p>实验环境 </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lsb_release -a</span><br><span class="line">LSB Version:    :core-4.1-amd64:core-4.1-noarch</span><br><span class="line">Distributor ID: CentOS</span><br><span class="line">Description:    CentOS Linux release 7.2.1511 (Core) </span><br><span class="line">Release:        7.2.1511</span><br><span class="line">Codename:       Core</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="EPEL-源"><a href="#EPEL-源" class="headerlink" title="EPEL 源"></a>EPEL 源</h3><p>需要安装 EPEL 源， 国内可使用阿里云的镜像。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup</span><br><span class="line">wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br></pre></td></tr></table></figure>
+<h3 id="fail2ban"><a href="#fail2ban" class="headerlink" title="fail2ban"></a>fail2ban</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install fail2ban-firewalld</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>配置文件根路径 <code>/etc/fail2ban/</code>。 默认服务的配置文件 <code>jail.conf</code>。<br>自定义服务配置文件 存放路径 <code>jail.d</code>， 建议以 <code>jail_服务名.local</code> 命名。<br>各个服务的拦截条件 在 <code>filter.d</code> 。</p>
+<h2 id="ssh服务配置"><a href="#ssh服务配置" class="headerlink" title="ssh服务配置"></a>ssh服务配置</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/fail2ban/jail.d/jail_ssh.local </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>增加如下内容 </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[sshd]</span><br><span class="line">enabled = <span class="literal">true</span></span><br><span class="line"><span class="comment"># 尝试次数</span></span><br><span class="line">maxretry = 3</span><br><span class="line"><span class="comment"># 禁止访问时间（秒）</span></span><br><span class="line">bantime = 7200</span><br><span class="line">findtime = 600</span><br></pre></td></tr></table></figure>
+
+<p>如果你使用用户密码登录，以上配置就可以了。</p>
+<p>如果你使用公钥登录， 在修改下 ssh 的拦截条件, 增加 <code>^%(__prefix_line)sConnection closed by &lt;HOST&gt; \[preauth\]$</code></p>
+<p>Fail2Ban v0.9.7 时 <code>^%(__prefix_line_sl)sConnection closed by &lt;HOST&gt;.*%(__suff)s$</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/fail2ban/filter.d/sshd.conf </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Fail3Ban filter for openssh</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># If you want to protect OpenSSH from being bruteforced by password</span></span><br><span class="line"><span class="comment"># authentication then get public key authentication working before disabling</span></span><br><span class="line"><span class="comment"># PasswordAuthentication in sshd_config.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># &quot;Connection from &lt;HOST&gt; port \d+&quot; requires LogLevel VERBOSE in sshd_config</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line">[INCLUDES]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read common prefixes. If any customizations available -- read them from</span></span><br><span class="line"><span class="comment"># common.local</span></span><br><span class="line">before = common.conf</span><br><span class="line"></span><br><span class="line">[DEFAULT]</span><br><span class="line"></span><br><span class="line">_daemon = sshd</span><br><span class="line"></span><br><span class="line"><span class="comment"># optional prefix (logged from several ssh versions) like &quot;error: &quot;, &quot;error: PAM: &quot; or &quot;fatal: &quot;</span></span><br><span class="line">__pref = (?:(?:error|fatal): (?:PAM: )?)?</span><br><span class="line"><span class="comment"># optional suffix (logged from several ssh versions) like &quot; [preauth]&quot;</span></span><br><span class="line">__suff = (?: \[preauth\])?\s*</span><br><span class="line">__on_port_opt = (?: port \d+)?(?: on \S+(?: port \d+)?)?</span><br><span class="line"></span><br><span class="line"><span class="comment"># single line prefix:</span></span><br><span class="line">__prefix_line_sl = %(__prefix_line)s%(__pref)s</span><br><span class="line"><span class="comment"># multi line prefixes (for first and second lines):</span></span><br><span class="line">__prefix_line_ml1 = (?P&lt;__prefix&gt;%(__prefix_line)s)%(__pref)s</span><br><span class="line">__prefix_line_ml2 = %(__suff)s$&lt;SKIPLINES&gt;^(?P=__prefix)%(__pref)s</span><br><span class="line"></span><br><span class="line">mode = %(normal)s</span><br><span class="line"></span><br><span class="line">normal = ^%(__prefix_line_sl)s[aA]uthentication (?:failure|error|failed) <span class="keyword">for</span> .* from &lt;HOST&gt;( via \S+)?\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)sUser not known to the underlying authentication module <span class="keyword">for</span> .* from &lt;HOST&gt;\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)sFailed \S+ <span class="keyword">for</span> (?P&lt;cond_inv&gt;invalid user )?(?P&lt;user&gt;(?P&lt;cond_user&gt;\S+)|(?(cond_inv)(?:(?! from ).)*?|[^:]+)) from &lt;HOST&gt;%(__on_port_opt)s(?: ssh\d*)?(?(cond_user): |(?:(?:(?! from ).)*)$)</span><br><span class="line">         ^%(__prefix_line_sl)sROOT LOGIN REFUSED.* FROM &lt;HOST&gt;\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)s[iI](?:llegal|nvalid) user .*? from &lt;HOST&gt;%(__on_port_opt)s\s*$</span><br><span class="line">         ^%(__prefix_line_sl)sUser .+ from &lt;HOST&gt; not allowed because not listed <span class="keyword">in</span> AllowUsers\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)sUser .+ from &lt;HOST&gt; not allowed because listed <span class="keyword">in</span> DenyUsers\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)sUser .+ from &lt;HOST&gt; not allowed because not <span class="keyword">in</span> any group\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)srefused connect from \S+ \(&lt;HOST&gt;\)\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)sReceived disconnect from &lt;HOST&gt;%(__on_port_opt)s:\s*3: .*: Auth fail%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)sUser .+ from &lt;HOST&gt; not allowed because a group is listed <span class="keyword">in</span> DenyGroups\s*%(__suff)s$</span><br><span class="line">         ^%(__prefix_line_sl)sUser .+ from &lt;HOST&gt; not allowed because none of user<span class="string">&#x27;s groups are listed in AllowGroups\s*%(__suff)s$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_sl)spam_unix\(sshd:auth\):\s+authentication failure;\s*logname=\S*\s*uid=\d*\s*euid=\d*\s*tty=\S*\s*ruser=\S*\s*rhost=&lt;HOST&gt;\s.*%(__suff)s$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_sl)s(error: )?maximum authentication attempts exceeded for .* from &lt;HOST&gt;%(__on_port_opt)s(?: ssh\d*)? \[preauth\]$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_ml1)sUser .+ not allowed because account is locked%(__prefix_line_ml2)sReceived disconnect from &lt;HOST&gt;: 11: .+%(__suff)s$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_ml1)sDisconnecting: Too many authentication failures for .+?%(__prefix_line_ml2)sConnection closed by &lt;HOST&gt;%(__suff)s$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_ml1)sConnection from &lt;HOST&gt;%(__on_port_opt)s%(__prefix_line_ml2)sDisconnecting: Too many authentication failures for .+%(__suff)s$</span></span><br><span class="line"><span class="string">            ^%(__prefix_line_sl)sConnection closed by &lt;HOST&gt;.*%(__suff)s$  ##增加在这里</span></span><br><span class="line"><span class="string">            ^%(__prefix_line_sl)sDisconnected from &lt;HOST&gt;.*%(__suff)s$ ##增加在这里, 可根据情况自己增加</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ddos =   ^%(__prefix_line_sl)sDid not receive identification string from &lt;HOST&gt;%(__suff)s$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_sl)sReceived disconnect from &lt;HOST&gt;%(__on_port_opt)s:\s*14: No supported authentication methods available%(__suff)s$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_sl)sUnable to negotiate with &lt;HOST&gt;%(__on_port_opt)s: no matching (?:cipher|key exchange method) found.</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_ml1)sConnection from &lt;HOST&gt;%(__on_port_opt)s%(__prefix_line_ml2)sUnable to negotiate a (?:cipher|key exchange method)%(__suff)s$</span></span><br><span class="line"><span class="string">         ^%(__prefix_line_ml1)sSSH: Server;Ltype: (?:Authname|Version|Kex);Remote: &lt;HOST&gt;-\d+;[A-Z]\w+:.*%(__prefix_line_ml2)sRead from socket failed: Connection reset by peer%(__suff)s$</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">aggressive = %(normal)s</span></span><br><span class="line"><span class="string">             %(ddos)s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Definition]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">failregex = %(mode)s</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">ignoreregex =</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Init]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># &quot;maxlines&quot; is number of log lines to buffer for multi-line regex searches</span></span><br><span class="line"><span class="string">maxlines = 10</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">journalmatch = _SYSTEMD_UNIT=sshd.service + _COMM=sshd</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># DEV Notes:</span></span><br><span class="line"><span class="string">#</span></span><br><span class="line"><span class="string">#   &quot;Failed \S+ for .*? from &lt;HOST&gt;...&quot; failregex uses non-greedy catch-all because</span></span><br><span class="line"><span class="string">#   it is coming before use of &lt;HOST&gt; which is not hard-anchored at the end as well,</span></span><br><span class="line"><span class="string">#   and later catch-all&#x27;</span>s could contain user-provided input, <span class="built_in">which</span> need to be greedily</span><br><span class="line"><span class="comment">#   matched away first.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Author: Cyril Jaquier, Yaroslav Halchenko, Petr Voralek, Daniel Black</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义服务-NGINX"><a href="#自定义服务-NGINX" class="headerlink" title="自定义服务(NGINX)"></a>自定义服务(NGINX)</h2><p>以下检查 nginx 服务 400,404,500 错误状态为例</p>
+<h3 id="jail"><a href="#jail" class="headerlink" title="jail"></a>jail</h3><p>路径 <code>/etc/fail2ban/jail.d</code> , 新建 <code>jail_nginx-err.local</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/fail2ban/jail.d/jail_nginx-err.local</span><br></pre></td></tr></table></figure>
+
+<p>内容如下 </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[nginx-err]</span><br><span class="line">enabled = <span class="literal">true</span></span><br><span class="line">port = http,https</span><br><span class="line">filter = nginx-err</span><br><span class="line">banaction = firewallcmd-ipset</span><br><span class="line">logpath = /var/log/nginx/access.log</span><br><span class="line">findtime = 600</span><br><span class="line">maxretry = 20</span><br><span class="line">bantime = 7200</span><br></pre></td></tr></table></figure>
+
+<p>大致意义如下：</p>
+<ul>
+<li>[nginx-err]：定义jail名称</li>
+<li>enabled：是否启用该jail，默认的所有规则都没有该项，需要手动添加</li>
+<li>port：指定封禁的端口，默认为0:65535，也就是所有端口，但可以在jail中设定</li>
+<li>filter：指定过滤器名称</li>
+<li>logpath：日志路径</li>
+<li>banaction：达到阈值后的动作， 默认</li>
+<li>maxretry：阈值</li>
+<li>findtime：时间间隔 单位秒</li>
+<li>bantime：封禁时长</li>
+<li>ignoreip：忽略的IP</li>
+</ul>
+<p>在这里有几点要注意的：</p>
+<ul>
+<li>logpath与banaction可以有多行，如action中的设定：<br>++ 调用firewallcmd-ipset封禁目标IP访问的多个端口<br>++ 调用sendmail发送告警邮件</li>
+<li>findtime不是检查日志的时间间隔，日志的检查是实时的。因为fail2ban自带数据库，所以可以在设定的时间内统计匹配次数</li>
+<li>ignoreip添加后端服务器的IP或CDN的IP</li>
+</ul>
+<h3 id="action"><a href="#action" class="headerlink" title="action"></a>action</h3><p>使用现有的 <code>firewallcmd-ipset</code></p>
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><p>路径 <code>/etc/fail2ban/filter.d</code> 新建 <code>nginx-err.conf</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[Definition]</span><br><span class="line"></span><br><span class="line">failregex = ^&lt;HOST&gt; -.*- .*HTTP/1.* (404|400|500) \d+ .*$</span><br><span class="line"></span><br><span class="line">ignoreregex =</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>注意：<br>nginx log 格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;</span><br><span class="line">                  &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;</span><br><span class="line">                  &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ul>
+<li><p>启动&#x2F;重启 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart fail2ban.service</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开机启动</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable fail2ban.service</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检验fail2ban状态， 显示出当前活动的监狱列表</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fail2ban-client status                                                                                                                                                                                  255 ↵</span><br><span class="line">Status</span><br><span class="line">|- Number of jail:      1</span><br><span class="line">`- Jail list:   sshd</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检验一个特定监狱的状态</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fail2ban-client status sshd </span><br><span class="line">Status <span class="keyword">for</span> the jail: sshd</span><br><span class="line">|- Filter</span><br><span class="line">|  |- Currently failed: 1</span><br><span class="line">|  |- Total failed:     4</span><br><span class="line">|  `- Journal matches:  _SYSTEMD_UNIT=sshd.service + _COMM=sshd</span><br><span class="line">`- Actions</span><br><span class="line">   |- Currently banned: 1</span><br><span class="line">   |- Total banned:     2</span><br><span class="line">   `- Banned IP list:   140.205.201.42</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>解锁特定的IP地址</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># fail2ban-client set 特定监狱 unbanip ip</span></span><br><span class="line">fail2ban-client <span class="built_in">set</span> sshd unbanip 192.168.1.8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看防火墙</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --direct --get-all-rules</span><br><span class="line">  </span><br><span class="line">ipset list</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/%E5%AE%89%E5%85%A8/" rel="tag"># 安全</a>
+              <a href="/tags/fail2ban/" rel="tag"># fail2ban</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/06/hadoop/hadoopHive/" rel="prev" title="hadoopLive">
+      <i class="fa fa-chevron-left"></i> hadoopLive
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/03/28/linux/Firewalld-md/" rel="next" title="CentOS 7 Firewalld">
+      CentOS 7 Firewalld <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EPEL-%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">EPEL 源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fail2ban"><span class="nav-number">1.2.</span> <span class="nav-text">fail2ban</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssh%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">ssh服务配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9C%8D%E5%8A%A1-NGINX"><span class="nav-number">4.</span> <span class="nav-text">自定义服务(NGINX)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#jail"><span class="nav-number">4.1.</span> <span class="nav-text">jail</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#action"><span class="nav-number">4.2.</span> <span class="nav-text">action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filter"><span class="nav-number">4.3.</span> <span class="nav-text">filter</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">使用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

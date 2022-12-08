@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容keepalived + nginx 双活热备负载均衡 更新历史无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="keepalived + nginx 双活热备负载均衡">
+<meta property="og:url" content="http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容keepalived + nginx 双活热备负载均衡 更新历史无">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-02-27T02:48:42.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="server">
+<meta property="article:tag" content="keepalived">
+<meta property="article:tag" content="高性能">
+<meta property="article:tag" content="负载均衡">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>keepalived + nginx 双活热备负载均衡 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2018/02/27/web%20server/nginx/keepalivedNginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          keepalived + nginx 双活热备负载均衡
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-02-27 10:48:42" itemprop="dateCreated datePublished" datetime="2018-02-27T10:48:42+08:00">2018-02-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/server/" itemprop="url" rel="index"><span itemprop="name">server</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>keepalived + nginx 双活热备负载均衡</p>
+<p><em>更新历史</em><br>无</p>
+<span id="more"></span>
+
+<h2 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h2><p>CentOS 7.3<br>记得安装开发工具， 如果忘记可以在终端执行 <code>yum groupinstall &quot;Development Tools&quot;</code></p>
+<h3 id="ip-config"><a href="#ip-config" class="headerlink" title="ip config"></a>ip config</h3><p>设置静态IP， 主要根据实际情况设置最后6行。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/sysconfig/network-scripts/ifcfg-enp2s0 # 具体文件看自己服务器情况</span></span><br><span class="line"></span><br><span class="line">TYPE=Ethernet</span><br><span class="line"></span><br><span class="line">DEFROUTE=<span class="built_in">yes</span></span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=<span class="built_in">yes</span></span><br><span class="line">IPV6_AUTOCONF=<span class="built_in">yes</span></span><br><span class="line">IPV6_DEFROUTE=<span class="built_in">yes</span></span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_PEERDNS=<span class="built_in">yes</span></span><br><span class="line">IPV6_PEERROUTES=<span class="built_in">yes</span></span><br><span class="line">NAME=enp2s0</span><br><span class="line">UUID=d776619b-ac07-4367-b44c-40bd05aaea58</span><br><span class="line">DEVICE=enp2s0</span><br><span class="line"></span><br><span class="line">BOOTPROTO=static</span><br><span class="line">ONBOOT=<span class="built_in">yes</span></span><br><span class="line">DNS1=221.228.255.1</span><br><span class="line">IPADDR=192.168.11.102</span><br><span class="line">PREFIX=24</span><br><span class="line">GATEWAY=192.168.11.1</span><br></pre></td></tr></table></figure>
+
+<p>设置完毕重启网络 <code>systemctl restart network.service </code></p>
+<h3 id="close-SELINUX"><a href="#close-SELINUX" class="headerlink" title="close SELINUX"></a>close SELINUX</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">&#x27;s/SELINUX=enforcing/SELINUX=disabled/g&#x27;</span> /etc/selinux/config</span><br><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld</span><br></pre></td></tr></table></figure>
+
+<h3 id="hostname"><a href="#hostname" class="headerlink" title="hostname"></a>hostname</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl set-hostname `your hostname`</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<p>  修改 &#x2F;etc&#x2F;hosts 将 your hostname 写入到 ipv4 和 ipv6</p>
+<h2 id="设置YUM源"><a href="#设置YUM源" class="headerlink" title="设置YUM源"></a>设置YUM源</h2><h3 id="网络YUM源"><a href="#网络YUM源" class="headerlink" title="网络YUM源"></a>网络YUM源</h3><ul>
+<li><p>阿里CentOS 镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo </span><br><span class="line">yum makecache <span class="comment">#生成缓存</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/yum.repos.d/nginx.repo</span></span><br><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/<span class="variable">$releasever</span>/<span class="variable">$basearch</span>/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="本地YUM源"><a href="#本地YUM源" class="headerlink" title="本地YUM源"></a>本地YUM源</h3><p><a target="_blank" rel="noopener" href="http://geosmart.github.io/2015/12/07/CentOS%E9%85%8D%E7%BD%AE%E6%9C%AC%E5%9C%B0Yum%E6%BA%90/">参照</a></p>
+<ul>
+<li>编辑CentOS-Media.repo<br>其他的repo 都可改名成 ×××.repo.bak<br>拷贝 CentOS光盘 所有内容（比如路径 <code>/run/media/$&#123;user&#125;/CentOS\ 7\ x86_64/</code>） 到 <code>/mnt/CentOS7_ISO/</code></li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vim /etc/yum.repos.d/CentOS-Media.repo</span></span><br><span class="line"></span><br><span class="line">[local-media]</span><br><span class="line">  name=CentOS-<span class="variable">$releasever</span> - Media</span><br><span class="line">  baseurl=file:///mnt/CentOS7_ISO/</span><br><span class="line">  gpgcheck=0</span><br><span class="line">  enabled=1 <span class="comment">#启动本地</span></span><br><span class="line">  gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h2><p><a href="http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/">nginx</a></p>
+<h2 id="keepalive"><a href="#keepalive" class="headerlink" title="keepalive"></a>keepalive</h2><h3 id="install"><a href="#install" class="headerlink" title="install"></a>install</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y keepalived</span><br></pre></td></tr></table></figure>
+
+<h3 id="config"><a href="#config" class="headerlink" title="config"></a>config</h3><p>假设主服务器IP:192.168.0.201,从服务器ip:192.168.0.202 虚拟ip:192.168.0.200</p>
+<h4 id="master"><a href="#master" class="headerlink" title="master"></a>master</h4><p><code>vim /etc/keepalived/keepalived.conf</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">! Configuration File <span class="keyword">for</span> keepalived</span><br><span class="line"></span><br><span class="line">global_defs &#123;</span><br><span class="line"><span class="comment">#   notification_email &#123;</span></span><br><span class="line"><span class="comment">#     acassen@firewall.loc</span></span><br><span class="line"><span class="comment">#     failover@firewall.loc</span></span><br><span class="line"><span class="comment">#     sysadmin@firewall.loc</span></span><br><span class="line"><span class="comment">#   &#125;</span></span><br><span class="line"><span class="comment">#   notification_email_from Alexandre.Cassen@firewall.loc</span></span><br><span class="line"><span class="comment">#   smtp_server 192.168.200.1</span></span><br><span class="line"><span class="comment">#   smtp_connect_timeout 30</span></span><br><span class="line">   router_id nginx_master      <span class="comment">#机器标识， 通常是hostname </span></span><br><span class="line"><span class="comment">#   vrrp_skip_check_adv_addr</span></span><br><span class="line"><span class="comment">#   vrrp_strict</span></span><br><span class="line">   vrrp_garp_interval 0</span><br><span class="line">   vrrp_gna_interval 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_script chk_nginx &#123;  <span class="comment">#    script &quot;killall -0 nginx&quot;</span></span><br><span class="line">    script <span class="string">&quot;/etc/keepalived/check_ng.sh&quot;</span>        <span class="comment">#检测nginx的脚本, 脚本名称千万不要使用 完整 nginx，容易出错</span></span><br><span class="line">    interval 2                                  <span class="comment">#每2秒检测一次</span></span><br><span class="line">    weight -5                                   <span class="comment">#如果某一个nginx宕机 则权重减5</span></span><br><span class="line">    fall 3  </span><br><span class="line">    rise 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER            <span class="comment">#状态 MASTER BACKUP</span></span><br><span class="line">    interface enp0s3        <span class="comment">#实例绑定的网卡，因为在配置虚拟IP的时候必须是在已有的网卡上添加的</span></span><br><span class="line">    virtual_router_id 51    <span class="comment">#虚拟路由的ID号,两个节点设置必须一样</span></span><br><span class="line">    priority 101            <span class="comment">#主备优先级</span></span><br><span class="line">    advert_int 1</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 设置验证信息，两个节点必须一致</span></span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS      <span class="comment">#认证方式</span></span><br><span class="line">        auth_pass 1111      <span class="comment">#明文密码</span></span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.0.200</span><br><span class="line">    &#125;</span><br><span class="line">    track_script &#123;</span><br><span class="line">       chk_nginx</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="track-script"><a href="#track-script" class="headerlink" title="track_script"></a>track_script</h4><p>脚本名称千万不要使用 完整 <code>nginx</code>，容易出错<br><code>/etc/keepalived/check_ng.sh</code><br>记得加上执行权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /etc/keepalived/check_ng.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">A=`pgrep nginx|<span class="built_in">wc</span> -l`</span><br><span class="line"><span class="keyword">if</span> [ <span class="variable">$A</span> -eq 0 ];<span class="keyword">then</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">#yum install</span></span><br><span class="line"> /bin/systemctl start nginx.service</span><br><span class="line"> </span><br><span class="line"> <span class="comment"># 源码安装 nginx</span></span><br><span class="line"> <span class="comment"># /usr/local/nginx/sbin/nginx</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> [ `pgrep nginx|<span class="built_in">wc</span> -l` -eq 0 ];<span class="keyword">then</span></span><br><span class="line">   /bin/systemctl stop keepalived.service</span><br><span class="line"> <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以根据自己的业务需求，总结出在什么情形下关闭keepalived。<br>如 curl 主页连续2个3s没有响应则切换：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">count=0</span><br><span class="line"><span class="keyword">for</span> (( k=<span class="number">0</span>; k&lt;<span class="number">2</span>; k++ ))</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    check_code=$( curl --connect-timeout 3 -sL -w <span class="string">&quot;%&#123;http_code&#125;\\n&quot;</span> http://localhost/ -o /dev/null )</span><br><span class="line">    <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$check_code</span>&quot;</span> != <span class="string">&quot;200&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">        count=$(<span class="built_in">expr</span> <span class="variable">$count</span> + 1)</span><br><span class="line">        <span class="built_in">sleep</span> 3</span><br><span class="line">        <span class="built_in">continue</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        count=0</span><br><span class="line">        <span class="built_in">break</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$count</span>&quot;</span> != <span class="string">&quot;0&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">exit</span> 1</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    <span class="built_in">exit</span> 0</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="backup"><a href="#backup" class="headerlink" title="backup"></a>backup</h4><p>在其它备机BACKUP上，只需要改变 state MASTER -&gt; state BACKUP，priority 101 -&gt; priority 100即可<br><code>vim /etc/keepalived/keepalived.conf</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">! Configuration File <span class="keyword">for</span> keepalived</span><br><span class="line"></span><br><span class="line">global_defs &#123;</span><br><span class="line"><span class="comment">#   notification_email &#123;</span></span><br><span class="line"><span class="comment">#     acassen@firewall.loc</span></span><br><span class="line"><span class="comment">#     failover@firewall.loc</span></span><br><span class="line"><span class="comment">#     sysadmin@firewall.loc</span></span><br><span class="line"><span class="comment">#   &#125;</span></span><br><span class="line"><span class="comment">#   notification_email_from Alexandre.Cassen@firewall.loc</span></span><br><span class="line"><span class="comment">#   smtp_server 192.168.200.1</span></span><br><span class="line"><span class="comment">#   smtp_connect_timeout 30</span></span><br><span class="line">   router_id nginx_backup      <span class="comment">#机器标识， 通常是hostname </span></span><br><span class="line"><span class="comment">#   vrrp_skip_check_adv_addr</span></span><br><span class="line"><span class="comment">#   vrrp_strict</span></span><br><span class="line">   vrrp_garp_interval 0</span><br><span class="line">   vrrp_gna_interval 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_script chk_nginx &#123;</span><br><span class="line"><span class="comment">#    script &quot;killall -0 nginx&quot;</span></span><br><span class="line">    script <span class="string">&quot;/etc/keepalived/check_ng.sh&quot;</span>     <span class="comment">#检测nginx的脚本</span></span><br><span class="line">    interval 2                                  <span class="comment">#每2秒检测一次</span></span><br><span class="line">    weight -5                                   <span class="comment">#如果某一个nginx宕机 则权重减5</span></span><br><span class="line">    fall 3  </span><br><span class="line">    rise 2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP            <span class="comment">#状态 MASTER BACKUP</span></span><br><span class="line">    interface enp0s3        <span class="comment">#实例绑定的网卡，因为在配置虚拟IP的时候必须是在已有的网卡上添加的</span></span><br><span class="line">    virtual_router_id 51    <span class="comment">#虚拟路由的ID号,两个节点设置必须一样</span></span><br><span class="line">    priority 100            <span class="comment">#主备优先级</span></span><br><span class="line">    advert_int 1</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 设置验证信息，两个节点必须一致</span></span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS      <span class="comment">#认证方式</span></span><br><span class="line">        auth_pass 1111      <span class="comment">#明文密码</span></span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.0.200</span><br><span class="line">    &#125;</span><br><span class="line">    track_script &#123;</span><br><span class="line">       chk_nginx</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##附录</p>
+<h3 id="keepalived-配置选项说明"><a href="#keepalived-配置选项说明" class="headerlink" title="keepalived 配置选项说明"></a>keepalived 配置选项说明</h3><ul>
+<li><code>global_defs</code></li>
+</ul>
+<p><code>notification_email</code> ： keepalived在发生诸如切换操作时需要发送email通知地址，后面的 smtp_server 相比也都知道是邮件服务器地址。也可以通过其它方式报警，毕竟邮件不是实时通知的。<br><code>router_id</code> ： 机器标识，通常可设为hostname。故障发生时，邮件通知会用到</p>
+<ul>
+<li><code>vrrp_instance</code></li>
+</ul>
+<p>state ： 指定instance(Initial)的初始状态，就是说在配置好后，这台服务器的初始状态就是这里指定的，但这里指定的不算，还是得要通过竞选通过优先级来确定。如果这里设置为MASTER，但如若他的优先级不及另外一台，那么这台在发送通告时，会发送自己的优先级，另外一台发现优先级不如自己的高，那么他会就回抢占为MASTER<br>interface ： 实例绑定的网卡，因为在配置虚拟IP的时候必须是在已有的网卡上添加的<br>mcast_src_ip ： 发送多播数据包时的源IP地址，这里注意了，这里实际上就是在那个地址上发送VRRP通告，这个非常重要，一定要选择稳定的网卡端口来发送，这里相当于heartbeat的心跳端口，如果没有设置那么就用默认的绑定的网卡的IP，也就是interface指定的IP地址<br>virtual_router_id ： 这里设置VRID，这里非常重要，相同的VRID为一个组，他将决定多播的MAC地址<br>priority ： 设置本节点的优先级，优先级高的为master<br>advert_int ： 检查间隔，默认为1秒。这就是VRRP的定时器，MASTER每隔这样一个时间间隔，就会发送一个advertisement报文以通知组内其他路由器自己工作正常<br>authentication ： 定义认证方式和密码，主从必须一样<br>virtual_ipaddress ： 这里设置的就是VIP，也就是虚拟IP地址，他随着state的变化而增加删除，当state为master的时候就添加，当state为backup的时候删除，这里主要是有优先级来决定的，和state设置的值没有多大关系，这里可以设置多个IP地址<br>track_script ： 引用VRRP脚本，即在 vrrp_script 部分指定的名字。定期运行它们来改变优先级，并最终引发主备切换。</p>
+<ul>
+<li><code>vrrp_script</code></li>
+</ul>
+<p>告诉 keepalived 在什么情况下切换，所以尤为重要。可以有多个 vrrp_script</p>
+<p>script ： 自己写的检测脚本。也可以是一行命令如killall -0 nginx<br>interval 2 ： 每2s检测一次<br>weight -5 ： 检测失败（脚本返回非0）则优先级 -5<br>fall 2 ： 检测连续 2 次失败才算确定是真失败。会用weight减少优先级（1-255之间）<br>rise 1 ： 检测 1 次成功就算成功。但不修改优先级<br>这里要提示一下script一般有2种写法：</p>
+<p>通过脚本执行的返回结果，改变优先级，keepalived继续发送通告消息，backup比较优先级再决定<br>脚本里面检测到异常，直接关闭keepalived进程，backup机器接收不到advertisement会抢占IP<br>上文 vrrp_script 配置部分，killall -0 nginx属于第1种情况，&#x2F;etc&#x2F;keepalived&#x2F;check_ng.sh属于第2种情况（脚本中关闭keepalived）。个人更倾向于通过shell脚本判断，但有异常时exit 1，正常退出exit 0，然后keepalived根据动态调整的 vrrp_instance 优先级选举决定是否抢占VIP：</p>
+<p>如果脚本执行结果为0，并且weight配置的值大于0，则优先级相应的增加<br>如果脚本执行结果非0，并且weight配置的值小于0，则优先级相应的减少<br>其他情况，原本配置的优先级不变，即配置文件中priority对应的值。</p>
+<p>提示：</p>
+<p>优先级不会不断的提高或者降低<br>可以编写多个检测脚本并为每个检测脚本设置不同的weight（在配置中列出就行）<br>不管提高优先级还是降低优先级，最终优先级的范围是在[1,254]，不会出现优先级小于等于0或者优先级大于等于255的情况<br>在MASTER节点的 vrrp_instance 中 配置 nopreempt ，当它异常恢复后，即使它 prio 更高也不会抢占，这样可以避免正常情况下做无谓的切换<br>以上可以做到利用脚本检测业务进程的状态，并动态调整优先级从而实现主备切换。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/nginx/" rel="tag"># nginx</a>
+              <a href="/tags/server/" rel="tag"># server</a>
+              <a href="/tags/keepalived/" rel="tag"># keepalived</a>
+              <a href="/tags/%E9%AB%98%E6%80%A7%E8%83%BD/" rel="tag"># 高性能</a>
+              <a href="/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" rel="tag"># 负载均衡</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/01/25/other/jwt1/" rel="prev" title="jwt (Json Web Tokens)">
+      <i class="fa fa-chevron-left"></i> jwt (Json Web Tokens)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/05/30/java/java8JSR310/" rel="next" title="Java 8 日期和时间">
+      Java 8 日期和时间 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ip-config"><span class="nav-number">2.1.</span> <span class="nav-text">ip config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close-SELINUX"><span class="nav-number">2.2.</span> <span class="nav-text">close SELINUX</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hostname"><span class="nav-number">2.3.</span> <span class="nav-text">hostname</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEYUM%E6%BA%90"><span class="nav-number">3.</span> <span class="nav-text">设置YUM源</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9CYUM%E6%BA%90"><span class="nav-number">3.1.</span> <span class="nav-text">网络YUM源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0YUM%E6%BA%90"><span class="nav-number">3.2.</span> <span class="nav-text">本地YUM源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx"><span class="nav-number">4.</span> <span class="nav-text">nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keepalive"><span class="nav-number">5.</span> <span class="nav-text">keepalive</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#install"><span class="nav-number">5.1.</span> <span class="nav-text">install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#config"><span class="nav-number">5.2.</span> <span class="nav-text">config</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#master"><span class="nav-number">5.2.1.</span> <span class="nav-text">master</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#track-script"><span class="nav-number">5.2.2.</span> <span class="nav-text">track_script</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#backup"><span class="nav-number">5.2.3.</span> <span class="nav-text">backup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keepalived-%E9%85%8D%E7%BD%AE%E9%80%89%E9%A1%B9%E8%AF%B4%E6%98%8E"><span class="nav-number">5.3.</span> <span class="nav-text">keepalived 配置选项说明</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

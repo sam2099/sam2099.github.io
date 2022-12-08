@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容 canal [kə’næl]，译意为水道&#x2F;管道&#x2F;沟渠，主要用途是基于 MySQL 数据库增量日志解析，提供增量数据订阅和消费. 版本：canal 1.1.6MySQL 8.0 +oracle  更新历史无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="canal 同步 mysql 到 oracle">
+<meta property="og:url" content="http://giveme5.cc/2022/07/15/canal/canal/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 canal [kə’næl]，译意为水道&#x2F;管道&#x2F;沟渠，主要用途是基于 MySQL 数据库增量日志解析，提供增量数据订阅和消费. 版本：canal 1.1.6MySQL 8.0 +oracle  更新历史无">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-15T10:02:02.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="canal">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="oracle">
+<meta property="article:tag" content="多数据源">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2022/07/15/canal/canal/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>canal 同步 mysql 到 oracle | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2022/07/15/canal/canal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          canal 同步 mysql 到 oracle
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-07-15 18:02:02" itemprop="dateCreated datePublished" datetime="2022-07-15T18:02:02+08:00">2022-07-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/canal/" itemprop="url" rel="index"><span itemprop="name">canal</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<p>canal [kə’næl]，译意为水道&#x2F;管道&#x2F;沟渠，主要用途是基于 MySQL 数据库增量日志解析，提供增量数据订阅和消费.</p>
+<p>版本：<br><code>canal</code> 1.1.6<br><code>MySQL</code> 8.0 +<br><code>oracle</code> </p>
+<p><em>更新历史</em><br>无</p>
+<hr>
+<span id="more"></span>
+
+<p>canal 同步 mysql 到 oracle<br>主要步骤</p>
+<ul>
+<li>mysql 配置 binlog</li>
+<li>canal.deployer</li>
+<li>canal.adapter</li>
+</ul>
+<h2 id="mysql-配置-binlog"><a href="#mysql-配置-binlog" class="headerlink" title="mysql 配置 binlog"></a>mysql 配置 binlog</h2><ul>
+<li><p>开启 Binlog 写入功能，配置 binlog-format 为 ROW 模式，my.cnf 中配置如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">log-bin=mysql-bin <span class="comment"># 开启 binlog</span></span><br><span class="line">binlog-format=ROW <span class="comment"># 选择 ROW 模式</span></span><br><span class="line">server_id=1 <span class="comment"># 配置 MySQL replaction 需要定义，不要和 canal 的 slaveId 重复</span></span><br></pre></td></tr></table></figure>
+<p>执行成功可登陆MySQL中查看</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">show variables like &#x27;%log_format%&#x27;;</span><br><span class="line">show variables like &#x27;%log_bin%&#x27;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>授权 canal 链接 MySQL 账号具有作为 MySQL slave 的权限, 如果已有账户可直接 grant</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CREATE USER canal IDENTIFIED BY <span class="string">&#x27;canal&#x27;</span>;  </span><br><span class="line">GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO <span class="string">&#x27;canal&#x27;</span>@<span class="string">&#x27;%&#x27;</span>;</span><br><span class="line">-- GRANT ALL PRIVILEGES ON *.* TO <span class="string">&#x27;canal&#x27;</span>@<span class="string">&#x27;%&#x27;</span> ;</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="canal-deployer"><a href="#canal-deployer" class="headerlink" title="canal.deployer"></a>canal.deployer</h2><p>将 canal.deployer的压缩包安装到 <code>/data/canal/canal.deployer/</code> 目录下，<br>主要配置 <code>conf/canal.properties</code><br><code>conf/example/instance.properties</code></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><ul>
+<li><p><code>conf/canal.properties</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># ----------- canal服务id，目前没有实际意义</span></span><br><span class="line">canal.id = 11   </span><br><span class="line"><span class="comment">#canal服务socket监听端口，代码中连接canal-server时，使用此段口连接</span></span><br><span class="line">canal.port = 11111</span><br><span class="line">canal.metrics.pull.port = 11112</span><br><span class="line"><span class="comment"># ----------- zookeeper服务地址端口</span></span><br><span class="line">canal.zkServers =192.168.153.6:12181 </span><br><span class="line"><span class="comment">#表示实例的配置文件instance.properties地址， adapter里一致</span></span><br><span class="line">canal.destinations = example</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>conf/example/instance.properties</code><br>xx都需要根据实际替换</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  ----------- 监听的数据库地址  修改成自己的</span></span><br><span class="line">canal.instance.master.address=xx.xx.xx.xx:3306</span><br><span class="line">canal.instance.master.journal.name=</span><br><span class="line">canal.instance.master.position=</span><br><span class="line">canal.instance.master.timestamp=</span><br><span class="line">canal.instance.master.gtid=</span><br><span class="line"></span><br><span class="line"><span class="comment"># rds oss binlog</span></span><br><span class="line">canal.instance.rds.accesskey=</span><br><span class="line">canal.instance.rds.secretkey=</span><br><span class="line">canal.instance.rds.instanceId=</span><br><span class="line"></span><br><span class="line"><span class="comment"># table meta tsdb info</span></span><br><span class="line">canal.instance.tsdb.enable=<span class="literal">true</span></span><br><span class="line"><span class="comment">#canal.instance.tsdb.url=jdbc:mysql://127.0.0.1:3306/canal_tsdb</span></span><br><span class="line"><span class="comment">#canal.instance.tsdb.dbUsername=canal</span></span><br><span class="line"><span class="comment">#canal.instance.tsdb.dbPassword=canal</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#canal.instance.standby.address =</span></span><br><span class="line"><span class="comment">#canal.instance.standby.journal.name =</span></span><br><span class="line"><span class="comment">#canal.instance.standby.position =</span></span><br><span class="line"><span class="comment">#canal.instance.standby.timestamp =</span></span><br><span class="line"><span class="comment">#canal.instance.standby.gtid=</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># username/password</span></span><br><span class="line"><span class="comment">#  ----------- 监听的数据库账号密码 第一步 mysql中增加的 MySQL slave 权限的账户</span></span><br><span class="line">canal.instance.dbUsername=canalxx</span><br><span class="line">canal.instance.dbPassword=canalxxxxxx</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line"><span class="comment"># enable druid Decrypt database password</span></span><br><span class="line">canal.instance.enableDruid=<span class="literal">false</span></span><br><span class="line"><span class="comment">#canal.instance.pwdPublicKey=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALK4BUxdDltRRE5/zXpVEVPUgunvscYFtEip3pmLlhrWpacX7y7GCMo2/JM6LeHmiiNdH1FWgGCpUfircSwlWKUCAwEAAQ==</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># table regex</span></span><br><span class="line"><span class="comment">#canal.instance.filter.regex=.*\\..*   1.1.6 直接用这个配置会出现异常： Table &#x27;xxxxx.BASE TABLE&#x27; doesn&#x27;t exist, sqlState=42S02 ------------------ 可 改成 canal.instance.filter.regex=.\..</span></span><br><span class="line"><span class="comment"># 1) ----------- 配置监听的数据库 数据表  监听几个 配置几个 </span></span><br><span class="line"><span class="comment"># canal.instance.filter.regex=xx.t_test1xx,xx2.te</span></span><br><span class="line"><span class="comment"># 2) -----------或者可以加上自己指定的数据库, dbname 替换成实际数据库</span></span><br><span class="line">canal.instance.filter.regex=dbname\\..*</span><br><span class="line"></span><br><span class="line"><span class="comment"># table black regex</span></span><br><span class="line">canal.instance.filter.black.regex=mysql\\.slave_.*</span><br><span class="line"></span><br><span class="line"><span class="comment"># mq config</span></span><br><span class="line"><span class="comment"># 配置消息主题</span></span><br><span class="line">canal.mq.topic=example</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>清理<br>修改配置后， 注意清除 <code>/conf/example</code>目录下 <code>meta.bat</code></p>
+</li>
+</ul>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>启动 <code>sh bin/startup.sh</code><br>关闭 <code>sh bin/stop.sh</code><br>重启 <code>sh bin/restartup.sh</code></p>
+<p>启动成功后，类似如下日志<br><code>logs/canal/canal.log</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[main] INFO  com.alibaba.otter.canal.deployer.CanalStarter - <span class="comment">## start the canal server.</span></span><br><span class="line">[main] INFO  com.alibaba.otter.canal.deployer.CanalController - <span class="comment">## start the canal server[192.168.153.4(192.168.153.4):11111]</span></span><br><span class="line">[main] INFO  com.alibaba.otter.canal.deployer.CanalStarter - <span class="comment">## the canal server is running now ......</span></span><br></pre></td></tr></table></figure>
+
+
+<p><code>logs/example/example.log</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[main] INFO  c.a.otter.canal.instance.spring.CanalInstanceWithSpring - start CannalInstance <span class="keyword">for</span> 1-example</span><br><span class="line">[main] WARN  c.a.o.canal.parse.inbound.mysql.dbsync.LogEventConvert - --&gt; init table filter : ^rdp.rcp_collect_result_data$|^rdp.rcp_collect_data$</span><br><span class="line">[main] WARN  c.a.o.canal.parse.inbound.mysql.dbsync.LogEventConvert - --&gt; init table black filter : ^mysql\.slave_.*$</span><br><span class="line">[main] INFO  c.a.otter.canal.instance.core.AbstractCanalInstance - start successful....</span><br><span class="line">[destination = example , address = /xx.xx.xx.xx:3306 , EventParser] WARN  c.a.o.c.p.inbound.mysql.rds.RdsBinlogEventParserProxy - ---&gt; begin to find start position, it will be long time <span class="keyword">for</span> reset or first position</span><br><span class="line">[destination = example , address = /xx.xx.xx.xx:3306 , EventParser] WARN  c.a.o.c.p.inbound.mysql.rds.RdsBinlogEventParserProxy - prepare to find start position just show master status</span><br><span class="line">[destination = example , address = /xx.xx.xx.xx:3306 , EventParser] WARN  c.a.o.c.p.inbound.mysql.rds.RdsBinlogEventParserProxy - ---&gt; find start position successfully, EntryPosition[included=<span class="literal">false</span>,journalName=binlog.001094,position=13581,serverId=800,gtid=,timestamp=1658301624000] cost : 3789ms , the next step is binlog dump</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="canal-adapter"><a href="#canal-adapter" class="headerlink" title="canal.adapter"></a>canal.adapter</h2><p>将 canal.adapter 的压缩包安装到 <code>/data/canal/canal.adapter/</code> 目录下，<br>主要配置 <code>conf/application.yml</code><br><code>conf/rdb</code> 添加对应的数据表配置</p>
+<p>如果不使用远程配置， 把 <code>conf/bootstrap.yml</code> 全体注掉</p>
+<h3 id="适配器配置"><a href="#适配器配置" class="headerlink" title="适配器配置"></a>适配器配置</h3><p>总配置文件 <code>conf/application.yml</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># --- 服务器端口 ， 不要和其它服务冲突</span></span><br><span class="line">server:</span><br><span class="line">  port: 88081</span><br><span class="line"></span><br><span class="line">canal.conf:</span><br><span class="line">  mode: tcp <span class="comment">#tcp kafka rocketMQ rabbitMQ</span></span><br><span class="line">  flatMessage: <span class="literal">true</span>      <span class="comment"># 扁平message开关, 是否以json字符串形式投递数据, 仅在kafka/rocketMQ模式下有效</span></span><br><span class="line">  zookeeperHosts:        <span class="comment"># 对应集群模式下的zk地址, 如果配置了canalServerHost, 则以canalServerHost为准</span></span><br><span class="line">  syncBatchSize: 1000    <span class="comment"># 每次同步的批数量</span></span><br><span class="line">  retries: -1            <span class="comment"># 重试次数, -1为无限重试</span></span><br><span class="line">  <span class="built_in">timeout</span>:               <span class="comment"># 同步超时时间, 单位毫秒</span></span><br><span class="line">  accessKey:</span><br><span class="line">  secretKey:</span><br><span class="line">  consumerProperties:</span><br><span class="line">    <span class="comment"># canal tcp consumer</span></span><br><span class="line">    canal.tcp.server.host: 127.0.0.1:11111            <span class="comment"># -------- 对应单机模式下的canal server的ip:port</span></span><br><span class="line">    canal.tcp.zookeeper.hosts:192.168.153.6:12181     <span class="comment"># -------- 对应集群模式下的zk地址, 如果配置了canalServerHost, 则以canalServerHost为准</span></span><br><span class="line">    canal.tcp.batch.size: 500</span><br><span class="line">    canal.tcp.username:</span><br><span class="line">    canal.tcp.password:</span><br><span class="line">    <span class="comment"># kafka consumer</span></span><br><span class="line">    kafka.bootstrap.servers: 127.0.0.1:9092</span><br><span class="line">    kafka.enable.auto.commit: <span class="literal">false</span></span><br><span class="line">    kafka.auto.commit.interval.ms: 1000</span><br><span class="line">    kafka.auto.offset.reset: latest</span><br><span class="line">    kafka.request.timeout.ms: 40000</span><br><span class="line">    kafka.session.timeout.ms: 30000</span><br><span class="line">    kafka.isolation.level: read_committed</span><br><span class="line">    kafka.max.poll.records: 1000</span><br><span class="line">    <span class="comment"># rocketMQ consumer</span></span><br><span class="line">    rocketmq.namespace:</span><br><span class="line">    rocketmq.namesrv.addr: 127.0.0.1:9876</span><br><span class="line">    rocketmq.batch.size: 1000</span><br><span class="line">    rocketmq.enable.message.trace: <span class="literal">false</span></span><br><span class="line">    rocketmq.customized.trace.topic:</span><br><span class="line">    rocketmq.access.channel:</span><br><span class="line">    rocketmq.subscribe.filter:</span><br><span class="line">    <span class="comment"># rabbitMQ consumer</span></span><br><span class="line">    rabbitmq.host:</span><br><span class="line">    rabbitmq.virtual.host:</span><br><span class="line">    rabbitmq.username:</span><br><span class="line">    rabbitmq.password:</span><br><span class="line">    rabbitmq.resource.ownerId:</span><br><span class="line"></span><br><span class="line">  srcDataSources:  <span class="comment"># 源数据库</span></span><br><span class="line">    defaultDS:     <span class="comment"># 自定义名称， 必须和 out adapter 里 dataSourceKey 一致</span></span><br><span class="line">      url: jdbc:mysql://192.168.xx.xx:3306/touch-test?useUnicode=<span class="literal">true</span> <span class="comment"># jdbc url </span></span><br><span class="line">      username: rootxx                                                 <span class="comment"># jdbc 账号</span></span><br><span class="line">      password: 123xx                                                  <span class="comment"># jdbc 密码</span></span><br><span class="line">                                       </span><br><span class="line">  canalAdapters:                            <span class="comment"># 适配器列表</span></span><br><span class="line">  - instance: example                       <span class="comment"># canal 实例名或者 MQ topic 名</span></span><br><span class="line">    <span class="built_in">groups</span>:                                 <span class="comment"># 分组列表</span></span><br><span class="line">    - groupId: g1                           <span class="comment"># 分组id, 如果是MQ模式将用到该值</span></span><br><span class="line">      outerAdapters:                        <span class="comment"># 分组内适配器列表</span></span><br><span class="line">      - name: logger                        <span class="comment"># 日志打印适配器</span></span><br><span class="line">      - name: rdb                           <span class="comment"># conf/rdb 目录下 outerAdapterKey 对应</span></span><br><span class="line">        key: oracle1</span><br><span class="line">        properties:</span><br><span class="line">          jdbc.driverClassName: oracle.jdbc.OracleDriver</span><br><span class="line">          jdbc.url: jdbc:oracle:thin:@192.168.5.xx:1521:orcl1</span><br><span class="line">          jdbc.username: xxx</span><br><span class="line">          jdbc.password: 123456xx</span><br><span class="line">      - name: rdb</span><br><span class="line">        key: oracle2</span><br><span class="line">        properties:</span><br><span class="line">          jdbc.driverClassName: oracle.jdbc.OracleDriver</span><br><span class="line">          jdbc.url: jdbc:oracle:thin:@192.168.5.xxx:1521:orcl1</span><br><span class="line">          jdbc.username: xxxx</span><br><span class="line">          jdbc.password: 123xx456  </span><br></pre></td></tr></table></figure>
+
+<h3 id="适配器列表"><a href="#适配器列表" class="headerlink" title="适配器列表"></a>适配器列表</h3><h4 id="logger适配器"><a href="#logger适配器" class="headerlink" title="logger适配器"></a>logger适配器</h4><p>最简单的处理, 将受到的变更事件通过日志打印的方式进行输出, 如配置所示, 只需要定义name: logger即可</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">outerAdapters:                        </span><br><span class="line">- name: logger </span><br></pre></td></tr></table></figure>
+
+<h4 id="rdb-输出-关系型数据库"><a href="#rdb-输出-关系型数据库" class="headerlink" title="rdb 输出 关系型数据库"></a>rdb 输出 关系型数据库</h4><p>目前内置支持的数据库列表:<br>MySQL<br>Oracle<br>PostgresSQL<br>SQLServer</p>
+<p>理论上jdbc的数据库都可以。</p>
+<h5 id="RDB表映射文件"><a href="#RDB表映射文件" class="headerlink" title="RDB表映射文件"></a>RDB表映射文件</h5><p><code>conf/rdb</code>目录下， 对应上面的 key： oracle1， oracle2</p>
+<ul>
+<li><p><code>test_oracle1</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">dataSourceKey: defaultDS  <span class="comment"># 源数据源的key, 对应上面配置的srcDataSources中的值</span></span><br><span class="line">destination: example      <span class="comment"># cannal的instance或者MQ的topic</span></span><br><span class="line">groupId: g1               <span class="comment"># 对应MQ模式下的groupId, 只会同步对应groupId的数据</span></span><br><span class="line">outerAdapterKey: oracle1  <span class="comment"># adapter key, 对应上面配置outAdapters中的key</span></span><br><span class="line">concurrent: <span class="literal">true</span>          <span class="comment"># 是否按主键hash并行同步, 并行同步的表必须保证主键不会更改及主键不能为其他同步表的外键!!</span></span><br><span class="line">dbMapping:                </span><br><span class="line">  database: touch-test    <span class="comment"># 源数据源的database/shcema</span></span><br><span class="line">  table: t_auth_perm_m    <span class="comment"># 源数据源表名</span></span><br><span class="line">  targetTable: covid.t_auth_perm_m <span class="comment"># 目标数据源的库名.表名</span></span><br><span class="line">  targetPk:               <span class="comment"># 主键映射</span></span><br><span class="line">    xx_id: xx_id          <span class="comment"># 如果是复合主键可以换行映射多个</span></span><br><span class="line"><span class="comment">#  mapAll: true           # 是否整表映射, 要求源表和目标表字段名一模一样 (如果targetColumns也配置了映射,则以targetColumns配置为准)</span></span><br><span class="line">  targetColumns:          <span class="comment"># 字段映射, 格式: 目标表字段: 源表字段, 如果字段名一样源表字段名可不填</span></span><br><span class="line">    <span class="built_in">id</span>:</span><br><span class="line">    perm_description:</span><br><span class="line">    perm_name:</span><br><span class="line"><span class="comment">#  etlCondition: &quot;where c_time&gt;=&#123;&#125;&quot;</span></span><br><span class="line">  commitBatch: 3000 <span class="comment"># 批量提交的大小</span></span><br><span class="line"><span class="comment">## Mirror schema synchronize config</span></span><br><span class="line"><span class="comment">#dataSourceKey: defaultDS</span></span><br><span class="line"><span class="comment">#destination: example</span></span><br><span class="line"><span class="comment">#groupId: g1</span></span><br><span class="line"><span class="comment">#outerAdapterKey: mysql1</span></span><br><span class="line"><span class="comment">#concurrent: true</span></span><br><span class="line"><span class="comment">#dbMapping:</span></span><br><span class="line"><span class="comment">#  mirrorDb: true</span></span><br><span class="line"><span class="comment">#  database: mytest</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>test_oracle2</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">dataSourceKey: defaultDS</span><br><span class="line">destination: example</span><br><span class="line">groupId: g1</span><br><span class="line">outerAdapterKey: oracle2</span><br><span class="line">concurrent: <span class="literal">true</span></span><br><span class="line">dbMapping:</span><br><span class="line">  database: touch-test</span><br><span class="line">  table: t_auth_role_m</span><br><span class="line">  targetTable: covid.t_auth_role_m</span><br><span class="line">  targetPk:</span><br><span class="line">    <span class="built_in">id</span>: <span class="built_in">id</span></span><br><span class="line"><span class="comment">#  mapAll: true</span></span><br><span class="line">  targetColumns:</span><br><span class="line">    <span class="built_in">id</span>:</span><br><span class="line">    role_description:</span><br><span class="line">    role_name:</span><br><span class="line">    role_type:</span><br><span class="line"><span class="comment">#  etlCondition: &quot;where c_time&gt;=&#123;&#125;&quot;</span></span><br><span class="line">  commitBatch: 3000 <span class="comment"># 批量提交的大小</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/canal/" rel="tag"># canal</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/oracle/" rel="tag"># oracle</a>
+              <a href="/tags/%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" rel="tag"># 多数据源</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/03/21/spring/srpingShardingSphere/" rel="prev" title="spring shardingSphere 多数据源">
+      <i class="fa fa-chevron-left"></i> spring shardingSphere 多数据源
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql-%E9%85%8D%E7%BD%AE-binlog"><span class="nav-number">1.</span> <span class="nav-text">mysql 配置 binlog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#canal-deployer"><span class="nav-number">2.</span> <span class="nav-text">canal.deployer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">2.1.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-number">2.2.</span> <span class="nav-text">启动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#canal-adapter"><span class="nav-number">3.</span> <span class="nav-text">canal.adapter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">3.1.</span> <span class="nav-text">适配器配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%82%E9%85%8D%E5%99%A8%E5%88%97%E8%A1%A8"><span class="nav-number">3.2.</span> <span class="nav-text">适配器列表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#logger%E9%80%82%E9%85%8D%E5%99%A8"><span class="nav-number">3.2.1.</span> <span class="nav-text">logger适配器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rdb-%E8%BE%93%E5%87%BA-%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">3.2.2.</span> <span class="nav-text">rdb 输出 关系型数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RDB%E8%A1%A8%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">RDB表映射文件</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

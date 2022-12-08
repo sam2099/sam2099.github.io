@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="管理系统依赖统一依赖的来源和版本，保持开发环境一致，避免莫名错误 管理项目生命周期构建，编译，测试，发布，更新版本。。。。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="maven">
+<meta property="og:url" content="http://giveme5.cc/2015/10/30/devEnv/maven/maven/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="管理系统依赖统一依赖的来源和版本，保持开发环境一致，避免莫名错误 管理项目生命周期构建，编译，测试，发布，更新版本。。。。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-10-30T06:40:45.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="maven">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2015/10/30/devEnv/maven/maven/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>maven | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/10/30/devEnv/maven/maven/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          maven
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-10-30 14:40:45" itemprop="dateCreated datePublished" datetime="2015-10-30T14:40:45+08:00">2015-10-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/developEnv/" itemprop="url" rel="index"><span itemprop="name">developEnv</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>管理系统依赖<br>统一依赖的来源和版本，保持开发环境一致，避免莫名错误</p>
+<p>管理项目生命周期<br>构建，编译，测试，发布，更新版本。。。。</p>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><p>前提<br>确保已经安装好了jdk，并且配置好了环境变量JAVA_HOME</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://maven.apache.org/download.cgi">下载</a></p>
+</li>
+<li><p>解压<br>解压下载的maven到你想要的目录</p>
+<pre><code>tar xzvf apache-maven-3.3.9-bin.tar.gz
+</code></pre>
+</li>
+<li><p>环境变量<br>新增 环境变量<code>M2_HOME</code>，其值为Maven的家目录，即上步maven解压的目录；<br>修改 环境变量<code>PATH</code>， 在末尾加入 <code>:$M2_HOME/bin</code></p>
+</li>
+<li><p>测试</p>
+<p>  mvn -v</p>
+</li>
+</ul>
+<h2 id="setting-xml"><a href="#setting-xml" class="headerlink" title="setting.xml"></a>setting.xml</h2><p>定义Maven的全局环境信息。有2个地址：</p>
+<p><code>$M2_HOME/conf/setting.xml</code> : 全局的配置<br><code>$User_HOME/.m2/setting.xml</code> : 当前用户的配置<br>当这两个文件同时存在的时候，那么对于相同的配置信息用户家目录下面的settings.xml中定义的会覆盖Maven安装目录下面的settings.xml中的定义。</p>
+<p>setting.xml有点像这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">&lt;settings xmlns=&quot;http://maven.apache.org/SETTINGS/1.0.0&quot;</span><br><span class="line">   xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">   xsi:schemaLocation=&quot;http://maven.apache.org/SETTINGS/1.0.0</span><br><span class="line">     http://maven.apache.org/xsd/settings-1.0.0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;profiles&gt;</span><br><span class="line"> &lt;!-- dev --&gt;</span><br><span class="line"> &lt;profile&gt;</span><br><span class="line">     &lt;id&gt;dev&lt;/id&gt;</span><br><span class="line">     &lt;properties&gt;</span><br><span class="line">  &lt;profile.id&gt;dev&lt;/profile.id&gt;</span><br><span class="line">  &lt;packagingExcludes&gt; *.html</span><br><span class="line">  &lt;/packagingExcludes&gt;</span><br><span class="line">     &lt;/properties&gt;</span><br><span class="line">     &lt;!-- local repositories of dependencies --&gt;</span><br><span class="line">     &lt;repositories&gt;</span><br><span class="line">  &lt;repository&gt;</span><br><span class="line">      &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">      &lt;url&gt;http://IP:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">      &lt;releases&gt;</span><br><span class="line">	  &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">      &lt;/releases&gt;</span><br><span class="line">      &lt;snapshots&gt;</span><br><span class="line">	  &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">      &lt;/snapshots&gt;</span><br><span class="line">  &lt;/repository&gt;</span><br><span class="line">     &lt;/repositories&gt;</span><br><span class="line">     &lt;!-- local Repositories of plugins --&gt;</span><br><span class="line">     &lt;pluginRepositories&gt;</span><br><span class="line">  &lt;pluginRepository&gt;</span><br><span class="line">    &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">    &lt;url&gt;http://IP:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">    &lt;releases&gt;</span><br><span class="line">      &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">    &lt;/releases&gt;</span><br><span class="line">    &lt;snapshots&gt;</span><br><span class="line">      &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">    &lt;/snapshots&gt;</span><br><span class="line">  &lt;/pluginRepository&gt;</span><br><span class="line">     &lt;/pluginRepositories&gt;</span><br><span class="line"> &lt;/profile&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;!-- test --&gt;</span><br><span class="line"> &lt;profile&gt;</span><br><span class="line">     &lt;id&gt;test&lt;/id&gt;</span><br><span class="line">     &lt;properties&gt;</span><br><span class="line">  &lt;profile.id&gt;test&lt;/profile.id&gt;</span><br><span class="line">  &lt;packagingExcludes&gt; *.html</span><br><span class="line">  &lt;/packagingExcludes&gt;</span><br><span class="line">     &lt;/properties&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/profile&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;!-- prod --&gt;</span><br><span class="line"> &lt;profile&gt;</span><br><span class="line">     &lt;id&gt;prod&lt;/id&gt;</span><br><span class="line">     &lt;properties&gt;</span><br><span class="line">  &lt;profile.id&gt;prod&lt;/profile.id&gt;</span><br><span class="line">  &lt;packagingExcludes&gt; *.html</span><br><span class="line">  &lt;/packagingExcludes&gt;</span><br><span class="line">     &lt;/properties&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/profile&gt;</span><br><span class="line"></span><br><span class="line"> &lt;!-- 发布到nexus --&gt;</span><br><span class="line"> &lt;profile&gt;</span><br><span class="line">     &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">     &lt;properties&gt;</span><br><span class="line">  &lt;profile.id&gt;nexus&lt;/profile.id&gt;</span><br><span class="line">  &lt;!-- 打包不传递依赖 --&gt;</span><br><span class="line">  &lt;packagingExcludes&gt;WEB-INF/lib/*, assets/**, *.html&lt;/packagingExcludes&gt;</span><br><span class="line">     &lt;/properties&gt;</span><br><span class="line"> &lt;/profile&gt;</span><br><span class="line">    &lt;/profiles&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;activeProfiles&gt;</span><br><span class="line"> &lt;activeProfile&gt;dev&lt;/activeProfile&gt;</span><br><span class="line">    &lt;/activeProfiles&gt;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!-- in mirrors section --&gt;</span><br><span class="line">    &lt;mirrors&gt;</span><br><span class="line"> &lt;mirror&gt;</span><br><span class="line">     &lt;id&gt;mirrorOfAll&lt;/id&gt;</span><br><span class="line">     &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;</span><br><span class="line">     &lt;url&gt;http://IP:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line"> &lt;/mirror&gt;</span><br><span class="line">    &lt;/mirrors&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- in servers section --&gt;</span><br><span class="line">    &lt;servers&gt;</span><br><span class="line"> &lt;server&gt;</span><br><span class="line">     &lt;id&gt;snapshots&lt;/id&gt;</span><br><span class="line">     &lt;username&gt;user&lt;/username&gt;</span><br><span class="line">     &lt;password&gt;password&lt;/password&gt;</span><br><span class="line"> &lt;/server&gt;</span><br><span class="line"> &lt;server&gt;</span><br><span class="line">     &lt;id&gt;releases&lt;/id&gt;</span><br><span class="line">     &lt;username&gt;user&lt;/username&gt;</span><br><span class="line">     &lt;password&gt;password&lt;/password&gt;</span><br><span class="line"> &lt;/server&gt;</span><br><span class="line">    &lt;/servers&gt;</span><br><span class="line">&lt;/settings&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>IP</code> <code>user</code> <code>password</code> 都是本地资源库（nexus）相关的配置。</p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/jinshuaiwang/article/details/23686099">参考资源</a></p>
+<h2 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h2><p>maven 管理 java 工程都是使用 <code>pom.xml</code>, 它长得有点像这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;</span><br><span class="line"> xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line"> xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;</span><br><span class="line">    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line"></span><br><span class="line">    &lt;groupId&gt;top.giveme5.base&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;gm5-base-root&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;</span><br><span class="line"></span><br><span class="line">    &lt;packaging&gt;pom&lt;/packaging&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!--项目的名称, Maven产生的文档用--&gt;</span><br><span class="line">    &lt;name&gt;gm5-base-root&lt;/name&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 项目的详细描述, Maven 产生的文档用。  当这个元素能够用HTML格式描述时（例如，CDATA中的文本会被解析器忽略，就可以包含HTML标 签）， 不鼓励使用纯文本描述。如果你需要修改产生的web站点的索引页面，你应该修改你自己的索引页文件，而不是调整这里的文档。--&gt;</span><br><span class="line">    &lt;description&gt;giveme5-base-root&lt;/description&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!-- SCM：Software Configuration Management --&gt;</span><br><span class="line">    &lt;scm&gt;</span><br><span class="line"> &lt;!--SCM的URL,该URL描述了版本库和如何连接到版本库。欲知详情，请看SCMs提供的URL格式和列表。该连接只读。--&gt;</span><br><span class="line"> &lt;connection&gt;scm:git:git@IP/giveme5-base/giveme5-base-root.git&lt;/connection&gt;</span><br><span class="line"></span><br><span class="line"> &lt;!--给开发者使用的，类似connection元素。即该连接不仅仅只读--&gt;</span><br><span class="line"> &lt;developerConnection&gt;scm:git:git@IP:giveme5-base/giveme5-base-root.git&lt;/developerConnection&gt;</span><br><span class="line"></span><br><span class="line"> &lt;!--指向项目的可浏览SCM库（例如ViewVC或者Fisheye）的URL。--&gt;</span><br><span class="line"> &lt;url&gt;http://IP/giveme5-base-root&lt;/url&gt;</span><br><span class="line">    &lt;/scm&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- local repositories of dependencies --&gt;</span><br><span class="line">    &lt;repositories&gt;</span><br><span class="line"> &lt;repository&gt;</span><br><span class="line">     &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">     &lt;url&gt;http://IP:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">     &lt;releases&gt;</span><br><span class="line">  &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">     &lt;/releases&gt;</span><br><span class="line">     &lt;snapshots&gt;</span><br><span class="line">  &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">     &lt;/snapshots&gt;</span><br><span class="line"> &lt;/repository&gt;</span><br><span class="line">    &lt;/repositories&gt;</span><br><span class="line">    &lt;!-- local Repositories of plugins --&gt;</span><br><span class="line">    &lt;pluginRepositories&gt;</span><br><span class="line"> &lt;pluginRepository&gt;</span><br><span class="line">   &lt;id&gt;nexus&lt;/id&gt;</span><br><span class="line">   &lt;url&gt;http://IP:8081/nexus/content/groups/public/&lt;/url&gt;</span><br><span class="line">   &lt;releases&gt;</span><br><span class="line">     &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">   &lt;/releases&gt;</span><br><span class="line">   &lt;snapshots&gt;</span><br><span class="line">     &lt;enabled&gt;true&lt;/enabled&gt;</span><br><span class="line">   &lt;/snapshots&gt;</span><br><span class="line"> &lt;/pluginRepository&gt;</span><br><span class="line">    &lt;/pluginRepositories&gt;</span><br><span class="line">    &lt;distributionManagement&gt;</span><br><span class="line"> &lt;snapshotRepository&gt;</span><br><span class="line">     &lt;id&gt;snapshots&lt;/id&gt;</span><br><span class="line">     &lt;url&gt;http://IP:8081/nexus/content/repositories/snapshots/&lt;/url&gt;</span><br><span class="line"> &lt;/snapshotRepository&gt;</span><br><span class="line"> &lt;repository&gt;</span><br><span class="line">     &lt;id&gt;releases&lt;/id&gt;</span><br><span class="line">     &lt;url&gt;http://IP:8081/nexus/content/repositories/releases/&lt;/url&gt;</span><br><span class="line"> &lt;/repository&gt;</span><br><span class="line">    &lt;/distributionManagement&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!-- 项目属性 --&gt;</span><br><span class="line">    &lt;properties&gt;</span><br><span class="line"> &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;</span><br><span class="line"> &lt;jdk.version&gt;1.8&lt;/jdk.version&gt;</span><br><span class="line"> &lt;jdbc.driver.groupId&gt;mysql&lt;/jdbc.driver.groupId&gt;</span><br><span class="line"> &lt;jdbc.driver.artifactId&gt;mysql-connector-java&lt;/jdbc.driver.artifactId&gt;</span><br><span class="line"> &lt;jdbc.driver.version&gt;$&#123;mysql-connector-java.version&#125;&lt;/jdbc.driver.version&gt;</span><br><span class="line"></span><br><span class="line"> &lt;spring-framework-bom.version&gt;4.2.1.RELEASE&lt;/spring-framework-bom.version&gt;</span><br><span class="line">   。。。</span><br><span class="line"> &lt;freemarker.version&gt;2.3.23&lt;/freemarker.version&gt;</span><br><span class="line">    &lt;/properties&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- build --&gt;</span><br><span class="line">    &lt;build&gt;</span><br><span class="line"> &lt;pluginManagement&gt;</span><br><span class="line">     &lt;!-- define plubins&#x27;s version and common config which will be shared with</span><br><span class="line">  all subprojects --&gt;</span><br><span class="line">     &lt;plugins&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!--  based on and is a replacement for the maven-release-plugin enabling support for git-flow style releases via maven. --&gt;</span><br><span class="line">  &lt;plugin&gt;</span><br><span class="line">      &lt;groupId&gt;external.atlassian.jgitflow&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;jgitflow-maven-plugin&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;1.0-m5.1&lt;/version&gt;</span><br><span class="line">      &lt;configuration&gt;</span><br><span class="line">	  &lt;flowInitContext&gt;</span><br><span class="line">	      &lt;masterBranchName&gt;master&lt;/masterBranchName&gt;</span><br><span class="line">	      &lt;developBranchName&gt;develop&lt;/developBranchName&gt;</span><br><span class="line">	      &lt;featureBranchPrefix&gt;feature-&lt;/featureBranchPrefix&gt;</span><br><span class="line">	      &lt;releaseBranchPrefix&gt;release-&lt;/releaseBranchPrefix&gt;</span><br><span class="line">	      &lt;hotfixBranchPrefix&gt;hotfix-&lt;/hotfixBranchPrefix&gt;</span><br><span class="line">	      &lt;versionTagPrefix&gt;giveme5-&lt;/versionTagPrefix&gt;</span><br><span class="line">	  &lt;/flowInitContext&gt;</span><br><span class="line">      &lt;/configuration&gt;</span><br><span class="line">  &lt;/plugin&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- compiler插件, 设定JDK版本 --&gt;</span><br><span class="line">  &lt;plugin&gt;</span><br><span class="line">      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;3.1&lt;/version&gt;</span><br><span class="line">      &lt;configuration&gt;</span><br><span class="line">	  &lt;source&gt;$&#123;jdk.version&#125;&lt;/source&gt;</span><br><span class="line">	  &lt;target&gt;$&#123;jdk.version&#125;&lt;/target&gt;</span><br><span class="line">	  &lt;showWarnings&gt;true&lt;/showWarnings&gt;</span><br><span class="line">      &lt;/configuration&gt;</span><br><span class="line">  &lt;/plugin&gt;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">     &lt;/plugins&gt;</span><br><span class="line"></span><br><span class="line"> &lt;/pluginManagement&gt;</span><br><span class="line">    &lt;/build&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- dependencyManagement --&gt;</span><br><span class="line">    &lt;dependencyManagement&gt;</span><br><span class="line"> &lt;dependencies&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     &lt;!-- spring --&gt;</span><br><span class="line">     &lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;spring-framework-bom&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;$&#123;spring-framework-bom.version&#125;&lt;/version&gt;</span><br><span class="line">  &lt;type&gt;pom&lt;/type&gt;</span><br><span class="line">  &lt;scope&gt;import&lt;/scope&gt;</span><br><span class="line">     &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">     ...</span><br><span class="line">     </span><br><span class="line">    &lt;/dependencyManagement&gt;</span><br><span class="line"></span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><ul>
+<li><a href="/2015/10/30/devEnv/maven/maven/#maven-war-plugin">maven-war-plugin</a></li>
+</ul>
+<h2 id="maven-war-plugin"><a href="#maven-war-plugin" class="headerlink" title="maven-war-plugin"></a>maven-war-plugin</h2><p>此插件多用于web工程打包时使用，多工程依赖时很好用，很好用，很好用！<a target="_blank" rel="noopener" href="https://maven.apache.org/plugins/maven-war-plugin/">官网</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root 工程 pom</span><br><span class="line">  &lt;!-- war打包插件, 设定war包名称不带版本号 --&gt;</span><br><span class="line">  &lt;plugin&gt;</span><br><span class="line">      &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;2.6&lt;/version&gt;</span><br><span class="line">      &lt;configuration&gt;</span><br><span class="line">	  &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;</span><br><span class="line">	  &lt;warName&gt;$&#123;project.artifactId&#125;&lt;/warName&gt;</span><br><span class="line">      &lt;/configuration&gt;</span><br><span class="line">  &lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+
+<p>被依赖的工程 pom</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;artifactId&gt;gm5-base-common-web&lt;/artifactId&gt;</span><br><span class="line"></span><br><span class="line">&lt;packaging&gt;war&lt;/packaging&gt;</span><br><span class="line"></span><br><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;</span><br><span class="line">            &lt;configuration&gt;</span><br><span class="line">                &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;</span><br><span class="line">                &lt;!--  把class额外打包jar,默认：artifactId-classes.jar--&gt;</span><br><span class="line">                &lt;attachClasses&gt;true&lt;/attachClasses&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--  把class打包jar,jar包放入WEB-INF/lib下，WEB-INF/classes下将无类文件  jrebel使用是注释掉--&gt;</span><br><span class="line">                &lt;!--&lt;archiveClasses&gt;true&lt;/archiveClasses&gt;--&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--&lt;packagingExcludes&gt;WEB-INF/classes/conf/account.properties&lt;/packagingExcludes&gt;--&gt;</span><br><span class="line">                &lt;!--&lt;packagingExcludes&gt;WEB-INF/lib/&lt;/packagingExcludes&gt;--&gt;</span><br><span class="line">                &lt;!--&lt;warSourceExcludes&gt;**/conf/account.properties&lt;/warSourceExcludes&gt;--&gt;</span><br><span class="line"></span><br><span class="line">            &lt;/configuration&gt;</span><br><span class="line">        &lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最终工程 pom</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&lt;artifactId&gt;gm5-base-security&lt;/artifactId&gt;</span><br><span class="line">&lt;packaging&gt;war&lt;/packaging&gt;</span><br><span class="line"></span><br><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;!--&lt;finalName&gt;gm5-base-security&lt;/finalName&gt;--&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;!-- 合并多个war --&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;</span><br><span class="line">            &lt;configuration&gt;</span><br><span class="line">                &lt;useCache&gt;false&lt;/useCache&gt;</span><br><span class="line">                &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;</span><br><span class="line">                &lt;overlays&gt;</span><br><span class="line">                    &lt;overlay&gt;</span><br><span class="line">                        &lt;groupId&gt;top.giveme5.base&lt;/groupId&gt;</span><br><span class="line">                        &lt;artifactId&gt;gm5-base-common-web&lt;/artifactId&gt;</span><br><span class="line">                    &lt;/overlay&gt;</span><br><span class="line">                &lt;/overlays&gt;</span><br><span class="line">                &lt;dependentWarExcludes&gt;WEB-INF/lib/*&lt;/dependentWarExcludes&gt;</span><br><span class="line">                &lt;packagingExcludes&gt;WEB-INF/lib/gm5-base-common-web-*-classes.jar&lt;/packagingExcludes&gt;</span><br><span class="line">            &lt;/configuration&gt;</span><br><span class="line">        &lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="configuration-说明"><a href="#configuration-说明" class="headerlink" title="configuration 说明"></a>configuration 说明</h3><ul>
+<li>failOnMissingWebXml ： 校验是否有web.xml ，默认true，没发现web.xml的话，打包失败。servlet 3.0以后 可以没有web.xml, 我使用这个特性，所以设置为false。</li>
+<li>archiveClasses ： 把class打包jar,jar包放入WEB-INF&#x2F;lib下，WEB-INF&#x2F;classes下将无类文件</li>
+<li>attachClasses  ： 把class额外打包jar,默认：artifactId-classes.jar，WEB-INF&#x2F;classes下仍然有类文件</li>
+<li>packagingExcludes ： 复制webapp目录完成后打包时忽略target&#x2F;artifactId-version 制定 文件夹的文件， 注意 文件夹必须以 <code>/</code> 结束</li>
+<li>warSourceExcludes ： 在编译周期进行完成后从src&#x2F;main&#x2F;webapp目录复制文件时忽略</li>
+<li>overlays&#x2F;overlay ： 能够在目标WAR本身覆盖除了原生WAR构件以外的所有文件，并在WEB-INF&#x2F;lib目录下收集原生WAR项目的依赖， 目标war中已经存在的文件不会被覆盖。Overlays采用第一直达者优先的策略(因此，如果一个文件被某一个副本覆盖过，则它不会被另一个副本继续覆盖)。(详细)[<a target="_blank" rel="noopener" href="http://jdonee.iteye.com/blog/794226]">http://jdonee.iteye.com/blog/794226]</a></li>
+</ul>
+<h3 id="多依赖使用"><a href="#多依赖使用" class="headerlink" title="多依赖使用"></a>多依赖使用</h3><ul>
+<li><p>最终目标工程编译不需要被依赖项目<br>只需要在目标工程 pom 加入依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;top.giveme5.base&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;gm5-base-common-web&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;$&#123;project.version&#125;&lt;/version&gt;</span><br><span class="line">    &lt;type&gt;war&lt;/type&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最终目标工程编译需要被依赖项目<br>为避免 <code>overlays</code> 同时使用，重复引入被依赖项目的类文件，如下设置：</p>
+</li>
+</ul>
+<p>目标工程 pom </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&lt;artifactId&gt;gm5-base-security&lt;/artifactId&gt;</span><br><span class="line">&lt;packaging&gt;war&lt;/packaging&gt;</span><br><span class="line"></span><br><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;!--&lt;finalName&gt;gm5-base-security&lt;/finalName&gt;--&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;!-- 合并多个war --&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;</span><br><span class="line">            &lt;configuration&gt;</span><br><span class="line">                &lt;useCache&gt;false&lt;/useCache&gt;</span><br><span class="line">                &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;</span><br><span class="line">                &lt;overlays&gt;</span><br><span class="line">                    &lt;overlay&gt;</span><br><span class="line">                        &lt;groupId&gt;top.giveme5.base&lt;/groupId&gt;</span><br><span class="line">                        &lt;artifactId&gt;gm5-base-common-web&lt;/artifactId&gt;</span><br><span class="line">                    &lt;/overlay&gt;</span><br><span class="line">                &lt;/overlays&gt;</span><br><span class="line">                &lt;dependentWarExcludes&gt;WEB-INF/lib/*&lt;/dependentWarExcludes&gt;</span><br><span class="line"></span><br><span class="line">                &lt;!--避免overlays重复引入--&gt;</span><br><span class="line">                &lt;packagingExcludes&gt;WEB-INF/lib/gm5-base-common-web-*-classes.jar&lt;/packagingExcludes&gt;</span><br><span class="line">            &lt;/configuration&gt;</span><br><span class="line">        &lt;/plugin&gt;</span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">&lt;/build&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;dependencies&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- give me five --&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;top.giveme5.base&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;gm5-base-common-core&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;$&#123;project.version&#125;&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;top.giveme5.base&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;gm5-base-common-web&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;$&#123;project.version&#125;&lt;/version&gt;</span><br><span class="line">        &lt;type&gt;war&lt;/type&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- compile 时依赖， 最终 package 时 使用 overlays --&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;top.giveme5.base&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;gm5-base-common-web&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;$&#123;project.version&#125;&lt;/version&gt;</span><br><span class="line">        &lt;type&gt;jar&lt;/type&gt;</span><br><span class="line">        &lt;classifier&gt;classes&lt;/classifier&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    。。。</span><br></pre></td></tr></table></figure>
+
+
+<p>被依赖工程 pom</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">    &lt;artifactId&gt;gm5-base-common-web&lt;/artifactId&gt;</span><br><span class="line"></span><br><span class="line">    &lt;packaging&gt;war&lt;/packaging&gt;</span><br><span class="line"></span><br><span class="line">    &lt;build&gt;</span><br><span class="line">        &lt;plugins&gt;</span><br><span class="line">            &lt;plugin&gt;</span><br><span class="line">                &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">                &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;</span><br><span class="line">                &lt;configuration&gt;</span><br><span class="line">                    &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;</span><br><span class="line">                    &lt;!--  把class额外打包jar,默认：artifactId-classes.jar--&gt;</span><br><span class="line">                    &lt;attachClasses&gt;true&lt;/attachClasses&gt;</span><br><span class="line">                &lt;/configuration&gt;</span><br><span class="line">            &lt;/plugin&gt;</span><br><span class="line">        &lt;/plugins&gt;</span><br><span class="line">    &lt;/build&gt;</span><br></pre></td></tr></table></figure>
+
+<p>以上是为了 <code>overlays</code>， 如果不需要 <code>overlays</code>， 可以使用 archiveClasses 简单处理。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/maven/" rel="tag"># maven</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/10/29/exception/tomcat-jdbc-hibernate/" rel="prev" title="tomcat-jdbc hibernate 版本冲突">
+      <i class="fa fa-chevron-left"></i> tomcat-jdbc hibernate 版本冲突
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/11/17/linux/lamp/" rel="next" title="lamp">
+      lamp <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setting-xml"><span class="nav-number">2.</span> <span class="nav-text">setting.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pom-xml"><span class="nav-number">3.</span> <span class="nav-text">pom.xml</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maven-war-plugin"><span class="nav-number">5.</span> <span class="nav-text">maven-war-plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#configuration-%E8%AF%B4%E6%98%8E"><span class="nav-number">5.1.</span> <span class="nav-text">configuration 说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E4%BE%9D%E8%B5%96%E4%BD%BF%E7%94%A8"><span class="nav-number">5.2.</span> <span class="nav-text">多依赖使用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

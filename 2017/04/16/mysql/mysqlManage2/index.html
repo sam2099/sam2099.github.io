@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="概要 MySQL5.7新特性故障处理性能调优备份和恢复高可用架构 拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.本篇为第二篇， 主要包括故障诊断，性能调优， 备份和恢复。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【mysql 管理之道】读书笔记二">
+<meta property="og:url" content="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="概要 MySQL5.7新特性故障处理性能调优备份和恢复高可用架构 拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.本篇为第二篇， 主要包括故障诊断，性能调优， 备份和恢复。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-04-16T04:53:57.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>【mysql 管理之道】读书笔记二 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/04/16/mysql/mysqlManage2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【mysql 管理之道】读书笔记二
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-04-16 12:53:57" itemprop="dateCreated datePublished" datetime="2017-04-16T12:53:57+08:00">2017-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>概要</p>
+<p>MySQL5.7新特性<br>故障处理<br>性能调优<br>备份和恢复<br>高可用架构</p>
+<p>拜读 贺春旸先生 的 【mysql 管理之道】 有感， 特此梳理和记录。 主要适合 MySQL 5.6， MySQL 5.7.<br>本篇为第二篇， 主要包括故障诊断，性能调优， 备份和恢复。</p>
+<span id="more"></span>
+<h2 id="故障诊断"><a href="#故障诊断" class="headerlink" title="故障诊断"></a>故障诊断</h2><h3 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h3><p>Linux 性能监控工具 dstat</p>
+<h3 id="故障与处理"><a href="#故障与处理" class="headerlink" title="故障与处理"></a>故障与处理</h3><h4 id="连接数过多导致程序连接报错的原因"><a href="#连接数过多导致程序连接报错的原因" class="headerlink" title="连接数过多导致程序连接报错的原因"></a>连接数过多导致程序连接报错的原因</h4><p>keys：</p>
+<ul>
+<li>max_connections 通常 500 ~ 1000 比较合理， 一直增大不能治本</li>
+<li>wait_timeout (服务器关闭非交互连接之前等待活动的秒数) ， 一般设置为 100 就可， 默认是 28800 秒</li>
+<li>重启数据库导致早高峰连接数过多<br>  可使用 InnoDB Buffer Pool 预热</li>
+<li>磁盘高负荷拖垮MySQL<br>  加内存， InnoDB_Buffer_Pool 最大可调整成内存的 70%</li>
+</ul>
+<h4 id="binlog-format"><a href="#binlog-format" class="headerlink" title="binlog_format"></a>binlog_format</h4><p>binlog_format 有3种格式 ， statement， row 和 mixed</p>
+<ul>
+<li><p>statement 记录的是实际的SQL语句</p>
+</li>
+<li><p>row 记录的是实际行的变更</p>
+</li>
+<li><p>mixed 默认是 statement， 在如下情况会转换为 row。<br>  NDB引擎，表的DML； SQL语句包含UUID()函数； 自增字段被更新； 包含 INSERT DELAYED 语句； 使用用户定义函数 UDF； 使用临时表。</p>
+</li>
+</ul>
+<p>row格式 安全稳定，binlog 可能会很大， 性能较差；<br>statement格式 性能较好，可能会导致同步数据问题</p>
+<h4 id="未设置-swap-分区导致内存耗尽，死机"><a href="#未设置-swap-分区导致内存耗尽，死机" class="headerlink" title="未设置 swap 分区导致内存耗尽，死机"></a>未设置 swap 分区导致内存耗尽，死机</h4><p>swappiness 设置为 0， 只能减少使用 swap 的概率， 不能避免 Linux 使用 swap，所以内存被耗尽后， 主机仍旧会被Hang死。<br>增加 swap<br>监控内存， 达到一定量， 重启 MySQL</p>
+<h4 id="恢复-人工误删除-InnoDB-ibdata-数据文件"><a href="#恢复-人工误删除-InnoDB-ibdata-数据文件" class="headerlink" title="恢复 人工误删除 InnoDB ibdata 数据文件"></a>恢复 人工误删除 InnoDB ibdata 数据文件</h4><p>切记 千万千万不要杀死 mysql 进程！！！！！<br>page 130 ~ 132</p>
+<h4 id="闪回功能"><a href="#闪回功能" class="headerlink" title="闪回功能"></a>闪回功能</h4><p>** Binlog 必须是 row 格式！！！ **</p>
+<ul>
+<li><p>恢复update忘记where条件误操作<br>page 133</p>
+</li>
+<li><p>恢复delete忘记where条件误操作<br>page 141</p>
+</li>
+</ul>
+<h3 id="同步复制报错故障处理"><a href="#同步复制报错故障处理" class="headerlink" title="同步复制报错故障处理"></a>同步复制报错故障处理</h3><p>page 145</p>
+<h4 id="干净清除-slave-同步信息"><a href="#干净清除-slave-同步信息" class="headerlink" title="干净清除 slave 同步信息"></a>干净清除 slave 同步信息</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reset slave <span class="keyword">all</span>; <span class="comment">-- reset slave 会把 master.info 和 relay-log.info 文件删除， 但同步信息还在。</span></span><br><span class="line"><span class="keyword">show</span> slave status;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="性能调优"><a href="#性能调优" class="headerlink" title="性能调优"></a>性能调优</h2><h3 id="三范式"><a href="#三范式" class="headerlink" title="三范式"></a>三范式</h3><p>设计数据库需要最大可能遵守三范式； 有时为了性能，我们需要有意违反三范式，适度做冗余，提高查询效率。注意，反范式是适度的，必须有充足的理由。</p>
+<h3 id="字段类型"><a href="#字段类型" class="headerlink" title="字段类型"></a>字段类型</h3><p>保小不保大，能用占用字节少的字段就不用大字段。</p>
+<h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><p>|类型|字节|最小值|最大值|<br>| – |:–:| – |<br>|tinyint| 1 |有符号 -128  <br> 无符号 0| 有符号 127  <br> 无符号 255|<br>|smallint| 2 |有符号 -32 768  <br> 无符号 0| 有符号 32 767  <br> 无符号 65 535|<br>|mediumint| 3 |有符号 -8 388 608  <br> 无符号 0| 有符号 8 388 607  <br> 无符号 16 777 215|<br>|int| 4 |有符号 -2 147 483 648  <br> 无符号 0| 有符号 2 147 483 647  <br> 无符号 4 294 967 295|<br>|bigint| 8 |有符号 -9 223 372 036 854 775 808  <br> 无符号 0| 有符号 9 223 372 036 854 775 807  <br> 无符号 18 446 744 073 709 551 615|</p>
+<ul>
+<li><p>手机号码可以用 bigint<br>字符集 utf8，utf8 占用3字节， char（11) 就是 11 * 3 &#x3D; 33 字节； bigint(20) 占用8字节</p>
+</li>
+<li><p>ip地址可采用 无符号int<br>mysql 内置函数： inet_aton(), 它负责ip地址转换成数字； inet_ntoa()负责把数字转换为ip地址</p>
+</li>
+<li><p>根据需求选择最小整数类型</p>
+</li>
+</ul>
+<h4 id="字符类型"><a href="#字符类型" class="headerlink" title="字符类型"></a>字符类型</h4><p>char  varchar<br>char(N) 长度最大255， 超长会被截取， 比N 小会被空格填补；<br>varchar(N) 最大长度 65 535， 额外使用 1~2 个字节来存储值得长度， 如果N小于或等于255， 则占用1字节， 否则就是2字节；<br>char和varchar跟字符编码也有关， latin1占用1个字节， gbk占用2个字节， utf8占用3个字节。</p>
+<p>计算varchar(N)的最大长度</p>
+<ul>
+<li>GBK字符集<br>（65 535 -2 ） &#x2F;2 &#x3D; 32766</li>
+<li>UTF8字符集<br>（65 535 -2 ） &#x2F;3 &#x3D; 218 44</li>
+<li>一行总长度不能超过 65 535</li>
+</ul>
+<h4 id="时间类型"><a href="#时间类型" class="headerlink" title="时间类型"></a>时间类型</h4><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>值</th>
+<th>存储字节</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>‘0000-00-00’</td>
+<td>3字节</td>
+</tr>
+<tr>
+<td>time</td>
+<td>‘00:00:00’</td>
+<td>3字节</td>
+</tr>
+<tr>
+<td>datetime</td>
+<td>‘0000-00-00 00:00:00’</td>
+<td>8字节</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>‘0000-00-00 00:00:00’</td>
+<td>4字节</td>
+</tr>
+<tr>
+<td>year</td>
+<td>0000</td>
+<td>1字节</td>
+</tr>
+</tbody></table>
+<ul>
+<li>timestamp 默认值 current_timestamp, 自动插入，更新时间</li>
+<li>MySQL 5.5之前， 一个表只允许一个字段timestamp， 自动插入，更新时间<br>  MySQL 5.6之后， datetime 有了timestamp功能， 自动插入，更新时间， 也可由多个自动插入，更新时间的字段</li>
+</ul>
+<h3 id="事务隔离"><a href="#事务隔离" class="headerlink" title="事务隔离"></a>事务隔离</h3><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>读数据一致性</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未提交读 read uncommitted</td>
+<td>最低级别， 只能保证不读取物理上损坏的数据</td>
+<td>是</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>已提交读 read committed</td>
+<td>语句级</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可重复读 repeatable read</td>
+<td>事务级</td>
+<td>否</td>
+<td>否</td>
+<td>是</td>
+</tr>
+<tr>
+<td>可序列化 serializable</td>
+<td>最高级别，事务级</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<p>oracle 和 SQL server 的默认隔离级别 是 read committed； MySQL 的默认隔离级别是 Repeatable read。</p>
+<h3 id="my-cnf-配置文件调优"><a href="#my-cnf-配置文件调优" class="headerlink" title="my.cnf 配置文件调优"></a>my.cnf 配置文件调优</h3><p>page231<br>per_thread_buffers + global_buffer 不能大于物理内存</p>
+<h4 id="per-thread-buffers"><a href="#per-thread-buffers" class="headerlink" title="per_thread_buffers"></a>per_thread_buffers</h4><p>可以理解为 oracle 的 PGA， 为每个连接到 MySQL 的用户分配的内存。<br>per_thread_buffers &#x3D; (read_buffer_size + read_rnd_buffer_size + sort_buffer_size + thread_stack + join_buffer_size + binlog_cache_size) * max_connections</p>
+<ul>
+<li>read_buffer_size<br>用于表的顺序扫描，表示每个线程分配的缓冲区大小。默认128KB， 一般在128 ～ 256KB</li>
+<li>read_rnd_buffer_size<br>用于表的随机读取，表示每个线程分配的缓冲区大小。64位默认256KB， 一般在128 ～ 256KB</li>
+<li>sort_buffer_size<br>在表进行 order by 和 group by 排序操作时， 由于排序没有索引， 会出现 Using filesort， 可用此参数增加每个线程分配的缓冲区大小， 64位默认256KB，一般在128 ～ 256KB， 如果出现 filesort，可增加索引。</li>
+<li>thread_stack<br>表示每个线程的堆栈大小。64位默认256KB</li>
+<li>join_buffer_size<br>表进行join时，如果没有索引，会出现 Using join buffer， 可用此参数增加每个线程分配的缓冲区大小，64位默认256KB，一般在128 ～ 256KB， 如果出现 Using join buffer，可增加索引。</li>
+<li>binlog_cache_size<br>一般来说， 如果数据库没有特别大事务， 写入也不是特频繁，将其设置为1 ～ 2MB, 默认32KB</li>
+<li>max_connections<br>该参数设置最大连接数， 默认为100, 一般设置为 500 ～ 1000.</li>
+</ul>
+<h4 id="global-buffer"><a href="#global-buffer" class="headerlink" title="global_buffer"></a>global_buffer</h4><p>可以理解为 oracle 的 SGA， 用于在内存中缓存从数据文件检索出来的数据块。<br>global_buffer&#x3D; innodb_buffer_pool_size + innodb_additional_mem_pool_size + innodb_log_buffer_size + key_buffer_size + query_cahce_size</p>
+<ul>
+<li><p>innodb_buffer_pool_size<br>InnoDB 存储引擎的核心数据， 默认128MB， 建议设置成物理内存的 60% ~ 70%</p>
+</li>
+<li><p>innodb_additional_mem_pool_size<br>设置存储数据字典信息和其他内部数据结构。表越多， 需要这里分配的内存越多， 单位是 byte，参数默认值为8M。如果 InnoDB 用完了内存池中的内存，就会从操作系统中分配内存，同时在 error log 中打入报警信息。<br>从 MySQL 5.7.4 中移除， InnoDB 实现的内存分配器相比操作系统的内存分配器并没有明显优势，所以在之后的版本，会移除 innodb_additional_mem_pool_size 和 innodb_use_sys_malloc 两个参数，统一使用操作系统的内存分配器。</p>
+</li>
+<li><p>innodb_log_buffer_size<br>事务日志所使用缓冲区。默认16M， 一般设置16M ～ 64MB</p>
+</li>
+<li><p>key_buffer_size<br>MyISAM 存储引擎的索引参数</p>
+</li>
+<li><p>query_cahce_size<br>缓存select 语句和结果集大小的参数。<br>如果写操作很少，读操作频繁， 那么打开 query_cahce_type&#x3D;1, 并设置 query_cahce_size 16M， 看情况调试。<br>反之写操作很频繁，读操作少， 那么打开 query_cahce_type&#x3D;0, query_cahce_size&#x3D;0</p>
+</li>
+</ul>
+<h2 id="备份和恢复"><a href="#备份和恢复" class="headerlink" title="备份和恢复"></a>备份和恢复</h2><h3 id="冷备份"><a href="#冷备份" class="headerlink" title="冷备份"></a>冷备份</h3><h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><ul>
+<li>关闭mysql</li>
+<li>复制 数据目录（包括 ibdata1） 和 日志目录 （包括 ib_logfile0, ib_logfile1, ib_logfile2)</li>
+</ul>
+<h4 id="恢复"><a href="#恢复" class="headerlink" title="恢复"></a>恢复</h4><ul>
+<li>拷贝上步的数据目录和日志目录</li>
+<li>启动mysql</li>
+</ul>
+<h3 id="逻辑备份"><a href="#逻辑备份" class="headerlink" title="逻辑备份"></a>逻辑备份</h3><p>mysqldump<br>mydumper </p>
+<p>全量，增量备份脚本 page262</p>
+<h3 id="热备份"><a href="#热备份" class="headerlink" title="热备份"></a>热备份</h3><p>xtrabackup - 相对完美的免费开源数据备份工具<br>page 263</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/15/mysql/mysqlManage/" rel="prev" title="【mysql 管理之道】读书笔记一">
+      <i class="fa fa-chevron-left"></i> 【mysql 管理之道】读书笔记一
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/04/19/mysql/mysqlManage3/" rel="next" title="【mysql 管理之道】读书笔记三">
+      【mysql 管理之道】读书笔记三 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E8%AF%8A%E6%96%AD"><span class="nav-number">1.</span> <span class="nav-text">故障诊断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dstat"><span class="nav-number">1.1.</span> <span class="nav-text">dstat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E4%B8%8E%E5%A4%84%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">故障与处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E8%BF%87%E5%A4%9A%E5%AF%BC%E8%87%B4%E7%A8%8B%E5%BA%8F%E8%BF%9E%E6%8E%A5%E6%8A%A5%E9%94%99%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">1.2.1.</span> <span class="nav-text">连接数过多导致程序连接报错的原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#binlog-format"><span class="nav-number">1.2.2.</span> <span class="nav-text">binlog_format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AA%E8%AE%BE%E7%BD%AE-swap-%E5%88%86%E5%8C%BA%E5%AF%BC%E8%87%B4%E5%86%85%E5%AD%98%E8%80%97%E5%B0%BD%EF%BC%8C%E6%AD%BB%E6%9C%BA"><span class="nav-number">1.2.3.</span> <span class="nav-text">未设置 swap 分区导致内存耗尽，死机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D-%E4%BA%BA%E5%B7%A5%E8%AF%AF%E5%88%A0%E9%99%A4-InnoDB-ibdata-%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.4.</span> <span class="nav-text">恢复 人工误删除 InnoDB ibdata 数据文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AA%E5%9B%9E%E5%8A%9F%E8%83%BD"><span class="nav-number">1.2.5.</span> <span class="nav-text">闪回功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E5%A4%8D%E5%88%B6%E6%8A%A5%E9%94%99%E6%95%85%E9%9A%9C%E5%A4%84%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">同步复制报错故障处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B2%E5%87%80%E6%B8%85%E9%99%A4-slave-%E5%90%8C%E6%AD%A5%E4%BF%A1%E6%81%AF"><span class="nav-number">1.3.1.</span> <span class="nav-text">干净清除 slave 同步信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="nav-number">2.</span> <span class="nav-text">性能调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%8C%83%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">三范式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">字段类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.1.</span> <span class="nav-text">数值类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">字符类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.2.3.</span> <span class="nav-text">时间类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB"><span class="nav-number">2.3.</span> <span class="nav-text">事务隔离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#my-cnf-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%B0%83%E4%BC%98"><span class="nav-number">2.4.</span> <span class="nav-text">my.cnf 配置文件调优</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#per-thread-buffers"><span class="nav-number">2.4.1.</span> <span class="nav-text">per_thread_buffers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#global-buffer"><span class="nav-number">2.4.2.</span> <span class="nav-text">global_buffer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-number">3.</span> <span class="nav-text">备份和恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B7%E5%A4%87%E4%BB%BD"><span class="nav-number">3.1.</span> <span class="nav-text">冷备份</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD"><span class="nav-number">3.1.1.</span> <span class="nav-text">备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D"><span class="nav-number">3.1.2.</span> <span class="nav-text">恢复</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%A4%87%E4%BB%BD"><span class="nav-number">3.2.</span> <span class="nav-text">逻辑备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%83%AD%E5%A4%87%E4%BB%BD"><span class="nav-number">3.3.</span> <span class="nav-text">热备份</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

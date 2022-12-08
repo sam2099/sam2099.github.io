@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容  Local Unit Test Instrumented Unit Test  本文主要以idea 说明如何进行 Android Unit Test。分为与Android环境相关的Instrumented Unit Test ， 与Android环境无关的Local Unit Test">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android入门 一 ： unit test">
+<meta property="og:url" content="http://giveme5.cc/2016/05/10/android/android1_UnitTest/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容  Local Unit Test Instrumented Unit Test  本文主要以idea 说明如何进行 Android Unit Test。分为与Android环境相关的Instrumented Unit Test ， 与Android环境无关的Local Unit Test">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://amadis.qiniudn.com/androidJunit1a1.png">
+<meta property="og:image" content="http://amadis.qiniudn.com/androidJunit1a2.png">
+<meta property="article:published_time" content="2016-05-10T11:29:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="android">
+<meta property="article:tag" content="junit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://amadis.qiniudn.com/androidJunit1a1.png">
+
+<link rel="canonical" href="http://giveme5.cc/2016/05/10/android/android1_UnitTest/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Android入门 一 ： unit test | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/05/10/android/android1_UnitTest/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Android入门 一 ： unit test
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-05-10 19:29:44" itemprop="dateCreated datePublished" datetime="2016-05-10T19:29:44+08:00">2016-05-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index"><span itemprop="name">Android</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<ul>
+<li>Local Unit Test</li>
+<li>Instrumented Unit Test</li>
+</ul>
+<p>本文主要以idea 说明如何进行 Android Unit Test。<br>分为与Android环境相关的<code>Instrumented Unit Test</code> ， 与Android环境无关的<code>Local Unit Test</code></p>
+<span id="more"></span>
+
+
+
+<h2 id="Local-Unit-Test"><a href="#Local-Unit-Test" class="headerlink" title="Local Unit Test"></a>Local Unit Test</h2><p><code>Local Unit Test</code> 用来做跟android环境无关的Unit Test。</p>
+<h3 id="配置依赖"><a href="#配置依赖" class="headerlink" title="配置依赖"></a>配置依赖</h3><p><code>build.gradle</code> 中增加必要的依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    ...</span><br><span class="line">    testCompile &#x27;junit:junit:4.12&#x27;</span><br><span class="line">    androidTestCompile &#x27;junit:junit:4.12&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Test-java-class"><a href="#Test-java-class" class="headerlink" title="Test java class"></a>Test java class</h3><p>以 <code>JUnit 4</code> 为基础的话， 仅需要 用 <code>@Test</code> 注解测试method。<br>android官方例子像这样的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import org.junit.Test;</span><br><span class="line">import java.util.regex.Pattern;</span><br><span class="line">import static org.junit.Assert.assertFalse;</span><br><span class="line">import static org.junit.Assert.assertTrue;</span><br><span class="line"></span><br><span class="line">public class EmailValidatorTest &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void emailValidator_CorrectEmailSimple_ReturnsTrue() &#123;</span><br><span class="line">        assertThat(EmailValidator.isValidEmail(&quot;name@email.com&quot;), is(true));</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>别忘记将 <code>/src/test/java</code> 设置成 <code>Test Source Root</code></p>
+<ul>
+<li><p>同步<br><code>project</code> 视图下， 右键工程， <code>synchronize $&#123;your project name&#125;</code></p>
+</li>
+<li><p>配置BuildVariants<br><code>Test Artifact</code> 选择 <code>Unit Tests</code></p>
+</li>
+<li><p>运行<br>右键测试class， run ！</p>
+</li>
+</ul>
+<p><img src="http://amadis.qiniudn.com/androidJunit1a1.png"></p>
+<h2 id="Instrumented-Unit-Test"><a href="#Instrumented-Unit-Test" class="headerlink" title="Instrumented Unit Test"></a>Instrumented Unit Test</h2><p>如果你的测试需要访问 <code>instrumentation information</code> (例如 app’s Context) 或者需要 <code>Android framework component</code> (例如 Parcelable  SharedPreferences)，那么你可以使用 <code>Instrumented Unit Test</code>。<br>目前有2中方式实现： <code>AndroidJUnit4</code> 以及 <code>TestCase</code></p>
+<h3 id="AndroidJUnit4"><a href="#AndroidJUnit4" class="headerlink" title="AndroidJUnit4"></a>AndroidJUnit4</h3><p>这是Android官方的例子， 需要注意的是如需要取 <code>context</code> 必须使用 <code>getTargetContext()</code></p>
+<blockquote>
+<p>InstrumentationRegistry is an exposed registry instance that holds a reference to the instrumentation running in the process and it’s arguments and allows injection of the following instances:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>InstrumentationRegistry.getInstrumentation(), returns the Instrumentation currently running.</li>
+<li>InstrumentationRegistry.getContext(), returns the Context of this Instrumentation’s package.</li>
+<li>InstrumentationRegistry.getTargetContext(), returns the application Context of the target application.</li>
+<li>InstrumentationRegistry.getArguments(), returns a copy of arguments Bundle that was passed to this Instrumentation. This is useful when you want to access the command line arguments passed to Instrumentation for your test.</li>
+</ul>
+</blockquote>
+<h4 id="配置依赖-1"><a href="#配置依赖-1" class="headerlink" title="配置依赖"></a>配置依赖</h4><ul>
+<li>在顶层<code>build.gradle</code> 中增加必要的依赖</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    androidTestCompile &#x27;com.android.support:support-annotations:23.0.1&#x27;</span><br><span class="line">    androidTestCompile &#x27;com.android.support.test:runner:0.4.1&#x27;</span><br><span class="line">    androidTestCompile &#x27;com.android.support.test:rules:0.4.1&#x27;</span><br><span class="line">    // Optional -- Hamcrest library</span><br><span class="line">    androidTestCompile &#x27;org.hamcrest:hamcrest-library:1.3&#x27;</span><br><span class="line">    // Optional -- UI testing with Espresso</span><br><span class="line">    androidTestCompile &#x27;com.android.support.test.espresso:espresso-core:2.2.1&#x27;</span><br><span class="line">    // Optional -- UI testing with UI Automator</span><br><span class="line">    androidTestCompile &#x27;com.android.support.test.uiautomator:uiautomator-v18:2.1.1&#x27;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在模块<code>build.gradle</code> 中配置 <code>instrumentation runner</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Test-java-class-1"><a href="#Test-java-class-1" class="headerlink" title="Test java class"></a>Test java class</h4><p><code>instrumentation Test</code> 应该使用 Junit4 的方式编写， 代码默认路径为 <code>src/androidTest/java</code>。<br>Android 的官方例子如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">import android.os.Parcel;</span><br><span class="line">import android.support.test.runner.AndroidJUnit4;</span><br><span class="line">import android.util.Pair;</span><br><span class="line">import org.junit.Test;</span><br><span class="line">import org.junit.runner.RunWith;</span><br><span class="line">import java.util.List;</span><br><span class="line">import static org.hamcrest.Matchers.is;</span><br><span class="line">import static org.junit.Assert.assertThat;</span><br><span class="line"></span><br><span class="line">@RunWith(AndroidJUnit4.class)</span><br><span class="line">@SmallTest</span><br><span class="line">public class LogHistoryAndroidUnitTest &#123;</span><br><span class="line"></span><br><span class="line">    public static final String TEST_STRING = &quot;This is a string&quot;;</span><br><span class="line">    public static final long TEST_LONG = 12345678L;</span><br><span class="line">    private LogHistory mLogHistory;</span><br><span class="line"></span><br><span class="line">    //前处理</span><br><span class="line">    @Before</span><br><span class="line">    public void createLogHistory() &#123;</span><br><span class="line">        mLogHistory = new LogHistory();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void logHistory_ParcelableWriteRead() &#123;</span><br><span class="line">        // Set up the Parcelable object to send and receive.</span><br><span class="line">        mLogHistory.addEntry(TEST_STRING, TEST_LONG);</span><br><span class="line"></span><br><span class="line">        // Write the data.</span><br><span class="line">        Parcel parcel = Parcel.obtain();</span><br><span class="line">        mLogHistory.writeToParcel(parcel, mLogHistory.describeContents());</span><br><span class="line"></span><br><span class="line">        // After you&#x27;re done with writing, you need to reset the parcel for reading.</span><br><span class="line">        parcel.setDataPosition(0);</span><br><span class="line"></span><br><span class="line">        // Read the data.</span><br><span class="line">        LogHistory createdFromParcel = LogHistory.CREATOR.createFromParcel(parcel);</span><br><span class="line">        List&lt;Pair&lt;String, Long&gt;&gt; createdFromParcelData = createdFromParcel.getData();</span><br><span class="line"></span><br><span class="line">        // Verify that the received data is correct.</span><br><span class="line">        assertThat(createdFromParcelData.size(), is(1));</span><br><span class="line">        assertThat(createdFromParcelData.get(0).first, is(TEST_STRING));</span><br><span class="line">        assertThat(createdFromParcelData.get(0).second, is(TEST_LONG));</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //后处理</span><br><span class="line">    @After</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="TestCase"><a href="#TestCase" class="headerlink" title="TestCase"></a>TestCase</h3><p>继承 <code>android.test</code> 包下面一系列 <code>xxxxTestCase</code>。<br>IDEA 自动生存的例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">package com.example.sam.myapplication;</span><br><span class="line"></span><br><span class="line">import android.app.Application;</span><br><span class="line">import android.test.ApplicationTestCase;</span><br><span class="line">import org.junit.Test;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * &lt;a href=&quot;http://d.android.com/tools/testing/testing_android.html&quot;&gt;Testing Fundamentals&lt;/a&gt;</span><br><span class="line"> */</span><br><span class="line">public class ApplicationTest extends ApplicationTestCase&lt;Application&gt; &#123;</span><br><span class="line">    public ApplicationTest() &#123;</span><br><span class="line">        super(Application.class);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //前处理</span><br><span class="line">    @Override</span><br><span class="line">    protected void setUp() throws Exception &#123;</span><br><span class="line">        super.setUp();</span><br><span class="line">        </span><br><span class="line">        // 增加你自己的前处理</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    @Test</span><br><span class="line">    public void test()&#123;</span><br><span class="line">        System.out.println(&quot;ok              ok&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    //后处理</span><br><span class="line">        @Override</span><br><span class="line">    protected void tearDown() throws Exception &#123;</span><br><span class="line">        super.tearDown();</span><br><span class="line">        </span><br><span class="line">        //增加你自己的后处理</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行-1"><a href="#运行-1" class="headerlink" title="运行"></a>运行</h3><p>别忘记将 <code>src/androidTest/java</code> 设置成 <code>Test Source Root</code></p>
+<ul>
+<li><p>同步<br><code>project</code> 视图下， 右键工程， <code>synchronize $&#123;your project name&#125;</code></p>
+</li>
+<li><p>配置BuildVariants<br><code>Test Artifact</code> 选择 <code>Android instrumentation Tests</code></p>
+</li>
+<li><p>运行<br>右键测试class，  <code>Android Test</code> 方式运行！ 在 <code>Local Unit Test</code> 的 下一格，带Android机器人图标的。<br>run ！</p>
+</li>
+</ul>
+<p><img src="http://amadis.qiniudn.com/androidJunit1a2.png"></p>
+<h2 id="官方链接"><a href="#官方链接" class="headerlink" title="官方链接"></a>官方链接</h2><p><a target="_blank" rel="noopener" href="http://developer.android.com/training/testing/index.html">Best Practices for Testing</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/android/" rel="tag"># android</a>
+              <a href="/tags/junit/" rel="tag"># junit</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/05/other/shadowsocks/" rel="prev" title="ss">
+      <i class="fa fa-chevron-left"></i> ss
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/17/android/broadcast/" rel="next" title="Android broadcast">
+      Android broadcast <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Local-Unit-Test"><span class="nav-number">1.</span> <span class="nav-text">Local Unit Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.</span> <span class="nav-text">配置依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-java-class"><span class="nav-number">1.2.</span> <span class="nav-text">Test java class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C"><span class="nav-number">1.3.</span> <span class="nav-text">运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instrumented-Unit-Test"><span class="nav-number">2.</span> <span class="nav-text">Instrumented Unit Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AndroidJUnit4"><span class="nav-number">2.1.</span> <span class="nav-text">AndroidJUnit4</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E4%BE%9D%E8%B5%96-1"><span class="nav-number">2.1.1.</span> <span class="nav-text">配置依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Test-java-class-1"><span class="nav-number">2.1.2.</span> <span class="nav-text">Test java class</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TestCase"><span class="nav-number">2.2.</span> <span class="nav-text">TestCase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C-1"><span class="nav-number">2.3.</span> <span class="nav-text">运行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%98%E6%96%B9%E9%93%BE%E6%8E%A5"><span class="nav-number">3.</span> <span class="nav-text">官方链接</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

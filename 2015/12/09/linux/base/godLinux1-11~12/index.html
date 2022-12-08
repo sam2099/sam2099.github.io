@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="目录 重定向 管道｜ 文件查找  重定向文件描述符文件描述符:内核（kernel）利用文件描述符（file descriptor）来访问文件。文件描述符是非负整数。打开现存文件或新建文件时，内核会返回一个文件描述符。读写文件也需要使用文件描述符来指定待读写的文件。 linux下一切皆文件。STDIN  标准输入   文件描述符为：0  如：键盘文件STDOUT 标准输出   文件描述符为：1 如：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-11~12 - 重定向和文件查找">
+<meta property="og:url" content="http://giveme5.cc/2015/12/09/linux/base/godLinux1-11~12/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="目录 重定向 管道｜ 文件查找  重定向文件描述符文件描述符:内核（kernel）利用文件描述符（file descriptor）来访问文件。文件描述符是非负整数。打开现存文件或新建文件时，内核会返回一个文件描述符。读写文件也需要使用文件描述符来指定待读写的文件。 linux下一切皆文件。STDIN  标准输入   文件描述符为：0  如：键盘文件STDOUT 标准输出   文件描述符为：1 如：">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-12-09T07:28:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="GOD linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/09/linux/base/godLinux1-11~12/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-11~12 - 重定向和文件查找 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/09/linux/base/godLinux1-11~12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-11~12 - 重定向和文件查找
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-12-09 15:28:44" itemprop="dateCreated datePublished" datetime="2015-12-09T15:28:44+08:00">2015-12-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li>重定向</li>
+<li>管道｜</li>
+<li>文件查找</li>
+</ul>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><h3 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h3><p>文件描述符:内核（kernel）利用文件描述符（file descriptor）来访问文件。文件描述符是非负整数。打开现存文件或新建文件时，内核会返回一个文件描述符。读写文件也需要使用文件描述符来指定待读写的文件。</p>
+<p>linux下一切皆文件。<br>STDIN  标准输入   文件描述符为：0  如：键盘文件<br>STDOUT 标准输出   文件描述符为：1 如：屏幕终端<br>STDERR 错误输出   文件描述符为：2 如：屏幕终端</p>
+<span id="more"></span>
+
+<h3 id="输出重定向"><a href="#输出重定向" class="headerlink" title="输出重定向"></a>输出重定向</h3><p>作用： <code>&gt;</code> <code>&gt;&gt;</code> 代表输出重定向；<br>  <code>&gt;</code> 内容覆盖。<br>  <code>&gt;&gt;</code> 内容末尾追加，<br>用法： [文件描述符][<code>&gt;</code> &#x2F; <code>&gt;&gt;</code>] 目的文件</p>
+<h4 id="标准输出"><a href="#标准输出" class="headerlink" title="标准输出"></a>标准输出</h4><p><code>1&gt;</code> 表示stdout标准输出，系统默认值是1， 所以 <code>1&gt;</code> 等价 <code>&gt;</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#echo 123456 | passwd --stdin sam &gt; /dev/null  #/dev/null 代表空设备文件，就是Linux中的黑洞。放多少东西都填不满。</span><br><span class="line">[root@localhost ~]#echo 123456 | passwd --stdin sam 1&gt; /dev/null</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# ls/home/  1&gt;  a.txt</span><br><span class="line">[root@localhost ~]# cat a.txt</span><br><span class="line">sam</span><br></pre></td></tr></table></figure>
+
+<h4 id="标准错误"><a href="#标准错误" class="headerlink" title="标准错误"></a>标准错误</h4><p><code>2&gt;</code> 表示STDERR 错误输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls/homee  2&gt;  b.txt</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# cat b.txt</span><br><span class="line">ls: cannot access/homee: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<h4 id="混合输出"><a href="#混合输出" class="headerlink" title="混合输出"></a>混合输出</h4><p><code>&amp;&gt;</code> 表示混合输出 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls/home/  /homee  &amp;&gt; a.txt</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# cat a.txt</span><br><span class="line">ls: cannot access/homee: No such file or directory</span><br><span class="line">  </span><br><span class="line">/home/:</span><br><span class="line">rm</span><br></pre></td></tr></table></figure>
+<p>还可以 <code>&amp;</code> 来表示, &amp; 表示等同于的意思</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls/home/  /homee  &gt; d.txt 2&gt;&amp;1 #2标准错误输出等同于1标准输出</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# cat d.txt</span><br><span class="line">ls: cannot access/homee: No such file or directory</span><br><span class="line">/home/:</span><br><span class="line">rm</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# ls/home/  /homee  2&gt; d.txt &gt;&amp;2  #1标准输出等同于2标准错误输出</span><br></pre></td></tr></table></figure>
+
+<h3 id="tee"><a href="#tee" class="headerlink" title="tee"></a>tee</h3><p>功能说明：读取标准输出的数据，并将其内容输入成文件。 <code>&gt;</code> 屏幕上不会同时输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ps -aux | grep vim  | tee a.txt</span><br><span class="line">root       3597 0.0  0.1 151456  5232 pts/1   S+   21:20   0:00 vim a.txt</span><br><span class="line">root       3723 0.0  0.0 112640   956 pts/0   S+   21:29   0:00 grep --color=auto vim</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# cat a.txt</span><br><span class="line">root       3597 0.0  0.1 151456  5232 pts/1   S+   21:20   0:00 vim a.txt</span><br><span class="line">root       3723 0.0  0.0 112640   956 pts/0   S+   21:29   0:00 grep --color=auto vim</span><br></pre></td></tr></table></figure>
+
+<h3 id="输入重定向"><a href="#输入重定向" class="headerlink" title="输入重定向"></a>输入重定向</h3><p><code>&lt;</code> <code>&lt;&lt;</code><br><code>&lt;&lt;</code>[标志] 代表以[标志]结束</p>
+<p><code>wc</code> 统计</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sam:/home/sam # wc &lt; /etc/passwd</span><br><span class="line">  32   77 1754</span><br></pre></td></tr></table></figure>
+
+<p>向a.txt 输入， 以 <code>EOF</code> 结束， <code>EOF</code> 可以替换成其他符号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat &gt; a.txt &lt;&lt;EOF</span><br><span class="line">  &gt;**********************************</span><br><span class="line">  &gt; ****  welcome to linux ****</span><br><span class="line">  &gt;**********************************</span><br><span class="line">  &gt; EOF</span><br></pre></td></tr></table></figure>
+
+<h2 id="管道｜"><a href="#管道｜" class="headerlink" title="管道｜"></a>管道｜</h2><p>管道 ： 前一个程序的标准输出，交给后一个程序做标准输入。<br>管道符 <code>|</code> ： <code>|</code>左边程序的标准输出，交给<code>|</code>右边程序做标准输入；可以多个 <code>|</code> 链接。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ps -aux | grep vim</span><br></pre></td></tr></table></figure>
+
+<h2 id="文件查找"><a href="#文件查找" class="headerlink" title="文件查找"></a>文件查找</h2><p>常用查找命令：<br><code>which</code> ： 查看可执行文件的位置， 比 <code>whereis</code>更常用<br><code>whereis</code> ：    查看可执行文件的位置 及相关文件<br><code>grep</code> ：     过滤<br><code>locate</code> ：      配合数据库缓存，快速查看文件位置，速度快，不够准确 ； 新文件<code>update</code>后才能查到<br><code>find</code> ：        实际搜寻硬盘查询文件名称</p>
+<h3 id="which"><a href="#which" class="headerlink" title="which"></a>which</h3><ul>
+<li>作用： 查看可执行文件的位置</li>
+<li>用法： which COMMAND</li>
+</ul>
+<h3 id="whereis"><a href="#whereis" class="headerlink" title="whereis"></a>whereis</h3><ul>
+<li>作用：  查看可执行文件的位置 及相关文件</li>
+<li>用法： whereis COMMAND</li>
+</ul>
+<h3 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h3><ul>
+<li>作用： 配合数据库缓存，快速查看文件位置 ， 新文件需要 <code>update</code>加入 数据库</li>
+<li>用法：</li>
+</ul>
+<h3 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h3><ul>
+<li>作用： 过滤文件内容</li>
+<li>用法：grep [选项]… PATTERN [FILE]<br>常用选项：<br>  <code>-v</code>:  反转<br>  <code>-i</code>:  忽略大小写<br>常用PATTERN：<br>  <code>^#</code>:   以#开头<br>  <code>#$</code>:   以#结尾<br>  <code>^$</code>:   空行</li>
+<li>例子<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#-v取反，查找出文件中不带nologin的行</span><br><span class="line">[root@localhost ~]# grep  -v &quot;nologin&quot;   passwd</span><br><span class="line">  </span><br><span class="line"># -i  忽略大小写进行查找</span><br><span class="line">[root@localhost ~]# grep -i &quot;rm&quot;   passwd </span><br><span class="line">  </span><br><span class="line"># ^ 过滤文件中的所有以#号开头的行</span><br><span class="line">[root@localhost ~]#grep &quot;^#&quot;  passwd </span><br><span class="line">  </span><br><span class="line"># `$` 过滤文件中的所有以%结尾的行</span><br><span class="line">[root@localhost ~]#grep &quot;%$&quot;  passwd </span><br><span class="line">  </span><br><span class="line"># ^$ 过滤文件中的空行， -n 对过滤的内容加上行号</span><br><span class="line">[root@localhost ~]#grep &quot;^$&quot;  passwd  -n  </span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="扩展：过滤真实有效的内容"><a href="#扩展：过滤真实有效的内容" class="headerlink" title="扩展：过滤真实有效的内容"></a>扩展：过滤真实有效的内容</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#grep  -v &quot;^$&quot;  /etc/ssh/sshd_config | grep  -v &quot;^#&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="find"><a href="#find" class="headerlink" title="find"></a>find</h3><ul>
+<li>作用： 实际搜寻硬盘查询文件名称</li>
+<li>用法： find [路径…] [条件] [动作]</li>
+</ul>
+<h4 id="路径…"><a href="#路径…" class="headerlink" title="[路径…]"></a>[路径…]</h4><p>不输入默认是当前目录<br>可以多个目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost test]# find t1/ tt1/ -type d</span><br></pre></td></tr></table></figure>
+<p><br><br></p>
+<h4 id="条件"><a href="#条件" class="headerlink" title="[条件]"></a>[条件]</h4><h5 id="用户和组：-user-group"><a href="#用户和组：-user-group" class="headerlink" title="用户和组：-user　-group"></a>用户和组：-user　-group</h5><p>例：查找home目录下所有的属于sam的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /home/  -user &quot;sam&quot;</span><br></pre></td></tr></table></figure>
+
+<h5 id="类型：-type"><a href="#类型：-type" class="headerlink" title="类型：-type"></a>类型：-type</h5><p><code>type</code> :  f 文件 ， d 目录 ， l 连接 ， p 管道 ，c 字符文件 ，b 块文件，s socket文件 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /home/ -type f</span><br><span class="line">[root@localhost ~]# find /home/ -type d</span><br></pre></td></tr></table></figure>
+
+<h5 id="名字：-name"><a href="#名字：-name" class="headerlink" title="名字：-name"></a>名字：-name</h5><p><code>*</code> 通配符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /home/ -name &#x27;*user*&#x27;</span><br></pre></td></tr></table></figure>
+
+<h5 id="大小：-size"><a href="#大小：-size" class="headerlink" title="大小：-size"></a>大小：-size</h5><p><code>+NM</code> 大于N兆   <code>-NG</code> 小于ＮGB</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /boot/ -size +2M</span><br></pre></td></tr></table></figure>
+<h5 id="时间：-time-min"><a href="#时间：-time-min" class="headerlink" title="时间：*time | *min"></a>时间：*time | *min</h5><p>[<code>-mtime</code>  <code>-atime</code>  <code>-ctime</code> | <code>-mmin</code> <code>-amin</code> <code>-cmin</code>]   n<br><code>*time</code> 以24小时为单位， <code>*min</code>以分钟为单位;<br><code>+n</code>: 大于n， <code>n</code>：等于n， <code>-n</code>：小于n</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# date-s  2015-12-11</span><br><span class="line">Fri Dec 11 00:00:00 CST 2015</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# find /root/  -mtime +1 | grep time.txt</span><br><span class="line">/root/time.txt</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# find /root/  -mtime 2 | grep time.txt</span><br><span class="line">/root/time.txt</span><br></pre></td></tr></table></figure>
+<h5 id="权限：-perm"><a href="#权限：-perm" class="headerlink" title="权限：-perm"></a>权限：-perm</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /boot/ -perm 755                  #等于0775权限的文件或目录</span><br><span class="line">  </span><br><span class="line">  # super auth 4   SUID  2 SGID   1  sticky</span><br><span class="line">[root@localhost ~]# find /tmp/-perm -777                  #至少有777权限的文件或目录</span><br></pre></td></tr></table></figure>
+<p>例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# mkdir ccc</span><br><span class="line">[root@localhost ~]# chmod 777 ccc</span><br><span class="line">[root@localhost ~]# mkdir test</span><br><span class="line">[root@localhost ~]# chmod 1777 test/</span><br><span class="line">[root@localhost ~]# touch b.sh</span><br><span class="line">[root@localhost ~]# chmod 4777 b.sh</span><br><span class="line">  </span><br><span class="line">  ## 查找：</span><br><span class="line">[root@localhost ~]# find /root/  -perm 777</span><br><span class="line">/root/ccc</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# find /root/ -perm 1777</span><br><span class="line">/root/test</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# find /root/ -perm 4777</span><br><span class="line">/root/b.sh</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# find /root/ -perm -777</span><br><span class="line">/root/ccc</span><br><span class="line">/root/test</span><br><span class="line">/root/b.sh</span><br></pre></td></tr></table></figure>
+
+<h5 id="目录深度：-maxdepth"><a href="#目录深度：-maxdepth" class="headerlink" title="目录深度：-maxdepth"></a>目录深度：-maxdepth</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find /boot/ -maxdepth 2              #只查找目录第二层的文件和目录</span><br></pre></td></tr></table></figure>
+<h5 id="多条件组合："><a href="#多条件组合：" class="headerlink" title="多条件组合："></a>多条件组合：</h5><p><code>-a</code>  <code>-o</code>  <code>!</code>   或  <code>-and</code>  <code>-or</code> <code>-not</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#find -type f -a -perm -002</span><br><span class="line">[root@localhost ~]#find -type f -and -perm /o+w</span><br><span class="line">./b.sh</span><br><span class="line">[root@localhost ~]# find! -type f -and -perm -001</span><br></pre></td></tr></table></figure>
+<h4 id="动作"><a href="#动作" class="headerlink" title="[动作]"></a>[动作]</h4><p><code>-ls</code> <code>-ok</code> <code>-exec</code> <code>-print</code> <code>-printf</code><br>常用 <code>-exec</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#find /root/test2/  -type f -exec rm &#123;&#125; \;</span><br><span class="line">[root@localhost ~]# ls test2/</span><br><span class="line">boot</span><br><span class="line">[root@localhost ~]#find /root/test2/  -type f | xargs rm -rf</span><br><span class="line">[root@localhost ~]# ls test2/</span><br><span class="line">boot</span><br><span class="line">  </span><br><span class="line">[root@localhost findresults]# find /  -user sam   -exec cp -ra &#123;&#125; /findresults/ \;</span><br></pre></td></tr></table></figure>
+<p>参数解释：<br> <code>-exec</code>： 执行命令<br> <code>rm</code>： 要执行的命令<br> <code>&#123;&#125;</code>： 表示 <code>find</code> 查找出来了文件内容<br> <code>\;</code>： <code>&#123;&#125;</code> 和 <code>\;</code> 之间要有空格。 固定语法，就是以这个结尾</p>
+<h4 id="组合使用"><a href="#组合使用" class="headerlink" title="组合使用"></a>组合使用</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find / -name &quot;40*&quot; -a -type f | xargs  grep &quot; not found&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="扩展："><a href="#扩展：" class="headerlink" title="扩展："></a>扩展：</h2><h3 id="linux中ctime-mtime-atime"><a href="#linux中ctime-mtime-atime" class="headerlink" title="linux中ctime,mtime,atime"></a>linux中ctime,mtime,atime</h3><h4 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h4><p><code>atime</code> ：“访问时间(accesstime)”<br><code>ctime</code> ：“改变时间(changetime)”<br><code>mtime</code> ：“修改时间(modificationtime)”<br>改变和修改之间的区别在于是改文件的属性还是更改它的内容， *min类似。<br><code>chmod a-w myfile</code>  这是一个属性改变；改变的ctime<br><code>echo  aaa &gt; bajie</code> 这是一个内容修改；同时修改mtime和ctime。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# touch time.txt</span><br><span class="line">[root@localhost ~]# stat time.txt</span><br><span class="line">  File: ‘time.txt’</span><br><span class="line">  Size: 0           Blocks:0          IO Block: 4096   regular empty file</span><br><span class="line">Device: fd01h/64769d  Inode: 35698271    Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: (   0/    root)   Gid: (   0/    root)</span><br><span class="line">Access: 2015-12-0820:59:28.293035474 +0800</span><br><span class="line">Modify: 2015-12-0820:59:28.293035474 +0800</span><br><span class="line">Change: 2015-12-0820:59:28.293035474 +0800</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#chmod u+x time.txt</span><br><span class="line">[root@localhost ~]#stat time.txt</span><br><span class="line">  File: ‘time.txt’</span><br><span class="line">  Size: 0           Blocks:0          IO Block: 4096   regular empty file</span><br><span class="line">Device: fd01h/64769d  Inode: 35698271    Links: 1</span><br><span class="line">Access:(0744/-rwxr--r--)  Uid: (    0/   root)   Gid: (    0/   root)</span><br><span class="line">Access: 2015-12-0820:59:28.293035474 +0800</span><br><span class="line">Modify: 2015-12-0820:59:28.293035474 +0800</span><br><span class="line">Change: 2015-12-08 21:02:06.612034204 +0800</span><br></pre></td></tr></table></figure>
+<p>可以看到，文件的ctime发生了改变</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# echo &quot;aaaaaaaaaaa&quot; &gt;&gt; time.txt</span><br><span class="line">[root@localhost ~]# stat time.txt</span><br><span class="line">  File: ‘time.txt’</span><br><span class="line">  Size: 4           Blocks:8          IO Block: 4096   regular file</span><br><span class="line">Device: fd01h/64769d  Inode: 35698271    Links: 1</span><br><span class="line">access: (0744/-rwxr--r--)  Uid: (   0/    root)   Gid: (   0/    root)</span><br><span class="line">Access: 2015-12-0820:59:28.293035474 +0800</span><br><span class="line">Modify: 2015-12-08 21:03:41.775033441 +0800</span><br><span class="line">Change: 2015-12-08 21:03:41.775033441 +0800</span><br></pre></td></tr></table></figure>
+<p>可以看到文件的ctime和mtime发生了改变<br>结论：无论是文件的属性还是内容发生变化，文件的ctime都会发生改变，只有文件内容发生修改的时候，文件的mtime才会发生变化</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat time.txt</span><br><span class="line">[root@localhost ~]# stattime.txt</span><br><span class="line">  File: ‘time.txt’</span><br><span class="line">  Size: 4           Blocks:8          IO Block: 4096   regular file</span><br><span class="line">Device: fd01h/64769d  Inode: 35698271    Links: 1</span><br><span class="line">Access: (0744/-rwxr--r--)  Uid: (   0/    root)   Gid: (   0/    root)</span><br><span class="line">Access: 2015-12-0821:06:45.223031969 +0800</span><br><span class="line">Modify: 2015-12-0821:03:41.775033441 +0800</span><br><span class="line">Change: 2015-12-0821:03:41.775033441 +0800</span><br></pre></td></tr></table></figure>
+<p>可以看到文件的atime发生了改变<br>结论：只要对文件内容进行了查看，那么atime就会发生改变</p>
+<h4 id="显示"><a href="#显示" class="headerlink" title="显示"></a>显示</h4><p>ls(1) 命令可用来列出文件的 atime、ctime和 mtime。<br>ls -lc filename         列出文件的 ctime     ll  -c<br>ls -lu filename         列出文件的 atime          ll  -u<br>ls -l filename          列出文件的 mtime     ll</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/07/linux/base/godLinux1-10/" rel="prev" title="1-10 RHEL7 进程管理">
+      <i class="fa fa-chevron-left"></i> 1-10 RHEL7 进程管理
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/14/linux/base/godLinux1-13/" rel="next" title="1-13 Linux 磁盘管理">
+      1-13 Linux 磁盘管理 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">2.</span> <span class="nav-text">重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6"><span class="nav-number">2.1.</span> <span class="nav-text">文件描述符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%87%BA%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">2.2.</span> <span class="nav-text">输出重定向</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E8%BE%93%E5%87%BA"><span class="nav-number">2.2.1.</span> <span class="nav-text">标准输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E9%94%99%E8%AF%AF"><span class="nav-number">2.2.2.</span> <span class="nav-text">标准错误</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%B7%E5%90%88%E8%BE%93%E5%87%BA"><span class="nav-number">2.2.3.</span> <span class="nav-text">混合输出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tee"><span class="nav-number">2.3.</span> <span class="nav-text">tee</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BE%93%E5%85%A5%E9%87%8D%E5%AE%9A%E5%90%91"><span class="nav-number">2.4.</span> <span class="nav-text">输入重定向</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E9%81%93%EF%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">管道｜</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%9F%A5%E6%89%BE"><span class="nav-number">4.</span> <span class="nav-text">文件查找</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#which"><span class="nav-number">4.1.</span> <span class="nav-text">which</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#whereis"><span class="nav-number">4.2.</span> <span class="nav-text">whereis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#locate"><span class="nav-number">4.3.</span> <span class="nav-text">locate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep"><span class="nav-number">4.4.</span> <span class="nav-text">grep</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%EF%BC%9A%E8%BF%87%E6%BB%A4%E7%9C%9F%E5%AE%9E%E6%9C%89%E6%95%88%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">4.4.1.</span> <span class="nav-text">扩展：过滤真实有效的内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#find"><span class="nav-number">4.5.</span> <span class="nav-text">find</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E5%BE%84%E2%80%A6"><span class="nav-number">4.5.1.</span> <span class="nav-text">[路径…]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6"><span class="nav-number">4.5.2.</span> <span class="nav-text">[条件]</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E5%92%8C%E7%BB%84%EF%BC%9A-user-group"><span class="nav-number">4.5.2.1.</span> <span class="nav-text">用户和组：-user　-group</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%EF%BC%9A-type"><span class="nav-number">4.5.2.2.</span> <span class="nav-text">类型：-type</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%90%8D%E5%AD%97%EF%BC%9A-name"><span class="nav-number">4.5.2.3.</span> <span class="nav-text">名字：-name</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%EF%BC%9A-size"><span class="nav-number">4.5.2.4.</span> <span class="nav-text">大小：-size</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%EF%BC%9A-time-min"><span class="nav-number">4.5.2.5.</span> <span class="nav-text">时间：*time | *min</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9D%83%E9%99%90%EF%BC%9A-perm"><span class="nav-number">4.5.2.6.</span> <span class="nav-text">权限：-perm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E6%B7%B1%E5%BA%A6%EF%BC%9A-maxdepth"><span class="nav-number">4.5.2.7.</span> <span class="nav-text">目录深度：-maxdepth</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E6%9D%A1%E4%BB%B6%E7%BB%84%E5%90%88%EF%BC%9A"><span class="nav-number">4.5.2.8.</span> <span class="nav-text">多条件组合：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E4%BD%9C"><span class="nav-number">4.5.3.</span> <span class="nav-text">[动作]</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E5%90%88%E4%BD%BF%E7%94%A8"><span class="nav-number">4.5.4.</span> <span class="nav-text">组合使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">扩展：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E4%B8%ADctime-mtime-atime"><span class="nav-number">5.1.</span> <span class="nav-text">linux中ctime,mtime,atime</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E5%88%AB"><span class="nav-number">5.1.1.</span> <span class="nav-text">区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%98%BE%E7%A4%BA"><span class="nav-number">5.1.2.</span> <span class="nav-text">显示</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容 nginx 更新历史2019-12-30 增加源码安装的自动日志归档2020-04-20 add timeout config">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx">
+<meta property="og:url" content="http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 nginx 更新历史2019-12-30 增加源码安装的自动日志归档2020-04-20 add timeout config">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2016-01-22T02:48:42.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="server">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>nginx | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/01/22/web%20server/nginx/nginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nginx
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-01-22 10:48:42" itemprop="dateCreated datePublished" datetime="2016-01-22T10:48:42+08:00">2016-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/server/" itemprop="url" rel="index"><span itemprop="name">server</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<p>nginx</p>
+<p><em>更新历史</em><br>2019-12-30 增加源码安装的自动日志归档<br>2020-04-20 add timeout config</p>
+<span id="more"></span>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="yum-安装"><a href="#yum-安装" class="headerlink" title="yum 安装"></a>yum 安装</h3><h4 id="yum源"><a href="#yum源" class="headerlink" title="yum源"></a>yum源</h4><p>如果系统自带yum源中没有nginx，按如下增加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/yum.repos.d/nginx.repo</span><br><span class="line">[nginx-stable]</span><br><span class="line">name=nginx stable repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/$releasever/$basearch/</span><br><span class="line">gpgcheck=1</span><br><span class="line">enabled=1</span><br><span class="line">gpgkey=https://nginx.org/keys/nginx_signing.key</span><br><span class="line">module_hotfixes=true</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h4><pre><code>    # install
+    yum -y install nginx
+    
+    # check
+    nginx -v
+</code></pre>
+<h3 id="源码-安装"><a href="#源码-安装" class="headerlink" title="源码 安装"></a>源码 安装</h3><h4 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h4><ul>
+<li><p>确保 <code>Development Tools</code> 已经安装</p>
+</li>
+<li><p>增加nginx 用户</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd nginx -s /sbin/nologin -M</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装-2"><a href="#安装-2" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-&#123;版本&#125;.tar.gz</span><br><span class="line">tar -xzvf nginx-&#123;版本&#125;.tar.gz -C /usr/src</span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">yum install -y zlib-devel.x86_64 pcre-devel.x86_64 openssl-devel</span><br><span class="line">yum install -y gd-devel libxml2 libxml2-dev libxslt-devel perl-devel perl-ExtUtils-Embed GeoIP GeoIP-devel GeoIP-data</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /usr/src/nginx-&#123;版本&#125;</span><br><span class="line"><span class="comment"># 以下是一行。。用于生成makefile。如果需要添加第三方模块，使用--add-module=/path/module1的方法编译</span></span><br><span class="line">./configure --prefix=/usr/share/nginx --sbin-path=/usr/sbin/nginx --modules-path=/usr/lib64/nginx/modules --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --http-client-body-temp-path=/var/lib/nginx/tmp/client_body --http-proxy-temp-path=/var/lib/nginx/tmp/proxy --http-fastcgi-temp-path=/var/lib/nginx/tmp/fastcgi --http-uwsgi-temp-path=/var/lib/nginx/tmp/uwsgi --http-scgi-temp-path=/var/lib/nginx/tmp/scgi --pid-path=/run/nginx.pid --lock-path=/run/lock/subsys/nginx --user=nginx --group=nginx --with-file-aio --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_xslt_module=dynamic --with-http_image_filter_module=dynamic --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_degradation_module --with-http_slice_module --with-http_stub_status_module --with-http_perl_module=dynamic --with-http_auth_request_module --with-mail=dynamic --with-mail_ssl_module --with-pcre --with-pcre-jit --with-stream=dynamic --with-stream_ssl_module --with-debug </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># make是生成在objs目录中，make install则安装到prefix所示的目录中</span></span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 没有错误出现的话，就可以进入nginx安装目录(/etc/nginx)配置。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="nginx-服务"><a href="#nginx-服务" class="headerlink" title="nginx 服务"></a>nginx 服务</h4><p>在 &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;目录下面新建一个nginx.service文件。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/lib/systemd/system/nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>内容如下：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/run/nginx.pid</span><br><span class="line"><span class="comment"># Nginx will fail to start if /run/nginx.pid already exists but has the wrong</span></span><br><span class="line"><span class="comment"># SELinux context. This might happen when running `nginx -t` from the cmdline.</span></span><br><span class="line"><span class="comment"># https://bugzilla.redhat.com/show_bug.cgi?id=1268621</span></span><br><span class="line">ExecStartPre=/usr/bin/rm -f /run/nginx.pid</span><br><span class="line">ExecStartPre=/usr/sbin/nginx -t</span><br><span class="line">ExecStart=/usr/sbin/nginx</span><br><span class="line">ExecReload=/bin/kill -s HUP <span class="variable">$MAINPID</span></span><br><span class="line">KillSignal=SIGQUIT</span><br><span class="line">TimeoutStopSec=5</span><br><span class="line">KillMode=mixed</span><br><span class="line">PrivateTmp=<span class="literal">true</span></span><br><span class="line"><span class="comment"># system limit open file and processes</span></span><br><span class="line">LimitCORE=infinity</span><br><span class="line">LimitNOFILE=100000</span><br><span class="line">LimitNPROC=100000</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>参考 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/weifeng1463/p/8422119.html">CENTOS&#x2F;RHEL 7 系统中设置SYSTEMD SERVICE的ULIMIT资源限制</a></p>
+<p>启动服务</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /var/lib/nginx/tmp</span><br><span class="line"><span class="built_in">chown</span> -R nginx:nginx /var/lib/nginx/</span><br><span class="line"></span><br><span class="line"><span class="built_in">chmod</span> +x /usr/lib/systemd/system/nginx.service</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl start nginx.service</span><br></pre></td></tr></table></figure>
+<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><p><code>注意</code> 源码安装默认不自动归档日志, 可用<code>logrotate</code>工具实现日志切割归档.</p>
+<h5 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">╰─<span class="comment"># rpm -ql logrotate</span></span><br><span class="line">/etc/cron.daily/logrotate</span><br><span class="line">/etc/logrotate.conf</span><br><span class="line">/etc/logrotate.d</span><br><span class="line">/etc/rwtab.d/logrotate</span><br><span class="line">/usr/sbin/logrotate</span><br><span class="line">/usr/share/doc/logrotate-3.8.6</span><br><span class="line">/usr/share/doc/logrotate-3.8.6/CHANGES</span><br><span class="line">/usr/share/doc/logrotate-3.8.6/COPYING</span><br><span class="line">/usr/share/man/man5/logrotate.conf.5.gz</span><br><span class="line">/usr/share/man/man8/logrotate.8.gz</span><br><span class="line">/var/lib/logrotate</span><br><span class="line">/var/lib/logrotate/logrotate.status</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>其中, &#x2F;etc&#x2F;logrotate.d&#x2F; 是用于存储各种自定义应用的配置文件的目录。该目录里的所有文件都会被主动的读入到 &#x2F;etc&#x2F;logrotate.conf中执行。该目录下的应用配置文件继承所有&#x2F;etc&#x2F;logrotate.conf 的默认参数。<br>因此我们可以新建一个针对nginx日志文件的轮循配置的文件，然后将这个文件放在 &#x2F;etc&#x2F;logrotate.d&#x2F; 目录下, 它就会主动的读入到&#x2F;etc&#x2F;logrotate.conf中执行, 以达到按指定频率定时执行的需求。</p>
+<p>新建nginx文件, 存放在&#x2F;etc&#x2F;logrotate.d&#x2F; 文件夹下 <code>/etc/logrotate.d/nginx</code>,  内容如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/var/log/nginx/*<span class="built_in">log</span> &#123;</span><br><span class="line">    create 640 nginx root</span><br><span class="line">    daily</span><br><span class="line">    rotate 61</span><br><span class="line">    missingok</span><br><span class="line">    notifempty</span><br><span class="line">    compress</span><br><span class="line">    delaycompress</span><br><span class="line">    sharedscripts</span><br><span class="line">    postrotate</span><br><span class="line">        /bin/kill -USR1 `<span class="built_in">cat</span> /run/nginx.pid 2&gt;/dev/null` 2&gt;/dev/null || <span class="literal">true</span></span><br><span class="line">    endscript</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;logs 需要轮询日志路径</li>
+<li>daily: 日志文件分割频度。可选值为 daily，monthly，weekly，yearly</li>
+<li>rotate 61: 一次将存储61个归档日志。对于第62个归档，时间最久的归档将被删除。</li>
+<li>missingok: 在日志轮循期间，任何错误将被忽略，例如“文件无法找到”之类的错误。</li>
+<li>dateext 使用日期作为命名格式</li>
+<li>compress: 在轮循任务完成后，已轮循的归档将使用gzip进行压缩。</li>
+<li>nocompress: 如果你不希望对日志文件进行压缩，设置这个参数即可</li>
+<li>delaycompress: 总是与compress选项一起用，delaycompress选项指示logrotate不要将最近的归档压缩，压缩将在下一次轮循周期进行。这在你或任何软件仍然需要读取最新归档时很有用。</li>
+<li>notifempty: 如果日志文件为空，轮循不会进行。</li>
+<li>sharedscripts 表示postrotate脚本在压缩了日志之后只执行一次</li>
+<li>create 640 www root: 以指定的权限创建全新的日志文件，同时logrotate也会重命名原始日志文件。</li>
+<li>postrotate&#x2F;endscript: 最通常的作用是让应用重启，以便切换到新的日志文件, 在所有其它指令完成后，postrotate和endscript里面指定的命令将被执行。在这种情况下，rsyslogd 进程将立即再次读取其配置并继续运行。</li>
+</ul>
+<h5 id="logrotate-命令"><a href="#logrotate-命令" class="headerlink" title="logrotate 命令"></a>logrotate 命令</h5><p>运行<br><code>logrotate /etc/logrotate.d/nginx</code></p>
+<p>测试<br><code>logrotate -d /etc/logrotate.d/nginx</code></p>
+<p>强制执行<br><code>logrotate -vf /etc/logrotate.d/nginx</code></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="主配置文件"><a href="#主配置文件" class="headerlink" title="主配置文件"></a>主配置文件</h3><p>主配置文件<code>/etc/nginx/nginx.conf</code>, 增加如下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">worker_processes  auto;</span><br><span class="line">user nginx nginx;           # 指定Nginx服务的用户和用户组</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># worker_rlimit_nofile 4096; # set open fd limit, 根据服务器具体情况 -- nginx.service 中全局制定</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">    #隐藏nginx版本号</span><br><span class="line">    server_tokens  off;</span><br><span class="line"> </span><br><span class="line">    types_hash_max_size 2048;</span><br><span class="line"></span><br><span class="line">    # 413 Request Entity Too Large</span><br><span class="line">    client_max_body_size 8m; </span><br><span class="line">    </span><br><span class="line">    #nginx服务器与被代理服务连接超时时间，代理超时</span><br><span class="line">    proxy_connect_timeout 360;</span><br><span class="line">    proxy_read_timeout 360;</span><br><span class="line">    proxy_send_timeout 360;    </span><br><span class="line">    </span><br><span class="line">    # header</span><br><span class="line">    add_header X-Frame-Options &quot;SAMEORIGIN&quot;;</span><br><span class="line">    add_header X-XSS-Protection &quot;1; mode=block&quot;;</span><br><span class="line">    add_header X-Content-Type-Options &quot;nosniff&quot;;</span><br><span class="line">    </span><br><span class="line">    include /etc/nginx/conf.d/*/*.conf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>自定义conf 文件都可放入 <code>/etc/nginx/conf.d</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /etc/nginx/conf.d</span><br></pre></td></tr></table></figure>
+
+<h3 id="子配置"><a href="#子配置" class="headerlink" title="子配置"></a>子配置</h3><p>子配置文件目录<code>/etc/nginx/conf.d</code>, 文件名<code>*.conf</code>, <code>api.xxxx.conf</code> 为例</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name api.xxxx;  <span class="comment">#和tomcat的host name 或 alias name 一致。</span></span><br><span class="line"></span><br><span class="line">        index index.html;</span><br><span class="line"><span class="comment">#       root  ;</span></span><br><span class="line">        charset utf-8;</span><br><span class="line"></span><br><span class="line">        location /</span><br><span class="line">        &#123;</span><br><span class="line">                proxy_pass http://localhost:8080; <span class="comment"># tomcat 端口</span></span><br><span class="line">                proxy_redirect off;</span><br><span class="line">                proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">                proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">                proxy_set_header Host <span class="variable">$http_host</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        location /status</span><br><span class="line">        &#123;</span><br><span class="line">                stub_status on;</span><br><span class="line">                access_log   off;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>SSL HTTPS 转发</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">        server_name  api.xxxx.com ;</span><br><span class="line">        <span class="comment">#if ($host = &#x27;*.xxxx.com&#x27;) &#123;</span></span><br><span class="line">        <span class="comment">#        rewrite ^/(.*)$ http://api.xxxx.com/$1 permanent;</span></span><br><span class="line">        <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       <span class="comment"># if ($http_referer ~* &quot;bb01.win&quot;) &#123;</span></span><br><span class="line">       <span class="comment">#         rewrite ^/(.*)$ http://api.xxxx.com/$1 permanent;</span></span><br><span class="line">       <span class="comment"># &#125;</span></span><br><span class="line"></span><br><span class="line">        charset utf-8;</span><br><span class="line">        location /</span><br><span class="line">        &#123;</span><br><span class="line">                </span><br><span class="line">                proxy_pass http://127.0.0.1:8080;</span><br><span class="line">                </span><br><span class="line">                proxy_redirect http:// https://;</span><br><span class="line">                proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">                proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">                proxy_set_header Host <span class="variable">$host</span>:<span class="variable">$server_port</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">       client_max_body_size 50M;</span><br><span class="line"></span><br><span class="line">        error_page  404              /404.html;</span><br><span class="line">        location = /404.html &#123;</span><br><span class="line">          root /usr/share/nginx/html;</span><br><span class="line">          internal;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    listen 443 ssl; </span><br><span class="line">    ssl_certificate certificate.pem; </span><br><span class="line">    ssl_certificate_key privkey.pem; </span><br><span class="line">    include /etc/letsencrypt/options-ssl-nginx.conf; </span><br><span class="line">    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="超时配置"><a href="#超时配置" class="headerlink" title="超时配置"></a>超时配置</h3><p>以下都是默认值</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">http&#123;</span><br><span class="line">    <span class="comment">#读取http头部的超时时间，单位秒，连接建立后，服务端接收http头部，规定时间内没收到，则超时，返回给客服端408（request time out）</span></span><br><span class="line">    client_header_timeout 60;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#读取http body的超时时间，单位秒，连接建立后，服务端接收body，规定时间内没收到，则超时，返回给客服端408（request time out）</span></span><br><span class="line">    client_body_timeout 60;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#发送响应超时时间，单位秒，服务端向客户端发送数据包，规定时间内客户端没收到，则超时</span></span><br><span class="line">    send_timeout 60;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#保持闲置连接的超时时间，单位秒，超过后服务器和浏览器都会关闭连接</span></span><br><span class="line">    keepalive_timeout 75;</span><br><span class="line">        </span><br><span class="line">    <span class="comment">#域名解析超时时间，单位秒</span></span><br><span class="line">    resolve_timeout 30;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#nginx服务器与被代理服务连接超时时间，代理超时</span></span><br><span class="line">    proxy_connect_timeout 60;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#nginx服务器发送数据给被代理服务器超时时间，单位秒，规定时间内nginx服务器没发送数据，则超时</span></span><br><span class="line">    proxy_send_timeout 60;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#nginx服务器接收被代理服务器数据超时时间，单位秒，规定时间内nginx服务器没收到数据，则超时</span></span><br><span class="line">    proxy_read_timeout 60;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="隐藏nginx-版本和服务器信息"><a href="#隐藏nginx-版本和服务器信息" class="headerlink" title="隐藏nginx 版本和服务器信息"></a>隐藏nginx 版本和服务器信息</h3><p>语法: <code>proxy_hide_header field;</code><br>默认值: —<br>上下文: http, server, location<br>nginx默认不会将“Date”、“Server”、“X-Pad”，和“X-Accel-…”响应头发送给客户端。proxy_hide_header指令则可以设置额外的响应头，这些响应头也不会发送给客户端。</p>
+<p><code>proxy_pass_header</code>:   和proxy_hide_header相反，如果希望允许传递某些响应头给客户端，可以使用proxy_pass_header指令。<br>为隐藏 nginx ， 可以使用， 并在后端服务器处理不返回 服务器类型</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    proxy_pass_header Server;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="异常页面配置"><a href="#异常页面配置" class="headerlink" title="异常页面配置"></a>异常页面配置</h2><ul>
+<li><p>异常页面存放<br>默认存放在 <code>/usr/share/nginx/html</code> 目录下。</p>
+</li>
+<li><p>nginx配置文件</p>
+</li>
+</ul>
+<p>配置完类似下面的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server ipv6only=on;</span><br><span class="line"></span><br><span class="line">        . . .</span><br><span class="line"></span><br><span class="line">        error_page 404 /40x.html;</span><br><span class="line">        location = /40x.html &#123;</span><br><span class="line">                root /usr/share/nginx/html;</span><br><span class="line">                internal;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>注意</code> ： 如果配置多个 server， 需要在对应的server中配置 error_page 。</p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>在子配置文件中 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">upstream xxxxServer &#123;</span><br><span class="line">    <span class="comment"># 策略, 默认轮循</span></span><br><span class="line">    <span class="comment"># ip_hash;</span></span><br><span class="line">    <span class="comment"># least_conn;</span></span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    server 127.0.0.1:8080 ;</span><br><span class="line">    <span class="comment"># server 127.0.0.1:8000 weight=3;;</span></span><br><span class="line">    <span class="comment"># server 127.0.0.1:8080 down;</span></span><br><span class="line"></span><br><span class="line">    server 127.0.0.2:8080 fail_timeout=600s  ;</span><br><span class="line">    <span class="comment"># server 127.0.0.2:8080 fail_timeout=600s  down;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  center.xxx.com ;</span><br><span class="line">    <span class="comment">#if ($host = &#x27;*.xxxx.com&#x27;) &#123;</span></span><br><span class="line">    <span class="comment">#        rewrite ^/(.*)$ http://m.xxxx.com/$1 permanent;</span></span><br><span class="line">    <span class="comment">#&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment"># if ($http_referer ~* &quot;bb01.win&quot;) &#123;</span></span><br><span class="line">    <span class="comment">#         rewrite ^/(.*)$ http://m.xxxx.com/$1 permanent;</span></span><br><span class="line">    <span class="comment"># &#125;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    charset utf-8;</span><br><span class="line"></span><br><span class="line">    location /</span><br><span class="line">    &#123;</span><br><span class="line">            proxy_pass http://xxxxServer;</span><br><span class="line">            proxy_redirect off;</span><br><span class="line">            proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">            proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">            proxy_set_header Host <span class="variable">$http_host</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># nginx 监控</span></span><br><span class="line">    location /status</span><br><span class="line">    &#123;</span><br><span class="line">            stub_status on;</span><br><span class="line">            access_log   off;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    client_max_body_size 50M;</span><br><span class="line"></span><br><span class="line">    error_page  404              /404.html;</span><br><span class="line">    location = /404.html &#123;</span><br><span class="line">        root /usr/share/nginx/html;</span><br><span class="line">        internal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location ~ .mp4 &#123;</span><br><span class="line">                mp4;</span><br><span class="line">            root /data/xxxx;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location ~ .apk &#123;</span><br><span class="line">            root /data/xxxx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">     </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>nginx 的 upstream目前支持 4 种方式的分配 </p>
+<ul>
+<li>轮询（默认）<br>每个请求按时间顺序逐一分配到不同的后端服务器，如果后端服务器down掉，能自动剔除。 </li>
+<li>weight<br>指定轮询几率，weight和访问比率成正比，用于后端服务器性能不均的情况。 </li>
+<li>ip_hash<br>每个请求按访问ip的hash结果分配，这样每个访客固定访问一个后端服务器，可以解决session的问题。  </li>
+<li>least_conn<br>最少连接。当某些请求需要更长时间来完成时，最少连接可以更公平的控制应用实例上的负载。</li>
+</ul>
+<p>upstream 每个设备的状态:</p>
+<ul>
+<li>down 表示单前的server暂时不参与负载 </li>
+<li>weight  默认为1.weight越大，负载的权重就越大。 </li>
+<li>max_fails ：允许请求失败的次数默认为1.当超过最大次数时，返回proxy_next_upstream 模块定义的错误 </li>
+<li>fail_timeout:max_fails 次失败后，暂停的时间。 </li>
+<li>backup： 其它所有的非backup机器down或者忙的时候，请求backup机器。所以这台机器压力会最轻。</li>
+</ul>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><ul>
+<li>非80&#x2F;443端口</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">server</span><br><span class="line">&#123;</span><br><span class="line">        server_name  test.domain.com   ;</span><br><span class="line"></span><br><span class="line">        listen       8888  ssl;</span><br><span class="line">        ssl_certificate domain.pem;</span><br><span class="line">        ssl_certificate_key domain.key;</span><br><span class="line">        ssl_session_timeout 5m;</span><br><span class="line">        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">        ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">        error_page 497 301 https://$http_host<span class="variable">$request_uri</span>;</span><br><span class="line"></span><br><span class="line">        proxy_intercept_errors on;</span><br><span class="line">        charset utf-8;</span><br><span class="line"></span><br><span class="line">        location /</span><br><span class="line">        &#123;</span><br><span class="line">                proxy_pass http://xxxxxxxServer;</span><br><span class="line">                proxy_redirect off;</span><br><span class="line">                proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">                proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">                proxy_set_header Host <span class="variable">$http_host</span>;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>重点是 <code>error_page 497 301 https://$http_host$request_uri;</code>, 可以解决 <code>The plain HTTP request was sent to HTTPS port</code> 问题</p>
+<p>497 HTTP Request Sent to HTTPS Port<br>An expansion of the 400 Bad Request response code, used when the client has made a HTTP request to a port listening for HTTPS requests.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/nginx/" rel="tag"># nginx</a>
+              <a href="/tags/server/" rel="tag"># server</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/01/06/linux/shell/shell9/" rel="prev" title="1-29 Linux 正则表达式 sed awk cut">
+      <i class="fa fa-chevron-left"></i> 1-29 Linux 正则表达式 sed awk cut
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/01/22/linux/shell/shell-10/" rel="next" title="shell （九） 色彩">
+      shell （九） 色彩 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-%E5%AE%89%E8%A3%85"><span class="nav-number">1.1.</span> <span class="nav-text">yum 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#yum%E6%BA%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">yum源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-1"><span class="nav-number">1.1.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81-%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">源码 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E6%8F%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-2"><span class="nav-number">1.2.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#nginx-%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.2.3.</span> <span class="nav-text">nginx 服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">1.2.4.</span> <span class="nav-text">日志</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#logrotate-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">logrotate 命令</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">主配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">子配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B6%85%E6%97%B6%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">超时配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E8%97%8Fnginx-%E7%89%88%E6%9C%AC%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BF%A1%E6%81%AF"><span class="nav-number">2.4.</span> <span class="nav-text">隐藏nginx 版本和服务器信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E9%A1%B5%E9%9D%A2%E9%85%8D%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">异常页面配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">4.</span> <span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS"><span class="nav-number">5.</span> <span class="nav-text">HTTPS</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

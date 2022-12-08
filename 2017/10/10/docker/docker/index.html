@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="docker 入门 （未完） 更新历史无">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker 入门 （未完）">
+<meta property="og:url" content="http://giveme5.cc/2017/10/10/docker/docker/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="docker 入门 （未完） 更新历史无">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-10-10T11:44:58.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2017/10/10/docker/docker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>docker 入门 （未完） | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2017/10/10/docker/docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          docker 入门 （未完）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-10 19:44:58" itemprop="dateCreated datePublished" datetime="2017-10-10T19:44:58+08:00">2017-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index"><span itemprop="name">docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>docker 入门 （未完）</p>
+<p><em>更新历史</em><br>无</p>
+<span id="more"></span>
+
+<hr>
+<h1 id="镜像"><a href="#镜像" class="headerlink" title="镜像"></a>镜像</h1><h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p>不要使用 dockercommit 定制镜像,定制行为应该使用 Dockerfile 来完成。<br>Dockerfile中每一个指令都会建立一层</p>
+<ul>
+<li><p>run<br>使用 <code>&amp;&amp;</code> 将各个所需命令串联起来</p>
+</li>
+<li><p>镜像构建上下文(Context)<br><code>docker build [选项] &lt;上下文路径/URL/-&gt;</code><br><code> docker build -t nginx:v3 .</code><br>最后有一个<code>.</code>。 <code>.</code>表示当前目录, 是在指定上下文路径。 即 docker 所能操作的根目录， 超出其路径， docker 是不能操作的<br><code>docker build</code>  命令得知这个路径后,会将路径下的所有内容打包,然后上传给 Docker 引擎。这样 Docker 引擎收到这个上下文包后,展开就会获得构建镜像所需的一切文件。<br>初学的错误是将<code>Dockerfile</code>放到硬盘根目录, 把上下文设置成硬盘根目录， 结果发现<code>docker build</code>执行后,在发送一个几十GB的东西。<br>一般来说,应该会将<code>Dockerfile</code>置于一个空目录下,或者项目根目录下。如果该目录下没有所需文件,那么应该把所需文件复制一份过来。<br>如果目录下有些东西确实不希望构建时传给 Docker 引擎,那么可以用<code>.gitignore</code>一样的语法写一个<code>.dockerignore</code>,该文件是用于剔除不需要作为上下文传递给Docker 引擎的。<br>那么为什么会有人误以为<code>.</code>是指定<code>Dockerfile</code>所在目录呢?这是因为在默认情况下,如果不额外指定<code>Dockerfile</code>的话,会将上下文目录下的名为 Dockerfile  的文件作为 Dockerfile。</p>
+</li>
+</ul>
+<h3 id="COPY复制文件"><a href="#COPY复制文件" class="headerlink" title="COPY复制文件"></a>COPY复制文件</h3><h3 id="ADD更高级的复制文件"><a href="#ADD更高级的复制文件" class="headerlink" title="ADD更高级的复制文件"></a>ADD更高级的复制文件</h3><h3 id="CMD容器启动命令"><a href="#CMD容器启动命令" class="headerlink" title="CMD容器启动命令"></a>CMD容器启动命令</h3><h3 id="ENTRYPOINT入口点"><a href="#ENTRYPOINT入口点" class="headerlink" title="ENTRYPOINT入口点"></a>ENTRYPOINT入口点</h3><h3 id="ENV设置环境变量"><a href="#ENV设置环境变量" class="headerlink" title="ENV设置环境变量"></a>ENV设置环境变量</h3><h3 id="ARG构建参数"><a href="#ARG构建参数" class="headerlink" title="ARG构建参数"></a>ARG构建参数</h3><h3 id="VOLUME定义匿名卷"><a href="#VOLUME定义匿名卷" class="headerlink" title="VOLUME定义匿名卷"></a>VOLUME定义匿名卷</h3><h3 id="EXPOSE声明端口"><a href="#EXPOSE声明端口" class="headerlink" title="EXPOSE声明端口"></a>EXPOSE声明端口</h3><h3 id="WORKDIR指定工作目录"><a href="#WORKDIR指定工作目录" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="WORKDIR指定工作目录-1"><a href="#WORKDIR指定工作目录-1" class="headerlink" title="WORKDIR指定工作目录"></a>WORKDIR指定工作目录</h3><h3 id="USER指定当前用户"><a href="#USER指定当前用户" class="headerlink" title="USER指定当前用户"></a>USER指定当前用户</h3><h3 id="HEALTHCHECK健康检查"><a href="#HEALTHCHECK健康检查" class="headerlink" title="HEALTHCHECK健康检查"></a>HEALTHCHECK健康检查</h3><h3 id="ONBUILD为他人做嫁衣裳"><a href="#ONBUILD为他人做嫁衣裳" class="headerlink" title="ONBUILD为他人做嫁衣裳"></a>ONBUILD为他人做嫁衣裳</h3><h2 id="删除本地镜像"><a href="#删除本地镜像" class="headerlink" title="删除本地镜像"></a>删除本地镜像</h2><p><code>dockerrmi[选项]&lt;镜像1&gt;[&lt;镜像2&gt;...]</code><br>其中, &lt;镜像&gt;可以是  镜像短ID、  镜像长ID、  镜像名或者  镜像摘要。<br>可以使用 <code>dockerimages-q</code>来配合使用<code>dockerrmi</code>,这样可以成批的删除希望删除的镜像。</p>
+<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><h2 id="新建并启动"><a href="#新建并启动" class="headerlink" title="新建并启动"></a>新建并启动</h2><p><code>docker	run</code><br><code>	sudo	docker	run	-t	-i	ubuntu:14.04	/bin/bash</code></p>
+<p>检查本地是否存在指定的镜像,不存在就从公有仓库下载启动<br>利用镜像创建并启动一个容器<br>分配一个文件系统,并在只读的镜像层外面挂载一层可读写层<br>从宿主主机配置的网桥接口中桥接一个虚拟接口到容器中去<br>从地址池配置一个	ip	地址给容器<br>执行用户指定的应用程序<br>执行完毕后容器被终止</p>
+<h2 id="启动已终止容器"><a href="#启动已终止容器" class="headerlink" title="启动已终止容器"></a>启动已终止容器</h2><p><code>docker	start</code></p>
+<h2 id="后台-background-运行"><a href="#后台-background-运行" class="headerlink" title="后台(background)运行"></a>后台(background)运行</h2><p><code>sudo	docker	run	-d	ubuntu:14.04	/bin/sh	-c	&quot;while	true;	do	echo	hello	world;	sleep	1;	done</code><br>容器会在后台运行并不会把输出的结果(STDOUT)打印到宿主机上面(输出结果可以用docker	logs	查看)。<br><code>sudo	docker	logs	[container	ID	or	NAMES]</code></p>
+<h2 id="终止容器"><a href="#终止容器" class="headerlink" title="终止容器"></a>终止容器</h2><p><code>	docker	stop	 </code></p>
+<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><ul>
+<li><code>nsenter</code>	命令</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PID=$(docker	inspect	--format	<span class="string">&quot;&#123;&#123;	.State.Pid	&#125;&#125;&quot;</span>	&lt;container&gt;)</span><br><span class="line">nsenter	--target	<span class="variable">$PID</span>	--mount	--uts	--ipc	--net	--pid</span><br><span class="line">nsenter	--target	<span class="variable">$pid</span>	--mount	--uts	--ipc	--net	--pid		--	/usr/bin/env	\	--ignore-environment	HOME=/root	/bin/bash	--login</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>.bashrc_docker</code><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget	-P	~	https://github.com/yeasy/docker_practice/raw/master/_local/.bashrc_docker;</span><br><span class="line"><span class="built_in">echo</span>	<span class="string">&quot;[	-f	~/.bashrc_docker	]	&amp;&amp;	.	~/.bashrc_docker&quot;</span>	&gt;&gt;	~/.bashrc;	<span class="built_in">source</span>	~/.bashrc</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这个文件中定义了很多方便使用	Docker	的命令,例如	 	docker-pid		可以获取某<br>个容器的	PID;而	 	docker-enter		可以进入容器或直接在容器内执行命令。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span>	$(docker-pid	&lt;container&gt;)</span><br><span class="line">docker-enter	&lt;container&gt;	<span class="built_in">ls</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="导出和导入容器-dockerexport"><a href="#导出和导入容器-dockerexport" class="headerlink" title="导出和导入容器 docker	export"></a>导出和导入容器 <code>docker	export</code></h2><h3 id="导出-dockerexport"><a href="#导出-dockerexport" class="headerlink" title="导出 docker	export"></a>导出 <code>docker	export</code></h3><h3 id="导入-dockerimport"><a href="#导入-dockerimport" class="headerlink" title="导入 docker	import"></a>导入 <code>docker	import</code></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cat	ubuntu.tar	|	sudo	docker	import	-	test/ubuntu:v1.0</span><br><span class="line">sudo	docker	import	http://example.com/exampleimage.tgz	example/imagerepo</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h3><p><code>sudo	docker	rm		trusting_newton</code><br>如果要删除一个运行中的容器,可以添加	 	-f		参数</p>
+<h3 id="清理所有处于终止状态的容器"><a href="#清理所有处于终止状态的容器" class="headerlink" title="清理所有处于终止状态的容器"></a>清理所有处于终止状态的容器</h3><p><code>docker	rm	$(docker	ps	-a	-q)</code>可以全部清理掉, 包括还在运行中的容器.</p>
+<h1 id="Docker数据管理"><a href="#Docker数据管理" class="headerlink" title="Docker	数据管理"></a>Docker	数据管理</h1><h2 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/10/10/spring/polymorphismDI/" rel="prev" title="spring 多态 注入">
+      <i class="fa fa-chevron-left"></i> spring 多态 注入
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/10/12/java/Streams/" rel="next" title="Java 8 Streams">
+      Java 8 Streams <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%9C%E5%83%8F"><span class="nav-number">1.</span> <span class="nav-text">镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Dockerfile"><span class="nav-number">1.1.</span> <span class="nav-text">Dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#COPY%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">COPY复制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ADD%E6%9B%B4%E9%AB%98%E7%BA%A7%E7%9A%84%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">ADD更高级的复制文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CMD%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.1.3.</span> <span class="nav-text">CMD容器启动命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ENTRYPOINT%E5%85%A5%E5%8F%A3%E7%82%B9"><span class="nav-number">1.1.4.</span> <span class="nav-text">ENTRYPOINT入口点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ENV%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.1.5.</span> <span class="nav-text">ENV设置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ARG%E6%9E%84%E5%BB%BA%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.6.</span> <span class="nav-text">ARG构建参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VOLUME%E5%AE%9A%E4%B9%89%E5%8C%BF%E5%90%8D%E5%8D%B7"><span class="nav-number">1.1.7.</span> <span class="nav-text">VOLUME定义匿名卷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EXPOSE%E5%A3%B0%E6%98%8E%E7%AB%AF%E5%8F%A3"><span class="nav-number">1.1.8.</span> <span class="nav-text">EXPOSE声明端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WORKDIR%E6%8C%87%E5%AE%9A%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95"><span class="nav-number">1.1.9.</span> <span class="nav-text">WORKDIR指定工作目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WORKDIR%E6%8C%87%E5%AE%9A%E5%B7%A5%E4%BD%9C%E7%9B%AE%E5%BD%95-1"><span class="nav-number">1.1.10.</span> <span class="nav-text">WORKDIR指定工作目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#USER%E6%8C%87%E5%AE%9A%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7"><span class="nav-number">1.1.11.</span> <span class="nav-text">USER指定当前用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HEALTHCHECK%E5%81%A5%E5%BA%B7%E6%A3%80%E6%9F%A5"><span class="nav-number">1.1.12.</span> <span class="nav-text">HEALTHCHECK健康检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ONBUILD%E4%B8%BA%E4%BB%96%E4%BA%BA%E5%81%9A%E5%AB%81%E8%A1%A3%E8%A3%B3"><span class="nav-number">1.1.13.</span> <span class="nav-text">ONBUILD为他人做嫁衣裳</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F"><span class="nav-number">1.2.</span> <span class="nav-text">删除本地镜像</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">容器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E5%B9%B6%E5%90%AF%E5%8A%A8"><span class="nav-number">2.1.</span> <span class="nav-text">新建并启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E5%B7%B2%E7%BB%88%E6%AD%A2%E5%AE%B9%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">启动已终止容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0-background-%E8%BF%90%E8%A1%8C"><span class="nav-number">2.3.</span> <span class="nav-text">后台(background)运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%88%E6%AD%A2%E5%AE%B9%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">终止容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%85%A5%E5%AE%B9%E5%99%A8"><span class="nav-number">2.5.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E5%92%8C%E5%AF%BC%E5%85%A5%E5%AE%B9%E5%99%A8-dockerexport"><span class="nav-number">2.6.</span> <span class="nav-text">导出和导入容器 docker	export</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA-dockerexport"><span class="nav-number">2.6.1.</span> <span class="nav-text">导出 docker	export</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5-dockerimport"><span class="nav-number">2.6.2.</span> <span class="nav-text">导入 docker	import</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="nav-number">2.6.3.</span> <span class="nav-text">删除容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%85%E7%90%86%E6%89%80%E6%9C%89%E5%A4%84%E4%BA%8E%E7%BB%88%E6%AD%A2%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="nav-number">2.6.4.</span> <span class="nav-text">清理所有处于终止状态的容器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">Docker	数据管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%B7"><span class="nav-number">3.1.</span> <span class="nav-text">数据卷</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

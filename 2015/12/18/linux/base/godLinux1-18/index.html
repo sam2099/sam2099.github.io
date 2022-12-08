@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容 at 定制单次执行的计划任务 cron 定制周期性计划任务 配置服务器自动开关机 Linux系统日志记录规律 自定义日志记录方式 配置远程收集日志服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-18-计划任务和日志管理">
+<meta property="og:url" content="http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容 at 定制单次执行的计划任务 cron 定制周期性计划任务 配置服务器自动开关机 Linux系统日志记录规律 自定义日志记录方式 配置远程收集日志服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://7xklqw.com1.z0.glb.clouddn.com/cron.png">
+<meta property="og:image" content="http://7xklqw.com1.z0.glb.clouddn.com/resumertc.png">
+<meta property="article:published_time" content="2015-12-18T07:29:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="GOD linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://7xklqw.com1.z0.glb.clouddn.com/cron.png">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-18-计划任务和日志管理 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/18/linux/base/godLinux1-18/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-18-计划任务和日志管理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-12-18 15:29:44" itemprop="dateCreated datePublished" datetime="2015-12-18T15:29:44+08:00">2015-12-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><ul>
+<li><a href="./#at">at 定制单次执行的计划任务</a></li>
+<li><a href="./#crontab">cron 定制周期性计划任务</a></li>
+<li><a href="./#%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%87%AA%E5%8A%A8%E5%BC%80%E6%9C%BA">配置服务器自动开关机</a></li>
+<li><a href="./#%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%96%B9%E5%BC%8F">Linux系统日志记录规律</a></li>
+<li><a href="./#%E8%87%AA%E5%AE%9A%E4%B9%89Linux%E6%97%A5%E5%BF%97">自定义日志记录方式</a></li>
+<li><a href="./#%E8%BF%9C%E7%A8%8B%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A1">配置远程收集日志服务器</a></li>
+</ul>
+<span id="more"></span>
+
+<h2 id="at"><a href="#at" class="headerlink" title="at"></a>at</h2><ul>
+<li>作用： 定制单次执行的计划任务</li>
+<li>语法： at $时间</li>
+</ul>
+<h3 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h3><p>服务 <code>atd</code> 必须开启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#systemctl status atd # 查看 atd 状态</span></span><br><span class="line">[root@localhost ~]<span class="comment">#systemctl restart atd #重启atd服务</span></span><br><span class="line">[root@localhost ~]<span class="comment">#systemctl enable atd #设置atd服务开机自动启动</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># at 20:39</span></span><br><span class="line">at&gt; <span class="built_in">echo</span> `<span class="built_in">date</span>`  &gt; /root/date.txt      <span class="comment">#输入要执行的命令</span></span><br><span class="line">at&gt; &lt;EOT&gt;                              <span class="comment">#按ctrl+D结束</span></span><br><span class="line">job 1 at Thu Dec 17 20:39:00 2015</span><br></pre></td></tr></table></figure>
+<p>也可以这样写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># at 20:00 2015-12-18</span></span><br><span class="line">[root@localhost ~]<span class="comment"># at now + 10min</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看"><a href="#查看" class="headerlink" title="查看"></a>查看</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# at -l</span><br></pre></td></tr></table></figure>
+
+<p>创建成功的at计划任务会在这个目录下成生一个可执行的脚本文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ll /var/spool/at/*</span></span><br><span class="line">-rwx------  1 root  root   4325 Dec 17 20:43 /var/spool/at/a000020170ddb0</span><br></pre></td></tr></table></figure>
+
+<h3 id="at任务删除："><a href="#at任务删除：" class="headerlink" title="at任务删除："></a>at任务删除：</h3><p>atrm  at序列号( at -l 查看)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#atrm 3</span><br></pre></td></tr></table></figure>
+
+<h2 id="crontab"><a href="#crontab" class="headerlink" title="crontab"></a>crontab</h2><p>定制周期性计划任务</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>crontab [-u username] [-e &#x2F; -l &#x2F; -r] </p>
+<ul>
+<li>-u username : 指定用户， 默认当前用户</li>
+<li>-e : edit 编辑，新增</li>
+<li>-l : list 显示</li>
+<li>-r ：删除</li>
+</ul>
+<h3 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h3><p>crond服务已启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#systemctl status crond # 查看</span></span><br><span class="line">crond.service - CommandScheduler</span><br><span class="line">   Loaded: loaded(/usr/lib/systemd/system/crond.service; enabled)</span><br><span class="line">   Active: active (running) since Thu2015-12-17 20:24:06 CST; 30min ago</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]<span class="comment">#systemctl restart crond        #启动</span></span><br><span class="line">[root@localhost ~]<span class="comment">#systemctl enable crond         #设置开机自动启动</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="新建-x2F-编辑"><a href="#新建-x2F-编辑" class="headerlink" title="新建&#x2F;编辑"></a>新建&#x2F;编辑</h3><p><code>crontab –e</code> 后编辑， vi环境</p>
+<ul>
+<li><p>语法<br>格式：分 时 日 月 星 谁做后面的事情 命令<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/cron.png"></p>
+</li>
+<li><p>取值范围<br>分：0－59<br>小时：0－23<br>日：1－31<br>月：1－12<br>周：0－7   0 7 都是周日</p>
+</li>
+</ul>
+<p>取值为 <code>*</code> 时表示该单位无限制<br>取值为 <code>a-b</code> 时表示从第 a 到第 b 这段时间内要执行<br>取值为 <code>*/n</code> 时表示每 n 个时间间隔执行一次<br>取值为 <code>a, b, c,...</code> 表示第 a, b, c,… 时间要执行</p>
+<ul>
+<li>例<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> #每月9,18,22号这几天的凌晨1点1分，执行一个备份脚本</span><br><span class="line">1 1 9,18,22 *  * ./backup.sh</span><br><span class="line">  </span><br><span class="line"> #每月9-22号这几天的凌晨1点1分，执行一个备份脚本</span><br><span class="line">1 1 9-22 * *    ./backup.sh</span><br><span class="line"> </span><br><span class="line"> #每5分钟，执行一次</span><br><span class="line">*/5  * *  *  *  ./backup.sh</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="系统级别的计划任务，"><a href="#系统级别的计划任务，" class="headerlink" title="系统级别的计划任务，"></a>系统级别的计划任务，</h3><p>需要执行的命令和脚本都放在这里：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls /etc/cron.*</span></span><br><span class="line"></span><br><span class="line">/etc/cron.hourly   /etc/cron.daily   /etc/cron.weekly    /etc/cron.monthly</span><br></pre></td></tr></table></figure>
+
+<h3 id="anacron"><a href="#anacron" class="headerlink" title="anacron"></a>anacron</h3><p>cron用控制循环执行例行性工作。如果我要设定机器每早8点进行备份用服务。除非我机器保证在8点这个时间点不会关机，如果关机了，cron中的脚本，在下次开机将不会被执行。</p>
+<p>anacron并没有取代cron的意思，anacron用于，机器重启后，会侦测停机期间，有没有cron没有执行的计划任务，如果有，会立即，执行一下没有执行的任务。</p>
+<h2 id="服务器自动开机"><a href="#服务器自动开机" class="headerlink" title="服务器自动开机"></a>服务器自动开机</h2><p>通过BIOS设置，可以实现定时开机。</p>
+<ul>
+<li>开机后出现主板画面是按Delete这个键，部分品牌机可能按F2，F1， 进入BIOS设置。</li>
+<li>Power Management Setup，就进入电源管理设置。</li>
+<li>Wake Up Event Setup （如果没有，代表不支持自动开机）</li>
+<li>Resume By RTC Alarm， 将Disabied 更改为Enabled，然后继续回车确定。然后再继续设置时间点和日期。<br>假如你需要每天都定时开机，就选择Every Day，，你如果想要在每天6:45开机，就通过数字键输入06：45:00，最后，一般按F10 进行保存，重启电脑后生效！<br><img src="http://7xklqw.com1.z0.glb.clouddn.com/resumertc.png"></li>
+</ul>
+<h2 id="日志管理"><a href="#日志管理" class="headerlink" title="日志管理"></a>日志管理</h2><h3 id="常用的系统日志"><a href="#常用的系统日志" class="headerlink" title="常用的系统日志"></a>常用的系统日志</h3><p>下列为常用的系统日志，无特殊说明的可以按文本方式查看。</p>
+<ul>
+<li>核心启动日志:            &#x2F;var&#x2F;log&#x2F;dmesg</li>
+<li>系统报错或重启服务等日志:  &#x2F;var&#x2F;log&#x2F;messages</li>
+<li>邮件系统日志:            &#x2F;var&#x2F;log&#x2F;maillog</li>
+<li>cron(定制任务日志)日志:   &#x2F;var&#x2F;log&#x2F;cron   #计划日志执行成功与否，在这个文件中看</li>
+<li>验证系统用户登录          &#x2F;var&#x2F;log&#x2F;secure </li>
+<li>记录所有的登入和登出:      &#x2F;var&#x2F;log&#x2F;wtmp<br><code>last</code> 命令查看<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># last</span></span><br><span class="line">wtmp begins Thu Dec 1721:44:40 2015</span><br></pre></td></tr></table></figure></li>
+<li>记录每個用戶最后的登入信息: &#x2F;var&#x2F;log&#x2F;lastlog<br><code>lastlog</code> 命令查看<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># lastlog</span></span><br><span class="line">Username         Port     From             Latest</span><br><span class="line">root             pts/2   192.168.1.101    Thu Dec 1721:00:38 +0800 2015</span><br></pre></td></tr></table></figure></li>
+<li>记录错误的登入尝试:        &#x2F;var&#x2F;log&#x2F;btmp<br><code>lastb</code> 命令查看<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment">#lastb</span></span><br><span class="line">mk       ssh:notty    192.168.1.69     Thu Dec 17 21:48 - 21:48  (00:00)   </span><br><span class="line">mk       ssh:notty    192.168.1.69     Thu Dec 17 21:48 - 21:48  (00:00)   </span><br></pre></td></tr></table></figure>
+注 <code>如果btmp文件特别大，说明有人在暴力破解你的服务器</code><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ll -h /var/log/btmp</span></span><br><span class="line">-rw-------. 1 root utmp1.2K Dec 17 21:48 /var/log/btmp</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="日志记录方式"><a href="#日志记录方式" class="headerlink" title="日志记录方式"></a>日志记录方式</h3><p>Linux的日志记录方式： 先分类，然后每个类中再分级别<br><br></p>
+<h4 id="Linux日志分类"><a href="#Linux日志分类" class="headerlink" title="Linux日志分类"></a>Linux日志分类</h4><p>主要7种日志分类(FACILITY):</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>authpriv</code></td>
+<td>安全认证相关</td>
+</tr>
+<tr>
+<td><code>cron</code></td>
+<td>at和cron定时相关</td>
+</tr>
+<tr>
+<td><code>daemon</code></td>
+<td>后台进程相关</td>
+</tr>
+<tr>
+<td><code>kern</code></td>
+<td>内核产生</td>
+</tr>
+<tr>
+<td><code>lpr</code></td>
+<td>打印系统产生</td>
+</tr>
+<tr>
+<td><code>mail</code></td>
+<td>邮件系统相关</td>
+</tr>
+<tr>
+<td><code>syslog</code></td>
+<td>日志服务本身</td>
+</tr>
+<tr>
+<td><code>news</code></td>
+<td>新闻系统  （和BBS差不多，新闻组）</td>
+</tr>
+<tr>
+<td><code>uucp</code></td>
+<td>uucp系统产生 。Unix-to-Unix Copy(UNIX至UNIX的拷贝)，Unix系统的一项功能，允许计算机之间以存储-转发方式交换e-mail和消息。在Internet兴起之前是Unix系统之间连网的主要方式。</td>
+</tr>
+<tr>
+<td><code>local0到local7</code></td>
+<td>共8个类型，系统保留的：8个系统日志类型，给其它程序使用。或用户 自定义用</td>
+</tr>
+<tr>
+<td><br></td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="linux日志级别"><a href="#linux日志级别" class="headerlink" title="linux日志级别"></a>linux日志级别</h4><p>8个日志级别(PRIOROTY)：以下排列，由轻到重</p>
+<table>
+<thead>
+<tr>
+<th>级别(PRIOROTY)</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>debug</code></td>
+<td>排错信息。开发人</td>
+</tr>
+<tr>
+<td><code>info</code></td>
+<td>正常信息</td>
+</tr>
+<tr>
+<td><code>notice</code></td>
+<td>稍微要注意的</td>
+</tr>
+<tr>
+<td><code>warn</code></td>
+<td>警告</td>
+</tr>
+<tr>
+<td><code>err(error)</code></td>
+<td>错误</td>
+</tr>
+<tr>
+<td><code>crit(critical)</code></td>
+<td>关键的错误</td>
+</tr>
+<tr>
+<td><code>alert</code></td>
+<td>警报警惕</td>
+</tr>
+<tr>
+<td><code>emerg(emergency)</code></td>
+<td>紧急，突发事件</td>
+</tr>
+</tbody></table>
+<p><br><br></p>
+<h3 id="日志服务管理"><a href="#日志服务管理" class="headerlink" title="日志服务管理"></a>日志服务管理</h3><br>
+#### linux 日志配置文件
+
+<table>
+<thead>
+<tr>
+<th>系统</th>
+<th>服务名称</th>
+<th>配置文件</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RHEL5</td>
+<td>syslog</td>
+<td>&#x2F;etc&#x2F;syslog.conf</td>
+</tr>
+<tr>
+<td>RHEL6</td>
+<td>rsyslog</td>
+<td>&#x2F;etc&#x2F;rsyslog.conf</td>
+</tr>
+<tr>
+<td>RHEL7</td>
+<td>rsyslog</td>
+<td>&#x2F;etc&#x2F;rsyslog.conf</td>
+</tr>
+</tbody></table>
+<h4 id="配置文件内容摘要"><a href="#配置文件内容摘要" class="headerlink" title="配置文件内容摘要"></a>配置文件内容摘要</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">46 <span class="comment">#### RULES ####</span></span><br><span class="line">47 </span><br><span class="line">48 <span class="comment"># Log all kernel messages to the console.</span></span><br><span class="line">49 <span class="comment"># Logging much else clutters up the screen.</span></span><br><span class="line">50 <span class="comment">#kern.*                                                 /dev/console</span></span><br><span class="line">51 </span><br><span class="line">52 <span class="comment"># Log anything (except mail) of level info or higher.</span></span><br><span class="line">53 <span class="comment"># Don&#x27;t log private authentication messages!</span></span><br><span class="line">54 *.info;mail.none;authpriv.none;cron.none                /var/log/messages</span><br><span class="line">55 </span><br><span class="line">56 <span class="comment"># The authpriv file has restricted access.</span></span><br><span class="line">57 authpriv.*                                              /var/log/secure</span><br><span class="line">58 </span><br><span class="line">59 <span class="comment"># Log all the mail messages in one place.</span></span><br><span class="line">60 mail.*                                                  -/var/log/maillog</span><br><span class="line">61 </span><br><span class="line">62 </span><br><span class="line">63 <span class="comment"># Log cron stuff</span></span><br><span class="line">64 cron.*                                                  /var/log/cron</span><br><span class="line">65 </span><br><span class="line">66 <span class="comment"># Everybody gets emergency messages</span></span><br><span class="line">67 *.emerg                                                 :omusrmsg:*</span><br><span class="line">68 </span><br><span class="line">69 <span class="comment"># Save news errors of level crit and higher in a special file.</span></span><br><span class="line">70 uucp,news.crit                                          /var/log/spooler</span><br><span class="line">71 </span><br><span class="line">72 <span class="comment"># Save boot messages also to boot.log</span></span><br><span class="line">73 local7.*                                                /var/log/boot.log</span><br></pre></td></tr></table></figure>
+<p>说明：<br> <code>kern.*</code> : 内核类型的所级别日志<br> <code>*.info;mail.none;news.none;authpriv.none;cron.none</code> : 由于 mail, news, authpriv, cron 等类别产生的讯息较多，因此在 &#x2F;var&#x2F;log&#x2F;messages 里面不记录这些项目。除此其他讯息都写入&#x2F;var&#x2F;log&#x2F;messages 中。所以messages 文件很重要<br> <code>authpriv.*</code> : 认证方面的讯息均写入 &#x2F;var&#x2F;log&#x2F;secure 档案；<br> <code>mail.* -/var/log/maillog </code> : 邮件方面的讯息则均写入 &#x2F;var&#x2F;log&#x2F;maillog 档案； 减号<code>-</code>是干嘛用的？由于邮件所产生的讯息比较多，因此我们希望邮件产生的讯息先储存在速度较快的内存中 (buffer) ，等到数据量够大了才一次性的将所有数据都填入磁盘内，这样将有利于减少对磁盘读写的次数，减少IO读写开销。另外，由于讯息是暂存在内存内，因此若不正常关机导致登录信息未写入到文档中，可能会造成部分数据的遗失。<br> <code>cron.*</code> : 例行性工作排程均写入 &#x2F;var&#x2F;log&#x2F;cron 档案；<br> <code>local7.*</code> : 将本机开机时应该显示到屏幕的讯息写入到 &#x2F;var&#x2F;log&#x2F;boot.log 档案中；</p>
+<br>
+#### 规则：
+`.none` : 该类型所有的等级不记录
+`. ` ：代表『比后面还要高的等级都被记录下来』的意思，例如： mail.info 代表只要是 mail 类型的信息，而且该信息等级高于 info (包括 info 本身)时，就会被记录下来的意思。
+`.=`  ：代表所需要的等级就是后面接的等级而已， 其他的都不要！
+`.!`  ：代表不等于，亦即是除了该等级外的其他等级都记录。
+
+<p>举例：<br><code>cron.none</code>   对于cron类型日志不记录任何信息<br><code>cron.=err</code>   对于cron类型日志只记录err级别的信息<br><code>cron.err</code>    对于cron类型日志记录大于err级别的信息<br><code>cron.!err</code>   对于cron类型日志不记录err级别的信息，其他级别都记录。<br> <br></p>
+<h4 id="记录日志的位置："><a href="#记录日志的位置：" class="headerlink" title="记录日志的位置："></a>记录日志的位置：</h4><ul>
+<li>日志的相对路径：通常就是放在 &#x2F;var&#x2F;log中</li>
+<li>存在远程日志服务器上</li>
+<li>有时日志会直接弹出在屏幕上。类似于wall命令。</li>
+</ul>
+<h3 id="自定义Linux日志"><a href="#自定义Linux日志" class="headerlink" title="自定义Linux日志"></a>自定义Linux日志</h3><p>以sshd服务为例，说明自定义的日志</p>
+<ul>
+<li><p>自定义local0日志<br>local7 已经被系统定义为boot日志，需要使用未被使用的分类</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vim /etc/rsyslog.conf</span></span><br><span class="line">local0.*                                                /var/log/sshd.log</span><br><span class="line">[root@localhost ~]<span class="comment">#systemctl restart rsyslog.service</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置sshd服务的配置文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# vim /etc/ssh/sshd_config</span><br><span class="line">SyslogFacility local0</span><br><span class="line">[root@localhost ~]#systemctl restart sshd</span><br><span class="line">[root@localhost ~]# ls /var/log/sshd.log</span><br><span class="line">/var/log/sshd.log</span><br><span class="line">  </span><br><span class="line">[root@localhost ~]# cat !$</span><br><span class="line">cat /var/log/sshd.log</span><br><span class="line">Dec 17 22:18:38localhost sshd[35876]: Server listening on 0.0.0.0 port 22.</span><br><span class="line">Dec 17 22:18:38localhost sshd[35876]: Server listening on :: port 22.</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="日志回滚"><a href="#日志回滚" class="headerlink" title="日志回滚"></a>日志回滚</h3><p>日志回滚 logrotate（日志回滚过程： 创建新文件、改名旧文件。）</p>
+<ul>
+<li><p>配置文件：<code>/etc/logrotate.conf</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> 1 # see &quot;man logrotate&quot; for details</span><br><span class="line"> 2 # rotate log files weekly</span><br><span class="line"> 3 weekly</span><br><span class="line"> 4 </span><br><span class="line"> 5 # keep 4 weeks worth of backlogs</span><br><span class="line"> 6 rotate 4</span><br><span class="line"> 7 </span><br><span class="line"> 8 # create new (empty) log files after rotating old ones</span><br><span class="line"> 9 create</span><br><span class="line">10 </span><br><span class="line">11 # use date as a suffix of the rotated file</span><br><span class="line">12 dateext</span><br><span class="line">13 </span><br><span class="line">14 # uncomment this if you want your log files compressed</span><br><span class="line">15 #compress</span><br><span class="line">16 </span><br><span class="line">17 # RPM packages drop log rotation information into this directory</span><br><span class="line">18 include /etc/logrotate.d</span><br><span class="line">19 </span><br><span class="line">20 # no packages own wtmp and btmp -- we&#x27;ll rotate them here</span><br><span class="line">21 /var/log/wtmp &#123;</span><br><span class="line">22     monthly</span><br><span class="line">23     create 0664 root utmp</span><br><span class="line">24         minsize 1M</span><br><span class="line">25     rotate 1</span><br><span class="line">26 &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全局规则：<br><code>weekly</code>     &lt;&#x3D;&#x3D;预设每个礼拜对日志档进行一次 rotate 的工作<br> <code>rotate  4</code> &lt;&#x3D;&#x3D;保留几个日志文档呢？预设是保留四个！<br> <code>create</code>    &lt;&#x3D;&#x3D; 回滚日志后，创建一个新的空文件来存储新的数据。</p>
+</li>
+<li><p>具体规则：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/var/log/wtmp &#123;</span><br><span class="line">    monthly</span><br><span class="line">    create 0664 root utmp</span><br><span class="line">        minsize 1M</span><br><span class="line">    rotate 1</span><br></pre></td></tr></table></figure>
+<p>说明：<br><code>/var/log/wtmp</code> { &lt;&#x3D;&#x3D;仅针对 &#x2F;var&#x2F;log&#x2F;wtmp 所设定的参数<br><code>monthly</code> &lt;&#x3D;&#x3D;每个月一次，取代每周！<br><code>minsize 1M</code> &lt;&#x3D;&#x3D;档案容量一定要超过 1M 后才进行rotate (略过时间参数)<br><code>create 0664 root utmp</code> &lt;&#x3D;&#x3D;设定新建文件的权限 、所有者、用户组<br><code>rotate 1</code> &lt;&#x3D;&#x3D;仅保留一个，亦即仅有 wtmp.1 保留而已。 }</p>
+</li>
+</ul>
+<h3 id="远程日志服务"><a href="#远程日志服务" class="headerlink" title="远程日志服务"></a>远程日志服务</h3><p>配置远程日志服务器，实现日志集中管理：</p>
+<ul>
+<li><p>配置SERVER端（接收端）<br>打开reception配置，日志为了准确，所以启动的是TCP链接。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# vim /etc/rsyslog.conf</span><br><span class="line">  </span><br><span class="line">将：</span><br><span class="line">  </span><br><span class="line"># Provides UDP syslog reception</span><br><span class="line">#$ModLoad imudp</span><br><span class="line">#$UDPServerRun 514</span><br><span class="line">  </span><br><span class="line"># Provides TCP syslog reception</span><br><span class="line">#$ModLoad imtcp</span><br><span class="line">#$InputTCPServerRun 514</span><br><span class="line">  </span><br><span class="line">改为：</span><br><span class="line">  </span><br><span class="line"># Provides UDP syslog reception</span><br><span class="line">#$ModLoad imudp</span><br><span class="line">#$UDPServerRun 514</span><br><span class="line">  </span><br><span class="line"># Provides TCP syslog reception</span><br><span class="line">$ModLoad imtcp</span><br><span class="line">$InputTCPServerRun 514</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">#重启服务</span><br><span class="line">[root@localhost ~]#systemctl restart rsyslog.service</span><br><span class="line">  </span><br><span class="line">#检查端口</span><br><span class="line">[root@localhost ~]#netstat -anptu | grep 514</span><br><span class="line">tcp        0     0 0.0.0.0:514       0.0.0.0:*               LISTEN      36217/rsyslogd</span><br><span class="line">tcp6       0      0 :::514               :::*                  LISTEN      36217/rsyslogd</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>配置CLIENT端（发送端）<br>打开远程服务配置, 端口跟随服务器配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@xuegod69 ~]<span class="comment">#vim  /etc/rsyslog.conf</span></span><br><span class="line">  </span><br><span class="line">将</span><br><span class="line">  </span><br><span class="line"><span class="comment"># remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional</span></span><br><span class="line"><span class="comment">#*.* @@remote-host:514</span></span><br><span class="line"><span class="comment"># ### end of the forwarding rule ###</span></span><br><span class="line">  </span><br><span class="line">改为：</span><br><span class="line">  </span><br><span class="line"><span class="comment"># remote host is: name/ip:port, e.g. 192.168.0.1:514, port optional</span></span><br><span class="line">*.* @@你自己远程服务器IP:514</span><br><span class="line"><span class="comment"># ### end of the forwarding rule ###</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">#重启</span></span><br><span class="line">[root@xuegod69 ~]<span class="comment">#systemctl restart rsyslog.service</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><h4 id="wall命令介绍："><a href="#wall命令介绍：" class="headerlink" title="wall命令介绍："></a>wall命令介绍：</h4><pre><code>   wall -- send a message to everybody’sterminal.
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#wall Today is nice day!!!</span><br><span class="line">wall Today is nicedayvim /etc/rsyslog.conf !</span><br><span class="line">Broadcast message fromroot@localhost.localdomain (pts/0) (Thu Dec 17 22:10:28 2015):</span><br><span class="line">Today is nice dayvim/etc/rsyslog.conf !</span><br></pre></td></tr></table></figure>
+
+<p>这样所有登录Linux的虚端的用户都会收到这个信息。</p>
+<h4 id="如何防止日志被黑客删除呢"><a href="#如何防止日志被黑客删除呢" class="headerlink" title="如何防止日志被黑客删除呢"></a>如何防止日志被黑客删除呢</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]#chattr +a /var/log/sshd.log</span><br><span class="line">[root@localhost ~]#lsattr /var/log/sshd.log</span><br><span class="line">-----a----------/var/log/sshd.log</span><br></pre></td></tr></table></figure>
+<p>加入了这个属性后，你的 &#x2F;var&#x2F;log&#x2F;messages 登录档从此就仅能被增加，而不能被删除，直到 root 以『 chattr -a &#x2F;var&#x2F;log&#x2F;messages 』取消这个 a 的参数后，才能被删除移！</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/17/linux/base/godLinux1-16/" rel="prev" title="1-16 Linux LVM （Logical Volume Manager 逻辑卷管理）">
+      <i class="fa fa-chevron-left"></i> 1-16 Linux LVM （Logical Volume Manager 逻辑卷管理）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/18/linux/base/godLinux1-17/" rel="next" title="1-17 系统存储管理器和磁盘配额">
+      1-17 系统存储管理器和磁盘配额 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E5%86%85%E5%AE%B9"><span class="nav-number">1.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#at"><span class="nav-number">2.</span> <span class="nav-text">at</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">前置条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA"><span class="nav-number">2.2.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B"><span class="nav-number">2.3.</span> <span class="nav-text">查看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#at%E4%BB%BB%E5%8A%A1%E5%88%A0%E9%99%A4%EF%BC%9A"><span class="nav-number">2.4.</span> <span class="nav-text">at任务删除：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crontab"><span class="nav-number">3.</span> <span class="nav-text">crontab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">3.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E6%8F%90"><span class="nav-number">3.2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA-x2F-%E7%BC%96%E8%BE%91"><span class="nav-number">3.3.</span> <span class="nav-text">新建&#x2F;编辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%BA%A7%E5%88%AB%E7%9A%84%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%EF%BC%8C"><span class="nav-number">3.4.</span> <span class="nav-text">系统级别的计划任务，</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#anacron"><span class="nav-number">3.5.</span> <span class="nav-text">anacron</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%87%AA%E5%8A%A8%E5%BC%80%E6%9C%BA"><span class="nav-number">4.</span> <span class="nav-text">服务器自动开机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E7%AE%A1%E7%90%86"><span class="nav-number">5.</span> <span class="nav-text">日志管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%9A%84%E7%B3%BB%E7%BB%9F%E6%97%A5%E5%BF%97"><span class="nav-number">5.1.</span> <span class="nav-text">常用的系统日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E6%96%B9%E5%BC%8F"><span class="nav-number">5.2.</span> <span class="nav-text">日志记录方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux%E6%97%A5%E5%BF%97%E5%88%86%E7%B1%BB"><span class="nav-number">5.2.1.</span> <span class="nav-text">Linux日志分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#linux%E6%97%A5%E5%BF%97%E7%BA%A7%E5%88%AB"><span class="nav-number">5.2.2.</span> <span class="nav-text">linux日志级别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86"><span class="nav-number">5.3.</span> <span class="nav-text">日志服务管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%91%98%E8%A6%81"><span class="nav-number">5.3.1.</span> <span class="nav-text">配置文件内容摘要</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E6%97%A5%E5%BF%97%E7%9A%84%E4%BD%8D%E7%BD%AE%EF%BC%9A"><span class="nav-number">5.3.2.</span> <span class="nav-text">记录日志的位置：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89Linux%E6%97%A5%E5%BF%97"><span class="nav-number">5.4.</span> <span class="nav-text">自定义Linux日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E5%BF%97%E5%9B%9E%E6%BB%9A"><span class="nav-number">5.5.</span> <span class="nav-text">日志回滚</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9C%E7%A8%8B%E6%97%A5%E5%BF%97%E6%9C%8D%E5%8A%A1"><span class="nav-number">5.6.</span> <span class="nav-text">远程日志服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">5.7.</span> <span class="nav-text">扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#wall%E5%91%BD%E4%BB%A4%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="nav-number">5.7.1.</span> <span class="nav-text">wall命令介绍：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E6%97%A5%E5%BF%97%E8%A2%AB%E9%BB%91%E5%AE%A2%E5%88%A0%E9%99%A4%E5%91%A2"><span class="nav-number">5.7.2.</span> <span class="nav-text">如何防止日志被黑客删除呢</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

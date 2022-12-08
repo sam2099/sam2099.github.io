@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="发送 JMS 消息简单的使用默认destination123456789101112131415161718192021222324252627282930import javax.jms.ConnectionFactory;import javax.jms.JMSException;import javax.jms.Message;import javax.jms.Queue;import ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring JMS （二）">
+<meta property="og:url" content="http://giveme5.cc/2015/09/06/spring/springJms-2/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="发送 JMS 消息简单的使用默认destination123456789101112131415161718192021222324252627282930import javax.jms.ConnectionFactory;import javax.jms.JMSException;import javax.jms.Message;import javax.jms.Queue;import ja">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-09-06T10:53:49.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="spring">
+<meta property="article:tag" content="JMS">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2015/09/06/spring/springJms-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring JMS （二） | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/06/spring/springJms-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring JMS （二）
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-09-06 18:53:49" itemprop="dateCreated datePublished" datetime="2015-09-06T18:53:49+08:00">2015-09-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="发送-JMS-消息"><a href="#发送-JMS-消息" class="headerlink" title="发送 JMS 消息"></a>发送 JMS 消息</h2><h3 id="简单的使用默认destination"><a href="#简单的使用默认destination" class="headerlink" title="简单的使用默认destination"></a>简单的使用默认destination</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import javax.jms.ConnectionFactory;</span><br><span class="line">import javax.jms.JMSException;</span><br><span class="line">import javax.jms.Message;</span><br><span class="line">import javax.jms.Queue;</span><br><span class="line">import javax.jms.Session;</span><br><span class="line"></span><br><span class="line">import org.springframework.jms.core.MessageCreator;</span><br><span class="line">import org.springframework.jms.core.JmsTemplate;</span><br><span class="line"></span><br><span class="line">public class JmsQueueSender &#123;</span><br><span class="line"></span><br><span class="line">    private JmsTemplate jmsTemplate;</span><br><span class="line">    private Queue queue;</span><br><span class="line"></span><br><span class="line">    public void setConnectionFactory(ConnectionFactory cf) &#123;</span><br><span class="line">        this.jmsTemplate = new JmsTemplate(cf);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setQueue(Queue queue) &#123;</span><br><span class="line">        this.queue = queue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void simpleSend() &#123;</span><br><span class="line">        this.jmsTemplate.send(this.queue, new MessageCreator() &#123;</span><br><span class="line">            public Message createMessage(Session session) throws JMSException &#123;</span><br><span class="line">                return session.createTextMessage(&quot;hello queue world&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Message-Converters"><a href="#Message-Converters" class="headerlink" title="Message Converters"></a>Message Converters</h3><p> Message Converters 提供Java 对象 message‘s 数据间的转换。Spring的默认实现 SimpleMessageConverter 可以支持String 和 TextMessage, byte[] 和 BytesMesssage,  java.util.Map 和 MapMessage 之间的转换。<br>下面是个Map的发送：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">public void sendWithConversion() &#123;</span><br><span class="line">    Map map = new HashMap();</span><br><span class="line">    map.put(&quot;Name&quot;, &quot;Mark&quot;);</span><br><span class="line">    map.put(&quot;Age&quot;, new Integer(47));</span><br><span class="line">    jmsTemplate.convertAndSend(&quot;testQueue&quot;, map, new MessagePostProcessor() &#123;</span><br><span class="line">        public Message postProcessMessage(Message message) throws JMSException &#123;</span><br><span class="line">            message.setIntProperty(&quot;AccountID&quot;, 1234);</span><br><span class="line">            message.setJMSCorrelationID(&quot;123-00001&quot;);</span><br><span class="line">            return message;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//This results in a message of the form:</span><br><span class="line">//MapMessage=&#123;</span><br><span class="line">//	Header=&#123;</span><br><span class="line">//		... standard headers ...</span><br><span class="line">//		CorrelationID=&#123;123-00001&#125;</span><br><span class="line">//	&#125;</span><br><span class="line">//	Properties=&#123;</span><br><span class="line">//		AccountID=&#123;Integer:1234&#125;</span><br><span class="line">//	&#125;</span><br><span class="line">//	Fields=&#123;</span><br><span class="line">//		Name=&#123;String:Mark&#125;</span><br><span class="line">//		Age=&#123;Integer:47&#125;</span><br><span class="line">//	&#125;</span><br><span class="line">//&#125;</span><br></pre></td></tr></table></figure>
+<p>SessionCallback 回调和 ProducerCallback 回调</p>
+<h2 id="接收-JMS-消息"><a href="#接收-JMS-消息" class="headerlink" title="接收 JMS 消息"></a>接收 JMS 消息</h2><h3 id="同步接收-Synchronous"><a href="#同步接收-Synchronous" class="headerlink" title="同步接收 Synchronous"></a>同步接收 Synchronous</h3><p>同步接收 JMS 消息会堵塞， 可设置 <code>receiveTimeout</code> 。</p>
+<h3 id="异步接收-Asynchronous-Message-Driven-POJOs"><a href="#异步接收-Asynchronous-Message-Driven-POJOs" class="headerlink" title="异步接收 Asynchronous - Message-Driven POJOs"></a>异步接收 Asynchronous - Message-Driven POJOs</h3><p>类似于 EJB 里的  Message-Driven Bean (MDB) ，Spring 定义了 Message-Driven POJO (MDP) 来作为 JMS 的接收者。<br>一个 Message-Driven POJO (MDP) 必须实现 <code>javax.jms.MessageListener</code> （或者 MessageListenerAdapter， SessionAwareMessageListener），而且必须是线程安全，它会被多线程调用。<br> MDP的一个例子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import javax.jms.JMSException;</span><br><span class="line">import javax.jms.Message;</span><br><span class="line">import javax.jms.MessageListener;</span><br><span class="line">import javax.jms.TextMessage;</span><br><span class="line"></span><br><span class="line">public class ExampleListener implements MessageListener &#123;</span><br><span class="line"></span><br><span class="line">    public void onMessage(Message message) &#123;</span><br><span class="line">        if (message instanceof TextMessage) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                System.out.println(((TextMessage) message).getText());</span><br><span class="line">            &#125;</span><br><span class="line">            catch (JMSException ex) &#123;</span><br><span class="line">                throw new RuntimeException(ex);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            throw new IllegalArgumentException(&quot;Message must be of type TextMessage&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的配置</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- this is the Message Driven POJO (MDP) --&gt;</span><br><span class="line">&lt;bean id=&quot;messageListener&quot; class=&quot;jmsexample.ExampleListener&quot; /&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- and this is the message listener container --&gt;</span><br><span class="line">&lt;bean id=&quot;jmsContainer&quot; class=&quot;org.springframework.jms.listener.DefaultMessageListenerContainer&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;connectionFactory&quot; ref=&quot;connectionFactory&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;destination&quot; ref=&quot;destination&quot;/&gt;</span><br><span class="line">    ---&lt;property name=&quot;messageListener&quot; ref=&quot;messageListener&quot; /&gt;---</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="事务-transaction"><a href="#事务-transaction" class="headerlink" title="事务 transaction"></a>事务 transaction</h3><p>本地事务只需要简单配置 <code>sessionTransacted</code> 就可以激活。发送响应是该本地事务的一部分，但其他所有资源（如数据库操作）的操作都是独立的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;jmsContainer&quot; class=&quot;org.springframework.jms.listener.DefaultMessageListenerContainer&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;connectionFactory&quot; ref=&quot;connectionFactory&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;destination&quot; ref=&quot;destination&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;messageListener&quot; ref=&quot;messageListener&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;sessionTransacted&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure>
+
+<p>分布式事务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.transaction.jta.JtaTransactionManager&quot;/&gt;</span><br><span class="line"></span><br><span class="line">&lt;bean id=&quot;jmsContainer&quot; class=&quot;org.springframework.jms.listener.DefaultMessageListenerContainer&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;connectionFactory&quot; ref=&quot;connectionFactory&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;destination&quot; ref=&quot;destination&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;messageListener&quot; ref=&quot;messageListener&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;transactionManager&quot; ref=&quot;transactionManager&quot;/&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="注解驱动的监听端点"><a href="#注解驱动的监听端点" class="headerlink" title="注解驱动的监听端点"></a>注解驱动的监听端点</h2><p>@JmsListener</p>
+<h3 id="开启监听端点-注解"><a href="#开启监听端点-注解" class="headerlink" title="开启监听端点 注解"></a>开启监听端点 注解</h3><p>在<code>@Configuration</code>类中加入<code>@EnableJms</code>来使<code>@JmsListener</code>生效。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@EnableJms</span><br><span class="line">public class AppConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() &#123;   //default name</span><br><span class="line">        DefaultJmsListenerContainerFactory factory =</span><br><span class="line">                new DefaultJmsListenerContainerFactory();</span><br><span class="line">        factory.setConnectionFactory(connectionFactory());</span><br><span class="line">        factory.setDestinationResolver(destinationResolver());</span><br><span class="line">        factory.setConcurrency(&quot;3-10&quot;); //pool size 3～10 threads</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注册监听端点"><a href="#注册监听端点" class="headerlink" title="注册监听端点"></a>注册监听端点</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Configuration</span><br><span class="line">@EnableJms</span><br><span class="line">public class AppConfig implements JmsListenerConfigurer &#123;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void configureJmsListeners(JmsListenerEndpointRegistrar registrar) &#123;</span><br><span class="line">        SimpleJmsListenerEndpoint endpoint = new SimpleJmsListenerEndpoint();</span><br><span class="line">        endpoint.setId(&quot;myJmsEndpoint&quot;);</span><br><span class="line">        endpoint.setDestination(&quot;anotherQueue&quot;);</span><br><span class="line">        endpoint.setMessageListener(message -&gt; &#123;</span><br><span class="line">            // processing</span><br><span class="line">        &#125;);</span><br><span class="line">        registrar.registerEndpoint(endpoint);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="端点方法-签名"><a href="#端点方法-签名" class="headerlink" title="端点方法 签名"></a>端点方法 签名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">public class MyService &#123;</span><br><span class="line"></span><br><span class="line">    @JmsListener(destination = &quot;myDestination&quot;)</span><br><span class="line">    public void processOrder(Order order, @Header(&quot;order_type&quot;) String orderType) &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="响应管理"><a href="#响应管理" class="headerlink" title="响应管理"></a>响应管理</h3><p><code>@SendTo</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@JmsListener(destination = &quot;myDestination&quot;)</span><br><span class="line">@SendTo(&quot;status&quot;)</span><br><span class="line">public OrderStatus processOrder(Order order) &#123;</span><br><span class="line">    // order processing</span><br><span class="line">    return status;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//or</span><br><span class="line"></span><br><span class="line">@JmsListener(destination = &quot;myDestination&quot;)</span><br><span class="line">@SendTo(&quot;status&quot;)</span><br><span class="line">public Message&lt;OrderStatus&gt; processOrder(Order order) &#123;</span><br><span class="line">    // order processing</span><br><span class="line">    return MessageBuilder</span><br><span class="line">            .withPayload(status)</span><br><span class="line">            .setHeader(&quot;code&quot;, 1234)</span><br><span class="line">            .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>运行时响应destination</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@JmsListener(destination = &quot;myDestination&quot;)</span><br><span class="line">public JmsResponse&lt;Message&lt;OrderStatus&gt;&gt; processOrder(Order order) &#123;</span><br><span class="line">    // order processing</span><br><span class="line">    Message&lt;OrderStatus&gt; response = MessageBuilder</span><br><span class="line">            .withPayload(status)</span><br><span class="line">            .setHeader(&quot;code&quot;, 1234)</span><br><span class="line">            .build();</span><br><span class="line">    return JmsResponse.forQueue(response, &quot;status&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+<h2 id="JMS-命名空间"><a href="#JMS-命名空间" class="headerlink" title="JMS 命名空间"></a><a target="_blank" rel="noopener" href="http://docs.spring.io/spring/docs/4.2.2.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#jms-namespace">JMS 命名空间</a></h2><h2 id="Spring-集成-ActiveMq"><a href="#Spring-集成-ActiveMq" class="headerlink" title="Spring 集成 ActiveMq"></a><a target="_blank" rel="noopener" href="http://giveme5.top/2015/09/25/mq/activemq3/">Spring 集成 ActiveMq</a></h2>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/spring/" rel="tag"># spring</a>
+              <a href="/tags/JMS/" rel="tag"># JMS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/08/26/spring/springJms-1/" rel="prev" title="Spring JMS (一)">
+      <i class="fa fa-chevron-left"></i> Spring JMS (一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/09/08/other/interview/" rel="next" title="面试时除了薪水以外的问题">
+      面试时除了薪水以外的问题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E9%80%81-JMS-%E6%B6%88%E6%81%AF"><span class="nav-number">1.</span> <span class="nav-text">发送 JMS 消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4destination"><span class="nav-number">1.1.</span> <span class="nav-text">简单的使用默认destination</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Message-Converters"><span class="nav-number">1.2.</span> <span class="nav-text">Message Converters</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A5%E6%94%B6-JMS-%E6%B6%88%E6%81%AF"><span class="nav-number">2.</span> <span class="nav-text">接收 JMS 消息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E6%8E%A5%E6%94%B6-Synchronous"><span class="nav-number">2.1.</span> <span class="nav-text">同步接收 Synchronous</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%8E%A5%E6%94%B6-Asynchronous-Message-Driven-POJOs"><span class="nav-number">2.2.</span> <span class="nav-text">异步接收 Asynchronous - Message-Driven POJOs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1-transaction"><span class="nav-number">2.3.</span> <span class="nav-text">事务 transaction</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E8%A7%A3%E9%A9%B1%E5%8A%A8%E7%9A%84%E7%9B%91%E5%90%AC%E7%AB%AF%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">注解驱动的监听端点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF%E7%9B%91%E5%90%AC%E7%AB%AF%E7%82%B9-%E6%B3%A8%E8%A7%A3"><span class="nav-number">3.1.</span> <span class="nav-text">开启监听端点 注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E7%9B%91%E5%90%AC%E7%AB%AF%E7%82%B9"><span class="nav-number">3.2.</span> <span class="nav-text">注册监听端点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AB%AF%E7%82%B9%E6%96%B9%E6%B3%95-%E7%AD%BE%E5%90%8D"><span class="nav-number">3.3.</span> <span class="nav-text">端点方法 签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E7%AE%A1%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">响应管理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JMS-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number">4.</span> <span class="nav-text">JMS 命名空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-%E9%9B%86%E6%88%90-ActiveMq"><span class="nav-number">5.</span> <span class="nav-text">Spring 集成 ActiveMq</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

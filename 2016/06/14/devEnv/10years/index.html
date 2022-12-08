@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="十年之前，刚刚毕业；十年之后，回头看看；低头思考，抬头前行。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="十年回头望">
+<meta property="og:url" content="http://giveme5.cc/2016/06/14/devEnv/10years/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="十年之前，刚刚毕业；十年之后，回头看看；低头思考，抬头前行。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://amadis.qiniudn.com/structure.jpg">
+<meta property="og:image" content="http://amadis.qiniudn.com/process.png">
+<meta property="article:published_time" content="2016-06-14T13:28:38.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="十年回头望">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://amadis.qiniudn.com/structure.jpg">
+
+<link rel="canonical" href="http://giveme5.cc/2016/06/14/devEnv/10years/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>十年回头望 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2016/06/14/devEnv/10years/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          十年回头望
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-06-14 21:28:38" itemprop="dateCreated datePublished" datetime="2016-06-14T21:28:38+08:00">2016-06-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>十年之前，刚刚毕业；十年之后，回头看看；低头思考，抬头前行。</p>
+<span id="more"></span>
+
+<p>以下是个人对开发框架整体的思考和一些优秀实践，简单整理，陆续补充，详细的看是否有时间完善。</p>
+<h2 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h2><h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>中小型系统架构网络拓扑<br><a class="fancybox" title="" target="_blank" href="http://amadis.qiniudn.com/structure.jpg" rel="article0 noopener"><br><img  width="700px"  alt="" src="http://amadis.qiniudn.com/structure.jpg"><br></a></p>
+<h3 id="基础框架"><a href="#基础框架" class="headerlink" title="基础框架"></a>基础框架</h3><p>以Spring的一系列框架为基础（如 Spring MVC， SpringData），配合自己开发的开发脚手架。<br>表现层：Css3， JavaScript6，JQuery ， Jsp2<br>控制层：spring mvc<br>服务层：spring core<br>持久层：spring data JPA<br>安全层：shiro<br>批处理：quartz<br>单元测试： Junit + H2数据库<br>数据库：Mysql + Redis</p>
+<h2 id="开发流程"><a href="#开发流程" class="headerlink" title="开发流程"></a>开发流程</h2><p>
+<a class="fancybox" title="开发流程" target="_blank" href="http://amadis.qiniudn.com/process.png" rel="article0 noopener">
+<img alt="开发流程" width="400px" height="600px" src="http://amadis.qiniudn.com/process.png">
+</a>
+<span class="caption">开发流程</span>
+</p>
+
+
+<h2 id="第三方管理系统"><a href="#第三方管理系统" class="headerlink" title="第三方管理系统"></a>第三方管理系统</h2><h3 id="git-gitlab-源码管理"><a href="#git-gitlab-源码管理" class="headerlink" title="git gitlab 源码管理"></a>git gitlab 源码管理</h3><ul>
+<li><p>git<br>分布式源码管理，gitFlow是其一大特色。<br>相关链接</p>
+<ul>
+<li><a href="/tags/git/">git</a></li>
+</ul>
+</li>
+<li><p>gitlab<br>一个开源的版本管理系统,实现一个自托管的Git项目仓库,可通过Web界面进行访问公开的或者私人项目。基本拥有GitHub类似的功能。<br>建议采用ssh协议</p>
+<ul>
+<li>方便 ： 不用每次输入密码</li>
+<li>安全</li>
+<li>减少传送数据，节约流量<br><a href="/tags/gitlab/">gitlab</a></li>
+</ul>
+</li>
+<li><p>gitFlow<br>gitFlow模型：一个组织软件开发活动的版本迭代模型，定义围绕项目发布的严格分支模型，提供了一个健壮的用于管理大型项目的框架。<br>5大分支<br><a target="_blank" rel="noopener" href="http://danielkummer.github.io/git-flow-cheatsheet/index.zh_CN.html">git-flow 备忘清单</a></p>
+</li>
+<li><p>jgitflow-maven-plugin</p>
+<p><a target="_blank" rel="noopener" href="http://jgitflow.bitbucket.org/">jgitflow</a></p>
+</li>
+</ul>
+<h3 id="maven-项目管理"><a href="#maven-项目管理" class="headerlink" title="maven 项目管理"></a>maven 项目管理</h3><ul>
+<li><p>管理系统依赖<br>统一依赖的来源和版本，保持开发环境一致，避免莫名错误</p>
+</li>
+<li><p>管理项目生命周期<br>构建，编译，测试，发布，更新版本。。。。</p>
+</li>
+</ul>
+<p><a href="/tags/maven/">maven</a></p>
+<h3 id="nexus-本地资源库"><a href="#nexus-本地资源库" class="headerlink" title="nexus 本地资源库"></a>nexus 本地资源库</h3><p>使用 Sonatype Nexus Repository Manager OSS版本；<br>nexus可以帮助你与其他开发人员和最终用户共享组件。它大大简化了内部存储库的维护和访问外部存储库，可以从单一地点完全控制访问和部署每个组件。<br>主要配合maven 和 gradle 工作。</p>
+<ul>
+<li><a href="/tags/nexus/">相关链接</a></li>
+</ul>
+<h3 id="jira-任务与缺陷管理"><a href="#jira-任务与缺陷管理" class="headerlink" title="jira 任务与缺陷管理"></a>jira 任务与缺陷管理</h3><p>多人协助也好， 一个人玩也行；<br>自己给自己安排任务，自己安排时间，完了自己查看统计数据，挺好。</p>
+<h3 id="code-review"><a href="#code-review" class="headerlink" title="code review"></a>code review</h3><p>crucible系统<br>窃以为： code review是成本最低且有效提高代码质量的手段，特别是几个技术高深的人员一起review</p>
+<h3 id="jenkins-持续集成"><a href="#jenkins-持续集成" class="headerlink" title="jenkins 持续集成"></a>jenkins 持续集成</h3><ul>
+<li><p>测试<br>测试人员随时或的最新版本，构建测试版本，且不打扰开发人员；</p>
+</li>
+<li><p>发布<br>配合<code>maven</code>的多环境参数配置，图形化一键发布，方便高效</p>
+</li>
+<li><p>相关链接<br><a href="/tags/jenkins/">jenkins</a></p>
+</li>
+</ul>
+<h2 id="开发辅助系统"><a href="#开发辅助系统" class="headerlink" title="开发辅助系统"></a>开发辅助系统</h2><p>自己开发，开发测试人员内部使用， 持续改进ing</p>
+<h3 id="开发沙箱"><a href="#开发沙箱" class="headerlink" title="开发沙箱"></a>开发沙箱</h3><ul>
+<li>接口文档在线化</li>
+<li>开发环境&#x2F;测试环境&#x2F;生产环境的切换</li>
+<li>保留接口请求和服务器返回内容的现场数据</li>
+<li>模拟接口仿真服务，方便客户端开发和测试</li>
+<li>接口版本化管理（待改进）</li>
+</ul>
+<h3 id="2维码管理系统"><a href="#2维码管理系统" class="headerlink" title="2维码管理系统"></a>2维码管理系统</h3><p>个性化定制2维码，并跟踪该2维码后续行为数据。比如给某推广人员定制一个专属2维码，并收集和分析该2维码的后续行为数据。</p>
+<h3 id="数据收集分析系统"><a href="#数据收集分析系统" class="headerlink" title="数据收集分析系统"></a>数据收集分析系统</h3><p>收集用户行为数据，根据运营需求分析；<br>友盟等提供的功能直接用友盟；<br>这里可以做一些对友盟等第三方数据平台的补充。</p>
+<h3 id="安装包管理系统"><a href="#安装包管理系统" class="headerlink" title="安装包管理系统"></a>安装包管理系统</h3><p>统一管理APP安装包， 提供图像界面给测试人员和运营人员操作，记录保存每个版本。<br>配合CI使用。<br>iOS 生产环境未实现。。。。。</p>
+<h3 id="源码规范检查工具"><a href="#源码规范检查工具" class="headerlink" title="源码规范检查工具"></a>源码规范检查工具</h3><ul>
+<li>检查多余图片资源、语言包</li>
+<li>检查项目中命名、编码规范</li>
+</ul>
+<h3 id="意见反馈管理系统"><a href="#意见反馈管理系统" class="headerlink" title="意见反馈管理系统"></a>意见反馈管理系统</h3><p>联合运营人员或者客服人员，聆听用户反馈，改进产品。</p>
+<h2 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h2><p>生产最近使用较多的是 mysql及其分支；junit中多用H2</p>
+<h3 id="Multi-Source-Replication"><a href="#Multi-Source-Replication" class="headerlink" title="Multi-Source Replication"></a>Multi-Source Replication</h3><h3 id="热备"><a href="#热备" class="headerlink" title="热备"></a>热备</h3><h3 id="冷备"><a href="#冷备" class="headerlink" title="冷备"></a>冷备</h3><h2 id="开发脚手架"><a href="#开发脚手架" class="headerlink" title="开发脚手架"></a>开发脚手架</h2><p>注重代码积累，将常用代码模块化，需要时可插拔，提高开发效率和代码质量。<br>从技术层面来说，产品化需要做到可配置、可定制、可灵活组装、可快速开发.</p>
+<ul>
+<li>认证授权模块</li>
+<li>消息短信模块</li>
+<li>用户基础模块</li>
+<li>第三方支付模块</li>
+<li>静态资源模块</li>
+<li>加解密模块</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%81%E5%B9%B4%E5%9B%9E%E5%A4%B4%E6%9C%9B/" rel="tag"># 十年回头望</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/17/android/broadcast/" rel="prev" title="Android broadcast">
+      <i class="fa fa-chevron-left"></i> Android broadcast
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/06/20/devEnv/gitlab/gitlab/" rel="next" title="gitlab">
+      gitlab <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">系统架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91"><span class="nav-number">1.1.</span> <span class="nav-text">网络拓扑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6"><span class="nav-number">1.2.</span> <span class="nav-text">基础框架</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">开发流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.</span> <span class="nav-text">第三方管理系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-gitlab-%E6%BA%90%E7%A0%81%E7%AE%A1%E7%90%86"><span class="nav-number">3.1.</span> <span class="nav-text">git gitlab 源码管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maven-%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86"><span class="nav-number">3.2.</span> <span class="nav-text">maven 项目管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nexus-%E6%9C%AC%E5%9C%B0%E8%B5%84%E6%BA%90%E5%BA%93"><span class="nav-number">3.3.</span> <span class="nav-text">nexus 本地资源库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jira-%E4%BB%BB%E5%8A%A1%E4%B8%8E%E7%BC%BA%E9%99%B7%E7%AE%A1%E7%90%86"><span class="nav-number">3.4.</span> <span class="nav-text">jira 任务与缺陷管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#code-review"><span class="nav-number">3.5.</span> <span class="nav-text">code review</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jenkins-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90"><span class="nav-number">3.6.</span> <span class="nav-text">jenkins 持续集成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E8%BE%85%E5%8A%A9%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.</span> <span class="nav-text">开发辅助系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E6%B2%99%E7%AE%B1"><span class="nav-number">4.1.</span> <span class="nav-text">开发沙箱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E7%BB%B4%E7%A0%81%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.2.</span> <span class="nav-text">2维码管理系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%94%B6%E9%9B%86%E5%88%86%E6%9E%90%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.3.</span> <span class="nav-text">数据收集分析系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%8C%85%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.4.</span> <span class="nav-text">安装包管理系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E8%A7%84%E8%8C%83%E6%A3%80%E6%9F%A5%E5%B7%A5%E5%85%B7"><span class="nav-number">4.5.</span> <span class="nav-text">源码规范检查工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%84%8F%E8%A7%81%E5%8F%8D%E9%A6%88%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.6.</span> <span class="nav-text">意见反馈管理系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">5.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Source-Replication"><span class="nav-number">5.1.</span> <span class="nav-text">Multi-Source Replication</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%83%AD%E5%A4%87"><span class="nav-number">5.2.</span> <span class="nav-text">热备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B7%E5%A4%87"><span class="nav-number">5.3.</span> <span class="nav-text">冷备</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E8%84%9A%E6%89%8B%E6%9E%B6"><span class="nav-number">6.</span> <span class="nav-text">开发脚手架</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

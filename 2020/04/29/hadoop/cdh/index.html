@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要内容  CM 安装 CDH 安装  CDH  Cloudera’s Distribution, including Apache Hadoop。 Cloudera 公司出品。拥有集群自动化安装、中心化管理、集群监控、报警功能的一个工具（软件），使得集群的安装可以从几天的时间缩短为几个小时，运维人数也会从数十人降低到几个人，极大的提高了集群管理的效率。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cloudera">
+<meta property="og:url" content="http://giveme5.cc/2020/04/29/hadoop/cdh/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="主要内容  CM 安装 CDH 安装  CDH  Cloudera’s Distribution, including Apache Hadoop。 Cloudera 公司出品。拥有集群自动化安装、中心化管理、集群监控、报警功能的一个工具（软件），使得集群的安装可以从几天的时间缩短为几个小时，运维人数也会从数十人降低到几个人，极大的提高了集群管理的效率。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm1.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm2.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm3.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm4.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm5.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm6.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm7.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm8.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm9.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm10.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm11.png">
+<meta property="og:image" content="http://giveme5.cc/images/hadoop/cm12.png">
+<meta property="article:published_time" content="2020-04-29T13:32:24.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="bigData">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="cloudera">
+<meta property="article:tag" content="CDH">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://giveme5.cc/images/hadoop/cm1.png">
+
+<link rel="canonical" href="http://giveme5.cc/2020/04/29/hadoop/cdh/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>cloudera | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2020/04/29/hadoop/cdh/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cloudera
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-29 21:32:24" itemprop="dateCreated datePublished" datetime="2020-04-29T21:32:24+08:00">2020-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/hadoop/" itemprop="url" rel="index"><span itemprop="name">hadoop</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要内容</p>
+<ul>
+<li>CM 安装</li>
+<li>CDH 安装</li>
+</ul>
+<p>CDH  Cloudera’s Distribution, including Apache Hadoop。 Cloudera 公司出品。<br>拥有集群自动化安装、中心化管理、集群监控、报警功能的一个工具（软件），使得集群的安装可以从几天的时间缩短为几个小时，运维人数也会从数十人降低到几个人，极大的提高了集群管理的效率。</p>
+<hr>
+<span id="more"></span>
+
+<h2 id="提前工作"><a href="#提前工作" class="headerlink" title="提前工作"></a>提前工作</h2><h3 id="关闭防火墙，SeLinux"><a href="#关闭防火墙，SeLinux" class="headerlink" title="关闭防火墙，SeLinux"></a>关闭防火墙，SeLinux</h3><h3 id="校准时间"><a href="#校准时间" class="headerlink" title="校准时间"></a>校准时间</h3><p>使用NTP服务 同步时间相关服务器时间<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zonghua521/article/details/78239212">ntpd, ntpdate</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;*/20  * * * * /usr/sbin/ntpdate pool.ntp.org&quot;</span> | sudo <span class="built_in">tee</span> -a /etc/crontab &gt; /dev/null</span><br></pre></td></tr></table></figure>
+
+<h3 id="hostname"><a href="#hostname" class="headerlink" title="hostname"></a>hostname</h3><p>根据不同机器角色设置 hostname， 如下 master</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl set-hostname master</span><br></pre></td></tr></table></figure>
+
+<h3 id="hostname-解析"><a href="#hostname-解析" class="headerlink" title="hostname 解析"></a>hostname 解析</h3><p>master slave 都配置好,要和 hostname 匹配， 如下例子：</p>
+<p><code>vim /etc/hosts</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">192.168.8.23 master-23</span><br><span class="line">192.168.8.24 slave-24</span><br><span class="line">192.168.8.25 slave-25</span><br></pre></td></tr></table></figure>
+
+<h3 id="额外"><a href="#额外" class="headerlink" title="额外"></a>额外</h3><ul>
+<li>所有虚机分发 cloudera cm 和 cdh</li>
+<li>所有虚机优化 swappiness 和 透明大页面，本文下部有</li>
+<li>master 安装 cm全部， slave 安装 jdk，cm daemons， cm agent</li>
+<li>所有虚拟机安装zsh（可选）</li>
+</ul>
+<h3 id="公钥登录"><a href="#公钥登录" class="headerlink" title="公钥登录"></a>公钥登录</h3><p>公钥要分发到所有slave机器</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">&quot;your_email@your_email.com&quot;</span> -b 4096</span><br><span class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub username@hostname</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="cloudera-manager"><a href="#cloudera-manager" class="headerlink" title="cloudera-manager"></a>cloudera-manager</h2><p>使用当前最新版本 <code>6.3.1</code>， 只需要在master上安装。网络原因，可使用 清华的代理 <code>https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/RPMS/x86_64/</code> 。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><h4 id="手工rpm方式-推荐"><a href="#手工rpm方式-推荐" class="headerlink" title="手工rpm方式 (推荐)"></a>手工rpm方式 (推荐)</h4><ul>
+<li><p>下载如下的包</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">cloudera-manager-server-db-2-6.3.1-1466458.el7.x86_64.rpm</span><br><span class="line">oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装<br>到下载目录</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y ./*.rpm</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="yum方式-看网络"><a href="#yum方式-看网络" class="headerlink" title="yum方式 (看网络)"></a>yum方式 (看网络)</h4><p><a target="_blank" rel="noopener" href="https://cloudera.proxy.ustclug.org/cm6/6.3.1/redhat7/yum/cloudera-manager.repo">yum文件</a></p>
+<h4 id="cloudera-manager-installer-bin-安装-看网络"><a href="#cloudera-manager-installer-bin-安装-看网络" class="headerlink" title="cloudera-manager-installer.bin 安装  (看网络)"></a>cloudera-manager-installer.bin 安装  (看网络)</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ wget https://cloudera.proxy.ustclug.org/cm6/6.3.1/cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">chmod</span> u+x cloudera-manager-installer.bin</span><br><span class="line"></span><br><span class="line">$ sudo ./cloudera-manager-installer.bin</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><h4 id="安装完成目录"><a href="#安装完成目录" class="headerlink" title="安装完成目录"></a>安装完成目录</h4><ul>
+<li><p>cdh<br><code>/opt/cloudera/</code></p>
+</li>
+<li><p>jdk<br><code>/usr/java/</code></p>
+</li>
+<li><p>cloudera<br><code>/var/lib/cloudera-scm-*</code></p>
+</li>
+</ul>
+<h4 id="服务"><a href="#服务" class="headerlink" title="服务"></a>服务</h4><p>cm 安装成功后,重启系统, 大约 1min,<br>服务为 <code>cloudera-scm-agent.service</code> 和 <code>cloudera-scm-server.service</code><br>localhost:7180 可访问, 初始账户 admin， 密码 admin</p>
+<h3 id="cm-daemons，-cm-agent"><a href="#cm-daemons，-cm-agent" class="headerlink" title="cm daemons， cm agent"></a>cm daemons， cm agent</h3><p>slave 都安装好 jdk，cm daemons， cm agent，<br>可以避免 下载速度慢<br>将 master上的<br>    cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm<br>    cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm<br>    oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm<br>copy 到 slave上，像master 一样安装。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y cloudera-manager-daemons-6.3.1-1466458.el7.x86_64.rpm cloudera-manager-agent-6.3.1-1466458.el7.x86_64.rpm oracle-j2sdk1.8-1.8.0+update181-1.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+
+<p>注意：<br>cloudera-scm 必须拥有 &#x2F;opt&#x2F;cloudera 路径的所有权。 </p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R cloudera-scm:cloudera-scm /opt/cloudera</span><br></pre></td></tr></table></figure>
+
+<p>安装完成重启系统。</p>
+<h2 id="CDH-6-3-2"><a href="#CDH-6-3-2" class="headerlink" title="CDH 6.3.2"></a>CDH 6.3.2</h2><p>parcels(离线) 方式， 注意一定要检测到 所需的cdh<br>仅需要在master安装</p>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>默认是内存数据库，如果上生产，建议还是关系数据库。<br><a target="_blank" rel="noopener" href="https://docs.cloudera.com/documentation/enterprise/6/latest/topics/cm_ig_installing_configuring_dbs.html">官方文档</a></p>
+<h4 id="Mysql"><a href="#Mysql" class="headerlink" title="Mysql"></a><a target="_blank" rel="noopener" href="https://docs.cloudera.com/documentation/enterprise/6/latest/topics/cm_ig_mysql.html#cmig_topic_5_5_3">Mysql</a></h4><h5 id="java-驱动"><a href="#java-驱动" class="headerlink" title="java 驱动"></a>java 驱动</h5><p>可去清华镜像下载</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.46.tar.gz</span><br><span class="line"></span><br><span class="line">tar zxvf mysql-connector-java-5.1.46.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">mkdir</span> -p /usr/share/java/</span><br><span class="line"><span class="built_in">cd</span> mysql-connector-java-5.1.46</span><br><span class="line"><span class="built_in">cp</span> mysql-connector-java-5.1.46-bin.jar /usr/share/java/mysql-connector-java.jar</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="初始化数据库"><a href="#初始化数据库" class="headerlink" title="初始化数据库"></a>初始化数据库</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/opt/cloudera/cm/schema/scm_prepare_database.sh -h 192.168.11.229 mysql  --scm-host 192.168.11.220 -u root -P 3306 -p  scm scm</span><br></pre></td></tr></table></figure>
+
+<p>如果 是本机数据库， -h 和 –扫描-host 去掉<br>依次输入 root 和 scm 密码</p>
+<p>如果存在，删除embedded PostgreSQL properties</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">rm</span> /etc/cloudera-scm-server/db.mgmt.properties</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="手工下载-CDH"><a href="#手工下载-CDH" class="headerlink" title="手工下载 CDH"></a>手工下载 CDH</h3><p>官网<br><a target="_blank" rel="noopener" href="https://cloudera.proxy.ustclug.org/cdh6">https://cloudera.proxy.ustclug.org/cdh6</a></p>
+<p>国内镜像<br><a target="_blank" rel="noopener" href="https://cloudera.proxy.ustclug.org/cdh6/6.3.2/parcels/">https://cloudera.proxy.ustclug.org/cdh6/6.3.2/parcels/</a></p>
+<p>对应操作系统下载文件</p>
+<pre><code>manifest.json
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1
+CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256
+</code></pre>
+<p>仅需上传到 master的目录<code>/opt/cloudera/parcel-repo</code>下, <code>CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1</code> copy 一份成为 <code>CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha1</code></p>
+<p>注意：<br>cloudera-scm 必须拥有 &#x2F;opt&#x2F;cloudera 路径的所有权，否则 cloudera manage 会无法识别 CDH。</p>
+<p>一旦出现，如下操作。 如再不能识别，重启master操作系统。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chown</span> -R cloudera-scm:cloudera-scm /opt/cloudera</span><br><span class="line">systemctl stop cloudera-scm-agent.service</span><br><span class="line">systemctl restart cloudera-scm-server.service</span><br><span class="line"><span class="comment"># wait 30s ?</span></span><br><span class="line">systemctl restart cloudera-scm-agent.service</span><br></pre></td></tr></table></figure>
+
+<p>如果仍然无法识别， </p>
+<h3 id="CM-图形安装"><a href="#CM-图形安装" class="headerlink" title="CM 图形安装"></a>CM 图形安装</h3><p>cloudera express</p>
+<p><img src="/images/hadoop/cm1.png"><br><img src="/images/hadoop/cm2.png"><br><img src="/images/hadoop/cm3.png"><br><img src="/images/hadoop/cm4.png"><br><img src="/images/hadoop/cm5.png"><br><img src="/images/hadoop/cm6.png"><br><img src="/images/hadoop/cm7.png"><br><img src="/images/hadoop/cm8.png"><br><img src="/images/hadoop/cm9.png"><br><img src="/images/hadoop/cm10.png"><br><img src="/images/hadoop/cm11.png"><br>需要解决详细报告内的问题。</p>
+<ul>
+<li><p>swappiness</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/sysctl.conf</span><br><span class="line">vm.swappiness=10</span><br><span class="line"></span><br><span class="line">sysctl -p</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>透明大页面压缩</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag</span><br><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span><br><span class="line"></span><br><span class="line">vim /etc/rc.local</span><br><span class="line"># add </span><br><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag</span><br><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/images/hadoop/cm12.png"></p>
+<p>如果 slave 安装异常，<br>解决方法：</p>
+<ul>
+<li>检查 &#x2F;etc&#x2F;hosts</li>
+<li>重启agent<br><code>systemctl restart cloudera-scm-agent</code></li>
+</ul>
+<h2 id="错误"><a href="#错误" class="headerlink" title="错误"></a>错误</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Configurator not found</span><br><span class="line"></span><br><span class="line">or</span><br><span class="line"></span><br><span class="line">slave1: Host with invalid Cloudera Manager GUID is detected</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置 cm_guid</span></span><br><span class="line"><span class="built_in">rm</span> /var/lib/cloudera-scm-agent/cm_guid</span><br><span class="line">systemctl restart cloudera-scm-agent.service</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000020188183?utm_source=tag-newest">CDH离线搭建</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/bigData/" rel="tag"># bigData</a>
+              <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+              <a href="/tags/cloudera/" rel="tag"># cloudera</a>
+              <a href="/tags/CDH/" rel="tag"># CDH</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/03/java/generics/" rel="prev" title="Java 范型(generics in java)">
+      <i class="fa fa-chevron-left"></i> Java 范型(generics in java)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/30/hadoop/spark%E9%9B%86%E7%BE%A4%E5%88%9D%E4%BD%93%E9%AA%8C/" rel="next" title="spark集群初体验">
+      spark集群初体验 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E5%89%8D%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">提前工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99%EF%BC%8CSeLinux"><span class="nav-number">1.1.</span> <span class="nav-text">关闭防火墙，SeLinux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%A1%E5%87%86%E6%97%B6%E9%97%B4"><span class="nav-number">1.2.</span> <span class="nav-text">校准时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hostname"><span class="nav-number">1.3.</span> <span class="nav-text">hostname</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hostname-%E8%A7%A3%E6%9E%90"><span class="nav-number">1.4.</span> <span class="nav-text">hostname 解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%9D%E5%A4%96"><span class="nav-number">1.5.</span> <span class="nav-text">额外</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E7%99%BB%E5%BD%95"><span class="nav-number">1.6.</span> <span class="nav-text">公钥登录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cloudera-manager"><span class="nav-number">2.</span> <span class="nav-text">cloudera-manager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%8B%E5%B7%A5rpm%E6%96%B9%E5%BC%8F-%E6%8E%A8%E8%8D%90"><span class="nav-number">2.1.1.</span> <span class="nav-text">手工rpm方式 (推荐)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#yum%E6%96%B9%E5%BC%8F-%E7%9C%8B%E7%BD%91%E7%BB%9C"><span class="nav-number">2.1.2.</span> <span class="nav-text">yum方式 (看网络)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cloudera-manager-installer-bin-%E5%AE%89%E8%A3%85-%E7%9C%8B%E7%BD%91%E7%BB%9C"><span class="nav-number">2.1.3.</span> <span class="nav-text">cloudera-manager-installer.bin 安装  (看网络)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">2.2.</span> <span class="nav-text">结果</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E7%9B%AE%E5%BD%95"><span class="nav-number">2.2.1.</span> <span class="nav-text">安装完成目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.2.2.</span> <span class="nav-text">服务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cm-daemons%EF%BC%8C-cm-agent"><span class="nav-number">2.3.</span> <span class="nav-text">cm daemons， cm agent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CDH-6-3-2"><span class="nav-number">3.</span> <span class="nav-text">CDH 6.3.2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">3.1.</span> <span class="nav-text">数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mysql"><span class="nav-number">3.1.1.</span> <span class="nav-text">Mysql</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#java-%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">java 驱动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">初始化数据库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%B7%A5%E4%B8%8B%E8%BD%BD-CDH"><span class="nav-number">3.2.</span> <span class="nav-text">手工下载 CDH</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CM-%E5%9B%BE%E5%BD%A2%E5%AE%89%E8%A3%85"><span class="nav-number">3.3.</span> <span class="nav-text">CM 图形安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF"><span class="nav-number">4.</span> <span class="nav-text">错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

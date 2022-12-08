@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"giveme5.cc","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":"default","style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="目录 Linux进程管理 screen 实战  进程管理程序与进程：程序是静态的（文件），进程是动态的（运行的程序）。 进程和线程：一个程序至少有一个进程,一个进程至少有一个线程.进程之间内存是独立线程之前内存共享 ，高并发好一些 。 安全性差一些。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1-10 RHEL7 进程管理">
+<meta property="og:url" content="http://giveme5.cc/2015/12/07/linux/base/godLinux1-10/index.html">
+<meta property="og:site_name" content="Sam&#39;s Notes | Sam Blog">
+<meta property="og:description" content="目录 Linux进程管理 screen 实战  进程管理程序与进程：程序是静态的（文件），进程是动态的（运行的程序）。 进程和线程：一个程序至少有一个进程,一个进程至少有一个线程.进程之间内存是独立线程之前内存共享 ，高并发好一些 。 安全性差一些。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-12-07T07:29:44.000Z">
+<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:author" content="sam chen">
+<meta property="article:tag" content="GOD linux">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://giveme5.cc/2015/12/07/linux/base/godLinux1-10/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>1-10 RHEL7 进程管理 | Sam's Notes | Sam Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Sam's Notes | Sam Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Sam's Notes | Sam Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">梦想还是要有的，万一实现了呢</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-rss fa-fw"></i>RSS</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/12/07/linux/base/godLinux1-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          1-10 RHEL7 进程管理
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-12-07 15:29:44" itemprop="dateCreated datePublished" datetime="2015-12-07T15:29:44+08:00">2015-12-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index"><span itemprop="name">linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="./#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86">Linux进程管理</a></li>
+<li><a href="./#screen">screen 实战</a></li>
+</ul>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>程序与进程：<br>程序是静态的（文件），进程是动态的（运行的程序）。</p>
+<p>进程和线程：<br>一个程序至少有一个进程,一个进程至少有一个线程.<br>进程之间内存是独立<br>线程之前内存共享 ，高并发好一些 。 安全性差一些。</p>
+<span id="more"></span>
+
+<h3 id="pstree"><a href="#pstree" class="headerlink" title="pstree"></a>pstree</h3><ul>
+<li><p>作用： 查看进程树</p>
+</li>
+<li><p>用法： pstree [-p]<br>显示进程号 -p</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pstree -p | more  # | more 是将结果分页显示，参考 more 命令</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="tree"><a href="#tree" class="headerlink" title="tree"></a>tree</h3><ul>
+<li><p>作用： 显示目录树形结构</p>
+</li>
+<li><p>用法： tree 目录名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">╰─$ tree /home/sam/back  | more</span><br><span class="line">/home/sam/back</span><br><span class="line">├── 1_soft</span><br><span class="line">│ ├── QIpmsg_32_121019.tar.gz</span><br><span class="line">│ ├── vmware11</span><br><span class="line">│ │ ├── key</span><br><span class="line">│ │ └── VMware-Workstation-Full-11.0.0-2305329.x86_64.bundle</span><br><span class="line">│ └── xp.iso</span><br><span class="line">└── text</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="ps"><a href="#ps" class="headerlink" title="ps"></a>ps</h3><ul>
+<li>作用： 列出目前所有的正在内存当中的进程</li>
+<li>用法： ps -aux # BSD的格式来显示进程 <br>       ps -ef # 是用标准的格式显示进程</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ ps -aux</span><br><span class="line">USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span><br><span class="line">root         1  0.0  0.0  36040  6028 ?        Ss   09:27   0:01 /usr/lib/systemd/systemd --swit</span><br><span class="line">root         2  0.0  0.0      0     0 ?        S    09:27   0:00 [kthreadd]</span><br><span class="line">root         3  0.0  0.0      0     0 ?        S    09:27   0:00 [ksoftirqd/0]</span><br><span class="line">root         5  0.0  0.0      0     0 ?        S&lt;   09:27   0:00 [kworker/0:0H]</span><br><span class="line">root       434  0.0  0.3  74048 31784 ?        Ss   09:27   0:00 /usr/lib/systemd/systemd-journa</span><br><span class="line">root       444  0.0  0.0  19656  1508 ?        Ss   09:27   0:00 /sbin/dmeventd</span><br><span class="line">root       452  0.0  0.0  17596   168 ?        Ss   09:27   0:00 /sbin/lvmetad</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>USER</td>
+<td>运行此进程的用户名</td>
+</tr>
+<tr>
+<td>PID</td>
+<td>该 process 的号码。</td>
+</tr>
+<tr>
+<td>%CPU</td>
+<td>该 process 使用掉的 CPU资源百分比</td>
+</tr>
+<tr>
+<td>%MEM</td>
+<td>该 process 所占用的物理内存百分比</td>
+</tr>
+<tr>
+<td>VSZ</td>
+<td>该 process 使用掉的虚拟内存量 (Kbytes)</td>
+</tr>
+<tr>
+<td>RSS</td>
+<td>该 process 占用的固定的内存量 (Kbytes)</td>
+</tr>
+<tr>
+<td>TTY</td>
+<td>该 process 是在那个终端机上面运作，若与终端机无关，则显示 ?，另外， tty1-tty6 是本机上面的登入者程序，若为 pts&#x2F;0等等的，则表示为由网络连接进主机的程序。</td>
+</tr>
+<tr>
+<td>STAT</td>
+<td>该程序目前的状态，Linux进程有5种基本状态： <br> <code>R</code> :(正在运行或在运行队列中等待)；<br> <code>S</code> :该程序目前正在睡眠当中 ，但可被某些讯号 (signal) 唤醒。<br> <code>T</code> :该程序目前暂停了  <br> <code>Z</code> ：该程序应该已经终止，但是其父程序却无法正常的终止他，造成 zombie (疆尸) 程序的状态 <br> <code>D</code> ：不可中断状态.  <br><br> <code>&lt;</code> : 高优先级的 <code>N</code> : 低优先级的 <code>s</code> : 包含子进程 <code>l</code> : 多线程 <code>+</code> : 前台程序</td>
+</tr>
+<tr>
+<td>START</td>
+<td>该 process 被触发启动的时间</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>该 process 实际使用 CPU运作的时间</td>
+</tr>
+<tr>
+<td>COMMAND</td>
+<td>该程序的实际指令</td>
+</tr>
+</tbody></table>
+<p>  注：</p>
+<ul>
+<li>正常先关闭子进程，再关闭父进程；一旦父进程先关闭而子进程没关闭，则子进程变成 zombie (疆尸) 状态</li>
+<li><code>ctrl-c</code> 是发送 SIGINT 信号，终止一个进程，<code>ctrl-z</code> 是发送 SIGSTOP信号，挂起一个进程</li>
+</ul>
+<h3 id="free"><a href="#free" class="headerlink" title="free"></a>free</h3><ul>
+<li>作用 ：查看系统内存量</li>
+<li>用法 : free ;  free [-m] #单位为M<br><code>buffers</code> ： #缓存从磁盘读出的内容<br><code>cached</code> ： #缓存需要写入磁盘的内容<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">╭─sam@sam  ~  </span><br><span class="line">╰─$ free</span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:       8080868    5240964    2839904     375964       1144    2930824</span><br><span class="line">-/+ buffers/cache:    2308996    5771872</span><br><span class="line">Swap:      4193276          0    4193276</span><br><span class="line">╭─sam@sam  ~  </span><br><span class="line">╰─$ free -m</span><br><span class="line">             total       used       free     shared    buffers     cached</span><br><span class="line">Mem:          7891       5109       2782        367          1       2862</span><br><span class="line">-/+ buffers/cache:       2245       5645</span><br><span class="line">Swap:         4094          0       4094</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><ul>
+<li>作用： 动态查看进程，统计信息区前五行是系统整体的统计信息。</li>
+<li>用法： top ; top [-p] 进程号<br>默认3s刷新一次<br><code>空格</code> ：立即刷新。<br><code>q</code> ：退出<br><code>M</code> ：按内存排序<br><code>P</code> ： 按CPU排序<br><code>&lt;&gt;</code> ： 翻页</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">╭─sam@sam  ~</span><br><span class="line">╰─$ top</span><br><span class="line">  </span><br><span class="line">top - 15:44:29 up  6:17,  5 users,  load average: 0.28, 0.26, 0.31</span><br><span class="line">Tasks: 271 total,   1 running, 270 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  1.0 us,  0.9 sy,  0.0 ni, 98.1 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">KiB Mem:   8080868 total,  5044804 used,  3036064 free,     1144 buffers</span><br><span class="line">KiB Swap:  4193276 total,        0 used,  4193276 free.  2920332 cached Mem</span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND                                                                      </span><br><span class="line"> 4590 sam       20   0 2918736 393244  56052 S 8.333 4.866  18:32.24 QQ.exe                                                                       </span><br><span class="line"> 2499 sam       20   0   18164   9620   1848 S 4.667 0.119  11:35.91 wineserver                                                                   </span><br><span class="line"> 2523 sam       20   0 1890980 447352 115104 S 1.667 5.536  20:57.55 firefox                                                                      </span><br><span class="line"> 8299 sam       20   0  662880  62120  48428 S 1.667 0.769   0:06.35 konsole                                                                      </span><br><span class="line"> 7989 sam       20   0 1354276 265240 169776 S 1.333 3.282   2:17.21 plugin-containe                                                              </span><br><span class="line"> 1054 root      20   0  854140 226432 197212 S 1.000 2.802   4:10.21 Xorg                                                                         </span><br><span class="line"> 2245 sam       20   0 3615704 218240 104364 S 1.000 2.701   4:18.24 plasma-desktop                                                               </span><br><span class="line"> 2341 sam        9 -11  516700  13032   9456 S 1.000 0.161   0:38.15 pulseaudio                                                                   </span><br><span class="line"> 2235 sam       20   0 3115760 111524  67328 S 0.333 1.380   2:11.33 kwin                                                                         </span><br><span class="line">    1 root      20   0   36040   6028   3564 S 0.000 0.075   0:01.84 systemd                                                                      </span><br><span class="line">    2 root      20   0       0      0      0 S 0.000 0.000   0:00.00 kthreadd                                                                     </span><br><span class="line">    3 root      20   0       0      0      0 S 0.000 0.000   0:00.22 ksoftirqd/0         </span><br></pre></td></tr></table></figure>
+
+<h4 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h4><ul>
+<li>前五行，系统整体的统计信息</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>行数</th>
+<th>内容</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一行</td>
+<td>top - 15:44:29 up  6:17,  5 users,  load average: 0.28, 0.26, 0.31</td>
+<td>第一行是任务队列信息 <br>  <code>15:44:29 up  6:17</code> : 当前时间  系统运行时间，格式为时:分 <br> <code>5 users,</code>: 当前登录用户数 <br> <code>load average: 0.28, 0.26, 0.31</code>: 系统负载，即任务队列的平均长度。 三个数值分别为  1分钟、5分钟、15分钟前到现在的平均值。</td>
+</tr>
+<tr>
+<td>第二行</td>
+<td>Tasks: 271 total,   1 running, 270 sleeping,   0 stopped,   0 zombie</td>
+<td>第二行为进程信息  <br>  <code>271 total</code> : 进程总数 <br> <code>1 running</code> :正在运行的进程数 <br> <code>270 sleeping</code> : 睡眠的进程数 <br> <code>0 stopped</code> : 停止的进程数 <br> <code>0 zombie</code> : 僵尸进程数</td>
+</tr>
+<tr>
+<td>第三行</td>
+<td>%Cpu(s):  1.0 us,  0.9 sy,  0.0 ni, 98.1 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st</td>
+<td>第三行为CPU的信息  <br>  <code>1.0% us</code> : 系统用户进程使用CPU百分比。 不包括调高优先级的进程。 CPU%是由每个核的CPU占用律之和算出来的。如果你是4核CPU，核1，CPU使用率为100%，核2，CPU使用率为100%。 则会出会CPU 高于100%的现象，最终为200% <br> <code>0.9% sy</code> : 内核中的进程占用CPU百分比 <br> <code>0.0% ni</code> : 用户进程空间内改变过优先级的进程占用CPU百分比 <br> <code>98.1% id</code> : 空闲CPU百分比</td>
+</tr>
+<tr>
+<td>第四行</td>
+<td>KiB Mem:   8080868 total,  5044804 used,  3036064 free,     1144 buffers</td>
+<td>物理内存信息（KB） <br> <code>8080868 total</code> : 物理内存总量  <br> <code>5044804 used</code> : 使用的物理内存总量  <br> <code>3036064 free</code> : 空闲内存总量  <br> <code>2920332 buff/cache</code> : 用作内核缓存的内存量。</td>
+</tr>
+<tr>
+<td>第五行</td>
+<td>KiB Swap:  4193276 total,        0 used,  4193276 free.  2920332 cached Mem</td>
+<td>交换区信息（KB） <br> <code>4193276 total</code> : 交换区总量  <br> <code>0k used</code> : 使用的交换区总量  <br> <code>4193276 free</code> : 空闲交换区总量  <br> <code>2920332 avail Mem</code> : 总的可利用内存是多少</td>
+</tr>
+</tbody></table>
+<ul>
+<li>具体进程信息</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>列名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PID</td>
+<td>进程id</td>
+</tr>
+<tr>
+<td>USER</td>
+<td>进程所有者的用户名</td>
+</tr>
+<tr>
+<td>NI</td>
+<td>进程优先级。 <a href="./#nice_renice">nice</a>值。负值表示高优先级，正值表示低优先级</td>
+</tr>
+<tr>
+<td>RES</td>
+<td>实际使用内存大小。</td>
+</tr>
+<tr>
+<td>S</td>
+<td>进程状态。<br>  D&#x3D;不可中断的睡眠状态<br>  R&#x3D;运行<br>  S&#x3D;睡眠<br>  T&#x3D;跟踪&#x2F;停止<br>  Z&#x3D;僵尸进程</td>
+</tr>
+<tr>
+<td>%CPU</td>
+<td>上次更新到现在的CPU时间占用百分比</td>
+</tr>
+<tr>
+<td>%MEM</td>
+<td>进程使用的物理内存百分比</td>
+</tr>
+<tr>
+<td>TIME+</td>
+<td>进程使用的CPU时间总计，单位1&#x2F;100秒</td>
+</tr>
+<tr>
+<td>COMMAND</td>
+<td>命令名&#x2F;命令行</td>
+</tr>
+</tbody></table>
+<h3 id="kill"><a href="#kill" class="headerlink" title="kill"></a>kill</h3><ul>
+<li>作用 ： 控制（关闭）进程</li>
+<li>用法 ： kill  给进程发送信号（停止进程） ； kill -9 pid； killall 服务名； pkill 服务名<br>常用信号：<br><code>1</code>  HUP   重新加载配置文件。类似重启。<br><code>2</code>  INT   和ctrl+c一样   一般用于通知前台进程组终止进程<br><code>9</code>  KILL  强行中断<br><code>19</code> STOP  和ctrl+z一样</li>
+</ul>
+<h3 id="nice-renice"><a href="#nice-renice" class="headerlink" title="nice  renice"></a>nice  renice</h3><ul>
+<li>作用 ： nice 控制以什么优先级运行进程 。默认优先级是0；nice值 -20 ~ 19 越小优先级越高 普通用户0－19<br>renice #修改正在运行的进程的优先级</li>
+<li>用法 ：  nice -n 优先级数字 进程号</li>
+</ul>
+<h3 id="前后台进程切换"><a href="#前后台进程切换" class="headerlink" title="前后台进程切换"></a>前后台进程切换</h3><h4 id="jobs"><a href="#jobs" class="headerlink" title="jobs"></a>jobs</h4><p>列出所有后台进程</p>
+<h4 id="创建后台指令"><a href="#创建后台指令" class="headerlink" title="创建后台指令"></a>创建后台指令</h4><ul>
+<li>nohup</li>
+<li>&amp;<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup &lt;command&gt; [argument…] &amp;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="fg"><a href="#fg" class="headerlink" title="fg"></a>fg</h4><p>用法： fg 后期进程序列号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# fg 1</span><br></pre></td></tr></table></figure>
+
+<h2 id="screen"><a href="#screen" class="headerlink" title="screen"></a>screen</h2><p>虽然nohup很容易使用，但还是比较“简陋”的，对于简单的命令能够应付过来，对于复杂的需要人机交互的任务就麻烦了。<br><code>screen</code> 可以恢复当时状态。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>rpm或yum方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# yum -y install screen</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li><p>启动screen</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# screen</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行业务操作<br>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# vim 1.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存状态<br>按ctrl+a+d，出现[detached] </p>
+</li>
+<li><p>恢复<br>查看 -ls ； 恢复 -r id号</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">╭─sam@sam  ~  </span><br><span class="line">╰─$ screen -ls</span><br><span class="line">There is a screen on:</span><br><span class="line">        13033.pts-3.sam (Detached)</span><br><span class="line">1 Socket in /run/uscreens/S-sam.</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">╭─sam@sam  ~  </span><br><span class="line">╰─$ screen -r 13033</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GOD-linux/" rel="tag"># GOD linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2015/12/06/linux/base/godLinux1-9/" rel="prev" title="1-9 文件归档和解压缩">
+      <i class="fa fa-chevron-left"></i> 1-9 文件归档和解压缩
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2015/12/09/linux/base/godLinux1-11~12/" rel="next" title="1-11~12 - 重定向和文件查找">
+      1-11~12 - 重定向和文件查找 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">进程管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pstree"><span class="nav-number">2.1.</span> <span class="nav-text">pstree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tree"><span class="nav-number">2.2.</span> <span class="nav-text">tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ps"><span class="nav-number">2.3.</span> <span class="nav-text">ps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#free"><span class="nav-number">2.4.</span> <span class="nav-text">free</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#top"><span class="nav-number">2.5.</span> <span class="nav-text">top</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B4%E6%98%8E%EF%BC%9A"><span class="nav-number">2.5.1.</span> <span class="nav-text">说明：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kill"><span class="nav-number">2.6.</span> <span class="nav-text">kill</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nice-renice"><span class="nav-number">2.7.</span> <span class="nav-text">nice  renice</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%E5%88%87%E6%8D%A2"><span class="nav-number">2.8.</span> <span class="nav-text">前后台进程切换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#jobs"><span class="nav-number">2.8.1.</span> <span class="nav-text">jobs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%90%8E%E5%8F%B0%E6%8C%87%E4%BB%A4"><span class="nav-number">2.8.2.</span> <span class="nav-text">创建后台指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fg"><span class="nav-number">2.8.3.</span> <span class="nav-text">fg</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#screen"><span class="nav-number">3.</span> <span class="nav-text">screen</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">使用</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">sam chen</p>
+  <div class="site-description" itemprop="description">sam's notes + blog</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">sam chen</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
