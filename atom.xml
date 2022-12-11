@@ -138,9 +138,9 @@
     <link href="http://giveme5.cc/2021/10/18/hadoop/flink1/"/>
     <id>http://giveme5.cc/2021/10/18/hadoop/flink1/</id>
     <published>2021-10-18T11:13:08.000Z</published>
-    <updated>2022-12-08T03:19:48.000Z</updated>
+    <updated>2022-12-11T13:34:23.720Z</updated>
     
-    <content type="html"><![CDATA[<p>主要内容</p><ul><li>flink 集群架构原理</li><li>flink 集群架构原理</li></ul><hr><span id="more"></span><h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="/images/hadoop/flink/flink1.png"></p><ul><li>JobManager<br>管理节点，每个集群至少一个，管理整个集群计算资源，Job 管理与调度执行，以及 Checkpoint 协调。</li><li>TaskManager<br>每个集群有多个TM，负责计算资源提供。</li><li>Client<br>本地执行应用main()方法解析JobGraph 对象，并最终将JobGraph 提交到 JobManager 运行，同时监控Job 执行的状态。</li></ul><h3 id="JobManager"><a href="#JobManager" class="headerlink" title="JobManager"></a>JobManager</h3><h3 id="TaskManager"><a href="#TaskManager" class="headerlink" title="TaskManager"></a>TaskManager</h3><h2 id="集群部署模式"><a href="#集群部署模式" class="headerlink" title="集群部署模式"></a>集群部署模式</h2>]]></content>
+    <content type="html"><![CDATA[<p>主要内容</p><ul><li>flink 集群架构原理</li><li>flink 集群架构原理</li></ul><hr><span id="more"></span><h2 id="集群架构"><a href="#集群架构" class="headerlink" title="集群架构"></a>集群架构</h2><p><img src="/images/hadoop/flink/flink1.png"></p><ul><li>JobManager<br>管理节点，每个集群至少一个，管理整个集群计算资源，Job 管理与调度执行，以及 Checkpoint 协调。</li><li>TaskManager<br>每个集群有多个TM，负责计算资源提供。</li><li>Client<br>本地执行应用main()方法解析JobGraph 对象，并最终将JobGraph 提交到 JobManager 运行，同时监控Job 执行的状态。</li></ul><h3 id="JobManager"><a href="#JobManager" class="headerlink" title="JobManager"></a>JobManager</h3><h4 id="内存管理机制"><a href="#内存管理机制" class="headerlink" title="内存管理机制"></a>内存管理机制</h4><p><img src="https://cloud.tencent.com/developer/article/2026134" alt="JobManager 内存管理机制介绍与调优"></p><h3 id="TaskManager"><a href="#TaskManager" class="headerlink" title="TaskManager"></a>TaskManager</h3><h4 id="内存管理机制-1"><a href="#内存管理机制-1" class="headerlink" title="内存管理机制"></a>内存管理机制</h4><p><img src="https://cloud.tencent.com/developer/article/2083734" alt="TaskManager 内存管理机制介绍与调优总结"></p><h2 id="集群部署模式"><a href="#集群部署模式" class="headerlink" title="集群部署模式"></a>集群部署模式</h2>]]></content>
     
     
     <summary type="html">&lt;p&gt;主要内容&lt;/p&gt;

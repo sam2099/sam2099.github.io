@@ -1416,7 +1416,9 @@ CDH-6.3.2-1.cdh6.3.2.p0.1605554-el7.parcel.sha256
 <li>TaskManager<br>每个集群有多个TM，负责计算资源提供。</li>
 <li>Client<br>本地执行应用main()方法解析JobGraph 对象，并最终将JobGraph 提交到 JobManager 运行，同时监控Job 执行的状态。</li>
 </ul>
-<h3 id="JobManager"><a href="#JobManager" class="headerlink" title="JobManager"></a>JobManager</h3><h3 id="TaskManager"><a href="#TaskManager" class="headerlink" title="TaskManager"></a>TaskManager</h3><h2 id="集群部署模式"><a href="#集群部署模式" class="headerlink" title="集群部署模式"></a>集群部署模式</h2>]]></content>
+<h3 id="JobManager"><a href="#JobManager" class="headerlink" title="JobManager"></a>JobManager</h3><h4 id="内存管理机制"><a href="#内存管理机制" class="headerlink" title="内存管理机制"></a>内存管理机制</h4><p><img src="https://cloud.tencent.com/developer/article/2026134" alt="JobManager 内存管理机制介绍与调优"></p>
+<h3 id="TaskManager"><a href="#TaskManager" class="headerlink" title="TaskManager"></a>TaskManager</h3><h4 id="内存管理机制-1"><a href="#内存管理机制-1" class="headerlink" title="内存管理机制"></a>内存管理机制</h4><p><img src="https://cloud.tencent.com/developer/article/2083734" alt="TaskManager 内存管理机制介绍与调优总结"></p>
+<h2 id="集群部署模式"><a href="#集群部署模式" class="headerlink" title="集群部署模式"></a>集群部署模式</h2>]]></content>
       <categories>
         <category>hadoop</category>
       </categories>
