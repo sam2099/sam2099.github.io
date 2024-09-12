@@ -199,6 +199,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/10/29/exception/tomcat-jdbc-hibernate/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/10/29/exception/tomcat-jdbc-hibernate/" class="post-title-link" itemprop="url">tomcat-jdbc hibernate 版本冲突</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-10-29 16:10:08" itemprop="dateCreated datePublished" datetime="2015-10-29T16:10:08+08:00">2015-10-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/exception/" itemprop="url" rel="index"><span itemprop="name">exception</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>搭建了一套 Spring 核心的 web 服务基础框架。<br>涉及 Spring 4.2.1.RELEASE ， Spring MVC 4.2.1.RELEASE ，Spring Data JPA 1.9.0.RELEASE， Hibernate 5.0.2.Final， 数据库连接池 tomcat-jdbc 8.27， 容器 tomcat 8.21。</p>
+<p>坑人的异常：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">org.apache.tomcat.jdbc.pool.ConnectionPool abandon</span><br><span class="line">    WARNING: Connection has been abandoned PooledConnection[com.mysql.jdbc.JDBC4Connection@1ad2916]:java.lang.Exception</span><br><span class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.getThreadDump(ConnectionPool.java:967)</span><br><span class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.borrowConnection(ConnectionPool.java:721)</span><br><span class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.borrowConnection(ConnectionPool.java:579)</span><br><span class="line">        at org.apache.tomcat.jdbc.pool.ConnectionPool.getConnection(ConnectionPool.java:174)</span><br><span class="line">        at org.apache.tomcat.jdbc.pool.DataSourceProxy.getConnection(DataSourceProxy.java:111)</span><br><span class="line">        at com.getsom.getConnection(DAO.java:1444)</span><br><span class="line">        at com.getsom.PreparedConnection.(PreparedConnection.java:48)</span><br><span class="line">        at com.getsom.Alarms.run(Alarms.java:492)</span><br></pre></td></tr></table></figure>
+
+<p>奇怪的异常， 折腾半天，把 tomcat-jdbc 的配置属性玩了个遍，没辙， 想起以前版本没问题， Hibernate 5.0.2.Final 降级成 Hibernate 4.3.11.Final;<br>然后就好了！！！！！！<br>似乎是 对 Hibernate 5 的支持还不够广泛。</p>
+<p>ps 推荐一个 <a target="_blank" rel="noopener" href="http://wiki.jikexueyuan.com/project/tomcat/">tomcat 8 中文文档</a>, 翻译的还可以。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/10/22/questions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1076,85 +1155,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/09/08/other/interview/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="sam chen">
-      <meta itemprop="description" content="sam's notes + blog">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Sam's Notes | Sam Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2015/09/08/other/interview/" class="post-title-link" itemprop="url">面试时除了薪水以外的问题</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2015-09-08 14:28:38" itemprop="dateCreated datePublished" datetime="2015-09-08T14:28:38+08:00">2015-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9D%82%E8%B0%88/" itemprop="url" rel="index"><span itemprop="name">杂谈</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>薪水之外，工程师最应该关系的问题</p>
-<h2 id="你们的企业文化是什么？"><a href="#你们的企业文化是什么？" class="headerlink" title="你们的企业文化是什么？"></a>你们的企业文化是什么？</h2><p>可以问问企业从开发到测试都喜欢什么工具，询问开发流程，询问工程和其他团队之间的关系。建议问“在应对项目时，你们公司会给开发人员什么级别的自主性？”</p>
-<h2 id="如何衡量我？"><a href="#如何衡量我？" class="headerlink" title="如何衡量我？"></a>如何衡量我？</h2><p>你的雇主如何定义你的“成功”？不同公司的评判标准不同，要满足你觉得不舒服的目标会让你的生活苦不堪言。</p>
-<h2 id="有什么成长计划？"><a href="#有什么成长计划？" class="headerlink" title="有什么成长计划？"></a>有什么成长计划？</h2><p>询问是否有一个针对软件工程师的成长计划，询问一下，多少外部聘请 vs 公司内部晋升。</p>
-<h2 id="你们的发展计划？"><a href="#你们的发展计划？" class="headerlink" title="你们的发展计划？"></a>你们的发展计划？</h2><p>你需要了解他们的发展计划，建议可以问这样的问题，如“你们的资金消耗率（公司的负现金流）是多少？”</p>
-<h2 id="我会喜欢你们的人吗？"><a href="#我会喜欢你们的人吗？" class="headerlink" title="我会喜欢你们的人吗？"></a>我会喜欢你们的人吗？</h2><p>聊到目前的团队成员，试着和公司的内部人士聊天（面试官以外），以便于知道公司内部管理人员大致的情形， “他们好合作吗，他们做事征求意见吗，他们提供反馈吗，他或她投资团队成员并帮助他们成长吗？”</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1224,7 +1224,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1237,7 +1237,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-count">131</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1264,7 +1264,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

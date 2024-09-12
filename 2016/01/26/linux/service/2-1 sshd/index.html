@@ -29,7 +29,7 @@
 <meta property="og:description" content="主要内容  安装 配置 公钥登录">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-01-26T08:29:44.000Z">
-<meta property="article:modified_time" content="2022-12-08T03:19:48.000Z">
+<meta property="article:modified_time" content="2023-09-13T02:31:46.976Z">
 <meta property="article:author" content="sam chen">
 <meta property="article:tag" content="linux">
 <meta property="article:tag" content="sshd">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+                <time title="修改时间：2023-09-13 10:31:46" itemprop="dateModified" datetime="2023-09-13T10:31:46+08:00">2023-09-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -264,8 +264,8 @@
 </ul>
 <span id="more"></span>
 
-<h2 id="公钥登录"><a href="#公钥登录" class="headerlink" title="公钥登录"></a>公钥登录</h2><h3 id="客户端生成公钥密钥对"><a href="#客户端生成公钥密钥对" class="headerlink" title="客户端生成公钥密钥对"></a>客户端生成公钥密钥对</h3><p><code>ssh-keygen -t rsa -C &quot;your_email@your_email.com&quot; -b 4096</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@server ~]# ssh-keygen -t rsa -C &quot;your_email@your_email.com&quot; -b 4096</span><br><span class="line">Generating public/private rsa key pair.     #提示正在生成rsa密钥对</span><br><span class="line">Enter file in which to save the key (~/.ssh/id_dsa):     #询问公钥和私钥存放的位置，回车用默认位置即可</span><br><span class="line">Enter passphrase (empty for no passphrase):     #询问输入私钥密语，输入密语</span><br><span class="line">Enter same passphrase again:     #再次提示输入密语确认</span><br><span class="line">Your identification has been saved in ~/.ssh/id_dsa.     #提示公钥和私钥已经存放在/root/.ssh/目录下</span><br><span class="line">Your public key has been saved in ~/.ssh/id_dsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">x6:68:xx:93:98:8x:87:95:7x:2x:4x:x9:81:xx:56:94 root@server     #提示key的指纹</span><br></pre></td></tr></table></figure>
+<h2 id="公钥登录"><a href="#公钥登录" class="headerlink" title="公钥登录"></a>公钥登录</h2><h3 id="客户端生成公钥密钥对"><a href="#客户端生成公钥密钥对" class="headerlink" title="客户端生成公钥密钥对"></a>客户端生成公钥密钥对</h3><p>新系统使用：<br><code>ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot;</code><br>2022年4月以前的系统：<br><code>ssh-keygen -t rsa -C &quot;your_email@your_email.com&quot; -b 4096</code><br>rsa算法被弃用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@server ~]# ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot;</span><br><span class="line">Generating public/private ed25519 key pair.     #提示正在生成ed25519密钥对</span><br><span class="line">Enter file in which to save the key (/home/sam/.ssh/id_ed25519): /home/sam/.ssh/id_ed25519_test     #询问公钥和私钥存放的位置，回车用默认位置或自己指定</span><br><span class="line">Enter passphrase (empty for no passphrase):     #询问输入私钥密语，输入密语</span><br><span class="line">Enter same passphrase again:     #再次提示输入密语确认</span><br><span class="line">Your identification has been saved in /home/sam/.ssh/id_ed25519_test.     #提示公钥和私钥已经存放在/root/.ssh/目录下</span><br><span class="line">Your public key has been saved in /home/sam/.ssh/id_ed25519_test.pub.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>注意保护好 <code>私钥密语</code></p>
 <h3 id="上传公钥"><a href="#上传公钥" class="headerlink" title="上传公钥"></a>上传公钥</h3><p>公钥放到用户目录的 .ssh 这个目录下（如果目录不存在，需要创建~&#x2F;.ssh目录，并把目录权限设置为700）。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ~/.ssh     #如果当前用户目录下没有 .ssh 目录，请先创建目录</span><br><span class="line">$ chmod 700 ~/.ssh</span><br><span class="line">$ </span><br><span class="line">$ #客户端上传公钥</span><br><span class="line">$ </span><br><span class="line">$ cat ~/.ssh/id_rsa.pub &gt; ~/.ssh/authorized_keys</span><br><span class="line">$ rm -f ~/.ssh/id_rsa.pub</span><br><span class="line">$ chmod 600 ~/.ssh/*</span><br></pre></td></tr></table></figure>
@@ -385,7 +385,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">128</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -398,7 +398,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">130</span>
+        <span class="site-state-item-count">131</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -425,7 +425,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
