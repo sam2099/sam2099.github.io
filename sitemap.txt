@@ -1,3 +1,4 @@
+http://giveme5.cc/2016/11/18/web%20server/serverInit/
 http://giveme5.cc/2024/09/12/spring/springTransactions/
 http://giveme5.cc/2016/05/05/other/shadowsocks/
 http://giveme5.cc/2016/01/26/linux/service/2-1%20sshd/
@@ -82,7 +83,6 @@ http://giveme5.cc/2022/03/21/spring/srpingShardingSphere/
 http://giveme5.cc/2020/03/30/web%20server/https/
 http://giveme5.cc/2021/11/24/spring/srpingValidator/
 http://giveme5.cc/2017/02/22/web%20server/nginxTomcatSSL/
-http://giveme5.cc/2016/11/18/web%20server/serverInit/
 http://giveme5.cc/2015/09/16/web%20server/servers/
 http://giveme5.cc/2017/03/03/devEnv/ci/jenkinsRole/
 http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/
