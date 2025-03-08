@@ -1,3 +1,4 @@
+http://giveme5.cc/2025/03/07/devEnv/python/Anaconda/
 http://giveme5.cc/2016/11/18/web%20server/serverInit/
 http://giveme5.cc/2024/09/12/spring/springTransactions/
 http://giveme5.cc/2016/05/05/other/shadowsocks/
@@ -261,6 +262,7 @@ http://giveme5.cc/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/
 http://giveme5.cc/tags/cronolog/
 http://giveme5.cc/tags/zookeeper/
 http://giveme5.cc/tags/transactions/
+http://giveme5.cc/tags/python-Anaconda/
 http://giveme5.cc/categories/Android/
 http://giveme5.cc/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/
 http://giveme5.cc/categories/canal/

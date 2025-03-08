@@ -9612,4 +9612,32 @@ PS. 我的环境JPA的Hibernate实现不支持 Propagation.NESTED 策略。</li>
         <tag>transactions</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Anaconda 之Linux安装和配置大陆源</title>
+    <url>/2025/03/07/devEnv/python/Anaconda/</url>
+    <content><![CDATA[<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>Anaconda 安装</p>
+<p>题外话，公司战略项目，忙的，简单写写，当日记。<br>2025年春节爆火了Deepseek，3月份出了个传说中邀请码1W的Manus，然后一夜间出了9K star的OpenManus， 为了玩OpenManus， 安装Anaconda。<br>明天希望能写OpenManus。</p>
+<p><em>更新历史</em></p>
+<span id="more"></span>
+
+<hr>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>官网<br><a href="https://repo.anaconda.com/archive/">https://repo.anaconda.com/archive/</a><br>国内镜像<br><a href="https://mirrors.bfsu.edu.cn/anaconda/archive/">https://mirrors.bfsu.edu.cn/anaconda/archive/</a><br><a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/">https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/</a><br><a href="https://mirrors.xjtu.edu.cn/anaconda/archive/">https://mirrors.xjtu.edu.cn/anaconda/archive/</a><br><a href="https://mirror.bjtu.edu.cn/anaconda/archive/">https://mirror.bjtu.edu.cn/anaconda/archive/</a><br><a href="https://mirrors.hit.edu.cn/anaconda/archive/">https://mirrors.hit.edu.cn/anaconda/archive/</a><br><a href="https://mirrors.aliyun.com/anaconda">https://mirrors.aliyun.com/anaconda</a></p>
+<h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">sh Anaconda3-5.3.1-Linux-x86_64.sh</span><br></pre></td></tr></table></figure>
+<p><img src="/"></p>
+<h3 id="变量环境"><a href="#变量环境" class="headerlink" title="变量环境"></a>变量环境</h3><p>编辑<code>/etc/profile</code> 或当前用户根目录下的bash配置文件， 我是zsh如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim  ~/.zshrc</span><br><span class="line"></span><br><span class="line"># 下面的添加到bashrc文件的末尾添加</span><br><span class="line"></span><br><span class="line"># anaconda环境</span><br><span class="line">export PATH=/home/data/opt/anaconda3/bin:$PATH</span><br><span class="line"></span><br><span class="line"># 配置生效</span><br><span class="line">source  ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置国内源"><a href="#配置国内源" class="headerlink" title="配置国内源"></a>配置国内源</h3><figure class="highlight sh"><table><tr><td class="code"><pre><span class="line">conda config --<span class="built_in">set</span> show_channel_urls <span class="built_in">yes</span></span><br><span class="line"></span><br><span class="line">vim ~/.condarc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制到.condarc 文件</span></span><br><span class="line"></span><br><span class="line">channels:</span><br><span class="line">  - defaults</span><br><span class="line">show_channel_urls: <span class="literal">true</span></span><br><span class="line">default_channels:</span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main</span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r</span><br><span class="line">  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/msys2</span><br><span class="line">custom_channels:</span><br><span class="line">  conda-forge: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  msys2: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  bioconda: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  menpo: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  pytorch: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  pytorch-lts: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br><span class="line">  simpleitk: https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 清除索引缓存</span></span><br><span class="line">conda clean -i</span><br><span class="line"></span><br><span class="line">conda create -n name</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>developEnv</category>
+      </categories>
+      <tags>
+        <tag>python Anaconda</tag>
+      </tags>
+  </entry>
 </search>

@@ -199,6 +199,150 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/11/spring/s-SpringTest1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/08/11/spring/s-SpringTest1/" class="post-title-link" itemprop="url">SpringTesting （一） Annotations</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-08-11 15:56:15" itemprop="dateCreated datePublished" datetime="2015-08-11T15:56:15+08:00">2015-08-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#integration-testing-annotations">Annotations</a></p>
+<h2 id="Spring-Testing-Annotations"><a href="#Spring-Testing-Annotations" class="headerlink" title="Spring Testing Annotations"></a>Spring Testing Annotations</h2><ul>
+<li><p><code>@ContextConfiguration</code><br>类级别注解，用来声明如何加载和配置<code>ApplicationContext</code>。可以使用XML配置文件和被<code>@Configuration</code>注解的类。<br>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// 1） xml</span><br><span class="line">@ContextConfiguration(&quot;/test-config.xml&quot;)</span><br><span class="line">public class XmlApplicationContextTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">// 2）  @Configuration Class</span><br><span class="line">@ContextConfiguration(classes = TestConfig.class)</span><br><span class="line">public class ConfigClassApplicationContextTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">// 3）  `ApplicationContextInitializer` Class</span><br><span class="line">@ContextConfiguration(initializers = CustomContextIntializer.class)</span><br><span class="line">public class ContextInitializerTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">// 4）  ContextLoader</span><br><span class="line">@ContextConfiguration(locations = &quot;/test-context.xml&quot;, loader = CustomContextLoader.class)</span><br><span class="line">public class CustomLoaderXmlApplicationContextTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@WebAppConfiguration<br>类级别注解，用来声明如何加载<code>WebApplicationContext</code>。默认<code>&quot;file:src/main/webapp&quot;</code>为web App根目录。必须协同<code> @ContextConfiguration</code>才生效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@WebAppConfiguration</span><br><span class="line">public class WebAppTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">@ContextConfiguration</span><br><span class="line">@WebAppConfiguration(&quot;classpath:test-web-resources&quot;)</span><br><span class="line">public class WebAppTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>@ContextHierarchy<br>类级别注解，声明多层级的<code>@ContextConfiguration</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@ContextHierarchy(&#123;</span><br><span class="line">    @ContextConfiguration(&quot;/parent-config.xml&quot;),</span><br><span class="line">    @ContextConfiguration(&quot;/child-config.xml&quot;)</span><br><span class="line">&#125;)</span><br><span class="line">public class ContextHierarchyTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@WebAppConfiguration</span><br><span class="line">@ContextHierarchy(&#123;</span><br><span class="line">    @ContextConfiguration(classes = AppConfig.class),</span><br><span class="line">    @ContextConfiguration(classes = WebConfig.class)</span><br><span class="line">&#125;)</span><br><span class="line">public class WebIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>@ActiveProfiles<br>类级别注解，声明<em>ApplicationContext</em>使用哪些profiles。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@ActiveProfiles(&quot;dev&quot;)</span><br><span class="line">public class DeveloperTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@ActiveProfiles(&#123;&quot;dev&quot;, &quot;integration&quot;&#125;)</span><br><span class="line">public class DeveloperIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>@TestPropertySource<br>类级别注解，指定加载properties文件或手动增加PropertySources的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@TestPropertySource(&quot;/test.properties&quot;)</span><br><span class="line">public class MyIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@ContextConfiguration</span><br><span class="line">@TestPropertySource(properties = &#123; &quot;timezone = GMT&quot;, &quot;port: 4242&quot; &#125;)</span><br><span class="line">public class MyIntegrationTests &#123;</span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+<li><p>@DirtiesContext<br>类或方法级别注解，根据不同策略，Spring TestContext会刷新Spring的上下文（就是重新创建ApplicationContext）<br>有各种策略</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">// BEFORE_CLASS</span><br><span class="line">@DirtiesContext(classMode = BEFORE_CLASS)</span><br><span class="line">public class FreshContextTests &#123;</span><br><span class="line">    // some tests that require a new Spring container</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">//default class mode ： `AFTER_CLASS`</span><br><span class="line">@DirtiesContext</span><br><span class="line">public class ContextDirtyingTests &#123;</span><br><span class="line">    // some tests that result in the Spring container being dirtied</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">// BEFORE_EACH_TEST_METHOD</span><br><span class="line">@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)</span><br><span class="line">public class FreshContextTests &#123;</span><br><span class="line">    // some tests that require a new Spring container</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">// AFTER_EACH_TEST_METHOD</span><br><span class="line">@DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)</span><br><span class="line">public class ContextDirtyingTests &#123;</span><br><span class="line">    // some tests that result in the Spring container being dirtied</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">// BEFORE_METHOD</span><br><span class="line">@DirtiesContext(methodMode = BEFORE_METHOD)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichRequiresFreshAppCtx() &#123;</span><br><span class="line">    // some logic that requires a new Spring container</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">//default method mode `AFTER_METHOD`</span><br><span class="line">@DirtiesContext</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichDirtiesAppCtx() &#123;</span><br><span class="line">    // some logic that results in the Spring container being dirtied</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>@TestExecutionListeners</code></p>
+</li>
+<li><p><code>@Commit</code></p>
+</li>
+<li><p><code>@Rollback</code></p>
+</li>
+<li><p><code>@BeforeTransaction</code></p>
+</li>
+<li><p><code>@AfterTransaction</code></p>
+</li>
+<li><p><code>@Sql</code></p>
+</li>
+<li><p><code>@SqlConfig</code></p>
+</li>
+<li><p><code>@SqlGroup</code></p>
+</li>
+</ul>
+<h2 id="Standard-Annotation-Support"><a href="#Standard-Annotation-Support" class="headerlink" title="Standard Annotation Support"></a>Standard Annotation Support</h2><p>Spring TestContext Framework 支持下列标准的注解</p>
+<ul>
+<li><pre><code>@Autowired
+</code></pre>
+</li>
+<li>@Qualifier</li>
+<li>@Resource (javax.annotation) if JSR-250 is present</li>
+<li>@Inject (javax.inject) if JSR-330 is present</li>
+<li>@Named (javax.inject) if JSR-330 is present</li>
+<li>@PersistenceContext (javax.persistence) if JPA is present</li>
+<li>@PersistenceUnit (javax.persistence) if JPA is present</li>
+<li>@Required</li>
+<li>@Transactional</li>
+</ul>
+<h2 id="Spring-JUnit-Testing-Annotations"><a href="#Spring-JUnit-Testing-Annotations" class="headerlink" title="Spring JUnit Testing Annotations"></a>Spring JUnit Testing Annotations</h2><p>组合SpringJUnit4ClassRunner, Spring’s JUnit rules, 或 Spring’s JUnit support classes使用的时候，Spring TestContext Framework 还支持下列标准的注解：</p>
+<ul>
+<li><p>@IfProfileValue<br>类级别或方法级别注解，校验具体的环境变量，匹配才进行测试，否则就会忽略。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@IfProfileValue(name=&quot;java.vendor&quot;, value=&quot;Oracle Corporation&quot;)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichRunsOnlyOnOracleJvm() &#123;</span><br><span class="line">    // some logic that should run only on Java VMs from Oracle Corporation</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">@IfProfileValue(name=&quot;test-groups&quot;, values=&#123;&quot;unit-tests&quot;, &quot;integration-tests&quot;&#125;)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessWhichRunsForUnitOrIntegrationTestGroups() &#123;</span><br><span class="line">    // some logic that should run only for unit and integration test groups</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@ProfileValueSourceConfiguration</p>
+</li>
+<li><p>@Timed</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Timed(millis=1000)</span><br><span class="line">public void testProcessWithOneSecondTimeout() &#123;</span><br><span class="line">    // some logic that should not take longer than 1 second to execute</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@Repeat</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Repeat(10)</span><br><span class="line">@Test</span><br><span class="line">public void testProcessRepeatedly() &#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/07/spring/s-springPortletMVCFramework/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1136,7 +1280,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">128</span>
+          <span class="site-state-item-count">129</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1149,7 +1293,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">131</span>
+        <span class="site-state-item-count">132</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1176,7 +1320,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
