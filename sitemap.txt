@@ -1,4 +1,5 @@
 http://giveme5.cc/2025/03/07/devEnv/python/Anaconda/
+http://giveme5.cc/2015/07/20/linux/cmd/
 http://giveme5.cc/2016/11/18/web%20server/serverInit/
 http://giveme5.cc/2024/09/12/spring/springTransactions/
 http://giveme5.cc/2016/05/05/other/shadowsocks/
@@ -38,7 +39,6 @@ http://giveme5.cc/2015/07/21/linux/Docker/
 http://giveme5.cc/2017/03/28/linux/Firewalld-md/
 http://giveme5.cc/2017/06/29/java/javaIO/
 http://giveme5.cc/2015/07/21/linux/L-nagios/
-http://giveme5.cc/2015/07/20/linux/cmd/
 http://giveme5.cc/2015/11/17/linux/ddos/
 http://giveme5.cc/2017/03/28/linux/fail2ban-md/
 http://giveme5.cc/2015/11/17/linux/lamp/
