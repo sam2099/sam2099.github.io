@@ -199,6 +199,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/12/spring/s-SpringTest2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="sam chen">
+      <meta itemprop="description" content="sam's notes + blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sam's Notes | Sam Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2015/08/12/spring/s-SpringTest2/" class="post-title-link" itemprop="url">SpringTesting （二） Spring TestContext Framework</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2015-08-12 19:56:15" itemprop="dateCreated datePublished" datetime="2015-08-12T19:56:15+08:00">2015-08-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/spring/" itemprop="url" rel="index"><span itemprop="name">spring</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="http://docs.spring.io/spring/docs/4.2.1.BUILD-SNAPSHOT/spring-framework-reference/htmlsingle/#testcontext-framework">Spring TestContext Framework</a></p>
+<h2 id="TODO-设计原理和实现"><a href="#TODO-设计原理和实现" class="headerlink" title="TODO 设计原理和实现"></a>TODO 设计原理和实现</h2><p><code> TestContextManager</code> ： Spring TestContext Framework的主入口，管理单例的<code>TestContext</code>和所有注册的TestExecutionListeners。<br><code> TestContext</code><br><code> TestExecutionListener</code><br><code> ContextLoader</code></p>
+<h2 id="Context-management"><a href="#Context-management" class="headerlink" title="Context management"></a>Context management</h2><p>每个TestContext提供 context 管理， 测试实例无权配置ApplicationContext， 实例仅能获得一个ApplicationContext的引用。特别的是AbstractJUnit4SpringContextTests和AbstractTestNGSpringContextTests实现了ApplicationContextAware而且有权修改ApplicationContext。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration</span><br><span class="line">public class MyTest &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    private ApplicationContext applicationContext;</span><br><span class="line"></span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@WebAppConfiguration</span><br><span class="line">@ContextConfiguration</span><br><span class="line">public class MyWebAppTest &#123;</span><br><span class="line">    @Autowired</span><br><span class="line">    private WebApplicationContext wac;</span><br><span class="line"></span><br><span class="line">    // class body...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="注入mocks"><a href="#注入mocks" class="headerlink" title="注入mocks"></a>注入mocks</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@WebAppConfiguration</span><br><span class="line">@ContextConfiguration</span><br><span class="line">public class WacTests &#123;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    WebApplicationContext wac; // cached</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    MockServletContext servletContext; // cached</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    MockHttpSession session;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    MockHttpServletRequest request;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    MockHttpServletResponse response;</span><br><span class="line"></span><br><span class="line">    @Autowired</span><br><span class="line">    ServletWebRequest webRequest;</span><br><span class="line"></span><br><span class="line">    //...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="执行SQL-scripts"><a href="#执行SQL-scripts" class="headerlink" title="执行SQL scripts"></a>执行SQL scripts</h2><ul>
+<li><p>代码<br>下列都可以用来执行<br>   org.springframework.jdbc.datasource.init.ScriptUtils<br>  org.springframework.jdbc.datasource.init.ResourceDatabasePopulator<br>  org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests<br>  org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void databaseTest &#123;</span><br><span class="line">    ResourceDatabasePopulator populator = new ResourceDatabasePopulator();</span><br><span class="line">    populator.addScripts(</span><br><span class="line">        new ClassPathResource(&quot;test-schema.sql&quot;),</span><br><span class="line">        new ClassPathResource(&quot;test-data.sql&quot;));</span><br><span class="line">    populator.setSeparator(&quot;@@&quot;);</span><br><span class="line">    populator.execute(this.dataSource);</span><br><span class="line">    // execute code that uses the test schema and data</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>@Sql</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">//1</span><br><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@ContextConfiguration</span><br><span class="line">@Sql(&quot;/test-schema.sql&quot;)</span><br><span class="line">public class DatabaseTests &#123;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void emptySchemaTest &#123;</span><br><span class="line">        // execute code that uses the test schema without any test data</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    @Sql(&#123;&quot;/test-schema.sql&quot;, &quot;/test-user-data.sql&quot;&#125;)</span><br><span class="line">    public void userTest &#123;</span><br><span class="line">        // execute code that uses the test schema and test data</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">//1</span><br><span class="line">@Test</span><br><span class="line">@Sql(scripts = &quot;/test-schema.sql&quot;, config = @SqlConfig(commentPrefix = &quot;`&quot;))</span><br><span class="line">@Sql(&quot;/test-user-data.sql&quot;)</span><br><span class="line">public void userTest &#123;</span><br><span class="line">    // execute code that uses the test schema and test data</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">//3</span><br><span class="line">@Test</span><br><span class="line">@SqlGroup(&#123;</span><br><span class="line">    @Sql(scripts = &quot;/test-schema.sql&quot;, config = @SqlConfig(commentPrefix = &quot;`&quot;)),</span><br><span class="line">    @Sql(&quot;/test-user-data.sql&quot;)</span><br><span class="line">)&#125;</span><br><span class="line">public void userTest &#123;</span><br><span class="line">    // execute code that uses the test schema and test data</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">//4</span><br><span class="line">@Test</span><br><span class="line">@Sql(</span><br><span class="line">    scripts = &quot;create-test-data.sql&quot;,</span><br><span class="line">    config = @SqlConfig(transactionMode = ISOLATED)</span><br><span class="line">)</span><br><span class="line">@Sql(</span><br><span class="line">    scripts = &quot;delete-test-data.sql&quot;,</span><br><span class="line">    config = @SqlConfig(transactionMode = ISOLATED),</span><br><span class="line">    executionPhase = AFTER_TEST_METHOD</span><br><span class="line">)</span><br><span class="line">public void userTest &#123;</span><br><span class="line">    // execute code that needs the test data to be committed</span><br><span class="line">    // to the database outside of the test&#x27;s transaction</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="TestContext-Framework支持类"><a href="#TestContext-Framework支持类" class="headerlink" title="TestContext Framework支持类"></a>TestContext Framework支持类</h2><h3 id="Spring-JUnit-Runner"><a href="#Spring-JUnit-Runner" class="headerlink" title="Spring JUnit Runner"></a>Spring JUnit Runner</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@RunWith(SpringJUnit4ClassRunner.class)</span><br><span class="line">@TestExecutionListeners(&#123;&#125;)</span><br><span class="line">public class SimpleTest &#123;</span><br><span class="line"></span><br><span class="line">   @Test</span><br><span class="line">   public void testMethod() &#123;</span><br><span class="line">      // execute test logic...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果要使用MockitoJUnitRunner等第三方runners， 可以使用Spring JUnit Rules。</p>
+<h3 id="Spring-JUnit-Rules"><a href="#Spring-JUnit-Rules" class="headerlink" title="Spring JUnit Rules"></a>Spring JUnit Rules</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// Optionally specify a non-Spring Runner via @RunWith(...)</span><br><span class="line">@ContextConfiguration</span><br><span class="line">public class IntegrationTest &#123;</span><br><span class="line"></span><br><span class="line">   @ClassRule</span><br><span class="line">   public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();</span><br><span class="line"></span><br><span class="line">   @Rule</span><br><span class="line">   public final SpringMethodRule springMethodRule = new SpringMethodRule();</span><br><span class="line"></span><br><span class="line">   @Test</span><br><span class="line">   public void testMethod() &#123;</span><br><span class="line">      // execute test logic...</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://giveme5.cc/2015/08/11/spring/s-SpringTest1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -682,7 +773,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-12-08 11:19:48" itemprop="dateModified" datetime="2022-12-08T11:19:48+08:00">2022-12-08</time>
+                <time title="修改时间：2025-03-22 11:39:41" itemprop="dateModified" datetime="2025-03-22T11:39:41+08:00">2025-03-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -706,7 +797,7 @@
 
       
           <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>jenkins-2.235.3-1.1 安装 使用 </p>
-<p><em>更新历史</em><br><del>2020-08-04 增加jenkins的清华镜像设置</del><br>2020-11-14 国内镜像源设置</p>
+<p><em>更新历史</em><br><del>2020-08-04 增加jenkins的清华镜像设置</del><br>2020-11-14 国内镜像源设置<br>2025-03-22 增加脚本样例</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2015/07/29/devEnv/ci/o-jenkins/#more" rel="contents">
@@ -1280,7 +1371,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-count">130</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1293,7 +1384,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">132</span>
+        <span class="site-state-item-count">134</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

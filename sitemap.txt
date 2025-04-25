@@ -1,3 +1,5 @@
+http://giveme5.cc/2025/04/25/linux/xfsExtends/
+http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/
 http://giveme5.cc/2025/03/07/devEnv/python/Anaconda/
 http://giveme5.cc/2015/07/20/linux/cmd/
 http://giveme5.cc/2016/11/18/web%20server/serverInit/
@@ -86,7 +88,6 @@ http://giveme5.cc/2021/11/24/spring/srpingValidator/
 http://giveme5.cc/2017/02/22/web%20server/nginxTomcatSSL/
 http://giveme5.cc/2015/09/16/web%20server/servers/
 http://giveme5.cc/2017/03/03/devEnv/ci/jenkinsRole/
-http://giveme5.cc/2015/07/29/devEnv/ci/o-jenkins/
 http://giveme5.cc/2017/08/18/devEnv/git/git/
 http://giveme5.cc/2016/06/20/devEnv/gitlab/gitlab/
 http://giveme5.cc/2015/10/30/devEnv/maven/maven/
@@ -263,6 +264,8 @@ http://giveme5.cc/tags/cronolog/
 http://giveme5.cc/tags/zookeeper/
 http://giveme5.cc/tags/transactions/
 http://giveme5.cc/tags/python-Anaconda/
+http://giveme5.cc/tags/xfs/
+http://giveme5.cc/tags/%E7%A3%81%E7%9B%98/
 http://giveme5.cc/categories/Android/
 http://giveme5.cc/categories/%E6%9C%BA%E5%99%A8%E8%A7%86%E8%A7%89/
 http://giveme5.cc/categories/canal/
